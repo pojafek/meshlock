@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Meshlock — Automation & Continuous Improvement, Built to Fit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EEF0EA; --paper-dim:#E3E6DC; --paper-card:#F6F7F2;
+    --ink:#171A1D; --ink-soft:#565C58; --ink-faint:#8A9086;
+    --line:#C9CDC0; --line-strong:#171A1D;
+    --amber:#D9A441; --amber-ink:#5A4419;
+    --green:#3F6B52; --green-bg:#E4EBE3;
+    --steel:#37485A;
+    --red-flag:#B5482E;
+    --radius:3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth; background:var(--paper);}
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'IBM Plex Sans',-apple-system,Helvetica,Arial,sans-serif;
+    font-size:16.5px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif; margin:0; letter-spacing:-0.01em;}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;}
+  a{color:inherit;}
+  :focus-visible{outline:2.5px solid var(--steel); outline-offset:3px;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 6vw;}
+  section{position:relative;}
+
+  /* ---------- DIMENSION DIVIDER (signature structural device) ---------- */
+  .dim-divider{
+    display:flex; align-items:center; gap:14px; margin:0 auto; max-width:1080px;
+    padding:0 6vw; color:var(--ink-faint); user-select:none;
+  }
+  .dim-divider .tick{width:1px; height:14px; background:var(--line-strong);}
+  .dim-divider .rule{flex:1; height:1px; background:var(--line);
+    background-image:linear-gradient(to right, var(--line) 60%, transparent 0%);
+    background-size:6px 1px; background-repeat:repeat-x;}
+  .dim-divider span{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; white-space:nowrap;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:26px 6vw; position:sticky; top:0; z-index:50;
+    background:rgba(238,240,234,0.88); backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .wordmark{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px; letter-spacing:-0.01em; display:flex; align-items:center; gap:9px;}
+  .wordmark .dot{width:7px;height:7px;background:var(--amber); border-radius:1px; transform:rotate(45deg); flex:none;}
+  .nav-cta{
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; text-transform:uppercase; letter-spacing:.08em;
+    border:1px solid var(--ink); padding:9px 16px; border-radius:var(--radius); text-decoration:none;
+    transition:background .15s ease, color .15s ease;
+  }
+  .nav-cta:hover{background:var(--ink); color:var(--paper);}
+  .nav-links{display:flex; align-items:center; gap:22px;}
+  .nav-link{font-family:'IBM Plex Mono',monospace; font-size:12.5px; text-transform:uppercase; letter-spacing:.08em; text-decoration:underline; text-decoration-color:var(--line-strong); text-underline-offset:4px; color:var(--ink-soft); white-space:nowrap;}
+  @media (max-width:480px){
+    nav{flex-wrap:wrap; row-gap:14px;}
+    .nav-links{flex:1 1 100%; justify-content:flex-end;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{padding:72px 6vw 60px; position:relative; overflow:hidden;}
+  .hero::before{
+    content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:34px 34px; background-position:center top;
+    -webkit-mask-image:radial-gradient(ellipse 100% 70% at 50% 0%, black 40%, transparent 90%);
+            mask-image:radial-gradient(ellipse 100% 70% at 50% 0%, black 40%, transparent 90%);
+  }
+  .hero-inner{position:relative; z-index:1; max-width:1080px; margin:0 auto; display:grid; grid-template-columns:1.15fr 0.85fr; gap:40px; align-items:center;}
+  @media (max-width:820px){ .hero-inner{grid-template-columns:1fr;} }
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 18px; display:flex; align-items:center; gap:8px;}
+  .eyebrow .led{width:6px;height:6px;background:var(--green); border-radius:50%; box-shadow:0 0 0 3px var(--green-bg);}
+  .hero h1{font-size:clamp(34px,4.6vw,54px); line-height:1.06; margin:0 0 20px; max-width:13ch;}
+  .hero p.lede{max-width:46ch; color:var(--ink-soft); font-size:18px; margin:0 0 30px;}
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn-primary{
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-transform:uppercase; letter-spacing:.08em;
+    background:var(--ink); color:var(--paper); padding:14px 22px; border-radius:var(--radius);
+    text-decoration:none; display:inline-block; border:1px solid var(--ink);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary:hover{transform:translateY(-1px); box-shadow:3px 4px 0 var(--amber);}
+  .btn-ghost{
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--ink); padding:14px 6px; text-decoration:none; border-bottom:1px solid var(--ink-faint);
+  }
+
+  /* ---------- GEAR-LOCK SIGNATURE ---------- */
+  .rig{position:relative; width:100%; aspect-ratio:360/290; max-width:390px; margin:0 auto;}
+  .rig svg{width:100%; height:100%; overflow:visible;}
+  .gear{transform-origin:center; transition:transform 1.6s cubic-bezier(.16,.9,.2,1.02);}
+  .gearA{transform:rotate(-140deg);}
+  .gearB{transform:rotate(140deg);}
+  .rig.locked .gearA{transform:rotate(0deg);}
+  .rig.locked .gearB{transform:rotate(0deg);}
+  .stamp{
+    opacity:0; transform:scale(1.5) rotate(-8deg); transform-origin:center;
+    transition:opacity .4s ease .9s, transform .4s cubic-bezier(.2,1.4,.4,1) .9s;
+  }
+  .rig.locked .stamp{opacity:1; transform:scale(1) rotate(-8deg);}
+  @media (prefers-reduced-motion:reduce){
+    .gear, .stamp{transition:none;}
+    .gearA, .gearB{transform:rotate(0deg);}
+    .stamp{opacity:1; transform:scale(1) rotate(-8deg);}
+  }
+
+  /* ---------- MANIFESTO ---------- */
+  .manifesto{padding:80px 0 76px;}
+  .manifesto .head{max-width:640px; margin:0 auto 46px;}
+  .manifesto h2{font-size:30px; margin-bottom:14px;}
+  .manifesto .head p{color:var(--ink-soft); font-size:16.5px; max-width:56ch;}
+  .contrast-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  @media (max-width:760px){ .contrast-grid{grid-template-columns:1fr;} }
+  .contrast-cell{background:var(--paper-card); padding:30px 26px;}
+  .contrast-cell .not{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--red-flag); margin:0 0 10px; display:flex; align-items:center; gap:6px;}
+  .contrast-cell .not::before{content:"✕"; font-weight:700;}
+  .contrast-cell .not-line{font-size:14.5px; color:var(--ink-faint); text-decoration:line-through; margin:0 0 14px;}
+  .contrast-cell .is{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--green); margin:0 0 10px; display:flex; align-items:center; gap:6px;}
+  .contrast-cell .is::before{content:"✓"; font-weight:700;}
+  .contrast-cell .is-line{font-size:15.5px; color:var(--ink); margin:0;}
+
+  /* ---------- PROCESS ---------- */
+  .process{padding:80px 0;}
+  .process h2{font-size:30px; text-align:center; margin-bottom:54px;}
+  .process-row{display:grid; grid-template-columns:repeat(3,1fr); gap:0; position:relative;}
+  @media (max-width:820px){ .process-row{grid-template-columns:1fr; gap:36px;} }
+  .process-row::before{
+    content:""; position:absolute; top:26px; left:8%; right:8%; height:1px;
+    background-image:linear-gradient(to right, var(--line-strong) 50%, transparent 0%);
+    background-size:8px 1px; background-repeat:repeat-x;
+  }
+  @media (max-width:820px){ .process-row::before{display:none;} }
+  .step{padding:0 22px; position:relative;}
+  .step-num{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--paper); background:var(--ink); width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:20px; position:relative; z-index:2;}
+  .step h3{font-size:19px; margin-bottom:10px;}
+  .step p{color:var(--ink-soft); font-size:15px; margin:0; max-width:32ch;}
+
+  /* ---------- CASE FILES ---------- */
+  .case-files{padding:80px 0 88px; background:var(--paper-dim); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .case-files .head{max-width:640px; margin:0 auto 48px; text-align:center;}
+  .case-files h2{font-size:30px; margin-bottom:12px;}
+  .case-files .head p{color:var(--ink-soft);}
+  .case-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:20px;}
+  @media (max-width:760px){ .case-grid{grid-template-columns:1fr;} }
+  .case-card{
+    background:var(--paper-card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:26px 26px 24px; position:relative; overflow:hidden;
+    opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease;
+  }
+  .case-card.in-view{opacity:1; transform:translateY(0);}
+  @media (prefers-reduced-motion:reduce){ .case-card{opacity:1; transform:none; transition:none;} }
+  .case-card .tag{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--green); background:var(--green-bg); border:1px dashed var(--green);
+    padding:3px 8px; border-radius:2px; position:absolute; top:20px; right:20px; transform:rotate(3deg);
+  }
+  .case-card h3{font-size:18px; margin:0 20px 14px 0; max-width:85%;}
+  .case-card .field{margin-bottom:10px;}
+  .case-card .field b{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:3px;}
+  .case-card .field p{margin:0; font-size:14.5px; color:var(--ink); line-height:1.55;}
+
+  /* ---------- ABOUT ---------- */
+  .about{padding:84px 0; }
+  .about-inner{display:grid; grid-template-columns:auto 1fr; gap:44px; align-items:start; max-width:820px; margin:0 auto;}
+  @media (max-width:640px){ .about-inner{grid-template-columns:1fr;} }
+  .stamp-mark{
+    width:110px; height:110px; border:2px solid var(--ink); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    transform:rotate(-6deg); flex:none; color:var(--ink);
+  }
+  .stamp-mark span{font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:center; line-height:1.5;}
+  .about h2{font-size:26px; margin-bottom:16px;}
+  .about p{color:var(--ink-soft); font-size:16px; margin:0 0 16px; max-width:56ch;}
+  .about .creds{display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;}
+  .cred{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.05em; border:1px solid var(--line-strong); padding:6px 11px; border-radius:2px; color:var(--ink-soft);}
+
+  /* ---------- CONTACT ---------- */
+  .contact{padding:84px 0 100px; text-align:center;}
+  .contact h2{font-size:32px; max-width:14ch; margin:0 auto 16px;}
+  .contact p{color:var(--ink-soft); max-width:44ch; margin:0 auto 34px; font-size:16.5px;}
+  .contact-meta{margin-top:30px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-faint); letter-spacing:.03em;}
+
+  footer{padding:34px 6vw 40px; border-top:1px solid var(--line); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;}
+  footer .wordmark{font-size:15px;}
+  footer p{margin:0; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wordmark"><span class="dot"></span>MESHLOCK</div>
+  <div class="nav-links">
+    <a class="nav-link" href="/notes/">Field notes →</a>
+    <a class="nav-cta" href="#contact">Book a call</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="eyebrow"><span class="led"></span>Automation & Continuous Improvement</p>
+      <h1>Built to fit. Not sold as a subscription.</h1>
+      <p class="lede">I find where a production process is losing time, quality, or money — then build the exact tool that fixes it. Calibrated on your real data, not a wrapper bolted onto someone else's model.</p>
+      <div class="hero-ctas">
+        <a class="btn-primary" href="#contact">Book a free call</a>
+        <a class="btn-ghost" href="#case-files">See the work ↓</a>
+      </div>
+    </div>
+    <div class="rig" id="rig">
+      <svg viewBox="0 0 360 290">
+        <g class="gear gearA" id="gearA"></g>
+        <g class="gear gearB" id="gearB"></g>
+        <g class="stamp">
+          <rect x="82" y="222" width="196" height="46" rx="3" fill="none" stroke="#3F6B52" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text x="180" y="250" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12.5" letter-spacing="1.5" fill="#3F6B52" font-weight="500">PASS — BUILT TO FIT</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="dim-divider"><div class="tick"></div><div class="rule"></div><span>Not another AI wrapper</span><div class="rule"></div><div class="tick"></div></div>
+
+<section class="manifesto">
+  <div class="wrap">
+    <div class="head">
+      <h2>What this actually is</h2>
+      <p>Most "automation consulting" right now is a subscription to someone else's model with a logo on top. This is the opposite: I diagnose your process first, then build — or don't, if a tool isn't actually the answer.</p>
+    </div>
+    <div class="contrast-grid">
+      <div class="contrast-cell">
+        <p class="not">Not this</p>
+        <p class="not-line">A chatbot bolted onto your workflow</p>
+        <p class="is">This</p>
+        <p class="is-line">A working tool, embedded where your team already operates</p>
+      </div>
+      <div class="contrast-cell">
+        <p class="not">Not this</p>
+        <p class="not-line">A template built for a hundred other companies</p>
+        <p class="is">This</p>
+        <p class="is-line">Diagnosed and built for one process: yours</p>
+      </div>
+      <div class="contrast-cell">
+        <p class="not">Not this</p>
+        <p class="not-line">A subscription you renew and hope keeps working</p>
+        <p class="is">This</p>
+        <p class="is-line">A quality gate that either passes or it doesn't — every time</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process">
+  <div class="wrap">
+    <h2>How an engagement runs</h2>
+    <div class="process-row">
+      <div class="step">
+        <div class="step-num mono">01</div>
+        <h3>Diagnose</h3>
+        <p>Structured root-cause analysis, not guesswork. Fixed scope, fixed fee, a clear answer either way.</p>
+      </div>
+      <div class="step">
+        <div class="step-num mono">02</div>
+        <h3>Build</h3>
+        <p>Software, automation, or workflow redesign — whatever the diagnosis actually calls for, built for your process specifically.</p>
+      </div>
+      <div class="step">
+        <div class="step-num mono">03</div>
+        <h3>Embed</h3>
+        <p>Deployed where your team already works, measured against a real baseline — not a promise.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="case-files" id="case-files">
+  <div class="wrap">
+    <div class="head">
+      <h2>Case files</h2>
+      <p>A sample of problems diagnosed and solved. Details generalised where they'd otherwise identify a client.</p>
+    </div>
+    <div class="case-grid">
+
+      <div class="case-card"><span class="tag">Verified</span>
+        <h3>Closing the traceability gap</h3>
+        <div class="field"><b>Challenge</b><p>No structured way to trace quality issues to their source — recurring problems kept resurfacing.</p></div>
+        <div class="field"><b>Approach</b><p>Structured DMAIC project: root-caused across process and communication behaviour, ran targeted interventions.</p></div>
+        <div class="field"><b>Outcome</b><p>Significant, sustained improvement in traceability compliance — verified with real data.</p></div>
+      </div>
+
+      <div class="case-card"><span class="tag">Verified</span>
+        <h3>Pre-production quality gate</h3>
+        <div class="field"><b>Challenge</b><p>Design files reached the floor with no automated check — errors caught only after material and time were spent.</p></div>
+        <div class="field"><b>Approach</b><p>Built a digital QA system validating files before they reach a machine, catching structural and sizing issues automatically.</p></div>
+        <div class="field"><b>Outcome</b><p>Physical test-cutting eliminated for validated files; defects caught at the design stage.</p></div>
+      </div>
+
+      <div class="case-card"><span class="tag">Verified</span>
+        <h3>Fleet-wide file distribution & audit</h3>
+        <div class="field"><b>Challenge</b><p>Auditing files across a multi-machine fleet was manual, slow, and at scale, impractical to run at all.</p></div>
+        <div class="field"><b>Approach</b><p>Automated distribution on a fixed schedule with a full, timestamped audit trail — zero manual steps.</p></div>
+        <div class="field"><b>Outcome</b><p>A process that was previously impractical to run now takes about half an hour, fully traceable.</p></div>
+      </div>
+
+      <div class="case-card"><span class="tag">Verified</span>
+        <h3>Predictive production planning</h3>
+        <div class="field"><b>Challenge</b><p>Time estimates relied on manual test-runs and rough averages — slow, and didn't scale.</p></div>
+        <div class="field"><b>Approach</b><p>Built a predictive model calibrated on real historical production data, capturing the factors that actually drive time.</p></div>
+        <div class="field"><b>Outcome</b><p>Faster, more consistent estimates feeding directly into planning and scheduling.</p></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="about">
+  <div class="wrap about-inner">
+    <div class="stamp-mark"><span>ONE PERSON<br>DIAGNOSIS<br>TO DEPLOY</span></div>
+    <div>
+      <h2>Who's behind this</h2>
+      <p>I'm a production manager and self-taught engineer with 8+ years in high-volume manufacturing. I split my time between running daily operations and building the tools that make them better — quality gates, predictive models, fleet automation, workflow redesign.</p>
+      <p>Everything on this page was diagnosed, built, and deployed by one person, tested against real production data — not a slide deck. No team of consultants between you and the person who actually understands your process.</p>
+      <div class="creds">
+        <span class="cred">Lean Six Sigma — Green Belt (in progress)</span>
+        <span class="cred">Lean Six Sigma — Yellow Belt</span>
+        <span class="cred">IOSH Managing Safely</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="dim-divider"><div class="tick"></div><div class="rule"></div><span>Remote-first, UK-wide</span><div class="rule"></div><div class="tick"></div></div>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2>Let's look at your process</h2>
+    <p>A free 30-minute call. No pitch deck, no sales team — just a conversation about what's actually slowing you down.</p>
+    <a class="btn-primary" href="mailto:hello@meshlock.co.uk">Book a free call</a>
+    <p class="contact-meta">Remote-first across the UK · On-site available within the M4 corridor · hello@meshlock.co.uk</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wordmark"><span class="dot"></span>MESHLOCK</div>
+  <p>Automation & Continuous Improvement, Built to Fit</p>
+</footer>
+
+<script>
+  // Build real gear silhouettes (teeth + rim + axle hole), not decorative dashes
+  function polar(cx,cy,r,deg){ var a=deg*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; }
+  function gearPathD(cx,cy,teeth,outerR,innerR,toothFrac){
+    var step=360/teeth, tAngle=step*toothFrac, d='';
+    for (var i=0;i<teeth;i++){
+      var a0=i*step, a1=a0+tAngle, a2=a0+step;
+      var p1=polar(cx,cy,innerR,a0), p2=polar(cx,cy,outerR,a0),
+          p3=polar(cx,cy,outerR,a1), p4=polar(cx,cy,innerR,a1),
+          p5=polar(cx,cy,innerR,a2);
+      d += (i===0?'M ':'L ')+p1[0]+' '+p1[1]+' ';
+      d += 'L '+p2[0]+' '+p2[1]+' ';
+      d += 'A '+outerR+' '+outerR+' 0 0 1 '+p3[0]+' '+p3[1]+' ';
+      d += 'L '+p4[0]+' '+p4[1]+' ';
+      d += 'A '+innerR+' '+innerR+' 0 0 1 '+p5[0]+' '+p5[1]+' ';
+    }
+    return d+'Z';
+  }
+  function buildGear(id,cx,cy,teeth,outerR,innerR,toothFrac,fill,holeR,rimR){
+    var el = document.getElementById(id);
+    if(!el) return;
+    var d = gearPathD(cx,cy,teeth,outerR,innerR,toothFrac);
+    el.innerHTML =
+      '<path d="'+d+'" fill="'+fill+'" stroke="#EEF0EA" stroke-width="3" stroke-linejoin="round"/>'+
+      '<circle cx="'+cx+'" cy="'+cy+'" r="'+rimR+'" fill="none" stroke="#EEF0EA" stroke-width="1.2" opacity="0.55"/>'+
+      '<circle cx="'+cx+'" cy="'+cy+'" r="'+holeR+'" fill="#EEF0EA"/>'+
+      '<circle cx="'+cx+'" cy="'+cy+'" r="3.5" fill="'+fill+'"/>';
+  }
+  // Distance uses tooth-tip-to-root-gap geometry: at the seam, gearA sits in
+  // a tooth (reaches outerA) and gearB sits in a gap (recedes to innerB), so
+  // the meaningful touch point is outerA vs innerB, not outer-vs-outer.
+  buildGear('gearA', 128, 140, 13, 70, 56, 0.42, '#171A1D', 30, 63);
+  buildGear('gearB', 228, 140, 9, 48, 37, 0.42, '#37485A', 19, 42);
+
+  // Hero gear-lock: settle into locked position shortly after load
+  var rig = document.getElementById('rig');
+  if (rig) {
+    requestAnimationFrame(function(){
+      setTimeout(function(){ rig.classList.add('locked'); }, 250);
+    });
+  }
+
+  // Scroll-reveal for case cards
+  var cards = document.querySelectorAll('.case-card');
+  if ('IntersectionObserver' in window && cards.length) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    cards.forEach(function(c){ io.observe(c); });
+  } else {
+    cards.forEach(function(c){ c.classList.add('in-view'); });
+  }
+</script>
+
+</body>
+</html>

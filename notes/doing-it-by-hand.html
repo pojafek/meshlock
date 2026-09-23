@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Doing It By Hand for Years, Until Someone Decided Not To | Meshlock Field Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/notes.css">
+</head>
+<body>
+
+<nav>
+  <a class="wordmark" href="/"><span class="dot"></span>MESHLOCK</a>
+  <div class="nav-links">
+    <a class="nav-link" href="/notes/">Field notes →</a>
+    <a class="nav-cta" href="/#contact">Book a call</a>
+  </div>
+</nav>
+
+<section class="article-header">
+  <div class="wrap">
+    <p class="eyebrow">Field notes</p>
+    <h1>Doing it by hand for years, until someone decided not to</h1>
+    <div class="article-meta">
+      <span>2026</span>
+      <span class="tick"></span>
+      <span>4 min read</span>
+      <span class="tick"></span>
+      <span>Process automation</span>
+    </div>
+  </div>
+</section>
+
+<section class="article-body">
+  <div class="wrap prose">
+
+    <p>Picture a production floor heading into a busy season. Orders keep stacking up, and somewhere in the queue sits a task that looks simple on paper: take a customer's supplied artwork and place it correctly into a production file. Except that "simple" step was eating a disproportionate chunk of every shift, and it went wrong often enough that operators had started to expect it.</p>
+
+    <p>Here's what that step actually involved. An operator opens the design file. Finds the right template, sometimes hunting through a stack of them by hand. Matches the customer's file to the correct spot on the layout. Rotates it. Resizes it, judging by eye whether it will hold up at print resolution. Exports it. Then does it again for the next order. Multiply that across hundreds of orders a week, and it stops being a small task and starts being the thing that quietly decides whether the season runs smoothly or turns into weekends of overtime.</p>
+
+    <p>Most people who've worked with design software like this for years accept that as just how the job works. Not because there's no better way, but because nobody ever stopped to ask whether there was one.</p>
+
+    <p>One production manager did ask.</p>
+
+    <div class="field-note">
+      <span class="tag">Worth noting</span>
+      <p>The job didn't need to get smarter software. It needed someone to ask why a person had to do every step of it by hand in the first place.</p>
+    </div>
+
+    <p>He built a small tool that plugs straight into the existing design software. No new systems, no retraining, no admin rights needed. It takes an order reference, matches it to the right customer file, and places it into the correct spot on the layout automatically, working out the right size and rotation from the actual print resolution. If something doesn't match, it flags the problem before the file ever reaches production, not after someone spots it on a finished piece.</p>
+
+    <p>That's the first change. The second one matters just as much, even though it has nothing to do with matching files. Before, sending a job to print meant leaving that programme entirely, opening a separate one, and doing it file by file, sometimes several in a row, each one set up by hand. Now it happens without leaving the same screen. One click sends the job straight to the printer with the right settings already applied. Two separate jobs on two separate screens became one.</p>
+
+    <p>A second version of the same idea handles a different kind of order, one where the same image repeats across a template. This one has a hard check built in that simply refuses to let a bad file through: misaligned artwork or resolution below print quality, and the export is blocked. No file leaves that step until it passes.</p>
+
+    <div class="flow-diagram">
+      <div class="flow-track before">
+        <span class="track-tag">Before</span>
+        <div class="flow-steps">
+          <span class="flow-step">Open file</span><span class="flow-arrow">→</span>
+          <span class="flow-step">Hunt for template</span><span class="flow-arrow">→</span>
+          <span class="flow-step">Match by eye</span><span class="flow-arrow">→</span>
+          <span class="flow-step flag">Judge resolution by eye</span><span class="flow-arrow">→</span>
+          <span class="flow-step">Export</span>
+        </div>
+      </div>
+      <div class="flow-track after">
+        <span class="track-tag">After</span>
+        <div class="flow-steps">
+          <span class="flow-step">Order reference in</span><span class="flow-arrow">→</span>
+          <span class="flow-step gate">Auto-placed + checked</span><span class="flow-arrow">→</span>
+          <span class="flow-step">Export</span>
+        </div>
+      </div>
+    </div>
+
+    <p>The result: what used to be a slow, error-prone manual step now runs in a fraction of the time, with a category of mistakes that used to reach the floor now caught automatically, every time.</p>
+
+    <p>None of this needed new software, a new platform, or a big budget. It needed someone to look at a repetitive, manual step and treat it as a problem worth solving rather than a fact of life. That's usually where the biggest wins are hiding: not in the parts of the business everyone already talks about, but in the task nobody's questioned in years.</p>
+
+    <div class="article-footer">
+      <p>If a step in your own process feels like it's always been done that way, it might be worth a second look.</p>
+      <a class="nav-cta" href="/#contact">Book a free call</a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <a class="wordmark" href="/"><span class="dot"></span>MESHLOCK</a>
+  <p>Automation & Continuous Improvement, Built to Fit</p>
+</footer>
+
+</body>
+</html>
