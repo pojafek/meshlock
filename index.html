@@ -4,11 +4,67 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
-<title>Meshlock · Automation & Continuous Improvement, Built to Fit</title>
+<title>Meshlock · Automation & Continuous Improvement for Manufacturers</title>
+<meta name="description" content="Automation and continuous improvement for manufacturers. Tools built around your ERP, with fixed prices from £500. Based in Swindon, working UK-wide.">
+<link rel="canonical" href="https://meshlock.co.uk/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Meshlock">
+<meta property="og:title" content="Meshlock · One person who meshes all three">
+<meta property="og:description" content="Automation and continuous improvement for manufacturers. Tools built around your ERP, with fixed prices from £500. Based in Swindon, working UK-wide.">
+<meta property="og:url" content="https://meshlock.co.uk/">
+<meta property="og:image" content="https://meshlock.co.uk/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Meshlock wordmark. Software engineer, Lean consultant or ERP specialist? You don't have to choose.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Meshlock",
+  "url": "https://meshlock.co.uk/",
+  "image": "https://meshlock.co.uk/assets/og-image.png",
+  "description": "Automation and continuous improvement for manufacturers. Tools built around your ERP, with fixed prices from £500. Based in Swindon, working UK-wide.",
+  "priceRange": "£500-£5,000+",
+  "areaServed": [
+    { "@type": "City", "name": "Swindon" },
+    { "@type": "AdministrativeArea", "name": "Wiltshire" },
+    { "@type": "AdministrativeArea", "name": "Gloucestershire" },
+    { "@type": "AdministrativeArea", "name": "Oxfordshire" },
+    { "@type": "Country", "name": "United Kingdom" }
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Kamil Pojawa",
+    "sameAs": "https://www.linkedin.com/in/kamil-pojawa-106265305/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Do I need to know what the problem is?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Most of what I've fixed wasn't on anyone's list. Tell me what feels slow or keeps going wrong, and I'll find where the time goes." } },
+    { "@type": "Question", "name": "Will it work with our ERP?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. I work from the exports and reports your system already produces, whether that's Sage, Epicor or something else. Nothing inside your ERP changes, so upgrades and support stay exactly as they are." } },
+    { "@type": "Question", "name": "Who owns what you build?",
+      "acceptedAnswer": { "@type": "Answer", "text": "You do. The tool, the code and the documentation. No licence fees, no subscription." } },
+    { "@type": "Question", "name": "Where does our data go?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Nowhere. Tools run on your own machines and most work fully offline. I don't keep copies of your data once the job is done." } },
+    { "@type": "Question", "name": "What if something breaks later?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The first 30 days of fixes are included. After that, you ask for changes only when you need them, priced before any work starts. No retainer." } },
+    { "@type": "Question", "name": "How long does it take?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Small tools usually take one to two weeks, larger ones three to six. You get a date with the quote." } }
+  ]
+}
+</script>
 <style>
   :root{
     --paper:#EEF0EA; --paper-dim:#E3E6DC; --paper-card:#F6F7F2;
@@ -29,11 +85,22 @@
     font-size:16.5px; line-height:1.6; -webkit-font-smoothing:antialiased;
   }
   h1,h2,h3{font-family:'Space Grotesk',sans-serif; margin:0; letter-spacing:-0.01em;}
+  h2{line-height:1.2;}
   .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;}
   a{color:inherit;}
   :focus-visible{outline:2.5px solid var(--steel); outline-offset:3px;}
   .wrap{max-width:1080px; margin:0 auto; padding:0 6vw;}
   section{position:relative;}
+  [id]{scroll-margin-top:96px;}
+  @media (max-width:640px){ [id]{scroll-margin-top:76px;} }
+
+  /* shared section heading: mono label, H2, intro */
+  .label{font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:400; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 14px;}
+  .sec-head{max-width:640px; margin:0 0 42px;}
+  .sec-head h2{font-size:30px; margin-bottom:14px;}
+  .sec-head p:not(.label){color:var(--ink-soft); margin:0; max-width:56ch;}
+  .text-link{font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:.08em; text-transform:uppercase; text-decoration:underline; text-decoration-color:var(--ink-faint); text-underline-offset:4px;}
+  .text-link:hover{text-decoration-color:var(--ink);}
 
   /* ---------- DIMENSION DIVIDER (signature structural device) ---------- */
   .dim-divider{
@@ -48,24 +115,34 @@
 
   /* ---------- NAV ---------- */
   nav{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:26px 6vw; position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; gap:22px;
+    /* side padding lines the content up with .wrap (max 1080px, 6vw inside) */
+    padding:24px max(6vw, calc((100% - 1080px) / 2 + 6vw)); position:sticky; top:0; z-index:50;
     background:rgba(238,240,234,0.88); backdrop-filter:blur(6px);
     border-bottom:1px solid var(--line);
   }
+  .brand{display:flex; align-items:center; gap:16px; min-width:0;}
   .wordmark{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px; letter-spacing:-0.01em; display:flex; align-items:center; gap:9px;}
-  .wordmark img{display:block; height:22px; width:auto;}
+  .wordmark img{display:block; height:28px; width:auto;}
+  .nav-tag{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; color:var(--ink-soft); white-space:nowrap;}
   .nav-cta{
     font-family:'IBM Plex Mono',monospace; font-size:12.5px; text-transform:uppercase; letter-spacing:.08em;
-    border:1px solid var(--ink); padding:9px 16px; border-radius:var(--radius); text-decoration:none;
+    border:1px solid var(--ink); padding:9px 16px; border-radius:var(--radius); text-decoration:none; white-space:nowrap;
     transition:background .15s ease, color .15s ease;
   }
   .nav-cta:hover{background:var(--ink); color:var(--paper);}
   .nav-links{display:flex; align-items:center; gap:22px;}
   .nav-link{font-family:'IBM Plex Mono',monospace; font-size:12.5px; text-transform:uppercase; letter-spacing:.08em; text-decoration:underline; text-decoration-color:var(--line-strong); text-underline-offset:4px; color:var(--ink-soft); white-space:nowrap;}
-  @media (max-width:480px){
-    nav{flex-wrap:wrap; row-gap:14px;}
-    .nav-links{flex:1 1 100%; justify-content:flex-end;}
+  @media (max-width:900px){ .nav-tag{display:none;} }
+  .nav-links{margin-left:auto;}
+  /* phones: Field notes and Prices sit in a thin top row that scrolls away;
+     only the wordmark and Book a call stay pinned (about 60px) */
+  @media (max-width:640px){
+    nav{flex-wrap:wrap; column-gap:12px; row-gap:10px; padding:0 6vw 12px; top:-34px;}
+    .nav-links{order:-1; flex:1 1 100%; height:34px; justify-content:flex-end; gap:18px;}
+    .nav-link{font-size:11.5px;}
+    .wordmark img{height:24px;}
+    nav .nav-cta{margin-left:auto; padding:7px 14px;}
   }
 
   /* ---------- HERO ---------- */
@@ -81,8 +158,12 @@
   }
   .hero-inner{position:relative; z-index:1; max-width:1080px; margin:0 auto; display:grid; grid-template-columns:1.15fr 0.85fr; gap:40px; align-items:center;}
   @media (max-width:820px){ .hero-inner{grid-template-columns:1fr;} }
+  /* wide screens: match the .wrap content box (1080px minus its 6vw side padding), so hero, nav and sections share one edge */
+  @media (min-width:1081px){ .hero-inner{max-width:calc(1080px - 12vw);} }
   .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 18px; display:flex; align-items:center; gap:8px;}
-  .eyebrow .led{width:6px;height:6px;background:var(--green); border-radius:50%; box-shadow:0 0 0 3px var(--green-bg);}
+  .eyebrow .eb-short{display:none;}
+  @media (max-width:900px){ .eyebrow .eb-long{display:none;} .eyebrow .eb-short{display:inline;} }
+  .eyebrow .led{width:6px;height:6px;background:var(--green); border-radius:50%; box-shadow:0 0 0 3px var(--green-bg); flex:none;}
   .hero h1{font-size:clamp(34px,4.6vw,54px); line-height:1.06; margin:0 0 20px; max-width:13ch;}
   .hero p.lede{max-width:46ch; color:var(--ink-soft); font-size:18px; margin:0 0 30px;}
   .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
@@ -111,20 +192,154 @@
     .stamp{transition:none; opacity:1; transform:scale(1) rotate(-8deg);}
   }
 
-  /* ---------- MANIFESTO ---------- */
-  .manifesto{padding:80px 0 76px;}
-  .manifesto .head{max-width:640px; margin:0 auto 46px;}
-  .manifesto h2{font-size:30px; margin-bottom:14px;}
-  .manifesto .head p{color:var(--ink-soft); font-size:16.5px; max-width:56ch;}
-  .contrast-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  /* ---------- SOUND FAMILIAR ---------- */
+  .fam-divider a{text-decoration:none; color:var(--ink-soft);}
+  .fam-divider a:hover{color:var(--ink);}
+  .familiar{padding:84px 0 88px;}
+  @media (min-width:821px){ .familiar{padding-top:40px;} }
+  .fam-grid{display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:32px; align-items:start;}
+  .fam-hint{margin:0 0 16px; color:var(--ink-soft);}
+  .symptoms{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px;}
+  .sym{
+    display:flex; align-items:flex-start; gap:14px; width:100%; min-height:104px; margin:0;
+    padding:18px 18px 16px; text-align:left; cursor:pointer;
+    font:inherit; font-size:15px; line-height:1.5; color:var(--ink);
+    background:var(--paper-card); border:1.5px solid var(--line); border-radius:var(--radius);
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .sym:hover{border-color:var(--ink-faint);}
+  .sym .box{
+    flex:none; width:18px; height:18px; margin-top:2px; position:relative;
+    border:1.5px solid var(--ink-faint); border-radius:2px; background:var(--paper-card);
+  }
+  .sym[aria-pressed="true"]{background:var(--green-bg); border-color:var(--green);}
+  .sym[aria-pressed="true"] .box{background:var(--green); border-color:var(--green);}
+  .sym[aria-pressed="true"] .box::after{
+    content:""; position:absolute; left:4.5px; top:1px; width:5px; height:9px;
+    border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+  }
+  .sym.unsure{grid-column:1/-1; min-height:0; background:transparent; border-style:dashed; border-color:var(--ink-faint);}
+  .sym.unsure[aria-pressed="true"]{background:var(--green-bg); border-style:solid; border-color:var(--green);}
+  .callout{margin-top:20px; padding:22px 24px; background:var(--paper-card); border:1px solid var(--line); border-radius:var(--radius);}
+  .callout .label{color:var(--amber-ink); margin-bottom:10px;}
+  .callout p:not(.label){margin:0 0 14px; font-size:15.5px;}
+  .callout .text-link{font-size:12px; line-height:1.7;}
+
+  .fix-panel{background:var(--paper-card); border:1px solid var(--line); border-radius:var(--radius); padding:22px 22px 24px; position:sticky; top:105px;}
+  .fix-head{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin:0; padding-bottom:14px; border-bottom:1px solid var(--line);}
+  .fix-count{display:none;}
+  .js .fix-count{display:inline;}
+  .fix-empty{display:none; margin:18px 0 4px; color:var(--ink-soft); font-size:15px;}
+  .js .fix-panel.empty .fix-empty{display:block;}
+  .fix-list{list-style:none; margin:0; padding:0;}
+  .fix{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 14px; align-items:baseline; padding:14px 0; border-bottom:1px dashed var(--line);}
+  .js .fix{display:none;}
+  .js .fix.on{display:grid; animation:fixIn .35s ease both;}
+  .js .fix-panel:not(.seen) .fix.on{animation:none;}
+  @keyframes fixIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+  .fix-name{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:16.5px; line-height:1.3; margin:0 0 4px;}
+  .fix-result{font-size:14px; color:var(--ink-soft); margin:0; line-height:1.5;}
+  .fix-price{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--amber-ink); white-space:nowrap; text-align:right;}
+  .fix-stamp-row{display:flex; justify-content:flex-end; margin:18px 4px 20px;}
+  .fix-stamp{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.1em; font-weight:500;
+    color:var(--green); border:1.5px dashed var(--green); border-radius:2px; padding:6px 11px;
+    transform:rotate(-7deg);
+  }
+  .js .fix-stamp{opacity:0; transform:scale(1.5) rotate(-7deg); transition:opacity .3s ease, transform .35s cubic-bezier(.2,1.4,.4,1);}
+  .js .fix-panel.seen:not(.empty) .fix-stamp{opacity:1; transform:scale(1) rotate(-7deg);}
+  .fix-note{margin:0 0 14px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; line-height:1.6; letter-spacing:.03em; color:var(--green);}
+  .js .fix-panel.empty .fix-note{display:none;}
+  .fix-panel .btn-primary{display:block; text-align:center; padding:14px 12px;}
+  .fix-bar{display:none;}
+  @media (max-width:820px){
+    .fam-grid{grid-template-columns:1fr;}
+    .fix-panel{position:static;}
+    .js .fix-bar{
+      display:block; position:fixed; left:0; right:0; bottom:0; z-index:40;
+      background:var(--ink); color:var(--paper); text-align:center; text-decoration:none;
+      font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em;
+      padding:14px 16px calc(14px + env(safe-area-inset-bottom));
+      transform:translateY(100%); visibility:hidden; transition:transform .25s ease, visibility 0s linear .25s;
+    }
+    .js .fix-bar.show{transform:none; visibility:visible; transition:transform .25s ease;}
+    .fix-bar b{display:inline-block; min-width:22px; margin-right:6px; padding:1px 6px; background:var(--amber); color:var(--ink); border-radius:2px; font-weight:500;}
+  }
+  @media (max-width:560px){
+    .symptoms{grid-template-columns:1fr;}
+    .sym{min-height:0;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .js .fix.on{animation:none;}
+    .js .fix-stamp{transition:none;}
+    .js .fix-bar, .js .fix-bar.show{transition:none;}
+  }
+
+  /* ---------- AROUND YOUR ERP (dark band) ---------- */
+  .erp-band{background:var(--ink); color:var(--paper); padding:84px 0 80px;}
+  .erp-band .label{color:var(--amber);}
+  .erp-band h2{font-size:30px; margin-bottom:16px; max-width:22ch;}
+  .erp-band .erp-text{margin:0; max-width:62ch; color:var(--paper);}
+  .erp-diagram{margin:44px 0 40px; overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  .erp-diagram svg{display:block; width:100%; height:auto; min-width:720px;}
+  @keyframes dash{to{stroke-dashoffset:-28}}
+  .flow{stroke-dasharray:6 8;}
+  .erp-diagram.run .flow{animation:dash 1.1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .spin{transform-box:fill-box;transform-origin:center;}
+  .erp-diagram.run .spin{animation:spin 14s linear infinite}
+  @keyframes sheet{0%{opacity:0;transform:translateY(-16px)}12%{opacity:1;transform:none}82%{opacity:1;transform:none}100%{opacity:0;transform:translateY(6px)}}
+  .erp-diagram.run .sheet-a{animation:sheet 6s ease-out infinite}
+  .erp-diagram.run .sheet-b{animation:sheet 6s ease-out .5s infinite}
+  .erp-diagram.run .sheet-c{animation:sheet 6s ease-out 1s infinite}
+  .stats{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px; border-top:1px solid #3A3F43; padding-top:32px;}
+  .stat-num{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:48px; line-height:1; color:var(--amber); margin:0 0 10px;}
+  .stat p:not(.stat-num){margin:0; font-size:15px; color:var(--line); max-width:30ch;}
+  @media (max-width:760px){ .stats{grid-template-columns:1fr; gap:24px;} }
+  @media (prefers-reduced-motion:reduce){ .erp-diagram .flow, .erp-diagram .spin, .erp-diagram [class^="sheet-"]{animation:none !important;} }
+
+  /* ---------- NOT ANOTHER AI WRAPPER ---------- */
+  .wrapper-band{padding:64px 0 60px; border-bottom:1px solid var(--line);}
+  .wrapper-band h2{font-size:23px; margin-bottom:26px;}
+  .contrast-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line);}
   @media (max-width:760px){ .contrast-grid{grid-template-columns:1fr;} }
-  .contrast-cell{background:var(--paper-card); padding:30px 26px;}
-  .contrast-cell .not{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--red-flag); margin:0 0 10px; display:flex; align-items:center; gap:6px;}
-  .contrast-cell .not::before{content:"✕"; font-weight:700;}
-  .contrast-cell .not-line{font-size:14.5px; color:var(--ink-faint); text-decoration:line-through; margin:0 0 14px;}
-  .contrast-cell .is{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--green); margin:0 0 10px; display:flex; align-items:center; gap:6px;}
-  .contrast-cell .is::before{content:"✓"; font-weight:700;}
-  .contrast-cell .is-line{font-size:15.5px; color:var(--ink); margin:0;}
+  .contrast-cell{background:var(--paper-card); padding:24px 24px 22px;}
+  .contrast-cell .was{margin:0 0 10px; font-size:14.5px; color:var(--ink-faint); text-decoration:line-through; text-decoration-color:var(--red-flag); text-decoration-thickness:1.5px;}
+  .contrast-cell .now{margin:0; font-size:16px; color:var(--ink); display:flex; gap:10px;}
+  .contrast-cell .now .arrow{font-family:'IBM Plex Mono',monospace; color:var(--green); flex:none;}
+
+  /* ---------- PRICES ---------- */
+  .prices{padding:84px 0 88px; background:var(--paper-dim); border-bottom:1px solid var(--line);}
+  .prices-head{display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:24px 48px; align-items:end; margin-bottom:42px;}
+  .prices-head h2{font-size:30px;}
+  .prices-head .side{margin:0; color:var(--ink-soft); max-width:44ch;}
+  @media (max-width:820px){ .prices-head{grid-template-columns:1fr;} }
+  .price-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px;}
+  @media (max-width:1000px){ .price-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
+  @media (max-width:600px){ .price-grid{grid-template-columns:1fr;} }
+  .price-card{background:var(--paper-card); border:1px solid var(--line); border-radius:var(--radius); padding:26px 22px 18px; display:flex; flex-direction:column;}
+  .price-tag{
+    align-self:flex-start; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em;
+    border:1.5px solid var(--ink); border-radius:2px; padding:4px 10px 4px 20px; position:relative;
+    transform:rotate(-3deg); margin:0 0 20px;
+  }
+  .price-tag::before{content:""; position:absolute; left:7px; top:50%; width:6px; height:6px; margin-top:-3px; border:1.5px solid currentColor; border-radius:50%;}
+  .price-card h3{font-size:19px; margin:0 0 6px;}
+  .price-card .one-line{margin:0 0 16px; font-size:14.5px; color:var(--ink-soft);}
+  .price-rows{list-style:none; margin:0; padding:0;}
+  .price-rows li{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:10px 0; border-top:1px dashed var(--line); font-size:14.5px; line-height:1.45;}
+  .price-rows .p{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--amber-ink); white-space:nowrap;}
+  .price-card.dark{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .price-card.dark .price-tag{border-color:var(--amber); color:var(--amber);}
+  .price-card.dark .one-line{color:var(--line);}
+  .price-card.dark .price-rows li{border-top-color:#41474B;}
+  .price-card.dark .price-rows .p{color:var(--amber);}
+  .included{margin-top:28px; border:1.5px solid var(--ink); border-radius:var(--radius); background:var(--paper-card); padding:24px 26px;}
+  .included .label{margin-bottom:16px;}
+  .included ul{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px 24px;}
+  .included li{display:flex; gap:10px; align-items:flex-start; font-size:15px; line-height:1.45;}
+  .included li svg{flex:none; margin-top:2px;}
+  .included .last{margin:20px 0 0; padding-top:16px; border-top:1px dashed var(--line); font-size:15px; color:var(--ink-soft);}
 
   /* ---------- PROCESS ---------- */
   .process{padding:80px 0;}
@@ -152,10 +367,10 @@
   .case-card{
     background:var(--paper-card); border:1px solid var(--line); border-radius:var(--radius);
     padding:26px 26px 24px; position:relative; overflow:hidden;
-    opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease;
   }
-  .case-card.in-view{opacity:1; transform:translateY(0);}
-  @media (prefers-reduced-motion:reduce){ .case-card{opacity:1; transform:none; transition:none;} }
+  .js .case-card{opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease;}
+  .js .case-card.in-view{opacity:1; transform:translateY(0);}
+  @media (prefers-reduced-motion:reduce){ .js .case-card{opacity:1; transform:none; transition:none;} }
   .case-card .tag{
     font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.09em; text-transform:uppercase;
     color:var(--green); background:var(--green-bg); border:1px dashed var(--green);
@@ -166,51 +381,173 @@
   .case-card .field b{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:3px;}
   .case-card .field p{margin:0; font-size:14.5px; color:var(--ink); line-height:1.55;}
 
-  /* ---------- ABOUT ---------- */
-  .about{padding:84px 0; }
-  .about-inner{display:grid; grid-template-columns:auto 1fr; gap:44px; align-items:start; max-width:820px; margin:0 auto;}
-  @media (max-width:640px){ .about-inner{grid-template-columns:1fr;} }
-  .stamp-mark{
-    width:110px; height:110px; border:2px solid var(--ink); border-radius:50%;
-    display:flex; align-items:center; justify-content:center; flex-direction:column;
-    transform:rotate(-6deg); flex:none; color:var(--ink);
+  /* ---------- FIELD NOTES TEASER ---------- */
+  .notes-teaser{padding:64px 0;}
+  .note-card{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:14px 32px; align-items:end; background:var(--paper-card); border:1px solid var(--line); border-radius:var(--radius); padding:28px 28px 26px;}
+  .note-card .label{color:var(--green); margin-bottom:12px;}
+  .note-card h3{font-size:22px; line-height:1.25; margin:0 0 8px; max-width:30ch;}
+  .note-card h3 a{text-decoration:none;}
+  .note-card h3 a:hover{text-decoration:underline; text-underline-offset:4px;}
+  .note-card p{margin:0; color:var(--ink-soft); font-size:15.5px;}
+  .note-card .text-link{white-space:nowrap;}
+  @media (max-width:640px){ .note-card{grid-template-columns:1fr; align-items:start;} }
+
+  /* ---------- WHO'S BEHIND THIS ---------- */
+  .about{padding:84px 0; border-top:1px solid var(--line);}
+  .about .sec-head{max-width:760px;}
+  .about .sec-head h2{font-size:30px; line-height:1.2;}
+  .about-grid{display:grid; grid-template-columns:minmax(0,58fr) minmax(0,42fr); gap:48px; align-items:start;}
+  @media (max-width:820px){ .about-grid{grid-template-columns:1fr; gap:40px;} .gears-wrap{max-width:560px; margin:0 auto;} }
+  .gears{display:block; width:100%; max-width:100%; height:auto;}
+  .cap-out{opacity:0;}
+  .js .gears-wrap:not(.run) .in-l{transform:translate(-43.3px,-25px)}
+  .js .gears-wrap:not(.run) .in-r{transform:translate(43.3px,-25px)}
+  .js .gears-wrap:not(.run) .in-b{transform:translate(0,50px)}
+  .js .gears-wrap:not(.run) .center-in{opacity:.16}
+  .js .gears-wrap:not(.run) .cap-out{opacity:1}
+  .js .gears-wrap:not(.run) .cap-in{opacity:0}
+  @keyframes inL{0%,30%{transform:translate(-43.3px,-25px)}65%,100%{transform:translate(0,0)}}
+  @keyframes inR{0%,30%{transform:translate(43.3px,-25px)}65%,100%{transform:translate(0,0)}}
+  @keyframes inB{0%,30%{transform:translate(0,50px)}65%,100%{transform:translate(0,0)}}
+  .run .in-l{animation:inL 2.4s cubic-bezier(.5,0,.2,1) both}
+  .run .in-r{animation:inR 2.4s cubic-bezier(.5,0,.2,1) both}
+  .run .in-b{animation:inB 2.4s cubic-bezier(.5,0,.2,1) both}
+  @keyframes centerIn{0%,50%{opacity:.16}85%,100%{opacity:1}}
+  .run .center-in{animation:centerIn 2.4s ease-out both}
+  @keyframes cw{to{transform:rotate(360deg)}}
+  @keyframes ccw{to{transform:rotate(-360deg)}}
+  .spin-c,.spin-o{transform-box:fill-box;transform-origin:center;}
+  .run .spin-c{animation:cw 12s linear 2.4s infinite}
+  .run .spin-o{animation:ccw 8s linear 2.4s infinite}
+  @keyframes capOut{0%,40%{opacity:1}55%,100%{opacity:0}}
+  @keyframes capIn{0%,80%{opacity:0}100%{opacity:1}}
+  .run .cap-out{animation:capOut 2.4s ease both}
+  .run .cap-in{animation:capIn 2.8s ease both}
+  @media (prefers-reduced-motion:reduce){
+    .gears-wrap *{animation:none !important;}
   }
-  .stamp-mark span{font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:center; line-height:1.5;}
-  .about h2{font-size:26px; margin-bottom:16px;}
-  .about p{color:var(--ink-soft); font-size:16px; margin:0 0 16px; max-width:56ch;}
-  .about .creds{display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;}
+  /* phones: SVG text is too small, so the captions and roles show as HTML instead */
+  .gears-cap, .gear-roles{display:none;}
+  @media (max-width:640px){
+    .gears text{display:none;}
+    /* same gear size and position as the full 800-wide drawing: 400/800 wide, offset by the viewBox origin */
+    .gears{width:50%; margin:-6% auto -10.5%;}
+    .gears-cap{display:grid; margin:0 0 6px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em;}
+    .gears-cap span{grid-area:1/1;}
+    .gears-cap .cap-out{color:var(--red-flag);}
+    .gears-cap .cap-in{color:var(--green);}
+    .gear-roles{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; list-style:none; margin:10px 0 0; padding:0;}
+    .gear-roles li{display:flex; flex-direction:column; gap:2px;}
+    .role-label{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; color:var(--steel);}
+    .role-name{font-size:15px; line-height:1.35; color:var(--ink);}
+    .role-line{font-size:13.5px; line-height:1.4; color:var(--ink-soft);}
+  }
+  .mesh-list{list-style:none; margin:28px 0 0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px;}
+  .mesh-list li{font-size:15px; line-height:1.45; border-top:1px solid var(--line); padding-top:12px;}
+  .mesh-list .n{display:block; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.1em; color:var(--green); margin-bottom:4px;}
+  @media (max-width:640px){ .mesh-list{margin-top:24px;} }
+  @media (max-width:560px){ .mesh-list{grid-template-columns:1fr; gap:12px;} }
+  .person-photo{display:block; width:132px; height:132px; object-fit:cover; border-radius:var(--radius); border:1px solid var(--line); margin-bottom:20px; background:var(--paper-dim);}
+  .person h3{font-size:24px; font-weight:700; margin:0 0 4px;}
+  .person .role{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.12em; color:var(--ink-soft); margin:0 0 20px;}
+  .person p:not(.role){font-size:16px; margin:0 0 16px; max-width:56ch;}
+  .person p.soft{color:var(--ink-soft);}
+  .creds{display:flex; gap:10px; flex-wrap:wrap; margin:22px 0 24px;}
   .cred{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.05em; border:1px solid var(--line-strong); padding:6px 11px; border-radius:2px; color:var(--ink-soft);}
+
+  /* ---------- QUESTIONS ---------- */
+  .faq{padding:84px 0; background:var(--paper-dim); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .faq-list{max-width:780px; border-top:1px solid var(--line-strong);}
+  .faq details{border-bottom:1px solid var(--line);}
+  .faq summary{
+    list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:20px;
+    padding:20px 2px; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:18px; line-height:1.35;
+  }
+  .faq summary::-webkit-details-marker{display:none;}
+  .faq summary .pm{flex:none; width:22px; height:22px; border:1.5px solid var(--ink); border-radius:2px; position:relative;}
+  .faq summary .pm::before, .faq summary .pm::after{content:""; position:absolute; left:50%; top:50%; background:var(--ink);}
+  .faq summary .pm::before{width:10px; height:1.5px; margin:-.75px 0 0 -5px;}
+  .faq summary .pm::after{width:1.5px; height:10px; margin:-5px 0 0 -.75px;}
+  .faq details[open] summary .pm::after{display:none;}
+  .faq details p{margin:0; padding:0 44px 22px 2px; color:var(--ink-soft); max-width:62ch;}
 
   /* ---------- CONTACT ---------- */
   .contact{padding:84px 0 100px; text-align:center;}
   .contact h2{font-size:32px; max-width:14ch; margin:0 auto 16px;}
-  .contact p{color:var(--ink-soft); max-width:44ch; margin:0 auto 34px; font-size:16.5px;}
-  .contact-meta{margin-top:30px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-faint); letter-spacing:.03em;}
+  .contact > .wrap > p:not(.contact-meta){color:var(--ink-soft); max-width:44ch; margin:0 auto 34px; font-size:16.5px;}
+  .next-steps{max-width:520px; margin:0 auto 34px; text-align:left;}
+  .next-steps .label{text-align:center; margin-bottom:16px;}
+  .next-steps ol{list-style:none; margin:0; padding:0; border-top:1px solid var(--line);}
+  .next-steps li{display:flex; gap:16px; padding:14px 0; border-bottom:1px solid var(--line); font-size:15.5px; line-height:1.5;}
+  .next-steps .n{flex:none; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--green); padding-top:2px;}
+  .contact-grid{display:grid; grid-template-columns:minmax(0,1fr) 250px; gap:28px 40px; max-width:860px; margin:0 auto; text-align:left; align-items:start;}
+  @media (max-width:760px){ .contact-grid{grid-template-columns:1fr;} }
+  .form-box{background:var(--paper-card); border:1px solid var(--line); border-radius:var(--radius); padding:26px 26px 28px;}
+  .contact-form{display:flex; flex-direction:column; gap:18px;}
+  .field-row{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px;}
+  @media (max-width:560px){ .field-row{grid-template-columns:1fr;} }
+  .field{margin:0; display:flex; flex-direction:column; gap:7px;}
+  .field label{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft);}
+  .field .opt{text-transform:none; letter-spacing:.04em; color:var(--ink-faint);}
+  .field input, .field textarea{
+    width:100%; font:inherit; font-size:16px; line-height:1.5; color:var(--ink);
+    background:var(--paper); border:1.5px solid var(--line); border-radius:var(--radius); padding:11px 13px;
+    transition:border-color .15s ease;
+  }
+  .field textarea{resize:vertical; min-height:96px;}
+  .field input:hover, .field textarea:hover{border-color:var(--ink-faint);}
+  .field input:focus, .field textarea:focus{outline:2.5px solid var(--steel); outline-offset:2px; border-color:var(--ink);}
+  .hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;}
+  .contact-form .btn-primary{align-self:flex-start; cursor:pointer;}
+  .form-error{margin:0; font-size:15px; color:var(--red-flag);}
+  .form-done{margin:0; padding:8px 0; font-family:'Space Grotesk',sans-serif; font-weight:500; font-size:20px; line-height:1.4;}
+  .form-done:focus{outline:none;}
+  .contact-direct{padding-top:6px;}
+  .contact-direct .label{margin-bottom:10px;}
+  .email-row{display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; margin:0 0 16px;}
+  .email{font-family:'IBM Plex Mono',monospace; font-size:14px; text-decoration:underline; text-decoration-color:var(--ink-faint); text-underline-offset:4px; overflow-wrap:anywhere;}
+  .copy-btn{display:none; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); background:transparent; border:1px solid var(--ink); border-radius:2px; padding:4px 9px; cursor:pointer;}
+  .js .copy-btn{display:inline-block;}
+  .copy-btn:hover{background:var(--ink); color:var(--paper);}
+  .copy-status{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--green);}
+  .contact-meta{margin:30px auto 0; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-faint); letter-spacing:.03em;}
 
-  footer{padding:34px 6vw 40px; border-top:1px solid var(--line); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;}
-  footer .wordmark img{height:18px;}
-  footer p{margin:0; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint);}
+  footer{padding:40px 6vw 44px; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px 40px;}
+  footer .wordmark img{height:20px;}
+  .foot-tag{margin:14px 0 0; font-family:'Space Grotesk',sans-serif; font-weight:500; font-size:18px; line-height:1.4; letter-spacing:-0.005em; color:var(--ink); max-width:460px;}
+  .foot-links{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px 22px; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.04em; color:var(--ink-soft);}
+  .foot-links a{text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:4px;}
+  .foot-links a:hover{text-decoration-color:var(--ink);}
+  .foot-links .copy{color:var(--ink-faint);}
+  @media (max-width:640px){
+    footer{flex-direction:column; align-items:flex-start;}
+    .foot-links{flex-direction:column; gap:10px;}
+  }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="wordmark"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="140" height="22"></div>
+  <div class="brand">
+    <div class="wordmark"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="178" height="28"></div>
+    <span class="nav-tag">SOFTWARE · LEAN · ERP</span>
+  </div>
   <div class="nav-links">
     <a class="nav-link" href="/notes/">Field notes →</a>
-    <a class="nav-cta" href="#contact">Book a call</a>
+    <a class="nav-link" href="#prices">Prices</a>
   </div>
+  <a class="nav-cta" href="#contact">Book a call</a>
 </nav>
 
 <section class="hero">
   <div class="hero-inner">
     <div>
-      <p class="eyebrow"><span class="led"></span>Automation & Continuous Improvement</p>
+      <p class="eyebrow"><span class="led"></span><span class="eb-long">Automation & Continuous Improvement · For Manufacturers</span><span class="eb-short">Software · Lean · ERP · For Manufacturers</span></p>
       <h1>Built to fit. Not sold as a subscription.</h1>
-      <p class="lede">I find where a production process is losing time, quality, or money, then build the exact tool that fixes it. Calibrated on your real data, not a wrapper bolted onto someone else's model.</p>
+      <p class="lede">Your ERP holds the data. I build the tools that make it work on the floor: sorting, checks, reports and dashboards, built around the system you already have.</p>
       <div class="hero-ctas">
         <a class="btn-primary" href="#contact">Book a free call</a>
-        <a class="btn-ghost" href="#case-files">See the work ↓</a>
+        <a class="btn-ghost" href="#familiar">See what I fix ↓</a>
       </div>
     </div>
     <div class="rig" id="rig">
@@ -227,33 +564,208 @@
   </div>
 </section>
 
-<div class="dim-divider"><div class="tick"></div><div class="rule"></div><span>Not another AI wrapper</span><div class="rule"></div><div class="tick"></div></div>
+<div class="dim-divider fam-divider"><div class="tick"></div><div class="rule"></div><span><a href="#familiar">What I fix ↓</a></span><div class="rule"></div><div class="tick"></div></div>
 
-<section class="manifesto">
+<section class="familiar" id="familiar">
   <div class="wrap">
-    <div class="head">
-      <h2>What this actually is</h2>
-      <p>Most "automation consulting" right now is a subscription to someone else's model with a logo on top. This is the opposite: I diagnose your process first, then build. Or don't, if a tool isn't actually the answer.</p>
+    <div class="sec-head">
+      <p class="label">Diagnosis, the short version</p>
+      <h2>Sound familiar?</h2>
+      <p>Tick what happens on your floor. You'll see what usually fixes it, and roughly what it costs.</p>
     </div>
+    <div class="fam-grid">
+      <div>
+        <p class="fam-hint">Two are ticked as an example. Change them to match your floor.</p>
+        <div class="symptoms">
+          <button type="button" class="sym" aria-pressed="true" data-fix="sort"><span class="box" aria-hidden="true"></span><span>Your ERP prints the paperwork. Then someone spends an hour sorting it by hand.</span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="split"><span class="box" aria-hidden="true"></span><span>Orders with several job sheets get split up, and someone has to hunt for the rest.</span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="courier"><span class="box" aria-hidden="true"></span><span>Despatch checks order numbers one by one to work out which courier it goes with.</span></button>
+          <button type="button" class="sym" aria-pressed="true" data-fix="wrong"><span class="box" aria-hidden="true"></span><span>Nobody knows the wrong file was loaded until the part is already made.</span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="custom"><span class="box" aria-hidden="true"></span><span>Custom orders stall while someone emails back and forth for the missing details.</span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="reports"><span class="box" aria-hidden="true"></span><span>The data is all in the system, but the reports are too basic to run the floor on.</span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="setup"><span class="box" aria-hidden="true"></span><span>Setting up a new product range takes hours of manual prep before anything runs.</span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="guess"><span class="box" aria-hidden="true"></span><span>Job times and quotes are based on gut feel and old averages.</span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="export"><span class="box" aria-hidden="true"></span><span>Artwork files get opened and exported to PDF one at a time.</span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="personal"><span class="box" aria-hidden="true"></span><span>Personalised or multi-up print files are built by hand, one order at a time.</span></button>
+          <button type="button" class="sym unsure" aria-pressed="false" data-fix="unsure"><span class="box" aria-hidden="true"></span><span>None of these, but something on the floor still feels slower than it should.</span></button>
+        </div>
+        <div class="callout">
+          <p class="label">Most problems don't look like problems</p>
+          <p>Most of what I've fixed wasn't on anyone's list. It had been done the same way for years, so nobody saw it as a problem any more. If nothing above jumps out, that's normal. Spotting it is my job.</p>
+          <a class="text-link" href="/notes/doing-it-by-hand.html">Read the story behind this →</a>
+        </div>
+      </div>
+
+      <aside class="fix-panel" id="fix-list" aria-label="Your fix list">
+        <p class="fix-head" aria-live="polite">Your fix list<span class="fix-count"> · <span class="fix-n">2 matches</span></span></p>
+        <p class="fix-empty">Tick a problem on the left to see how it's usually fixed.</p>
+        <ul class="fix-list">
+          <li class="fix on" data-fix="sort"><div><p class="fix-name">Paperwork sorted into picking order</p><p class="fix-result">Up to 12 hours a week saved at peak</p></div><span class="fix-price">from £1,000</span></li>
+          <li class="fix" data-fix="split"><div><p class="fix-name">Separator pages and multi-part flags</p><p class="fix-result">Every order stays together on the shelf</p></div><span class="fix-price">from £1,000</span></li>
+          <li class="fix" data-fix="courier"><div><p class="fix-name">Courier stamped on every sheet</p><p class="fix-result">Product-to-slip matching up to 5× faster</p></div><span class="fix-price">from £1,000</span></li>
+          <li class="fix on" data-fix="wrong"><div><p class="fix-name">Quality gate and part preview on the sheet</p><p class="fix-result">The operator sees what it should look like</p></div><span class="fix-price">from £1,500</span></li>
+          <li class="fix" data-fix="custom"><div><p class="fix-name">Automatic request to customer service</p><p class="fix-result">The answer goes straight back onto the sheet</p></div><span class="fix-price">from £1,500</span></li>
+          <li class="fix" data-fix="reports"><div><p class="fix-name">Automated reports and live dashboards</p><p class="fix-result">One current view, nobody compiling it by hand</p></div><span class="fix-price">from £750</span></li>
+          <li class="fix" data-fix="setup"><div><p class="fix-name">Standardised machine files with built-in checks</p><p class="fix-result">Prep time down 93% in one project</p></div><span class="fix-price">from £1,500</span></li>
+          <li class="fix" data-fix="guess"><div><p class="fix-name">Calculators and estimates from your own data</p><p class="fix-result">From a simple job-time or packaging calculator to a model built on your production history</p></div><span class="fix-price">from £750</span></li>
+          <li class="fix" data-fix="export"><div><p class="fix-name">Batch export in Adobe, folder by folder</p><p class="fix-result">A whole queue of files done in one click, with an error summary</p></div><span class="fix-price">from £500</span></li>
+          <li class="fix" data-fix="personal"><div><p class="fix-name">Adobe layout automation with built-in checks</p><p class="fix-result">Print-ready files generated from order data, checked before export</p></div><span class="fix-price">from £2,500</span></li>
+          <li class="fix" data-fix="unsure"><div><p class="fix-name">A fresh pair of eyes on your process</p><p class="fix-result">A free 30-minute call first. If a closer look helps, a one-day review is £600, credited in full against any build.</p></div><span class="fix-price">free to start</span></li>
+        </ul>
+        <div class="fix-stamp-row"><span class="fix-stamp">PASS · FIX FOUND</span></div>
+        <p class="fix-note">First job: you pay when it works. Review fees are credited against any build.</p>
+        <a class="btn-primary" href="#contact">Talk it through · Free 30 min</a>
+      </aside>
+    </div>
+  </div>
+  <a class="fix-bar" href="#fix-list"><b class="fix-bar-n">2</b><span class="fix-bar-t">FIXES FOUND</span> · SEE LIST ↓</a>
+</section>
+
+<section class="erp-band">
+  <div class="wrap">
+    <p class="label">Around your ERP</p>
+    <h2>Your ERP stays. I build what it can't do.</h2>
+    <p class="erp-text">Works orders came off the ERP unsorted, with no carrier details and no picture of the part. Small tools built around it now put despatch paperwork in exact picking order, keep multi-sheet orders together, stamp the right courier and print a preview of the correct part on every sheet. The ERP provider's own consultants couldn't match it.</p>
+    <div class="erp-diagram" id="erp-diagram">
+<svg viewBox="0 0 1120 320" width="1120" height="320" role="img" aria-label="Your ERP exports reports to a small tool, which turns them into sorted, stamped works orders">
+<rect x="20" y="100" width="210" height="120" rx="3" fill="none" stroke="#EEF0EA" stroke-width="1.5"></rect>
+<text x="125" y="146" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="2" fill="#D9A441">YOUR ERP</text>
+<text x="125" y="173" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="#EEF0EA">Sage · Epicor · others</text>
+<text x="125" y="198" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#A7ADA3">unsorted reports</text>
+<line class="flow" x1="236" y1="160" x2="444" y2="160" stroke="#D9A441" stroke-width="2"></line>
+<text x="340" y="146" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.5" fill="#A7ADA3">EXPORTS &amp; REPORTS</text>
+<g transform="translate(530 160)">
+<path class="spin" fill="#EEF0EA" fill-rule="evenodd" stroke="#EEF0EA" stroke-width="3" stroke-linejoin="round" d="M 52.6 -6.6 L 61.5 -7.8 A 62 62 0 0 1 61.5 7.8 L 52.6 6.6 A 53 53 0 0 1 48.9 20.5 L 48.9 20.5 L 57.2 24.0 A 62 62 0 0 1 49.4 37.5 L 42.2 32.0 A 53 53 0 0 1 32.0 42.2 L 32.0 42.2 L 37.5 49.4 A 62 62 0 0 1 24.0 57.2 L 20.5 48.9 A 53 53 0 0 1 6.6 52.6 L 6.6 52.6 L 7.8 61.5 A 62 62 0 0 1 -7.8 61.5 L -6.6 52.6 A 53 53 0 0 1 -20.5 48.9 L -20.5 48.9 L -24.0 57.2 A 62 62 0 0 1 -37.5 49.4 L -32.0 42.2 A 53 53 0 0 1 -42.2 32.0 L -42.2 32.0 L -49.4 37.5 A 62 62 0 0 1 -57.2 24.0 L -48.9 20.5 A 53 53 0 0 1 -52.6 6.6 L -52.6 6.6 L -61.5 7.8 A 62 62 0 0 1 -61.5 -7.8 L -52.6 -6.6 A 53 53 0 0 1 -48.9 -20.5 L -48.9 -20.5 L -57.2 -24.0 A 62 62 0 0 1 -49.4 -37.5 L -42.2 -32.0 A 53 53 0 0 1 -32.0 -42.2 L -32.0 -42.2 L -37.5 -49.4 A 62 62 0 0 1 -24.0 -57.2 L -20.5 -48.9 A 53 53 0 0 1 -6.6 -52.6 L -6.6 -52.6 L -7.8 -61.5 A 62 62 0 0 1 7.8 -61.5 L 6.6 -52.6 A 53 53 0 0 1 20.5 -48.9 L 20.5 -48.9 L 24.0 -57.2 A 62 62 0 0 1 37.5 -49.4 L 32.0 -42.2 A 53 53 0 0 1 42.2 -32.0 L 42.2 -32.0 L 49.4 -37.5 A 62 62 0 0 1 57.2 -24.0 L 48.9 -20.5 A 53 53 0 0 1 52.6 -6.6 Z M 32.0 0.0 A 32 32 0 1 0 -32.0 0.0 A 32 32 0 1 0 32.0 0.0 Z"></path>
+<line x1="3" y1="3" x2="22" y2="22" stroke="#EEF0EA" stroke-width="6" stroke-linecap="round"></line>
+<circle cx="-5" cy="-5" r="12" fill="#D9A441" stroke="#EEF0EA" stroke-width="5"></circle>
+</g>
+<text x="530" y="258" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.5" fill="#A7ADA3">SMALL TOOL · RUNS OFFLINE</text>
+<line class="flow" x1="616" y1="160" x2="800" y2="160" stroke="#D9A441" stroke-width="2"></line>
+<text x="708" y="146" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.5" fill="#A7ADA3">SORTED · STAMPED</text>
+<g class="sheet-c">
+<rect x="868" y="58" width="160" height="200" rx="2" fill="#C9CDC0"></rect>
+</g>
+<g class="sheet-b">
+<rect x="844" y="68" width="160" height="200" rx="2" fill="#D9A441"></rect>
+<text x="924" y="96" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="1.5" fill="#171A1D">3 SHEETS · KEEP TOGETHER</text>
+</g>
+<g class="sheet-a">
+<rect x="820" y="78" width="160" height="200" rx="2" fill="#F6F7F2"></rect>
+<rect x="834" y="92" width="2" height="26" fill="#171A1D"></rect>
+<rect x="839" y="92" width="4" height="26" fill="#171A1D"></rect>
+<rect x="846" y="92" width="1.5" height="26" fill="#171A1D"></rect>
+<rect x="850" y="92" width="3" height="26" fill="#171A1D"></rect>
+<rect x="856" y="92" width="1.5" height="26" fill="#171A1D"></rect>
+<rect x="860" y="92" width="4" height="26" fill="#171A1D"></rect>
+<rect x="867" y="92" width="2" height="26" fill="#171A1D"></rect>
+<rect x="872" y="92" width="3" height="26" fill="#171A1D"></rect>
+<g transform="rotate(-8 942 105)">
+<rect x="904" y="94" width="68" height="22" fill="none" stroke="#3F6B52" stroke-width="1.5" stroke-dasharray="3 2"></rect>
+<text x="938" y="109" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="1" fill="#3F6B52">EXPRESS</text>
+</g>
+<rect x="834" y="132" width="110" height="5" fill="#C9CDC0"></rect>
+<rect x="834" y="144" width="84" height="5" fill="#C9CDC0"></rect>
+<rect x="834" y="156" width="98" height="5" fill="#C9CDC0"></rect>
+<rect x="834" y="176" width="132" height="86" fill="none" stroke="#8A9086" stroke-width="1" stroke-dasharray="3 3"></rect>
+<circle cx="900" cy="214" r="20" fill="none" stroke="#37485A" stroke-width="3"></circle>
+<rect x="890" y="204" width="20" height="20" fill="none" stroke="#37485A" stroke-width="2"></rect>
+<text x="900" y="254" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8.5" letter-spacing="1" fill="#565C58">PART PREVIEW</text>
+</g>
+<text x="924" y="306" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.5" fill="#A7ADA3">IN PICKING ORDER</text>
+</svg>
+    </div>
+    <div class="stats">
+      <div class="stat"><p class="stat-num">12 h</p><p>a week saved at peak, sorting despatch paperwork</p></div>
+      <div class="stat"><p class="stat-num">5×</p><p>faster matching products to shipping slips</p></div>
+      <div class="stat"><p class="stat-num">0</p><p>changes to your ERP. No new licences, nothing to break at upgrade time</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrapper-band">
+  <div class="wrap">
+    <h2>Not another AI wrapper.</h2>
     <div class="contrast-grid">
       <div class="contrast-cell">
-        <p class="not">Not this</p>
-        <p class="not-line">A chatbot bolted onto your workflow</p>
-        <p class="is">This</p>
-        <p class="is-line">A working tool, embedded where your team already operates</p>
+        <p class="was">A chatbot bolted onto your workflow</p>
+        <p class="now"><span class="arrow" aria-hidden="true">→</span><span>A working tool, where your team already works</span></p>
       </div>
       <div class="contrast-cell">
-        <p class="not">Not this</p>
-        <p class="not-line">A template built for a hundred other companies</p>
-        <p class="is">This</p>
-        <p class="is-line">Diagnosed and built for one process: yours</p>
+        <p class="was">A template built for a hundred companies</p>
+        <p class="now"><span class="arrow" aria-hidden="true">→</span><span>Built for one process: yours</span></p>
       </div>
       <div class="contrast-cell">
-        <p class="not">Not this</p>
-        <p class="not-line">A subscription you renew and hope keeps working</p>
-        <p class="is">This</p>
-        <p class="is-line">A quality gate that either passes or it doesn't, every time</p>
+        <p class="was">A subscription you renew and hope keeps working</p>
+        <p class="now"><span class="arrow" aria-hidden="true">→</span><span>Yours to keep. No licence, no renewal</span></p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="prices" id="prices">
+  <div class="wrap">
+    <div class="prices-head">
+      <div>
+        <p class="label">Where I can help</p>
+        <h2>Pick the problem. Know the price.</h2>
+      </div>
+      <p class="side">Fixed prices, agreed in writing before any work starts. Starting points below, your exact quote after a free call.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <span class="price-tag">FROM £600</span>
+        <h3>Data &amp; reporting</h3>
+        <p class="one-line">The numbers are already there. Make them useful.</p>
+        <ul class="price-rows">
+          <li><span>One-off data analysis with findings</span><span class="p">£600</span></li>
+          <li><span>Automated report from fixed data</span><span class="p">£750</span></li>
+          <li><span>Live dashboard from your data</span><span class="p">£1,500</span></li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <span class="price-tag">FROM £500</span>
+        <h3>Process automation</h3>
+        <p class="one-line">Stop retyping, re-sorting and re-exporting.</p>
+        <ul class="price-rows">
+          <li><span>File, email and export automation</span><span class="p">£750</span></li>
+          <li><span>Document sorting and generation</span><span class="p">£1,000</span></li>
+          <li><span>Adobe batch export or simple script</span><span class="p">£500</span></li>
+          <li><span>Adobe personalisation or multi-up layout tool</span><span class="p">£2,500</span></li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <span class="price-tag">FROM £1,000</span>
+        <h3>Quality &amp; error-proofing</h3>
+        <p class="one-line">Catch the mistake before it costs material.</p>
+        <ul class="price-rows">
+          <li><span>Digital checklist or traceability log</span><span class="p">£1,000</span></li>
+          <li><span>Quality gate before production</span><span class="p">£1,500</span></li>
+          <li><span>DMAIC improvement project</span><span class="p">£2,000</span></li>
+        </ul>
+      </div>
+      <div class="price-card dark">
+        <span class="price-tag">FROM £750</span>
+        <h3>Around your ERP</h3>
+        <p class="one-line">Fill the gaps your system can't.</p>
+        <ul class="price-rows">
+          <li><span>Paperwork sorting and sequencing</span><span class="p">£1,000</span></li>
+          <li><span>Picking routes and order sequence</span><span class="p">£2,000</span></li>
+          <li><span>Job-time, packaging or material calculator</span><span class="p">£750</span></li>
+          <li><span>Prediction model on your production history</span><span class="p">£2,500</span></li>
+          <li><span>Full workflow application</span><span class="p">£5,000+</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="included">
+      <p class="label">Always included</p>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8" fill="none" stroke="#3F6B52" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Fixed price in writing, before any work starts</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8" fill="none" stroke="#3F6B52" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>You own the tool. No licence, no subscription</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8" fill="none" stroke="#3F6B52" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Documentation and training for your team</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8" fill="none" stroke="#3F6B52" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>30 days of fixes after handover</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8" fill="none" stroke="#3F6B52" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>First job: you pay when it works</span></li>
+      </ul>
+      <p class="last">Not sure where to start? A one-day process review is £600, credited in full against any build.</p>
     </div>
   </div>
 </section>
@@ -265,17 +777,17 @@
       <div class="step">
         <div class="step-num mono">01</div>
         <h3>Diagnose</h3>
-        <p>Structured root-cause analysis, not guesswork. Fixed scope, fixed fee, a clear answer either way.</p>
+        <p>A free 30-minute call, or a one-day process review for £600, credited in full against any build. You get a clear answer either way, even if the answer is that you don't need a tool.</p>
       </div>
       <div class="step">
         <div class="step-num mono">02</div>
         <h3>Build</h3>
-        <p>Software, automation, or workflow redesign: whatever the diagnosis actually calls for, built for your process specifically.</p>
+        <p>A fixed price in writing, then the tool the diagnosis calls for: software, automation or a change to the workflow. Built around your process and the systems you already have.</p>
       </div>
       <div class="step">
         <div class="step-num mono">03</div>
         <h3>Embed</h3>
-        <p>Deployed where your team already works, measured against a real baseline, not a promise.</p>
+        <p>Set up where your team already works, with training and documentation. 30 days of fixes included. On a first job, you pay when it works.</p>
       </div>
     </div>
   </div>
@@ -317,40 +829,182 @@
         <div class="field"><b>Outcome</b><p>Faster, more consistent estimates feeding directly into planning and scheduling.</p></div>
       </div>
 
+      <div class="case-card"><span class="tag">Verified</span>
+        <h3>Standardising machine files</h3>
+        <div class="field"><b>Challenge</b><p>Every new product range needed hours of manual file preparation before anything could run.</p></div>
+        <div class="field"><b>Approach</b><p>Replaced one-off files with a standard set and built-in alignment checks.</p></div>
+        <div class="field"><b>Outcome</b><p>The prep step disappeared completely. Time to test a new range down 93%.</p></div>
+      </div>
+
+      <div class="case-card"><span class="tag">Verified</span>
+        <h3>Smarter picking</h3>
+        <div class="field"><b>Challenge</b><p>Pickers walked the warehouse in whatever order the paperwork came out.</p></div>
+        <div class="field"><b>Approach</b><p>A tool that maps efficient routes and sequences orders to match.</p></div>
+        <div class="field"><b>Outcome</b><p>Picking rate up by about 40%.</p></div>
+      </div>
+
     </div>
+  </div>
+</section>
+
+<section class="notes-teaser">
+  <div class="wrap">
+    <article class="note-card">
+      <div>
+        <h2 class="label">Field notes</h2>
+        <h3><a href="/notes/doing-it-by-hand.html">Doing it by hand for years, until someone decided not to</a></h3>
+        <p>A job everyone accepted as normal, what changed, and what it took.</p>
+      </div>
+      <a class="text-link" href="/notes/doing-it-by-hand.html">Read the note →</a>
+    </article>
   </div>
 </section>
 
 <section class="about">
-  <div class="wrap about-inner">
-    <div class="stamp-mark"><span>ONE PERSON<br>DIAGNOSIS<br>TO DEPLOY</span></div>
-    <div>
-      <h2>Who's behind this</h2>
-      <p>I'm a production manager and self-taught engineer with 8+ years in high-volume manufacturing. I split my time between running daily operations and building the tools that make them better: quality gates, predictive models, fleet automation, workflow redesign.</p>
-      <p>Everything on this page was diagnosed, built, and deployed by one person, tested against real production data, not a slide deck. No team of consultants between you and the person who actually understands your process.</p>
-      <div class="creds">
-        <span class="cred">Lean Six Sigma Green Belt (in progress)</span>
-        <span class="cred">Lean Six Sigma Yellow Belt</span>
-        <span class="cred">IOSH Managing Safely</span>
-      </div>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="label">Who's behind this</p>
+      <h2>Software engineer, Lean consultant or ERP specialist? You don't have to choose. I mesh all three.</h2>
+    </div>
+    <div class="about-grid">
+    <div class="about-left">
+    <div class="gears-wrap">
+      <p class="gears-cap"><span class="cap-out" aria-hidden="true">THREE SPECIALISTS · THREE INVOICES</span><span class="cap-in">ONE PERSON · MESHES WITH ALL THREE</span></p>
+<svg class="gears" viewBox="200 24 400 532" width="400" height="532" role="img" aria-label="Three separate specialists, the floor, the code and the data, come together around one central gear that meshes with all three">
+<text class="cap-out" x="400" y="46" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12.5" letter-spacing="2" fill="#B5482E">THREE SPECIALISTS · THREE INVOICES</text>
+<text class="cap-in" x="400" y="46" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12.5" letter-spacing="2" fill="#3F6B52">ONE PERSON · MESHES WITH ALL THREE</text>
+<text x="360" y="84" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="2" fill="#37485A">THE FLOOR</text>
+<text x="360" y="104" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#171A1D">Lean &amp; CI consultant</text>
+<text x="360" y="123" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="#565C58">Doesn't write code</text>
+<text x="440" y="84" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="2" fill="#37485A">THE CODE</text>
+<text x="440" y="104" text-anchor="start" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#171A1D">Software developer</text>
+<text x="440" y="123" text-anchor="start" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="#565C58">Doesn't know your floor</text>
+<text x="400" y="503" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="2" fill="#37485A">THE DATA</text>
+<text x="400" y="525" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#171A1D">ERP partner</text>
+<text x="400" y="544" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="#565C58">Every change billed by the hour</text>
+<g class="center-in">
+<path class="spin-c" fill="#171A1D" fill-rule="evenodd" stroke="#171A1D" stroke-width="3" stroke-linejoin="round" d="M 460.5 262.4 L 470.4 261.1 A 71 71 0 0 1 470.4 278.9 L 460.5 277.6 A 61 61 0 0 1 456.2 293.6 L 456.2 293.6 L 465.5 297.5 A 71 71 0 0 1 456.6 312.9 L 448.6 306.9 A 61 61 0 0 1 436.9 318.6 L 436.9 318.6 L 442.9 326.6 A 71 71 0 0 1 427.5 335.5 L 423.6 326.2 A 61 61 0 0 1 407.6 330.5 L 407.6 330.5 L 408.9 340.4 A 71 71 0 0 1 391.1 340.4 L 392.4 330.5 A 61 61 0 0 1 376.4 326.2 L 376.4 326.2 L 372.5 335.5 A 71 71 0 0 1 357.1 326.6 L 363.1 318.6 A 61 61 0 0 1 351.4 306.9 L 351.4 306.9 L 343.4 312.9 A 71 71 0 0 1 334.5 297.5 L 343.8 293.6 A 61 61 0 0 1 339.5 277.6 L 339.5 277.6 L 329.6 278.9 A 71 71 0 0 1 329.6 261.1 L 339.5 262.4 A 61 61 0 0 1 343.8 246.4 L 343.8 246.4 L 334.5 242.5 A 71 71 0 0 1 343.4 227.1 L 351.4 233.1 A 61 61 0 0 1 363.1 221.4 L 363.1 221.4 L 357.1 213.4 A 71 71 0 0 1 372.5 204.5 L 376.4 213.8 A 61 61 0 0 1 392.4 209.5 L 392.4 209.5 L 391.1 199.6 A 71 71 0 0 1 408.9 199.6 L 407.6 209.5 A 61 61 0 0 1 423.6 213.8 L 423.6 213.8 L 427.5 204.5 A 71 71 0 0 1 442.9 213.4 L 436.9 221.4 A 61 61 0 0 1 448.6 233.1 L 448.6 233.1 L 456.6 227.1 A 71 71 0 0 1 465.5 242.5 L 456.2 246.4 A 61 61 0 0 1 460.5 262.4 Z M 437.0 270.0 A 37 37 0 1 0 363.0 270.0 A 37 37 0 1 0 437.0 270.0 Z"></path>
+<line x1="407.2" y1="277.2" x2="431.8" y2="301.8" stroke="#171A1D" stroke-width="9.5" stroke-linecap="round"></line>
+<circle cx="393.8" cy="263.8" r="15.6" fill="#D6C29B" stroke="#171A1D" stroke-width="6.6"></circle>
+</g>
+<g class="in-l"><path class="spin-o" fill="#37485A" fill-rule="evenodd" stroke="#37485A" stroke-width="3" stroke-linejoin="round" d="M 343.7 212.8 L 353.7 212.2 A 49 49 0 0 1 351.3 230.4 L 341.8 227.2 A 39 39 0 0 1 333.9 240.9 L 333.9 240.9 L 341.3 247.6 A 49 49 0 0 1 326.8 258.8 L 322.3 249.8 A 39 39 0 0 1 307.0 253.9 L 307.0 253.9 L 307.6 263.9 A 49 49 0 0 1 289.4 261.5 L 292.5 252.0 A 39 39 0 0 1 278.8 244.1 L 278.8 244.1 L 272.1 251.6 A 49 49 0 0 1 261.0 237.0 L 269.9 232.5 A 39 39 0 0 1 265.8 217.2 L 265.8 217.2 L 255.8 217.8 A 49 49 0 0 1 258.2 199.6 L 267.7 202.8 A 39 39 0 0 1 275.6 189.1 L 275.6 189.1 L 268.2 182.4 A 49 49 0 0 1 282.7 171.2 L 287.2 180.2 A 39 39 0 0 1 302.5 176.1 L 302.5 176.1 L 301.9 166.1 A 49 49 0 0 1 320.1 168.5 L 317.0 178.0 A 39 39 0 0 1 330.7 185.9 L 330.7 185.9 L 337.3 178.4 A 49 49 0 0 1 348.5 193.0 L 339.6 197.5 A 39 39 0 0 1 343.7 212.8 Z M 328.7 215.0 A 24 24 0 1 0 280.7 215.0 A 24 24 0 1 0 328.7 215.0 Z"></path><circle cx="304.7" cy="215.0" r="5" fill="#37485A"></circle></g>
+<g class="in-r"><path class="spin-o" fill="#37485A" fill-rule="evenodd" stroke="#37485A" stroke-width="3" stroke-linejoin="round" d="M 477.7 249.8 L 473.2 258.8 A 49 49 0 0 1 458.7 247.6 L 466.1 240.9 A 39 39 0 0 1 458.2 227.2 L 458.2 227.2 L 448.7 230.4 A 49 49 0 0 1 446.3 212.2 L 456.3 212.8 A 39 39 0 0 1 460.4 197.5 L 460.4 197.5 L 451.5 193.0 A 49 49 0 0 1 462.7 178.4 L 469.3 185.9 A 39 39 0 0 1 483.0 178.0 L 483.0 178.0 L 479.9 168.5 A 49 49 0 0 1 498.1 166.1 L 497.5 176.1 A 39 39 0 0 1 512.8 180.2 L 512.8 180.2 L 517.3 171.2 A 49 49 0 0 1 531.8 182.4 L 524.4 189.1 A 39 39 0 0 1 532.3 202.8 L 532.3 202.8 L 541.8 199.6 A 49 49 0 0 1 544.2 217.8 L 534.2 217.2 A 39 39 0 0 1 530.1 232.5 L 530.1 232.5 L 539.0 237.0 A 49 49 0 0 1 527.9 251.6 L 521.2 244.1 A 39 39 0 0 1 507.5 252.0 L 507.5 252.0 L 510.6 261.5 A 49 49 0 0 1 492.4 263.9 L 493.0 253.9 A 39 39 0 0 1 477.7 249.8 Z M 519.3 215.0 A 24 24 0 1 0 471.3 215.0 A 24 24 0 1 0 519.3 215.0 Z"></path><circle cx="495.3" cy="215.0" r="5" fill="#37485A"></circle></g>
+<g class="in-b"><path class="spin-o" fill="#37485A" fill-rule="evenodd" stroke="#37485A" stroke-width="3" stroke-linejoin="round" d="M 378.6 347.4 L 373.1 339.0 A 49 49 0 0 1 390.1 332.0 L 392.1 341.8 A 39 39 0 0 1 407.9 341.8 L 407.9 341.8 L 409.9 332.0 A 49 49 0 0 1 426.9 339.0 L 421.4 347.4 A 39 39 0 0 1 432.6 358.6 L 432.6 358.6 L 441.0 353.1 A 49 49 0 0 1 448.0 370.1 L 438.2 372.1 A 39 39 0 0 1 438.2 387.9 L 438.2 387.9 L 448.0 389.9 A 49 49 0 0 1 441.0 406.9 L 432.6 401.4 A 39 39 0 0 1 421.4 412.6 L 421.4 412.6 L 426.9 421.0 A 49 49 0 0 1 409.9 428.0 L 407.9 418.2 A 39 39 0 0 1 392.1 418.2 L 392.1 418.2 L 390.1 428.0 A 49 49 0 0 1 373.1 421.0 L 378.6 412.6 A 39 39 0 0 1 367.4 401.4 L 367.4 401.4 L 359.0 406.9 A 49 49 0 0 1 352.0 389.9 L 361.8 387.9 A 39 39 0 0 1 361.8 372.1 L 361.8 372.1 L 352.0 370.1 A 49 49 0 0 1 359.0 353.1 L 367.4 358.6 A 39 39 0 0 1 378.6 347.4 Z M 424.0 380.0 A 24 24 0 1 0 376.0 380.0 A 24 24 0 1 0 424.0 380.0 Z"></path><circle cx="400.0" cy="380.0" r="5" fill="#37485A"></circle></g>
+</svg>
+        <ul class="gear-roles">
+          <li><span class="role-label">THE FLOOR</span><span class="role-name">Lean &amp; CI consultant</span><span class="role-line">Doesn't write code</span></li>
+          <li><span class="role-label">THE CODE</span><span class="role-name">Software developer</span><span class="role-line">Doesn't know your floor</span></li>
+          <li><span class="role-label">THE DATA</span><span class="role-name">ERP partner</span><span class="role-line">Every change billed by the hour</span></li>
+        </ul>
+    </div>
+    <ol class="mesh-list">
+      <li><span class="n">01</span>I find the waste on the floor.</li>
+      <li><span class="n">02</span>I write the code that removes it.</li>
+      <li><span class="n">03</span>I work with the data your ERP already has.</li>
+    </ol>
+    </div>
+    <div class="person">
+        <img class="person-photo" src="/assets/kamil-pojawa.jpg" alt="Kamil Pojawa" width="132" height="132" loading="lazy">
+        <h3>Kamil Pojawa</h3>
+        <p class="role">ONE PERSON · DIAGNOSIS TO DEPLOY</p>
+        <p>I'm Kamil Pojawa. I run a production floor for a living, with over eight years in high-volume manufacturing. Alongside that I build the tools that make it run better: quality gates, paperwork and sorting tools around the ERP, prediction models, dashboards.</p>
+        <p class="soft">Everything on this page was diagnosed, built and deployed by one person and tested on real production data. No team of consultants between you and the person who actually understands your process.</p>
+        <div class="creds">
+          <span class="cred">Lean Six Sigma Green Belt (in progress)</span>
+          <span class="cred">Lean Six Sigma Yellow Belt</span>
+          <span class="cred">IOSH Managing Safely</span>
+        </div>
+        <a class="text-link" href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+    </div>
     </div>
   </div>
 </section>
 
-<div class="dim-divider"><div class="tick"></div><div class="rule"></div><span>Remote-first, UK-wide</span><div class="rule"></div><div class="tick"></div></div>
+<section class="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="label">Questions</p>
+      <h2>Straight answers</h2>
+    </div>
+    <div class="faq-list">
+      <details open>
+        <summary><span>Do I need to know what the problem is?</span><span class="pm" aria-hidden="true"></span></summary>
+        <p>No. Most of what I've fixed wasn't on anyone's list. Tell me what feels slow or keeps going wrong, and I'll find where the time goes.</p>
+      </details>
+      <details>
+        <summary><span>Will it work with our ERP?</span><span class="pm" aria-hidden="true"></span></summary>
+        <p>Yes. I work from the exports and reports your system already produces, whether that's Sage, Epicor or something else. Nothing inside your ERP changes, so upgrades and support stay exactly as they are.</p>
+      </details>
+      <details>
+        <summary><span>Who owns what you build?</span><span class="pm" aria-hidden="true"></span></summary>
+        <p>You do. The tool, the code and the documentation. No licence fees, no subscription.</p>
+      </details>
+      <details>
+        <summary><span>Where does our data go?</span><span class="pm" aria-hidden="true"></span></summary>
+        <p>Nowhere. Tools run on your own machines and most work fully offline. I don't keep copies of your data once the job is done.</p>
+      </details>
+      <details>
+        <summary><span>What if something breaks later?</span><span class="pm" aria-hidden="true"></span></summary>
+        <p>The first 30 days of fixes are included. After that, you ask for changes only when you need them, priced before any work starts. No retainer.</p>
+      </details>
+      <details>
+        <summary><span>How long does it take?</span><span class="pm" aria-hidden="true"></span></summary>
+        <p>Small tools usually take one to two weeks, larger ones three to six. You get a date with the quote.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<div class="dim-divider" style="margin-top:56px"><div class="tick"></div><div class="rule"></div><span>Remote-first, UK-wide</span><div class="rule"></div><div class="tick"></div></div>
 
 <section class="contact" id="contact">
   <div class="wrap">
     <h2>Let's look at your process</h2>
     <p>A free 30-minute call. No pitch deck, no sales team. Just a conversation about what's actually slowing you down.</p>
-    <a class="btn-primary" href="mailto:hello@meshlock.co.uk">Book a free call</a>
-    <p class="contact-meta">Remote-first across the UK · On-site available within the M4 corridor · hello@meshlock.co.uk</p>
+    <div class="next-steps">
+      <p class="label">What happens next</p>
+      <ol>
+        <li><span class="n">01</span><span>Send a line about what's slowing you down. I reply within one working day.</span></li>
+        <li><span class="n">02</span><span>A 30-minute call, remote, no preparation needed.</span></li>
+        <li><span class="n">03</span><span>A written proposal with a fixed price, or an honest "you don't need a tool for this".</span></li>
+      </ol>
+    </div>
+    <div class="contact-grid">
+      <div class="form-box">
+        <form class="contact-form" name="contact" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="contact">
+          <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <div class="field-row">
+            <p class="field"><label for="f-name">Name</label><input id="f-name" name="name" type="text" autocomplete="name" required></p>
+            <p class="field"><label for="f-company">Company <span class="opt">(optional)</span></label><input id="f-company" name="company" type="text" autocomplete="organization"></p>
+          </div>
+          <p class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></p>
+          <p class="field"><label for="f-message">What's slowing you down?</label><textarea id="f-message" name="message" rows="3" required></textarea></p>
+          <p class="form-error" role="alert" hidden>That didn't send. Please try again, or email hello@meshlock.co.uk.</p>
+          <button class="btn-primary" type="submit">Send message</button>
+        </form>
+      </div>
+      <aside class="contact-direct" aria-label="Other ways to get in touch">
+        <p class="label">Or directly</p>
+        <p class="email-row"><a class="email" href="mailto:hello@meshlock.co.uk">hello@meshlock.co.uk</a><button type="button" class="copy-btn" data-copy="hello@meshlock.co.uk">Copy</button><span class="copy-status" aria-live="polite"></span></p>
+        <a class="text-link" href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn →</a>
+      </aside>
+    </div>
+    <p class="contact-meta">Remote-first across the UK · On-site available within the M4 corridor</p>
   </div>
 </section>
 
 <footer>
-  <div class="wordmark"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="115" height="18"></div>
-  <p>Automation & Continuous Improvement, Built to Fit</p>
+  <div class="foot-brand">
+    <div class="wordmark"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="127" height="20"></div>
+    <p class="foot-tag">Software engineer, Lean consultant or ERP specialist? You don't have to choose. I mesh all three.</p>
+  </div>
+  <ul class="foot-links">
+    <li><a href="/notes/">Field notes</a></li>
+    <li><a href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn</a></li>
+    <li><a href="mailto:hello@meshlock.co.uk">hello@meshlock.co.uk</a></li>
+    <li class="copy">© 2026 Meshlock</li>
+  </ul>
 </footer>
 
 <script>
@@ -400,7 +1054,8 @@
     if (reduceMotion){ setAngle(0); rig.classList.add('locked'); }
     else {
       setAngle(-120);
-      setTimeout(function(){
+      // lock in once the rig is on screen (straight away if it already is)
+      var playRig = function(){ setTimeout(function(){
         var t0=null;
         function step(ts){
           if(t0===null) t0=ts;
@@ -410,22 +1065,140 @@
         }
         requestAnimationFrame(step);
         rig.classList.add('locked');
-      },250);
+      },250); };
+      if ('IntersectionObserver' in window) {
+        var rigIO = new IntersectionObserver(function(entries){
+          if (entries[entries.length - 1].isIntersecting) { rigIO.disconnect(); playRig(); }
+        }, { threshold: 0.5 });
+        rigIO.observe(rig);
+      } else playRig();
     }
   }
 
-  // Scroll-reveal for case cards
-  var cards = document.querySelectorAll('.case-card');
-  if ('IntersectionObserver' in window && cards.length) {
+  var hasIO = 'IntersectionObserver' in window;
+
+  // Add a class once, the first time an element scrolls into view
+  function onceInView(els, cls, threshold){
+    if (!hasIO) { els.forEach(function(el){ el.classList.add(cls); }); return; }
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
-        if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
+        if (e.isIntersecting) { e.target.classList.add(cls); io.unobserve(e.target); }
       });
-    }, { threshold: 0.15 });
-    cards.forEach(function(c){ io.observe(c); });
-  } else {
-    cards.forEach(function(c){ c.classList.add('in-view'); });
+    }, { threshold: threshold });
+    els.forEach(function(el){ io.observe(el); });
   }
+
+  // Scroll-reveal for case cards
+  onceInView(Array.prototype.slice.call(document.querySelectorAll('.case-card')), 'in-view', 0.15);
+
+  // Diagrams: start their animations when they scroll into view
+  var erpDiagram = document.getElementById('erp-diagram');
+  if (erpDiagram && !reduceMotion) onceInView([erpDiagram], 'run', 0.3);
+  var gears = document.querySelector('.gears-wrap');
+  if (gears) onceInView([gears], 'run', 0.35);
+
+  // Sound familiar: symptom toggles build the fix list
+  (function(){
+    var section = document.getElementById('familiar');
+    if (!section) return;
+    var buttons = section.querySelectorAll('.sym');
+    var panel = document.getElementById('fix-list');
+    var countEl = panel.querySelector('.fix-n');
+    var bar = section.querySelector('.fix-bar');
+    var barN = bar.querySelector('.fix-bar-n');
+    var barT = bar.querySelector('.fix-bar-t');
+    var sectionOnScreen = false, panelOnScreen = false, count = 0;
+
+    function updateBar(){
+      bar.classList.toggle('show', sectionOnScreen && !panelOnScreen && count > 0);
+    }
+    function update(){
+      count = 0;
+      buttons.forEach(function(b){
+        var on = b.getAttribute('aria-pressed') === 'true';
+        if (on) count++;
+        var row = panel.querySelector('.fix[data-fix="' + b.getAttribute('data-fix') + '"]');
+        if (row) row.classList.toggle('on', on);
+      });
+      countEl.textContent = count + (count === 1 ? ' match' : ' matches');
+      panel.classList.toggle('empty', count === 0);
+      barN.textContent = count;
+      barT.textContent = count === 1 ? 'FIX FOUND' : 'FIXES FOUND';
+      updateBar();
+    }
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){
+        var on = b.getAttribute('aria-pressed') !== 'true';
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        // "None of these" and the symptoms exclude each other
+        if (on) buttons.forEach(function(o){
+          if (o !== b && (o.classList.contains('unsure') || b.classList.contains('unsure'))) o.setAttribute('aria-pressed', 'false');
+        });
+        update();
+      });
+    });
+    update();
+
+    if (hasIO) {
+      new IntersectionObserver(function(entries){
+        sectionOnScreen = entries[entries.length - 1].isIntersecting;
+        updateBar();
+      }).observe(section);
+      new IntersectionObserver(function(entries){
+        panelOnScreen = entries[entries.length - 1].isIntersecting;
+        updateBar();
+      }, { rootMargin: '0px 0px -56px 0px' }).observe(panel);
+    }
+    onceInView([panel], 'seen', 0.2);
+  })();
+
+  // Contact form: send to Netlify with fetch, then swap in a thank-you line.
+  // Without JavaScript the form posts normally and lands on /thanks.html.
+  (function(){
+    var form = document.querySelector('.contact-form');
+    if (!form || !window.fetch || !window.FormData) return;
+    var err = form.querySelector('.form-error');
+    var btn = form.querySelector('button[type="submit"]');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      err.hidden = true; btn.disabled = true;
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString()
+      }).then(function(res){
+        if (!res.ok) throw new Error(res.status);
+        var done = document.createElement('p');
+        done.className = 'form-done'; done.setAttribute('role', 'status'); done.tabIndex = -1;
+        done.textContent = "Thanks. I'll reply within one working day.";
+        form.parentNode.replaceChild(done, form);
+        done.focus();
+      }).catch(function(){
+        err.hidden = false; btn.disabled = false;
+      });
+    });
+  })();
+
+  // Copy email address
+  (function(){
+    var btn = document.querySelector('.copy-btn');
+    if (!btn) return;
+    var status = btn.parentNode.querySelector('.copy-status');
+    var timer;
+    btn.addEventListener('click', function(){
+      var text = btn.getAttribute('data-copy');
+      function done(){ status.textContent = 'Copied'; clearTimeout(timer); timer = setTimeout(function(){ status.textContent = ''; }, 2000); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else fallback();
+      function fallback(){
+        var t = document.createElement('textarea'); t.value = text; t.setAttribute('readonly', '');
+        t.style.position = 'absolute'; t.style.left = '-9999px'; document.body.appendChild(t); t.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        document.body.removeChild(t);
+      }
+    });
+  })();
 </script>
 
 </body>
