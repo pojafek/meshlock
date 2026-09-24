@@ -15,9 +15,13 @@ Plain static HTML and CSS. No framework, no build step, no package.json. Keep it
 ```
 index.html                    Homepage (all CSS inline in <style>)
 apple-touch-icon.png          180px icon
+sitemap.xml                   Sitemap for /, /notes/ and each article
+robots.txt                    Allows all, points to sitemap.xml
 assets/
   meshlock-wordmark.svg       Wordmark used in nav and footer
   notes.css                   Shared stylesheet for Field Notes pages
+  kamil-pojawa.jpg            Profile photo for "Who's behind this"
+  og-image.png                1200×630 link-preview image
 notes/
   index.html                  Field Notes list
   doing-it-by-hand.html       First article
@@ -42,8 +46,8 @@ Rules:
 - CSS sets `html{background:var(--paper);}` on `html`, not only on `body`. Without it, iOS Safari in dark mode shows a black background.
 - Field Notes pages link `/assets/notes.css`. If that file or the `assets/` folder is missing, those pages lose all styling.
 - Nav and footer use the wordmark image, not typed text:
-  - nav: `<img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="140" height="22">`
-  - footer: `<img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="115" height="18">`
+  - nav: `<img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="178" height="28">` (CSS drops it to 24px high under 640px)
+  - footer: `<img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="127" height="20">`
 - Test at mobile width. Nothing should scroll sideways.
 
 ## Brand
@@ -64,6 +68,8 @@ Logo palette: ink `#171A1D`, paper `#EEF0EA`, bronze `#B98A3A` (used for the mag
 
 Fonts (Google Fonts): Space Grotesk for headings, IBM Plex Sans for body, IBM Plex Mono for small labels.
 
+Tagline: "Software engineer, Lean consultant or ERP specialist? You don't have to choose. I mesh all three." Short form: `SOFTWARE · LEAN · ERP`.
+
 Visual identity: engineering drawing and inspection language. Grid paper, dimension lines, gears, inspection stamps. Flat colour, no gradients, no drop shadows.
 
 ### Logo
@@ -73,14 +79,38 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 - The standalone icon (favicon, avatar) is a different, related mark: 10 teeth, handle exiting the gear at 45 degrees. Do not swap one for the other.
 - Any new gear graphic on the site should follow the logo's gear style: rounded teeth and a thick ring, not sharp square teeth.
 - The hero rig is the logo in motion: a 12-tooth ink gear with a static magnifier meshing with an 8-tooth steel gear. The small gear turns at -12/8 of the big gear's angle so the teeth never overlap. Do not change tooth counts, radii or the ratio without redoing the mesh geometry.
+- The "Who's behind this" rig is a 12-tooth ink logo gear with a static magnifier meshing with three 8-tooth steel gears at 110px centre distance (angles 210°, 330°, 90°). Outer gears turn at -12/8 of the centre gear. Do not change tooth counts, radii or positions without redoing the mesh geometry.
 
 ## Writing rules
 
 - No em dashes or spaced dashes in any copy. Use a full stop, comma, colon or a middle dot instead.
 - British English spelling (behaviour, optimise, colour) in visible copy. CSS property names stay as they are.
 - Short sentences. Plain, natural language. Nothing that sounds like marketing boilerplate or AI-generated text.
-- Case files and Field Notes stay anonymised: no company names, no product names, no exact figures, no real screenshots, no data charts. Describe outcomes in general terms. If a detail feels too specific, cut it rather than soften it.
+- Case files and Field Notes stay anonymised: rounded results (hours, percentages, multiples) are allowed; never company names, product names, money amounts from a real client, screenshots or data charts. Describe outcomes in general terms. If a detail feels too specific, cut it rather than soften it.
+
+## Homepage structure
+
+Page order in `index.html`:
+
+1. Nav
+2. Hero
+3. Sound familiar? (`id="familiar"`): symptom toggles and the live fix list
+4. Your ERP stays (dark band)
+5. Not another AI wrapper
+6. Where I can help (`id="prices"`)
+7. How an engagement runs
+8. Case files
+9. Field notes teaser
+10. Who's behind this
+11. Questions
+12. Contact (`id="contact"`)
+13. Footer
+
+The prices in "Where I can help" are the reference price list. Change them only when asked. The "from" prices in the Sound familiar? fix list should stay in line with them.
+
+All copy stays as real HTML text. JavaScript only adds behaviour, so the page must still read fully with JavaScript off. The FAQ answers are repeated in the `FAQPage` JSON-LD in the head: keep both identical.
 
 ## Known open tasks
 
-- Once a second Field Notes article exists: add a homepage teaser section (title, one line, link to the article; no article content on the homepage).
+- Local landing pages (Swindon, Gloucestershire, Oxfordshire)
+- More Field Notes articles
