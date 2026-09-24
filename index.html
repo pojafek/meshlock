@@ -158,6 +158,8 @@
   }
   .hero-inner{position:relative; z-index:1; max-width:1080px; margin:0 auto; display:grid; grid-template-columns:1.15fr 0.85fr; gap:40px; align-items:center;}
   @media (max-width:820px){ .hero-inner{grid-template-columns:1fr;} }
+  /* wide screens: match the .wrap content box (1080px minus its 6vw side padding), so hero, nav and sections share one edge */
+  @media (min-width:1081px){ .hero-inner{max-width:calc(1080px - 12vw);} }
   .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 18px; display:flex; align-items:center; gap:8px;}
   .eyebrow .eb-short{display:none;}
   @media (max-width:900px){ .eyebrow .eb-long{display:none;} .eyebrow .eb-short{display:inline;} }
