@@ -17,6 +17,7 @@ index.html                    Homepage (all CSS inline in <style>)
 apple-touch-icon.png          180px icon
 sitemap.xml                   Sitemap for /, /notes/ and each article
 robots.txt                    Allows all, points to sitemap.xml
+thanks.html                   Contact form landing page (noindex, not in the sitemap)
 assets/
   meshlock-wordmark.svg       Wordmark used in nav and footer
   notes.css                   Shared stylesheet for Field Notes pages
@@ -107,6 +108,8 @@ Page order in `index.html`:
 13. Footer
 
 The prices in "Where I can help" are the reference price list. Change them only when asked. The "from" prices in the Sound familiar? fix list should stay in line with them.
+
+The contact form is a Netlify Form (`name="contact"`, honeypot `bot-field`). Without JavaScript it posts to `/thanks.html`; with JavaScript it posts with fetch and shows a thank-you line in place. "Book a call" buttons link to `#contact`, not `mailto:`.
 
 All copy stays as real HTML text. JavaScript only adds behaviour, so the page must still read fully with JavaScript off. The FAQ answers are repeated in the `FAQPage` JSON-LD in the head: keep both identical.
 
