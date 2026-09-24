@@ -14,7 +14,7 @@ Plain static HTML and CSS. No framework, no build step, no package.json. Keep it
 
 ```
 index.html                    Homepage (all CSS inline in <style>)
-apple-touch-icon.png          180px icon, not yet linked in any <head>
+apple-touch-icon.png          180px icon
 assets/
   meshlock-wordmark.svg       Wordmark used in nav and footer
   notes.css                   Shared stylesheet for Field Notes pages
@@ -72,6 +72,7 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 - The letters are outlined paths. Never retype the wordmark as live text and never edit its geometry or spacing. Use `assets/meshlock-wordmark.svg`.
 - The standalone icon (favicon, avatar) is a different, related mark: 10 teeth, handle exiting the gear at 45 degrees. Do not swap one for the other.
 - Any new gear graphic on the site should follow the logo's gear style: rounded teeth and a thick ring, not sharp square teeth.
+- The hero rig is the logo in motion: a 12-tooth ink gear with a static magnifier meshing with an 8-tooth steel gear. The small gear turns at -12/8 of the big gear's angle so the teeth never overlap. Do not change tooth counts, radii or the ratio without redoing the mesh geometry.
 
 ## Writing rules
 
@@ -82,7 +83,4 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 
 ## Known open tasks
 
-- Remove the em dashes in `index.html` (about 17, including the `<title>`, hero lead text and the "PASS — BUILT TO FIT" stamp).
-- Redraw the hero gear animation in `index.html` to match the logo gear style (rounded teeth, thick ring).
-- Add `<link rel="apple-touch-icon" href="/apple-touch-icon.png">` to the `<head>` of every page.
 - Once a second Field Notes article exists: add a homepage teaser section (title, one line, link to the article; no article content on the homepage).

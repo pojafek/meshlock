@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
-<title>Meshlock — Automation & Continuous Improvement, Built to Fit</title>
+<title>Meshlock · Automation & Continuous Improvement, Built to Fit</title>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -100,20 +101,14 @@
   /* ---------- GEAR-LOCK SIGNATURE ---------- */
   .rig{position:relative; width:100%; aspect-ratio:360/290; max-width:390px; margin:0 auto;}
   .rig svg{width:100%; height:100%; overflow:visible;}
-  .gear{transform-origin:center; transition:transform 1.6s cubic-bezier(.16,.9,.2,1.02);}
-  .gearA{transform:rotate(-140deg);}
-  .gearB{transform:rotate(140deg);}
-  .rig.locked .gearA{transform:rotate(0deg);}
-  .rig.locked .gearB{transform:rotate(0deg);}
   .stamp{
-    opacity:0; transform:scale(1.5) rotate(-8deg); transform-origin:center;
+    opacity:0; transform:scale(1.5) rotate(-8deg);
+    transform-box:fill-box; transform-origin:center;
     transition:opacity .4s ease .9s, transform .4s cubic-bezier(.2,1.4,.4,1) .9s;
   }
   .rig.locked .stamp{opacity:1; transform:scale(1) rotate(-8deg);}
   @media (prefers-reduced-motion:reduce){
-    .gear, .stamp{transition:none;}
-    .gearA, .gearB{transform:rotate(0deg);}
-    .stamp{opacity:1; transform:scale(1) rotate(-8deg);}
+    .stamp{transition:none; opacity:1; transform:scale(1) rotate(-8deg);}
   }
 
   /* ---------- MANIFESTO ---------- */
@@ -212,19 +207,20 @@
     <div>
       <p class="eyebrow"><span class="led"></span>Automation & Continuous Improvement</p>
       <h1>Built to fit. Not sold as a subscription.</h1>
-      <p class="lede">I find where a production process is losing time, quality, or money — then build the exact tool that fixes it. Calibrated on your real data, not a wrapper bolted onto someone else's model.</p>
+      <p class="lede">I find where a production process is losing time, quality, or money, then build the exact tool that fixes it. Calibrated on your real data, not a wrapper bolted onto someone else's model.</p>
       <div class="hero-ctas">
         <a class="btn-primary" href="#contact">Book a free call</a>
         <a class="btn-ghost" href="#case-files">See the work ↓</a>
       </div>
     </div>
     <div class="rig" id="rig">
-      <svg viewBox="0 0 360 290">
-        <g class="gear gearA" id="gearA"></g>
-        <g class="gear gearB" id="gearB"></g>
+      <svg viewBox="0 0 360 290" aria-hidden="true">
+        <g id="gearA"></g>
+        <g id="gearB"></g>
+        <g id="lens"></g>
         <g class="stamp">
           <rect x="82" y="222" width="196" height="46" rx="3" fill="none" stroke="#3F6B52" stroke-width="1.5" stroke-dasharray="3 3"/>
-          <text x="180" y="250" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12.5" letter-spacing="1.5" fill="#3F6B52" font-weight="500">PASS — BUILT TO FIT</text>
+          <text x="180" y="250" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12.5" letter-spacing="1.5" fill="#3F6B52" font-weight="500">PASS · BUILT TO FIT</text>
         </g>
       </svg>
     </div>
@@ -237,7 +233,7 @@
   <div class="wrap">
     <div class="head">
       <h2>What this actually is</h2>
-      <p>Most "automation consulting" right now is a subscription to someone else's model with a logo on top. This is the opposite: I diagnose your process first, then build — or don't, if a tool isn't actually the answer.</p>
+      <p>Most "automation consulting" right now is a subscription to someone else's model with a logo on top. This is the opposite: I diagnose your process first, then build. Or don't, if a tool isn't actually the answer.</p>
     </div>
     <div class="contrast-grid">
       <div class="contrast-cell">
@@ -256,7 +252,7 @@
         <p class="not">Not this</p>
         <p class="not-line">A subscription you renew and hope keeps working</p>
         <p class="is">This</p>
-        <p class="is-line">A quality gate that either passes or it doesn't — every time</p>
+        <p class="is-line">A quality gate that either passes or it doesn't, every time</p>
       </div>
     </div>
   </div>
@@ -274,12 +270,12 @@
       <div class="step">
         <div class="step-num mono">02</div>
         <h3>Build</h3>
-        <p>Software, automation, or workflow redesign — whatever the diagnosis actually calls for, built for your process specifically.</p>
+        <p>Software, automation, or workflow redesign: whatever the diagnosis actually calls for, built for your process specifically.</p>
       </div>
       <div class="step">
         <div class="step-num mono">03</div>
         <h3>Embed</h3>
-        <p>Deployed where your team already works, measured against a real baseline — not a promise.</p>
+        <p>Deployed where your team already works, measured against a real baseline, not a promise.</p>
       </div>
     </div>
   </div>
@@ -295,14 +291,14 @@
 
       <div class="case-card"><span class="tag">Verified</span>
         <h3>Closing the traceability gap</h3>
-        <div class="field"><b>Challenge</b><p>No structured way to trace quality issues to their source — recurring problems kept resurfacing.</p></div>
+        <div class="field"><b>Challenge</b><p>No structured way to trace quality issues to their source. Recurring problems kept resurfacing.</p></div>
         <div class="field"><b>Approach</b><p>Structured DMAIC project: root-caused across process and communication behaviour, ran targeted interventions.</p></div>
-        <div class="field"><b>Outcome</b><p>Significant, sustained improvement in traceability compliance — verified with real data.</p></div>
+        <div class="field"><b>Outcome</b><p>Significant, sustained improvement in traceability compliance, verified with real data.</p></div>
       </div>
 
       <div class="case-card"><span class="tag">Verified</span>
         <h3>Pre-production quality gate</h3>
-        <div class="field"><b>Challenge</b><p>Design files reached the floor with no automated check — errors caught only after material and time were spent.</p></div>
+        <div class="field"><b>Challenge</b><p>Design files reached the floor with no automated check. Errors caught only after material and time were spent.</p></div>
         <div class="field"><b>Approach</b><p>Built a digital QA system validating files before they reach a machine, catching structural and sizing issues automatically.</p></div>
         <div class="field"><b>Outcome</b><p>Physical test-cutting eliminated for validated files; defects caught at the design stage.</p></div>
       </div>
@@ -310,13 +306,13 @@
       <div class="case-card"><span class="tag">Verified</span>
         <h3>Fleet-wide file distribution & audit</h3>
         <div class="field"><b>Challenge</b><p>Auditing files across a multi-machine fleet was manual, slow, and at scale, impractical to run at all.</p></div>
-        <div class="field"><b>Approach</b><p>Automated distribution on a fixed schedule with a full, timestamped audit trail — zero manual steps.</p></div>
+        <div class="field"><b>Approach</b><p>Automated distribution on a fixed schedule with a full, timestamped audit trail. Zero manual steps.</p></div>
         <div class="field"><b>Outcome</b><p>A process that was previously impractical to run now takes about half an hour, fully traceable.</p></div>
       </div>
 
       <div class="case-card"><span class="tag">Verified</span>
         <h3>Predictive production planning</h3>
-        <div class="field"><b>Challenge</b><p>Time estimates relied on manual test-runs and rough averages — slow, and didn't scale.</p></div>
+        <div class="field"><b>Challenge</b><p>Time estimates relied on manual test-runs and rough averages. Slow, and didn't scale.</p></div>
         <div class="field"><b>Approach</b><p>Built a predictive model calibrated on real historical production data, capturing the factors that actually drive time.</p></div>
         <div class="field"><b>Outcome</b><p>Faster, more consistent estimates feeding directly into planning and scheduling.</p></div>
       </div>
@@ -330,11 +326,11 @@
     <div class="stamp-mark"><span>ONE PERSON<br>DIAGNOSIS<br>TO DEPLOY</span></div>
     <div>
       <h2>Who's behind this</h2>
-      <p>I'm a production manager and self-taught engineer with 8+ years in high-volume manufacturing. I split my time between running daily operations and building the tools that make them better — quality gates, predictive models, fleet automation, workflow redesign.</p>
-      <p>Everything on this page was diagnosed, built, and deployed by one person, tested against real production data — not a slide deck. No team of consultants between you and the person who actually understands your process.</p>
+      <p>I'm a production manager and self-taught engineer with 8+ years in high-volume manufacturing. I split my time between running daily operations and building the tools that make them better: quality gates, predictive models, fleet automation, workflow redesign.</p>
+      <p>Everything on this page was diagnosed, built, and deployed by one person, tested against real production data, not a slide deck. No team of consultants between you and the person who actually understands your process.</p>
       <div class="creds">
-        <span class="cred">Lean Six Sigma — Green Belt (in progress)</span>
-        <span class="cred">Lean Six Sigma — Yellow Belt</span>
+        <span class="cred">Lean Six Sigma Green Belt (in progress)</span>
+        <span class="cred">Lean Six Sigma Yellow Belt</span>
         <span class="cred">IOSH Managing Safely</span>
       </div>
     </div>
@@ -346,7 +342,7 @@
 <section class="contact" id="contact">
   <div class="wrap">
     <h2>Let's look at your process</h2>
-    <p>A free 30-minute call. No pitch deck, no sales team — just a conversation about what's actually slowing you down.</p>
+    <p>A free 30-minute call. No pitch deck, no sales team. Just a conversation about what's actually slowing you down.</p>
     <a class="btn-primary" href="mailto:hello@meshlock.co.uk">Book a free call</a>
     <p class="contact-meta">Remote-first across the UK · On-site available within the M4 corridor · hello@meshlock.co.uk</p>
   </div>
@@ -358,45 +354,64 @@
 </footer>
 
 <script>
-  // Build real gear silhouettes (teeth + rim + axle hole), not decorative dashes
+  // Hero rig: logo-style gears, 12:8 mesh, static magnifier on the big gear
   function polar(cx,cy,r,deg){ var a=deg*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; }
-  function gearPathD(cx,cy,teeth,outerR,innerR,toothFrac){
-    var step=360/teeth, tAngle=step*toothFrac, d='';
-    for (var i=0;i<teeth;i++){
-      var a0=i*step, a1=a0+tAngle, a2=a0+step;
-      var p1=polar(cx,cy,innerR,a0), p2=polar(cx,cy,outerR,a0),
-          p3=polar(cx,cy,outerR,a1), p4=polar(cx,cy,innerR,a1),
-          p5=polar(cx,cy,innerR,a2);
-      d += (i===0?'M ':'L ')+p1[0]+' '+p1[1]+' ';
-      d += 'L '+p2[0]+' '+p2[1]+' ';
-      d += 'A '+outerR+' '+outerR+' 0 0 1 '+p3[0]+' '+p3[1]+' ';
-      d += 'L '+p4[0]+' '+p4[1]+' ';
-      d += 'A '+innerR+' '+innerR+' 0 0 1 '+p5[0]+' '+p5[1]+' ';
+  function ringGearD(cx,cy,n,ro,ri,fr,off,bore){
+    var s=360/n, t=s*fr, d='';
+    for (var i=0;i<n;i++){
+      var a0=off+i*s, a1=a0+t, a2=a0+s;
+      var p1=polar(cx,cy,ri,a0), p2=polar(cx,cy,ro,a0), p3=polar(cx,cy,ro,a1),
+          p4=polar(cx,cy,ri,a1), p5=polar(cx,cy,ri,a2);
+      d += (i?'L ':'M ')+p1[0]+' '+p1[1]+' L '+p2[0]+' '+p2[1]+
+           ' A '+ro+' '+ro+' 0 0 1 '+p3[0]+' '+p3[1]+' L '+p4[0]+' '+p4[1]+
+           ' A '+ri+' '+ri+' 0 0 1 '+p5[0]+' '+p5[1]+' ';
     }
-    return d+'Z';
+    d += 'Z M '+(cx+bore)+' '+cy+' A '+bore+' '+bore+' 0 1 0 '+(cx-bore)+' '+cy+
+         ' A '+bore+' '+bore+' 0 1 0 '+(cx+bore)+' '+cy+' Z';
+    return d;
   }
-  function buildGear(id,cx,cy,teeth,outerR,innerR,toothFrac,fill,holeR,rimR){
-    var el = document.getElementById(id);
-    if(!el) return;
-    var d = gearPathD(cx,cy,teeth,outerR,innerR,toothFrac);
-    el.innerHTML =
-      '<path d="'+d+'" fill="'+fill+'" stroke="#EEF0EA" stroke-width="3" stroke-linejoin="round"/>'+
-      '<circle cx="'+cx+'" cy="'+cy+'" r="'+rimR+'" fill="none" stroke="#EEF0EA" stroke-width="1.2" opacity="0.55"/>'+
-      '<circle cx="'+cx+'" cy="'+cy+'" r="'+holeR+'" fill="#EEF0EA"/>'+
-      '<circle cx="'+cx+'" cy="'+cy+'" r="3.5" fill="'+fill+'"/>';
+  var CY=128, NA=12, NB=8, RPA=66, RPB=44, AD=5, FR=0.48;
+  var AX=136, BX=AX+RPA+RPB;
+  var offA=-(360/NA*FR)/2, offB=180-(360/NB*FR+360/NB)/2;
+  function drawGear(id,cx,n,rp,off,bore,col,axle){
+    var el=document.getElementById(id); if(!el) return null;
+    el.innerHTML='<path d="'+ringGearD(cx,CY,n,rp+AD,rp-AD,FR,off,bore)+'" fill="'+col+
+      '" fill-rule="evenodd" stroke="'+col+'" stroke-width="3" stroke-linejoin="round"/>'+
+      (axle?'<circle cx="'+cx+'" cy="'+CY+'" r="5" fill="'+col+'"/>':'');
+    return el;
   }
-  // Distance uses tooth-tip-to-root-gap geometry: at the seam, gearA sits in
-  // a tooth (reaches outerA) and gearB sits in a gap (recedes to innerB), so
-  // the meaningful touch point is outerA vs innerB, not outer-vs-outer.
-  buildGear('gearA', 128, 140, 13, 70, 56, 0.42, '#171A1D', 30, 63);
-  buildGear('gearB', 228, 140, 9, 48, 37, 0.42, '#37485A', 19, 42);
-
-  // Hero gear-lock: settle into locked position shortly after load
-  var rig = document.getElementById('rig');
-  if (rig) {
-    requestAnimationFrame(function(){
-      setTimeout(function(){ rig.classList.add('locked'); }, 250);
-    });
+  var gA=drawGear('gearA',AX,NA,RPA,offA,37,'#171A1D',false);
+  var gB=drawGear('gearB',BX,NB,RPB,offB,24,'#37485A',true);
+  var lensEl=document.getElementById('lens');
+  if (lensEl){
+    var lx=AX-6.2, ly=CY-6.2, h1=polar(lx,ly,19,45), h2=polar(AX,CY,45,45);
+    lensEl.innerHTML='<line x1="'+h1[0]+'" y1="'+h1[1]+'" x2="'+h2[0]+'" y2="'+h2[1]+
+      '" stroke="#171A1D" stroke-width="9.5" stroke-linecap="round"/>'+
+      '<circle cx="'+lx+'" cy="'+ly+'" r="15.6" fill="#D6C29B" stroke="#171A1D" stroke-width="6.6"/>';
+  }
+  function setAngle(a){
+    if(gA) gA.setAttribute('transform','rotate('+a+' '+AX+' '+CY+')');
+    if(gB) gB.setAttribute('transform','rotate('+(-a*NA/NB)+' '+BX+' '+CY+')');
+  }
+  function easeOutBack(x){ var c1=1.2, c3=c1+1; return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2); }
+  var rig=document.getElementById('rig');
+  var reduceMotion=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (rig){
+    if (reduceMotion){ setAngle(0); rig.classList.add('locked'); }
+    else {
+      setAngle(-120);
+      setTimeout(function(){
+        var t0=null;
+        function step(ts){
+          if(t0===null) t0=ts;
+          var p=Math.min((ts-t0)/1600,1);
+          setAngle(-120*(1-easeOutBack(p)));
+          if(p<1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+        rig.classList.add('locked');
+      },250);
+    }
   }
 
   // Scroll-reveal for case cards
