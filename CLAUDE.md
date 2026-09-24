@@ -14,7 +14,7 @@ Plain static HTML and CSS. No framework, no build step, no package.json. Keep it
 
 ```
 index.html                    Homepage (all CSS inline in <style>)
-apple-touch-icon.png          180px icon, not yet linked in any <head>
+apple-touch-icon.png          180px icon
 assets/
   meshlock-wordmark.svg       Wordmark used in nav and footer
   notes.css                   Shared stylesheet for Field Notes pages
@@ -82,7 +82,5 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 
 ## Known open tasks
 
-- Remove the em dashes in `index.html` (about 17, including the `<title>`, hero lead text and the "PASS — BUILT TO FIT" stamp).
 - Redraw the hero gear animation in `index.html` to match the logo gear style (rounded teeth, thick ring).
-- Add `<link rel="apple-touch-icon" href="/apple-touch-icon.png">` to the `<head>` of every page.
 - Once a second Field Notes article exists: add a homepage teaser section (title, one line, link to the article; no article content on the homepage).
