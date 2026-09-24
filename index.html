@@ -248,6 +248,8 @@
   }
   .js .fix-stamp{opacity:0; transform:scale(1.5) rotate(-7deg); transition:opacity .3s ease, transform .35s cubic-bezier(.2,1.4,.4,1);}
   .js .fix-panel.seen:not(.empty) .fix-stamp{opacity:1; transform:scale(1) rotate(-7deg);}
+  .fix-note{margin:0 0 14px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; line-height:1.6; letter-spacing:.03em; color:var(--green);}
+  .js .fix-panel.empty .fix-note{display:none;}
   .fix-panel .btn-primary{display:block; text-align:center; padding:14px 12px;}
   .fix-bar{display:none;}
   @media (max-width:820px){
@@ -608,9 +610,10 @@
           <li class="fix" data-fix="guess"><div><p class="fix-name">Calculators and estimates from your own data</p><p class="fix-result">From a simple job-time or packaging calculator to a model built on your production history</p></div><span class="fix-price">from £750</span></li>
           <li class="fix" data-fix="export"><div><p class="fix-name">Batch export in Adobe, folder by folder</p><p class="fix-result">A whole queue of files done in one click, with an error summary</p></div><span class="fix-price">from £500</span></li>
           <li class="fix" data-fix="personal"><div><p class="fix-name">Adobe layout automation with built-in checks</p><p class="fix-result">Print-ready files generated from order data, checked before export</p></div><span class="fix-price">from £2,500</span></li>
-          <li class="fix" data-fix="unsure"><div><p class="fix-name">A fresh pair of eyes on your process</p><p class="fix-result">A free 30-minute call, or a one-day review that finds the losses nobody sees any more</p></div><span class="fix-price">free / £600</span></li>
+          <li class="fix" data-fix="unsure"><div><p class="fix-name">A fresh pair of eyes on your process</p><p class="fix-result">A free 30-minute call first. If a closer look helps, a one-day review is £600, credited in full against any build.</p></div><span class="fix-price">free to start</span></li>
         </ul>
         <div class="fix-stamp-row"><span class="fix-stamp">PASS · FIX FOUND</span></div>
+        <p class="fix-note">First job: you pay when it works. Review fees are credited against any build.</p>
         <a class="btn-primary" href="#contact">Talk it through · Free 30 min</a>
       </aside>
     </div>
