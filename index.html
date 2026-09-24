@@ -384,12 +384,12 @@
   @media (max-width:820px){ .about-grid{grid-template-columns:1fr; gap:40px;} }
   .gears{display:block; width:100%; max-width:100%; height:auto;}
   .cap-out{opacity:0;}
-  .js .gears:not(.run) .in-l{transform:translate(-43.3px,-25px)}
-  .js .gears:not(.run) .in-r{transform:translate(43.3px,-25px)}
-  .js .gears:not(.run) .in-b{transform:translate(0,50px)}
-  .js .gears:not(.run) .center-in{opacity:.16}
-  .js .gears:not(.run) .cap-out{opacity:1}
-  .js .gears:not(.run) .cap-in{opacity:0}
+  .js .gears-wrap:not(.run) .in-l{transform:translate(-43.3px,-25px)}
+  .js .gears-wrap:not(.run) .in-r{transform:translate(43.3px,-25px)}
+  .js .gears-wrap:not(.run) .in-b{transform:translate(0,50px)}
+  .js .gears-wrap:not(.run) .center-in{opacity:.16}
+  .js .gears-wrap:not(.run) .cap-out{opacity:1}
+  .js .gears-wrap:not(.run) .cap-in{opacity:0}
   @keyframes inL{0%,30%{transform:translate(-43.3px,-25px)}65%,100%{transform:translate(0,0)}}
   @keyframes inR{0%,30%{transform:translate(43.3px,-25px)}65%,100%{transform:translate(0,0)}}
   @keyframes inB{0%,30%{transform:translate(0,50px)}65%,100%{transform:translate(0,0)}}
@@ -408,7 +408,22 @@
   .run .cap-out{animation:capOut 2.4s ease both}
   .run .cap-in{animation:capIn 2.8s ease both}
   @media (prefers-reduced-motion:reduce){
-    .gears *{animation:none !important;}
+    .gears-wrap *{animation:none !important;}
+  }
+  /* phones: SVG text is too small, so the captions and roles show as HTML instead */
+  .gears-cap, .gear-roles{display:none;}
+  @media (max-width:640px){
+    .gears text{display:none;}
+    .gears{margin:-9% 0 -11%;}
+    .gears-cap{display:grid; margin:0 0 6px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em;}
+    .gears-cap span{grid-area:1/1;}
+    .gears-cap .cap-out{color:var(--red-flag);}
+    .gears-cap .cap-in{color:var(--green);}
+    .gear-roles{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; list-style:none; margin:10px 0 0; padding:0;}
+    .gear-roles li{display:flex; flex-direction:column; gap:2px;}
+    .role-label{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; color:var(--steel);}
+    .role-name{font-size:15px; line-height:1.35; color:var(--ink);}
+    .role-line{font-size:13.5px; line-height:1.4; color:var(--ink-soft);}
   }
   .mesh-list{list-style:none; margin:24px 0 0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px;}
   .mesh-list li{font-size:15px; line-height:1.45; border-top:1px solid var(--line); padding-top:12px;}
@@ -793,6 +808,8 @@
     </div>
     <div class="about-grid">
       <div>
+<div class="gears-wrap">
+        <p class="gears-cap"><span class="cap-out" aria-hidden="true">THREE SPECIALISTS · THREE INVOICES</span><span class="cap-in">ONE PERSON · MESHES WITH ALL THREE</span></p>
 <svg class="gears" viewBox="0 0 800 560" width="640" height="448" role="img" aria-label="Three separate specialists, the floor, the code and the data, come together around one central gear that meshes with all three">
 <text class="cap-out" x="400" y="40" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" letter-spacing="2" fill="#B5482E">THREE SPECIALISTS · THREE INVOICES</text>
 <text class="cap-in" x="400" y="40" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" letter-spacing="2" fill="#3F6B52">ONE PERSON · MESHES WITH ALL THREE</text>
@@ -814,6 +831,12 @@
 <g class="in-r"><path class="spin-o" fill="#37485A" fill-rule="evenodd" stroke="#37485A" stroke-width="3" stroke-linejoin="round" d="M 477.7 249.8 L 473.2 258.8 A 49 49 0 0 1 458.7 247.6 L 466.1 240.9 A 39 39 0 0 1 458.2 227.2 L 458.2 227.2 L 448.7 230.4 A 49 49 0 0 1 446.3 212.2 L 456.3 212.8 A 39 39 0 0 1 460.4 197.5 L 460.4 197.5 L 451.5 193.0 A 49 49 0 0 1 462.7 178.4 L 469.3 185.9 A 39 39 0 0 1 483.0 178.0 L 483.0 178.0 L 479.9 168.5 A 49 49 0 0 1 498.1 166.1 L 497.5 176.1 A 39 39 0 0 1 512.8 180.2 L 512.8 180.2 L 517.3 171.2 A 49 49 0 0 1 531.8 182.4 L 524.4 189.1 A 39 39 0 0 1 532.3 202.8 L 532.3 202.8 L 541.8 199.6 A 49 49 0 0 1 544.2 217.8 L 534.2 217.2 A 39 39 0 0 1 530.1 232.5 L 530.1 232.5 L 539.0 237.0 A 49 49 0 0 1 527.9 251.6 L 521.2 244.1 A 39 39 0 0 1 507.5 252.0 L 507.5 252.0 L 510.6 261.5 A 49 49 0 0 1 492.4 263.9 L 493.0 253.9 A 39 39 0 0 1 477.7 249.8 Z M 519.3 215.0 A 24 24 0 1 0 471.3 215.0 A 24 24 0 1 0 519.3 215.0 Z"></path><circle cx="495.3" cy="215.0" r="5" fill="#37485A"></circle></g>
 <g class="in-b"><path class="spin-o" fill="#37485A" fill-rule="evenodd" stroke="#37485A" stroke-width="3" stroke-linejoin="round" d="M 378.6 347.4 L 373.1 339.0 A 49 49 0 0 1 390.1 332.0 L 392.1 341.8 A 39 39 0 0 1 407.9 341.8 L 407.9 341.8 L 409.9 332.0 A 49 49 0 0 1 426.9 339.0 L 421.4 347.4 A 39 39 0 0 1 432.6 358.6 L 432.6 358.6 L 441.0 353.1 A 49 49 0 0 1 448.0 370.1 L 438.2 372.1 A 39 39 0 0 1 438.2 387.9 L 438.2 387.9 L 448.0 389.9 A 49 49 0 0 1 441.0 406.9 L 432.6 401.4 A 39 39 0 0 1 421.4 412.6 L 421.4 412.6 L 426.9 421.0 A 49 49 0 0 1 409.9 428.0 L 407.9 418.2 A 39 39 0 0 1 392.1 418.2 L 392.1 418.2 L 390.1 428.0 A 49 49 0 0 1 373.1 421.0 L 378.6 412.6 A 39 39 0 0 1 367.4 401.4 L 367.4 401.4 L 359.0 406.9 A 49 49 0 0 1 352.0 389.9 L 361.8 387.9 A 39 39 0 0 1 361.8 372.1 L 361.8 372.1 L 352.0 370.1 A 49 49 0 0 1 359.0 353.1 L 367.4 358.6 A 39 39 0 0 1 378.6 347.4 Z M 424.0 380.0 A 24 24 0 1 0 376.0 380.0 A 24 24 0 1 0 424.0 380.0 Z"></path><circle cx="400.0" cy="380.0" r="5" fill="#37485A"></circle></g>
 </svg>
+        <ul class="gear-roles">
+          <li><span class="role-label">THE FLOOR</span><span class="role-name">Lean &amp; CI consultant</span><span class="role-line">Doesn't write code</span></li>
+          <li><span class="role-label">THE CODE</span><span class="role-name">Software developer</span><span class="role-line">Doesn't know your floor</span></li>
+          <li><span class="role-label">THE DATA</span><span class="role-name">ERP partner</span><span class="role-line">Every change billed by the hour</span></li>
+        </ul>
+        </div>
         <ol class="mesh-list">
           <li><span class="n">01</span>I find the waste on the floor.</li>
           <li><span class="n">02</span>I write the code that removes it.</li>
@@ -976,7 +999,7 @@
   // Diagrams: start their animations when they scroll into view
   var erpDiagram = document.getElementById('erp-diagram');
   if (erpDiagram && !reduceMotion) onceInView([erpDiagram], 'run', 0.3);
-  var gears = document.querySelector('.gears');
+  var gears = document.querySelector('.gears-wrap');
   if (gears) onceInView([gears], 'run', 0.35);
 
   // Sound familiar: symptom toggles build the fix list
