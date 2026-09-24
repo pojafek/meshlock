@@ -26,7 +26,8 @@ section{position:relative;}
 /* ---------- NAV (same as homepage) ---------- */
 nav{
   display:flex; align-items:center; gap:22px;
-  padding:24px 6vw; position:sticky; top:0; z-index:50;
+  /* side padding lines the content up with .wrap (max 1080px, 6vw inside) */
+  padding:24px max(6vw, calc((100% - 1080px) / 2 + 6vw)); position:sticky; top:0; z-index:50;
   background:rgba(238,240,234,0.88); backdrop-filter:blur(6px);
   border-bottom:1px solid var(--line);
 }

@@ -116,7 +116,8 @@
   /* ---------- NAV ---------- */
   nav{
     display:flex; align-items:center; gap:22px;
-    padding:24px 6vw; position:sticky; top:0; z-index:50;
+    /* side padding lines the content up with .wrap (max 1080px, 6vw inside) */
+    padding:24px max(6vw, calc((100% - 1080px) / 2 + 6vw)); position:sticky; top:0; z-index:50;
     background:rgba(238,240,234,0.88); backdrop-filter:blur(6px);
     border-bottom:1px solid var(--line);
   }
@@ -1048,7 +1049,8 @@
     if (reduceMotion){ setAngle(0); rig.classList.add('locked'); }
     else {
       setAngle(-120);
-      setTimeout(function(){
+      // lock in once the rig is on screen (straight away if it already is)
+      var playRig = function(){ setTimeout(function(){
         var t0=null;
         function step(ts){
           if(t0===null) t0=ts;
@@ -1058,7 +1060,13 @@
         }
         requestAnimationFrame(step);
         rig.classList.add('locked');
-      },250);
+      },250); };
+      if ('IntersectionObserver' in window) {
+        var rigIO = new IntersectionObserver(function(entries){
+          if (entries[entries.length - 1].isIntersecting) { rigIO.disconnect(); playRig(); }
+        }, { threshold: 0.5 });
+        rigIO.observe(rig);
+      } else playRig();
     }
   }
 
