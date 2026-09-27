@@ -55,6 +55,10 @@ nav{
 }
 .nav-cta:hover{background:var(--ink); color:var(--paper);}
 
+.nl-short{display:none;}
+@media (max-width:640px){ .nl-long{display:none;} .nl-short{display:inline;} }
+@media (max-width:1500px){ .nav-tag{display:none;} }
+
 /* ---------- DIMENSION DIVIDER (reused signature device) ---------- */
 .dim-divider{
   display:flex; align-items:center; gap:14px; margin:0 auto; max-width:1080px;
