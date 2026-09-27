@@ -55,6 +55,17 @@ nav{
 }
 .nav-cta:hover{background:var(--ink); color:var(--paper);}
 
+.nl-short{display:none;}
+@media (max-width:640px){ .nl-long{display:none;} .nl-short{display:inline;} }
+@media (max-width:1500px){ .nav-tag{display:none;} }
+
+.offer-bar{background:var(--ink); color:var(--paper); font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:.04em; line-height:1.5;}
+.offer-bar p{max-width:1080px; margin:0 auto; padding:10px 6vw; display:flex; flex-wrap:wrap; gap:4px 16px; justify-content:center; align-items:center; text-align:center;}
+.offer-bar a{color:var(--amber); text-decoration:underline; text-underline-offset:3px; white-space:nowrap;}
+.offer-bar a:hover{color:var(--paper);}
+.ob-short{display:none;}
+@media (max-width:640px){ .ob-long{display:none;} .ob-short{display:inline;} .offer-bar{font-size:12px;} }
+
 /* ---------- DIMENSION DIVIDER (reused signature device) ---------- */
 .dim-divider{
   display:flex; align-items:center; gap:14px; margin:0 auto; max-width:1080px;
