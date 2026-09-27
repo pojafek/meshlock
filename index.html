@@ -363,7 +363,7 @@
   .run .cap-out{animation:capOut 2.4s ease both}
   .run .cap-in{animation:capIn 2.8s ease both}
   @media (prefers-reduced-motion:reduce){
-    .gears-wrap *{animation:none !important;}
+    .gears-wrap .spin-c, .gears-wrap .spin-o{animation:none !important;}
   }
   /* phones: SVG text is too small, so the captions and roles show as HTML instead */
   .gears-cap, .gear-roles{display:none;}
@@ -453,7 +453,6 @@
 <nav>
   <div class="brand">
     <div class="wordmark"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="178" height="28"></div>
-    <span class="nav-tag">SOFTWARE · LEAN · ERP</span>
   </div>
   <div class="nav-links">
     <a class="nav-link" href="/tools/"><span class="nl-long">Tools in action</span><span class="nl-short">Tools</span></a>
@@ -473,7 +472,7 @@
       <p class="lede">I find where the time goes on your floor, then build the tool that fixes it, around the ERP you already have.</p>
       <div class="hero-ctas">
         <a class="btn-primary" href="#contact">Book a free call</a>
-        <a class="btn-ghost" href="#tools">See the tools in action ↓</a>
+        <a class="btn-ghost" href="#tools">Watch four fixes run ↓</a>
       </div>
       <p class="hero-note">No subscription · No AI wrapper · You own the tool</p>
     </div>

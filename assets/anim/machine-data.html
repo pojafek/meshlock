@@ -142,6 +142,8 @@ body{display:flex;align-items:center;justify-content:center;min-height:100vh;ove
 html,body{background:#E3E6DC;}
 html.embed,html.embed body{background:#EEF0EA;}
 .embed .ctl{display:none;}
+.playbtn{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;font:500 15px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;background:#171A1D;color:#EEF0EA;border:0;border-radius:3px;padding:16px 22px;cursor:pointer;box-shadow:3px 4px 0 #D9A441;}
+.playbtn:focus-visible{outline:2.5px solid #37485A;outline-offset:3px;}
 </style>
 </head>
 <body>
@@ -359,7 +361,8 @@ window.DUR=DUR;window.renderAt=render;
 function fit(){if(RENDER)return;const s=$('stage');const W=V?1080:1920,H=V?1920:1080;const k=Math.min(innerWidth/W,(innerHeight-(EMBED?0:56))/H);s.style.transform=`scale(${k})`;s.style.margin=`${(H*k-H)/2}px ${(W*k-W)/2}px`;}
 addEventListener('resize',fit);fit();
 const RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-if(RM&&!RENDER){render(T.s0-.3);}
+function addPlay(){const b=document.createElement('button');b.className='playbtn';b.type='button';b.textContent='▶ Play animation';b.onclick=()=>{params.set('play','1');location.search=params.toString();};document.body.appendChild(b);}
+if(RM&&!RENDER&&!params.has('play')){render(T.s0-.3);addPlay();}
 else if(!RENDER){let t0=performance.now();const loop=now=>{let t=(now-t0)/1000;if(t>DUR+1.5){t0=now;t=0;}render(Math.min(t,DUR));requestAnimationFrame(loop);};requestAnimationFrame(loop);
   $('replay').onclick=()=>{t0=performance.now();};$('fmt').textContent=V?'Horizontal':'Vertical';$('fmt').onclick=()=>{params.set('v',V?'0':'1');location.search=params.toString();};}
 else{render(0);}
