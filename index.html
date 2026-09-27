@@ -130,6 +130,13 @@
   @media (max-width:640px){ .nl-long{display:none;} .nl-short{display:inline;} }
   @media (max-width:1500px){ .nav-tag{display:none;} }
 
+  .offer-bar{background:var(--ink); color:var(--paper); font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:.04em; line-height:1.5;}
+  .offer-bar p{max-width:1080px; margin:0 auto; padding:10px 6vw; display:flex; flex-wrap:wrap; gap:4px 16px; justify-content:center; align-items:center; text-align:center;}
+  .offer-bar a{color:var(--amber); text-decoration:underline; text-underline-offset:3px; white-space:nowrap;}
+  .offer-bar a:hover{color:var(--paper);}
+  .ob-short{display:none;}
+  @media (max-width:640px){ .ob-long{display:none;} .ob-short{display:inline;} .offer-bar{font-size:12px;} }
+
   /* ---------- HERO ---------- */
   .hero{padding:72px 6vw 60px; position:relative; overflow:hidden;}
   .hero::before{
@@ -456,6 +463,7 @@
   </div>
   <a class="nav-cta" href="#contact">Book a call</a>
 </nav>
+<div class="offer-bar"><p><span class="ob-long">Here for the long run. So your first tool is paid for only when it works as agreed.</span><span class="ob-short">First tool: pay only when it works.</span> <a href="/#how">How it works →</a></p></div>
 
 <section class="hero">
   <div class="hero-inner">
@@ -563,17 +571,17 @@
       </a>
       <a class="tool-tile watch" href="/assets/anim/dxf-check.html" data-title="Pre-production quality gate">
         <img src="/assets/anim/thumbs/dxf-check.webp" alt="" width="960" height="540" loading="lazy">
-        <span class="tt-body"><span class="tt-num">Up to 10%</span><span class="tt-name">Laser capacity freed by checking every file first</span><span class="tt-play">▶ SEE IT RUN</span></span>
+        <span class="tt-body"><span class="tt-num">Up to 10%</span><span class="tt-name">Machine capacity freed by checking every file first</span><span class="tt-play">▶ SEE IT RUN</span></span>
       </a>
-      <a class="tool-tile watch" href="/assets/anim/laser-data.html" data-title="Laser run data and the cut time model">
-        <img src="/assets/anim/thumbs/laser-data.webp" alt="" width="960" height="540" loading="lazy">
-        <span class="tt-body"><span class="tt-num">3 years</span><span class="tt-name">Of raw laser logs turned into live run data</span><span class="tt-play">▶ SEE IT RUN</span></span>
+      <a class="tool-tile watch" href="/assets/anim/machine-data.html" data-title="Machine run data and the cut time model">
+        <img src="/assets/anim/thumbs/machine-data.webp" alt="" width="960" height="540" loading="lazy">
+        <span class="tt-body"><span class="tt-num">3 years</span><span class="tt-name">Of raw machine logs turned into live run data</span><span class="tt-play">▶ SEE IT RUN</span></span>
       </a>
     </div>
   </div>
 </section>
 
-<section class="process">
+<section class="process" id="how">
   <div class="wrap">
     <h2>How an engagement runs</h2>
     <div class="process-row">
@@ -706,6 +714,7 @@
     <li><a href="/notes/">Field notes</a></li>
     <li><a href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn</a></li>
     <li><a href="mailto:hello@meshlock.co.uk">hello@meshlock.co.uk</a></li>
+    <li><a href="#top">Back to top ↑</a></li>
     <li class="copy">© 2026 Meshlock</li>
   </ul>
 </footer>

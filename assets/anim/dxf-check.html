@@ -144,19 +144,19 @@ html.embed,html.embed body{background:#EEF0EA;}
 <div class="stage" id="stage">
   <div class="grid"></div>
   <div class="frame"></div>
-  <div class="corner tl" id="cornerL">Case file · Laser cutting</div>
+  <div class="corner tl" id="cornerL">Case file · Cut files</div>
   <div class="corner tr" id="cornerR">meshlock.co.uk</div>
 
   <div id="scene">
     <div class="copy">
       <p class="label" id="lbl">The check</p>
       <div class="head">
-        <h1 id="h1a">Every cut file is checked before it reaches a laser.</h1>
+        <h1 id="h1a">Every cut file is checked before it reaches a machine.</h1>
         <h1 id="h1b">One gap found. Fixed in the file, not on the machine.</h1>
       </div>
       <div class="chiprow">
         <div class="row0" id="chipB" style="position:absolute;left:0;top:0;display:flex;align-items:center;gap:16px;white-space:nowrap"><span class="chip red">FAULT FOUND</span><p>Open contour on part 6.</p></div>
-        <div class="row0" id="chipA" style="position:absolute;left:0;top:0;display:flex;align-items:center;gap:16px;white-space:nowrap"><span class="chip green">PASS</span><p>Sent to the laser. No test cut.</p></div>
+        <div class="row0" id="chipA" style="position:absolute;left:0;top:0;display:flex;align-items:center;gap:16px;white-space:nowrap"><span class="chip green">PASS</span><p>Sent to the machine. No test cut.</p></div>
       </div>
     </div>
 
@@ -173,7 +173,7 @@ html.embed,html.embed body{background:#EEF0EA;}
     <div class="stamp" id="stamp">PASS · READY TO CUT</div>
     <div class="result" id="result">
       <div class="num" id="num">10%</div>
-      <div><b>LASER FLEET CAPACITY FREED</b><i>Up to. Faults stop at the file, not with a customer.</i></div>
+      <div><b>MACHINE CAPACITY FREED</b><i>Up to. Faults stop at the file, not with a customer.</i></div>
     </div>
     <div class="foot" id="foot">Parts and figures on screen are illustrative. The capacity result is real, rounded.</div>
   </div>
@@ -209,7 +209,7 @@ const INK='#171A1D',RED='#B5482E',GREEN='#3F6B52',STEEL='#37485A';
 const svg=$('plan');const g0=el('g',{},svg);
 // machine bed (dashed) and sheet
 const bed=el('rect',{x:-24,y:-24,width:1048,height:688,fill:'none',stroke:'#8A9086','stroke-width':1.5,'stroke-dasharray':'8 7'},g0);
-const bedLbl=el('text',{x:1024,y:-34,'text-anchor':'end','font-family':'IBM Plex Mono','font-size':15,'letter-spacing':2.5,fill:'#565C58'},g0);bedLbl.textContent='LASER BED';
+const bedLbl=el('text',{x:1024,y:-34,'text-anchor':'end','font-family':'IBM Plex Mono','font-size':15,'letter-spacing':2.5,fill:'#565C58'},g0);bedLbl.textContent='MACHINE BED';
 const sheet=el('rect',{x:0,y:0,width:1000,height:640,fill:'#F6F7F2',stroke:INK,'stroke-width':3,pathLength:1,'stroke-dasharray':1,'stroke-dashoffset':1},g0);
 // origin crosshair (bottom-left)
 const org=el('g',{},g0);

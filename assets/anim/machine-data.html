@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<title>Meshlock · Laser run tracking</title>
+<title>Meshlock · Machine run tracking</title>
 <style>
 
 
@@ -148,14 +148,14 @@ html.embed,html.embed body{background:#EEF0EA;}
 <div class="stage" id="stage">
   <div class="grid"></div>
   <div class="frame"></div>
-  <div class="corner tl" id="cornerL">Case file · Laser fleet data</div>
+  <div class="corner tl" id="cornerL">Case file · Machine fleet data</div>
   <div class="corner tr" id="cornerR">meshlock.co.uk</div>
 
   <div id="scene">
     <div class="copy">
       <p class="label" id="lbl">The problem</p>
       <div class="head">
-        <h1 id="h1a">Years of laser logs, sitting unread in raw files.</h1>
+        <h1 id="h1a">Years of machine logs, sitting unread in raw files.</h1>
         <h1 id="h1b">Now every run is tracked, to the second.</h1>
       </div>
       <div class="chiprow">
@@ -165,7 +165,7 @@ html.embed,html.embed body{background:#EEF0EA;}
     </div>
 
     <div class="checks" id="checks">
-      <p class="t">LASER FLEET · RUN DATA</p>
+      <p class="t">MACHINE FLEET · RUN DATA</p>
       <div class="row" id="r0"><span class="st"></span><span class="nm">COLLECT</span><span class="dt"></span></div>
       <div class="row" id="r1"><span class="st"></span><span class="nm">CLEAN</span><span class="dt"></span></div>
       <div class="row" id="r2"><span class="st"></span><span class="nm">TRACK</span><span class="dt"></span></div>
@@ -336,7 +336,7 @@ function render(t){
   lens.setAttribute('opacity',lo);lens.setAttribute('transform',`translate(${700+(hx-700)*lm},${520+(hy-520)*lm})`);
   call.setAttribute('opacity',seg(t,C[3][0]+.7,C[3][0]+1.0));
   // checklist
-  row(0,t,()=>`${Math.round(1+1095*eo(seg(t,C[0][0],C[0][1])))} days read`,'Raw logs from every laser');
+  row(0,t,()=>`${Math.round(1+1095*eo(seg(t,C[0][0],C[0][1])))} days read`,'Raw logs from every machine');
   row(1,t,'matching to jobs','Sorted and matched to jobs');
   row(2,t,()=>fmt(now),'Every start and stop');
   row(3,t,'scanning','Stops over 10 min flagged');

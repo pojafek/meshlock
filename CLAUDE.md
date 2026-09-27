@@ -30,7 +30,7 @@ assets/
     picking-route.html        Smarter picking
     dxf-check.html            Pre-production quality gate
     job-travellers.html       Job traveller tool (ERP band)
-    laser-data.html           Laser run data and cut time model
+    machine-data.html         Machine run data and cut time model
     thumbs/*.webp             960x540 still frames for the homepage tiles
 notes/
   index.html                  Field Notes list
@@ -98,6 +98,7 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 - The homepage opens them in the `#anim-dialog` viewer from any `a.watch` link, adding `?embed=1&v=0|1` (v=1 is the portrait layout for phones). Without JavaScript the link opens the page itself.
 - Inside a page, all motion comes from one `render(t)` function. With reduced motion the page shows one still frame of the result.
 - On-screen parts, orders, machine names and times are illustrative and say so in the footer line. Results shown must match the case file text.
+- Say "machine", never the specific machine type, in site copy and animations. Specific process words make the source easy to guess.
 
 ## Writing rules
 
