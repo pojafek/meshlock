@@ -14,7 +14,7 @@ Plain static HTML and CSS. No framework, no build step, no package.json. Keep it
 
 ```
 index.html                    Homepage (all CSS inline in <style>)
-tools/index.html              Tools in action: ERP band, four live animations, more case files
+tools/index.html              Tools in action: ERP intro with stats, four full-width live animations (Full screen button), more case files
 prices/index.html             Price list, Always included, FAQ (FAQPage JSON-LD lives here)
 apple-touch-icon.png          180px icon
 sitemap.xml                   Sitemap for /, /notes/ and each article
@@ -78,7 +78,7 @@ Logo palette: ink `#171A1D`, paper `#EEF0EA`, bronze `#B98A3A` (used for the mag
 
 Fonts (Google Fonts): Space Grotesk for headings, IBM Plex Sans for body, IBM Plex Mono for small labels.
 
-Main line: "Lean, software and ERP. One person." Used in the hero, footer and link previews.
+Main line: "Lean, software and ERP. One person." Used under the wordmark in the hero lockup, in the footer and in link previews.
 Longer line, used as the About heading where there is room to explain the name: "Software engineer, Lean consultant or ERP specialist? You don't have to choose. I mesh all three." Short form: `SOFTWARE · LEAN · ERP`.
 
 Visual identity: engineering drawing and inspection language. Grid paper, dimension lines, gears, inspection stamps. Flat colour, no gradients, no drop shadows.
@@ -114,7 +114,7 @@ Keep the homepage short. Detail lives on its own page.
 Page order in `index.html`:
 
 1. Nav
-2. Hero: main line, one benefit sentence, Book a free call + See the tools in action, gear lockup
+2. Hero: H1 "Your ERP stays. I build what it can't do.", one benefit sentence, Book a free call + Watch four fixes run; on the right the full lockup (gears, wordmark, main line). On phones the lockup comes first
 3. Sound familiar? (`id="familiar"`): symptom toggles and the live fix list
 4. Tools in action strip (`id="tools"`): four tiles that open the animation viewer, link to /tools/
 5. How an engagement runs
