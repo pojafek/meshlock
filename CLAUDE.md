@@ -25,7 +25,8 @@ assets/
   notes.css                   Base stylesheet (tokens, nav, footer) for every page except the homepage
   site.css                    Extra styles for /tools/ and /prices/, loaded after notes.css
   kamil-pojawa.jpg            Profile photo for "Who's behind this"
-  og-image.png                1200×630 link-preview image (gear lockup, "Lean, software and ERP. One person.")
+  og-image.png                1200×630 link-preview image (gear lockup, "Lean, software and ERP. One person."). Pages link it as og-image.png?v=2; bump the number whenever the image changes so LinkedIn fetches the new one
+  email/meshlock-signature.png  360×56 wordmark on white for the email signature (shown at 180×28). Linked from Gmail, so never rename or remove it
   anim/                       Case file animations (self-contained HTML, noindex)
     picking-route.html        Smarter picking
     dxf-check.html            Pre-production quality gate
