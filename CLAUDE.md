@@ -23,6 +23,11 @@ assets/
   notes.css                   Shared stylesheet for Field Notes pages
   kamil-pojawa.jpg            Profile photo for "Who's behind this"
   og-image.png                1200×630 link-preview image
+  anim/                       Case file animations (self-contained HTML, noindex)
+    picking-route.html        Smarter picking
+    dxf-check.html            Pre-production quality gate
+    job-travellers.html       Job traveller tool (ERP band)
+    laser-data.html           Laser run data and cut time model
 notes/
   index.html                  Field Notes list
   doing-it-by-hand.html       First article
@@ -81,6 +86,13 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 - Any new gear graphic on the site should follow the logo's gear style: rounded teeth and a thick ring, not sharp square teeth.
 - The hero rig is the logo in motion: a 12-tooth ink gear with a static magnifier meshing with an 8-tooth steel gear. The small gear turns at -12/8 of the big gear's angle so the teeth never overlap. Do not change tooth counts, radii or the ratio without redoing the mesh geometry.
 - The "Who's behind this" rig is a 12-tooth ink logo gear with a static magnifier meshing with three 8-tooth steel gears at 110px centre distance (angles 210°, 330°, 90°). Outer gears turn at -12/8 of the centre gear. Do not change tooth counts, radii or positions without redoing the mesh geometry.
+
+## Case file animations
+
+- Each file in `assets/anim/` is one self-contained page: inline SVG and script, fonts from Google Fonts, no other requests. Keep them `noindex` and out of the sitemap.
+- The homepage opens them in the `#anim-dialog` viewer from any `a.watch` link, adding `?embed=1&v=0|1` (v=1 is the portrait layout for phones). Without JavaScript the link opens the page itself.
+- Inside a page, all motion comes from one `render(t)` function. With reduced motion the page shows one still frame of the result.
+- On-screen parts, orders, machine names and times are illustrative and say so in the footer line. Results shown must match the case file text.
 
 ## Writing rules
 

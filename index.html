@@ -381,6 +381,25 @@
   .case-card .field b{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:3px;}
   .case-card .field p{margin:0; font-size:14.5px; color:var(--ink); line-height:1.55;}
 
+  .case-card .watch{display:inline-block; margin-top:6px;}
+  .erp-band .erp-watch{margin:18px 0 0;}
+  .erp-band .text-link{color:var(--paper); text-decoration-color:var(--amber);}
+  .erp-band .text-link:hover{color:var(--amber);}
+
+  /* ---------- ANIMATION VIEWER ---------- */
+  .anim-dialog{width:min(94vw, 1180px); max-width:none; padding:0; border:1.5px solid var(--ink); border-radius:var(--radius); background:var(--paper); color:var(--ink);}
+  .anim-dialog::backdrop{background:rgba(23,26,29,.82);}
+  .anim-head{display:flex; justify-content:space-between; align-items:center; gap:16px; padding:12px 16px; border-bottom:1px solid var(--line);}
+  .anim-head .label{margin:0;}
+  .anim-close{font-family:'IBM Plex Mono',monospace; font-size:12.5px; text-transform:uppercase; letter-spacing:.08em; background:none; color:var(--ink); border:1px solid var(--ink); border-radius:var(--radius); padding:8px 14px; cursor:pointer;}
+  .anim-close:hover{background:var(--ink); color:var(--paper);}
+  .anim-frame{aspect-ratio:16/9; background:var(--paper);}
+  .anim-frame iframe{display:block; width:100%; height:100%; border:0;}
+  @media (max-width:640px), (max-aspect-ratio:3/4){
+    .anim-dialog{width:min(94vw, calc((100dvh - 90px) * 9 / 16));}
+    .anim-frame{aspect-ratio:9/16;}
+  }
+
   /* ---------- FIELD NOTES TEASER ---------- */
   .notes-teaser{padding:64px 0;}
   .note-card{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:14px 32px; align-items:end; background:var(--paper-card); border:1px solid var(--line); border-radius:var(--radius); padding:28px 28px 26px;}
@@ -626,6 +645,7 @@
     <p class="label">Around your ERP</p>
     <h2>Your ERP stays. I build what it can't do.</h2>
     <p class="erp-text">Works orders came off the ERP unsorted, with no carrier details and no picture of the part. Small tools built around it now put despatch paperwork in exact picking order, keep multi-sheet orders together, stamp the right courier and print a preview of the correct part on every sheet. The ERP provider's own consultants couldn't match it.</p>
+    <p class="erp-watch"><a class="text-link watch" href="/assets/anim/job-travellers.html" data-title="Job travellers, sorted in a minute">See the job traveller tool run →</a></p>
     <div class="erp-diagram" id="erp-diagram">
 <svg viewBox="0 0 1120 320" width="1120" height="320" role="img" aria-label="Your ERP exports reports to a small tool, which turns them into sorted, stamped works orders">
 <rect x="20" y="100" width="210" height="120" rx="3" fill="none" stroke="#EEF0EA" stroke-width="1.5"></rect>
@@ -813,6 +833,7 @@
         <div class="field"><b>Challenge</b><p>Design files reached the floor with no automated check. Errors caught only after material and time were spent.</p></div>
         <div class="field"><b>Approach</b><p>Built a digital QA system validating files before they reach a machine, catching structural and sizing issues automatically.</p></div>
         <div class="field"><b>Outcome</b><p>Physical test-cutting eliminated for validated files; defects caught at the design stage.</p></div>
+        <a class="text-link watch" href="/assets/anim/dxf-check.html" data-title="Pre-production quality gate">See it run →</a>
       </div>
 
       <div class="case-card"><span class="tag">Verified</span>
@@ -827,6 +848,7 @@
         <div class="field"><b>Challenge</b><p>Time estimates relied on manual test-runs and rough averages. Slow, and didn't scale.</p></div>
         <div class="field"><b>Approach</b><p>Built a predictive model calibrated on real historical production data, capturing the factors that actually drive time.</p></div>
         <div class="field"><b>Outcome</b><p>Faster, more consistent estimates feeding directly into planning and scheduling.</p></div>
+        <a class="text-link watch" href="/assets/anim/laser-data.html" data-title="Laser run data and the cut time model">See it run →</a>
       </div>
 
       <div class="case-card"><span class="tag">Verified</span>
@@ -841,6 +863,7 @@
         <div class="field"><b>Challenge</b><p>Pickers walked the warehouse in whatever order the paperwork came out.</p></div>
         <div class="field"><b>Approach</b><p>A tool that maps efficient routes and sequences orders to match.</p></div>
         <div class="field"><b>Outcome</b><p>Picking rate up by about 40%.</p></div>
+        <a class="text-link watch" href="/assets/anim/picking-route.html" data-title="Smarter picking">See it run →</a>
       </div>
 
     </div>
@@ -1201,5 +1224,30 @@
   })();
 </script>
 
+<dialog class="anim-dialog" id="anim-dialog" aria-labelledby="anim-title">
+  <div class="anim-head"><p class="label" id="anim-title">Case file</p><button type="button" class="anim-close">Close</button></div>
+  <div class="anim-frame"><iframe title="Case file animation" src="about:blank"></iframe></div>
+</dialog>
+<script>
+(function(){
+  var dlg = document.getElementById('anim-dialog');
+  if (!dlg || typeof dlg.showModal !== 'function') return;
+  var frame = dlg.querySelector('iframe'), title = document.getElementById('anim-title');
+  function close(){ dlg.close(); }
+  dlg.addEventListener('close', function(){ frame.src = 'about:blank'; });
+  dlg.querySelector('.anim-close').addEventListener('click', close);
+  dlg.addEventListener('click', function(e){ if (e.target === dlg) close(); });
+  Array.prototype.forEach.call(document.querySelectorAll('a.watch'), function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      title.textContent = a.getAttribute('data-title') || 'Case file';
+      frame.title = (a.getAttribute('data-title') || 'Case file') + ', animation';
+      dlg.showModal();
+      var portrait = frame.clientHeight > frame.clientWidth;
+      frame.src = a.getAttribute('href') + '?embed=1&v=' + (portrait ? '1' : '0');
+    });
+  });
+})();
+</script>
 </body>
 </html>
