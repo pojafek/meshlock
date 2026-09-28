@@ -270,6 +270,9 @@
   .fix-name{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:16.5px; line-height:1.3; margin:0 0 4px;}
   .fix-result{font-size:14px; color:var(--ink-soft); margin:0; line-height:1.5;}
   .fix-price{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--amber-ink); white-space:nowrap; text-align:right;}
+  .fix-prices{margin:16px 0 0; font-size:14.5px; line-height:1.5; color:var(--ink-soft);}
+  .fix-prices a{color:var(--ink);}
+  .js .fix-panel.empty .fix-prices{display:none;}
   .fix-stamp-row{display:flex; justify-content:flex-end; margin:18px 4px 20px;}
   .fix-stamp{
     font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.1em; font-weight:500;
@@ -507,15 +510,15 @@
     <div class="sec-head">
       <p class="label">Diagnosis, the short version</p>
       <h2>Sound familiar?</h2>
-      <p>Tick what happens on your floor. You'll see what usually fixes it, and roughly what it costs.</p>
+      <p>Tick what happens on your floor. You'll see what usually fixes it.</p>
     </div>
     <div class="fam-grid">
       <div>
         <p class="fam-hint">Two are ticked as an example. Change them to match your floor.</p>
         <div class="symptoms">
-          <button type="button" class="sym" aria-pressed="true" data-fix="sort"><span class="box" aria-hidden="true"></span><span>Your ERP prints the paperwork. Then someone spends an hour sorting it by hand.</span></button>
-          <button type="button" class="sym" aria-pressed="false" data-fix="split"><span class="box" aria-hidden="true"></span><span>Orders with several job sheets get split up, and someone has to hunt for the rest.</span></button>
+          <button type="button" class="sym" aria-pressed="true" data-fix="sort"><span class="box" aria-hidden="true"></span><span>Your ERP prints the paperwork in one pile. Someone sorts it by hand and hunts for the missing sheets.</span></button>
           <button type="button" class="sym" aria-pressed="false" data-fix="courier"><span class="box" aria-hidden="true"></span><span>Despatch checks order numbers one by one to work out which courier it goes with.</span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="pick"><span class="box" aria-hidden="true"></span><span>Pickers walk the warehouse in whatever order the paperwork comes out.</span></button>
           <button type="button" class="sym" aria-pressed="true" data-fix="wrong"><span class="box" aria-hidden="true"></span><span>Nobody knows the wrong file was loaded until the part is already made.</span></button>
           <button type="button" class="sym" aria-pressed="false" data-fix="custom"><span class="box" aria-hidden="true"></span><span>Custom orders stall while someone emails back and forth for the missing details.</span></button>
           <button type="button" class="sym" aria-pressed="false" data-fix="reports"><span class="box" aria-hidden="true"></span><span>The data is all in the system, but the reports are too basic to run the floor on.</span></button>
@@ -536,18 +539,19 @@
         <p class="fix-head" aria-live="polite">Your fix list<span class="fix-count"> · <span class="fix-n">2 matches</span></span></p>
         <p class="fix-empty">Tick a problem on the left to see how it's usually fixed.</p>
         <ul class="fix-list">
-          <li class="fix on" data-fix="sort"><div><p class="fix-name">Paperwork sorted into picking order</p><p class="fix-result">Up to 12 hours a week saved at peak</p></div><span class="fix-price">from £1,000</span></li>
-          <li class="fix" data-fix="split"><div><p class="fix-name">Separator pages and multi-part flags</p><p class="fix-result">Every order stays together on the shelf</p></div><span class="fix-price">from £1,000</span></li>
-          <li class="fix" data-fix="courier"><div><p class="fix-name">Courier stamped on every sheet</p><p class="fix-result">Product-to-slip matching up to 5× faster</p></div><span class="fix-price">from £1,000</span></li>
-          <li class="fix on" data-fix="wrong"><div><p class="fix-name">Quality gate and part preview on the sheet</p><p class="fix-result">The operator sees what it should look like</p></div><span class="fix-price">from £1,500</span></li>
-          <li class="fix" data-fix="custom"><div><p class="fix-name">Automatic request to customer service</p><p class="fix-result">The answer goes straight back onto the sheet</p></div><span class="fix-price">from £1,500</span></li>
-          <li class="fix" data-fix="reports"><div><p class="fix-name">Automated reports and live dashboards</p><p class="fix-result">One current view, nobody compiling it by hand</p></div><span class="fix-price">from £750</span></li>
-          <li class="fix" data-fix="setup"><div><p class="fix-name">Standardised machine files with built-in checks</p><p class="fix-result">Prep time down 93% in one project</p></div><span class="fix-price">from £1,500</span></li>
-          <li class="fix" data-fix="guess"><div><p class="fix-name">Calculators and estimates from your own data</p><p class="fix-result">From a simple job-time or packaging calculator to a model built on your production history</p></div><span class="fix-price">from £750</span></li>
-          <li class="fix" data-fix="export"><div><p class="fix-name">Batch export in Adobe, folder by folder</p><p class="fix-result">A whole queue of files done in one click, with an error summary</p></div><span class="fix-price">from £500</span></li>
-          <li class="fix" data-fix="personal"><div><p class="fix-name">Adobe layout automation with built-in checks</p><p class="fix-result">Print-ready files generated from order data, checked before export</p></div><span class="fix-price">from £2,500</span></li>
+          <li class="fix on" data-fix="sort"><div><p class="fix-name">Paperwork sorted, with separators for multi-part orders</p><p class="fix-result">Up to 12 hours a week saved at peak. Every order stays together.</p></div></li>
+          <li class="fix" data-fix="courier"><div><p class="fix-name">Courier stamped on every sheet</p><p class="fix-result">Product-to-slip matching up to 5× faster</p></div></li>
+          <li class="fix" data-fix="pick"><div><p class="fix-name">Picking routes and order sequence</p><p class="fix-result">Picking rate up by about 40%</p></div></li>
+          <li class="fix on" data-fix="wrong"><div><p class="fix-name">Quality gate and part preview on the sheet</p><p class="fix-result">The operator sees what it should look like</p></div></li>
+          <li class="fix" data-fix="custom"><div><p class="fix-name">Automatic request to customer service</p><p class="fix-result">The answer goes straight back onto the sheet</p></div></li>
+          <li class="fix" data-fix="reports"><div><p class="fix-name">Automated reports and live dashboards</p><p class="fix-result">One current view, nobody compiling it by hand</p></div></li>
+          <li class="fix" data-fix="setup"><div><p class="fix-name">Standardised machine files with built-in checks</p><p class="fix-result">Prep time down 93% in one project</p></div></li>
+          <li class="fix" data-fix="guess"><div><p class="fix-name">Calculators and estimates from your own data</p><p class="fix-result">From a simple job-time or packaging calculator to a model built on your production history</p></div></li>
+          <li class="fix" data-fix="export"><div><p class="fix-name">Batch export in Adobe, folder by folder</p><p class="fix-result">A whole queue of files done in one click, with an error summary</p></div></li>
+          <li class="fix" data-fix="personal"><div><p class="fix-name">Adobe layout automation with built-in checks</p><p class="fix-result">Print-ready files generated from order data, checked before export</p></div></li>
           <li class="fix" data-fix="unsure"><div><p class="fix-name">A fresh pair of eyes on your process</p><p class="fix-result">A free 30-minute call first. If a closer look helps, a one-day review is £600, credited in full against any build.</p></div><span class="fix-price">free to start</span></li>
         </ul>
+        <p class="fix-prices">Every tool is quoted for your workflow. <a href="/prices/">See example prices →</a></p>
         <div class="fix-stamp-row"><span class="fix-stamp">PASS · FIX FOUND</span></div>
         <p class="fix-note">First job: you pay when it works. Review fees are credited against any build.</p>
         <a class="btn-primary" href="#contact">Talk it through · Free 30 min</a>
