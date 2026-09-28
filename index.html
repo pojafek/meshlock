@@ -516,9 +516,9 @@
       <div>
         <p class="fam-hint">Two are ticked as an example. Change them to match your floor.</p>
         <div class="symptoms">
-          <button type="button" class="sym" aria-pressed="true" data-fix="sort"><span class="box" aria-hidden="true"></span><span>Your ERP prints the paperwork. Then someone spends an hour sorting it by hand.</span></button>
-          <button type="button" class="sym" aria-pressed="false" data-fix="split"><span class="box" aria-hidden="true"></span><span>Orders with several job sheets get split up, and someone has to hunt for the rest.</span></button>
+          <button type="button" class="sym" aria-pressed="true" data-fix="sort"><span class="box" aria-hidden="true"></span><span>Your ERP prints the paperwork in one pile. Someone sorts it by hand and hunts for the missing sheets.</span></button>
           <button type="button" class="sym" aria-pressed="false" data-fix="courier"><span class="box" aria-hidden="true"></span><span>Despatch checks order numbers one by one to work out which courier it goes with.</span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="pick"><span class="box" aria-hidden="true"></span><span>Pickers walk the warehouse in whatever order the paperwork comes out.</span></button>
           <button type="button" class="sym" aria-pressed="true" data-fix="wrong"><span class="box" aria-hidden="true"></span><span>Nobody knows the wrong file was loaded until the part is already made.</span></button>
           <button type="button" class="sym" aria-pressed="false" data-fix="custom"><span class="box" aria-hidden="true"></span><span>Custom orders stall while someone emails back and forth for the missing details.</span></button>
           <button type="button" class="sym" aria-pressed="false" data-fix="reports"><span class="box" aria-hidden="true"></span><span>The data is all in the system, but the reports are too basic to run the floor on.</span></button>
@@ -539,9 +539,9 @@
         <p class="fix-head" aria-live="polite">Your fix list<span class="fix-count"> · <span class="fix-n">2 matches</span></span></p>
         <p class="fix-empty">Tick a problem on the left to see how it's usually fixed.</p>
         <ul class="fix-list">
-          <li class="fix on" data-fix="sort"><div><p class="fix-name">Paperwork sorted into picking order</p><p class="fix-result">Up to 12 hours a week saved at peak</p></div></li>
-          <li class="fix" data-fix="split"><div><p class="fix-name">Separator pages and multi-part flags</p><p class="fix-result">Every order stays together on the shelf</p></div></li>
+          <li class="fix on" data-fix="sort"><div><p class="fix-name">Paperwork sorted, with separators for multi-part orders</p><p class="fix-result">Up to 12 hours a week saved at peak. Every order stays together.</p></div></li>
           <li class="fix" data-fix="courier"><div><p class="fix-name">Courier stamped on every sheet</p><p class="fix-result">Product-to-slip matching up to 5× faster</p></div></li>
+          <li class="fix" data-fix="pick"><div><p class="fix-name">Picking routes and order sequence</p><p class="fix-result">Picking rate up by about 40%</p></div></li>
           <li class="fix on" data-fix="wrong"><div><p class="fix-name">Quality gate and part preview on the sheet</p><p class="fix-result">The operator sees what it should look like</p></div></li>
           <li class="fix" data-fix="custom"><div><p class="fix-name">Automatic request to customer service</p><p class="fix-result">The answer goes straight back onto the sheet</p></div></li>
           <li class="fix" data-fix="reports"><div><p class="fix-name">Automated reports and live dashboards</p><p class="fix-result">One current view, nobody compiling it by hand</p></div></li>
