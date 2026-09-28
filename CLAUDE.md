@@ -15,9 +15,9 @@ Plain static HTML and CSS. No framework, no build step, no package.json. Keep it
 ```
 index.html                    Homepage (all CSS inline in <style>)
 tools/index.html              Tools in action: ERP intro with stats, four full-width live animations (Full screen button), more case files
-prices/index.html             Price list, Always included, FAQ (FAQPage JSON-LD lives here)
+prices/index.html             How a price is set, example prices, how you pay, Always included, FAQ (FAQPage JSON-LD lives here)
 apple-touch-icon.png          180px icon
-sitemap.xml                   Sitemap for /, /notes/ and each article
+sitemap.xml                   Sitemap for /, /tools/, /prices/, /notes/ and each article
 robots.txt                    Allows all, points to sitemap.xml
 thanks.html                   Contact form landing page (noindex, not in the sitemap)
 assets/
@@ -125,7 +125,7 @@ Page order in `index.html`:
 
 Nav on every page: Tools in action · Prices · About (/#about) · Field notes, plus Book a call. Under 640px the links show short labels (`.nl-short`): Tools · Prices · About · Notes.
 
-The prices on /prices/ are the reference price list. Change them only when asked. The "from" prices in the Sound familiar? fix list should stay in line with them.
+Pricing works by method, not a price list: each quote is based on the work involved and how complex it is, as one fixed price in writing. The site never shows a day rate or hourly rate. The example prices on /prices/ are the reference. Change them only when asked. Each case file on /tools/ shows the matching example price ("A tool like this: about £…"), so keep the two in line. The Sound familiar? fix list shows no prices, only one line under the list linking to /prices/.
 
 The contact form is a Netlify Form (`name="contact"`, honeypot `bot-field`). Without JavaScript it posts to `/thanks.html`; with JavaScript it posts with fetch and shows a thank-you line in place. "Book a call" buttons link to `#contact`, not `mailto:`.
 
