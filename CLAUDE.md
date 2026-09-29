@@ -20,6 +20,7 @@ apple-touch-icon.png          180px icon
 sitemap.xml                   Sitemap for /, /tools/, /prices/, /notes/ and each article
 robots.txt                    Allows all, points to sitemap.xml
 thanks.html                   Contact form landing page (noindex, not in the sitemap)
+start/index.html              One-page offer: tick problems, add rough hours, get an offer with the current cost next to example tool prices (noindex, not in the sitemap)
 assets/
   meshlock-wordmark.svg       Wordmark used in nav and footer
   notes.css                   Base stylesheet (tokens, nav, footer) for every page except the homepage
@@ -100,6 +101,15 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 - Inside a page, all motion comes from one `render(t)` function. With reduced motion the page shows one still frame of the result.
 - On-screen parts, orders, machine names and times are illustrative and say so in the footer line. Results shown must match the case file text.
 - Say "machine", never the specific machine type, in site copy and animations. Specific process words make the source easy to guess.
+
+## One-page offer (/start/)
+
+- Answers live only in the link after `#` (`#f=key.hours,...&rate=..&erp=..`). Nothing is stored on the site until the visitor presses Send, which posts the Netlify Form `name="offer"`.
+- The keys (`sort`, `courier`, `pick`, `wrong`, `custom`, `reports`, `setup`, `guess`, `export`, `personal`, `unsure`) must match the homepage `data-fix` keys and must never be renamed, or old links break.
+- Tool prices come from the examples on /prices/. Keep them in line. Problems without an example show "priced after the call".
+- The current cost is the visitor's own cost, shown in red-flag. The tool price sits beside it in green, so the two are never confused.
+- "Not yet" leads to Save as PDF, so the visitor can pass the offer on.
+- Printed QR codes open `/start/?s=<source>` (`kp` Kamil's card, `kps` Kamil's one-pager, `pc` Patryk's card, `pcs` Patryk's sell sheet). The page sends that tag in the hidden `source` field, `site` when there is none. Never rename a tag already printed.
 
 ## Writing rules
 
