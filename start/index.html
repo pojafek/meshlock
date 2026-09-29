@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex">
+<title>Meshlock one-page offer</title>
+<meta name="description" content="Tick what slows your floor down, add rough numbers, and get a one-page offer with fixed prices. No writing needed.">
+<link rel="canonical" href="https://meshlock.co.uk/start/">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  :root{
+    --paper:#EEF0EA; --paper-dim:#E3E6DC; --paper-card:#F6F7F2;
+    --ink:#171A1D; --ink-soft:#565C58; --ink-faint:#8A9086;
+    --line:#C9CDC0; --line-strong:#171A1D;
+    --amber:#D9A441; --amber-ink:#5A4419;
+    --green:#3F6B52; --green-bg:#E4EBE3;
+    --steel:#37485A; --red-flag:#B5482E;
+    --radius:3px; --radius-tag:2px;
+  }
+  *{box-sizing:border-box;}
+  html{background:var(--paper);}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'IBM Plex Sans',-apple-system,Helvetica,Arial,sans-serif;font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;margin:0;letter-spacing:-0.01em;}
+  p{margin:0;}
+  .noscript a{color:var(--ink);text-decoration-color:var(--ink-faint);text-underline-offset:3px;}
+  :focus-visible{outline:2.5px solid var(--steel);outline-offset:3px;}
+  button{font:inherit;color:inherit;}
+
+  .wrap{max-width:720px;margin:0 auto;padding:0 6vw;}
+  @media (min-width:800px){.wrap{padding:0;}}
+
+  .top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-top:18px;}
+  .top img{height:24px;width:auto;display:block;}
+  @media (min-width:640px){.top img{height:28px;}}
+  .text-link{font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;text-decoration:underline;text-decoration-color:var(--ink-faint);text-underline-offset:4px;color:var(--ink-soft);}
+  .text-link:hover{text-decoration-color:var(--ink);}
+
+  .intro{padding:38px 0 8px;position:relative;}
+  .intro::before{content:"";position:absolute;top:0;bottom:0;left:-6vw;right:-6vw;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:34px 34px;-webkit-mask-image:linear-gradient(to bottom,#000 0%,transparent 95%);mask-image:linear-gradient(to bottom,#000 0%,transparent 95%);opacity:.7;pointer-events:none;}
+  .intro-inner{position:relative;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 16px;display:flex;align-items:center;gap:8px;}
+  .led{width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 0 3px var(--green-bg);flex:none;}
+  .intro h1{font-size:clamp(32px,8.4vw,44px);line-height:1.08;font-weight:700;max-width:16ch;text-wrap:balance;}
+  .lede{font-size:18px;color:var(--ink-soft);margin-top:16px;max-width:46ch;}
+
+  .noscript{padding:20px;border:1.5px dashed var(--ink-faint);margin:26px 0 60px;}
+  .js .noscript{display:none;}
+
+  /* Everything interactive is hidden without JavaScript */
+  .progress,.step,.bar,.done{display:none;}
+  .js .progress{display:flex;}
+
+  .progress{align-items:center;gap:10px;margin:26px 0 22px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
+  .disc{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--ink-faint);display:grid;place-items:center;font-size:12px;letter-spacing:0;color:var(--ink-soft);background:var(--paper);flex:none;}
+  .disc.on{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+  .disc.done{background:var(--green);border-color:var(--green);color:#fff;}
+  .prog-rule{flex:1;height:1px;background-image:linear-gradient(to right,var(--ink-faint) 60%,transparent 0%);background-size:6px 1px;background-repeat:repeat-x;min-width:12px;}
+  .prog-cap{white-space:nowrap;margin-left:4px;}
+  @media (max-width:420px){.prog-cap{display:none;}}
+
+  .js .step.show{display:block;padding-bottom:120px;animation:rise .35s ease both;}
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .step h2{font-size:26px;line-height:1.2;margin-bottom:8px;}
+  .step .sub{color:var(--ink-soft);margin-bottom:22px;max-width:52ch;}
+  .group-label{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin:28px 0 10px;}
+  .group-label .o{text-transform:none;letter-spacing:.04em;}
+
+  .syms{display:grid;gap:12px;}
+  .sym{display:flex;align-items:flex-start;gap:14px;width:100%;margin:0;padding:18px 18px 16px;text-align:left;cursor:pointer;font-size:15px;line-height:1.5;background:var(--paper-card);border:1.5px solid var(--line);border-radius:var(--radius);transition:background .15s ease,border-color .15s ease;}
+  .sym:hover{border-color:var(--ink-faint);}
+  .sym .box{flex:none;width:18px;height:18px;margin-top:2px;position:relative;border:1.5px solid var(--ink-faint);border-radius:var(--radius-tag);background:var(--paper-card);}
+  .sym[aria-pressed="true"]{background:var(--green-bg);border-color:var(--green);}
+  .sym[aria-pressed="true"] .box{background:var(--green);border-color:var(--green);}
+  .sym[aria-pressed="true"] .box::after{content:"";position:absolute;left:4.5px;top:1px;width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);}
+  .cap-note{font-size:14px;color:var(--ink-soft);margin-top:12px;min-height:22px;}
+
+  .chips{display:flex;flex-wrap:wrap;gap:10px;}
+  .chip{padding:11px 15px;min-height:46px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.04em;background:var(--paper-card);border:1.5px solid var(--line);border-radius:var(--radius);transition:background .15s ease,border-color .15s ease;}
+  .chip:hover{border-color:var(--ink-faint);}
+  .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+
+  .qrow{background:var(--paper-card);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px 16px 18px;margin-bottom:12px;}
+  .qrow .q{font-weight:600;font-size:16px;line-height:1.35;margin-bottom:12px;}
+
+  /* Sticky bar */
+  .bar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--paper);border-top:1px solid var(--line);padding:12px 6vw calc(12px + env(safe-area-inset-bottom));}
+  .js .bar.show{display:block;}
+  .bar-in{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:14px;}
+  .bar-note{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);flex:1;}
+  .bar-note b{color:var(--green);font-weight:500;}
+  .btn-primary,.btn-outline{font-family:'IBM Plex Mono',monospace;font-size:13px;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;border-radius:var(--radius);text-decoration:none;display:inline-block;text-align:center;}
+  .btn-primary{background:var(--ink);color:var(--paper);padding:14px 22px;border:1px solid var(--ink);transition:transform .15s ease,box-shadow .15s ease;}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:3px 4px 0 var(--amber);}
+  .btn-primary[disabled]{background:var(--paper-dim);color:var(--ink-soft);border-color:var(--line);cursor:not-allowed;transform:none;box-shadow:none;}
+  .btn-outline{font-size:12.5px;background:none;border:1px solid var(--ink);padding:11px 16px;color:var(--ink);}
+  .btn-outline:hover{background:var(--ink);color:var(--paper);}
+  .back{background:none;border:0;padding:14px 4px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);cursor:pointer;text-decoration:underline;text-decoration-color:var(--ink-faint);text-underline-offset:4px;}
+
+  /* Offer sheet */
+  .sheet{background:var(--paper-card);border:1.5px solid var(--ink);border-radius:var(--radius);padding:22px 20px 8px;}
+  .sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:16px;border-bottom:1px dashed var(--ink-faint);}
+  .sheet-head .l{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);line-height:1.7;}
+  .sheet-head .l b{color:var(--ink);font-weight:500;}
+  .stamp{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;font-weight:500;color:var(--green);border:1.5px dashed var(--green);border-radius:var(--radius-tag);padding:6px 11px;display:inline-block;transform:rotate(-6deg);white-space:nowrap;}
+  .stamp.land{animation:land .5s cubic-bezier(.2,1.5,.4,1) .25s both;}
+  @keyframes land{from{transform:rotate(-6deg) scale(1.5);opacity:0;}to{transform:rotate(-6deg) scale(1);opacity:1;}}
+  .sheet h3{font-size:19px;margin:22px 0 4px;}
+  .sheet .sheet-sub{font-size:14.5px;color:var(--ink-soft);}
+
+  .cost{margin-top:22px;}
+  .cost .lab,.terms .lab{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+  .cost-total{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:40px;line-height:1.05;letter-spacing:-0.01em;margin:8px 0 2px;}
+  .cost-total small{font-size:16px;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-left:6px;}
+  .cost-hours{font-size:14.5px;color:var(--ink-soft);}
+  .cost-rows{list-style:none;margin:14px 0 0;padding:0;}
+  .cost-rows li{display:flex;justify-content:space-between;gap:14px;align-items:baseline;padding:10px 0;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.45;}
+  .cost-rows .h{display:block;color:var(--ink-soft);font-size:13.5px;}
+  .cost-rows .p{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--red-flag);white-space:nowrap;}
+  .cost .lab.now{color:var(--red-flag);}
+  .cost-total{color:var(--red-flag);}
+  .cost-who{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;color:var(--red-flag);margin:4px 0 6px;}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);margin-top:12px;overflow:hidden;}
+  .vs[hidden]{display:none;}
+  .vs-col{background:var(--paper-card);padding:14px 14px 12px;}
+  .vs-col.fix{background:var(--green-bg);}
+  .vs-lab{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
+  .cost-tool{margin:10px 0 4px;padding:9px 12px;background:var(--green-bg);border:1px dashed var(--green);border-radius:var(--radius-tag);font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.5;color:var(--green);}
+  .cost-tool[hidden]{display:none;}
+  .vs-num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:24px;line-height:1.1;margin:6px 0 2px;}
+  .vs-col.now .vs-num{color:var(--red-flag);}
+  .vs-col.fix .vs-num{color:var(--green);}
+  .vs-sub{font-size:13px;color:var(--ink-soft);}
+  .vs-line{grid-column:1/-1;background:var(--paper-card);padding:12px 14px;font-size:14.5px;line-height:1.5;}
+  .vs-line b{font-weight:600;}
+  .cost-note{font-size:13.5px;color:var(--ink-soft);margin-top:10px;}
+  .cost-note b{font-weight:500;color:var(--ink);}
+
+  .start{margin-top:16px;background:var(--green-bg);border:1.5px solid var(--green);border-radius:var(--radius);padding:16px 16px 14px;}
+  .start .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--green);border:1px dashed var(--green);padding:3px 8px;border-radius:var(--radius-tag);display:inline-block;margin-bottom:10px;background:var(--paper-card);}
+  .fix-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;}
+  .fix-name{font-weight:600;font-size:16px;line-height:1.35;}
+  .fix-res{font-size:14.5px;color:var(--ink-soft);margin-top:3px;line-height:1.5;}
+  .fix-price{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--green);white-space:nowrap;}
+  .fix-price.tbc{color:var(--ink-soft);}
+  .versus{font-size:14.5px;margin-top:12px;padding-top:10px;border-top:1px dashed var(--green);}
+  .more{list-style:none;margin:8px 0 0;padding:0;}
+  .more li{padding:14px 0;border-top:1px dashed var(--line);}
+  .erp-line{margin-top:14px;font-size:14.5px;}
+  .erp-line::before{content:"\2192  ";font-family:'IBM Plex Mono',monospace;color:var(--green);}
+  .terms{margin:18px -20px 0;padding:18px 20px;background:var(--ink);color:var(--paper);}
+  .terms .lab{color:var(--amber);margin-bottom:10px;}
+  .terms ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:14.5px;line-height:1.5;}
+  .terms li{display:flex;gap:10px;}
+  .terms li::before{content:"\2192";font-family:'IBM Plex Mono',monospace;color:var(--amber);flex:none;}
+  .sheet-foot{padding:14px 0 10px;font-size:13.5px;color:var(--ink-soft);}
+  .sheet-foot .who{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;margin-top:6px;color:var(--ink);}
+
+  .share{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px 0 0;font-size:14px;color:var(--ink-soft);}
+
+  .dim{display:flex;align-items:center;gap:14px;color:var(--ink-soft);margin:34px 0 18px;}
+  .dim .tick{width:1px;height:14px;background:var(--line-strong);}
+  .dim .rule{flex:1;height:1px;background-image:linear-gradient(to right,var(--line) 60%,transparent 0%);background-size:6px 1px;background-repeat:repeat-x;}
+  .dim span{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;}
+  .opts{display:grid;gap:12px;}
+  .opt{display:block;text-align:left;width:100%;cursor:pointer;background:var(--paper-card);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px 18px;transition:border-color .15s ease;}
+  .opt:hover{border-color:var(--ink-faint);}
+  .opt .t{display:flex;align-items:center;gap:12px;font-weight:600;font-size:16px;}
+  .radio{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--ink-faint);flex:none;position:relative;background:var(--paper-card);}
+  .opt[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);}
+  .opt[aria-pressed="true"] .radio{border-color:var(--ink);}
+  .opt[aria-pressed="true"] .radio::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--ink);}
+  .opt .d{display:block;font-size:14.5px;font-weight:400;color:var(--ink-soft);margin:4px 0 0 30px;}
+  .detail{display:none;margin-top:12px;padding:18px;background:var(--paper-dim);border:1px solid var(--line);border-radius:var(--radius);}
+  .detail.show{display:block;animation:rise .3s ease both;}
+  .field{display:flex;flex-direction:column;gap:7px;margin-top:16px;}
+  .field label{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
+  .field .o{text-transform:none;letter-spacing:.04em;}
+  .field input{width:100%;font:inherit;font-size:16px;line-height:1.5;color:var(--ink);background:var(--paper-card);border:1.5px solid var(--line);border-radius:var(--radius);padding:11px 13px;}
+  .field input:hover{border-color:var(--ink-faint);}
+  .field input:focus{outline:2.5px solid var(--steel);outline-offset:2px;border-color:var(--ink);}
+  .hint{font-size:13.5px;color:var(--ink-soft);margin-top:12px;}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+  .form-error{font-size:15px;color:var(--red-flag);margin-top:12px;}
+
+  .js .done.show{display:block;padding:40px 0 60px;animation:rise .35s ease both;}
+  .done h2{font-size:28px;line-height:1.2;margin:18px 0 8px;}
+  .done p{color:var(--ink-soft);max-width:50ch;}
+  .done .stamp{font-size:13px;padding:8px 14px;}
+  .done ol{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:14px;}
+  .done li{display:flex;gap:14px;align-items:flex-start;font-size:15.5px;}
+  .done li i{font-style:normal;width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px;flex:none;}
+
+  @page{margin:16mm;}
+  @media print{
+    .top .text-link,.intro,.progress,.bar,.share,.dim,.opts,.hint,#s3>h2,#s3>.sub,#s3 form,.form-error{display:none!important;}
+    html,body{background:#fff;}
+    body{font-size:13px;}
+    .js .step.show{padding-bottom:0;animation:none;}
+    .sheet{border-color:#000;}
+    .terms,.start,.stamp{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .wrap{max-width:none;padding:0;}
+    .top{padding-top:0;margin-bottom:14px;}
+    .sheet{padding:16px 16px 4px;}
+    .sheet h3{margin-top:14px;}
+    .cost{margin-top:14px;}
+    .cost-total{font-size:32px;}
+    .more li{padding:8px 0;}
+    .terms{margin:12px -16px 0;padding:12px 16px;}
+    .sheet-foot{padding:8px 0 6px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+
+<header class="wrap top">
+  <a href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="178" height="28"></a>
+  <a class="text-link" href="/">Full site →</a>
+</header>
+
+<main class="wrap">
+
+  <section class="intro" aria-labelledby="h">
+    <div class="intro-inner">
+      <p class="eyebrow"><span class="led" aria-hidden="true"></span>Your first fix · about 90 seconds</p>
+      <h1 id="h">Tick it. Don't write it.</h1>
+      <p class="lede">Tell me what slows your floor down and roughly how much time it eats. You get a one-page offer with fixed prices and what the problem costs you now. Then one tap to talk, or none at all.</p>
+    </div>
+  </section>
+
+  <div class="noscript">
+    <p>This page needs JavaScript. The full price list is on the <a href="/#prices">main page</a>, or send a line to <a href="mailto:hello@meshlock.co.uk">hello@meshlock.co.uk</a> and I'll reply within one working day.</p>
+  </div>
+
+  <nav class="progress" aria-label="Progress" id="progress">
+    <span class="disc on" data-d="1">1</span><span class="prog-rule"></span>
+    <span class="disc" data-d="2">2</span><span class="prog-rule"></span>
+    <span class="disc" data-d="3">3</span>
+    <span class="prog-cap" id="cap">STEP 1 OF 3</span>
+  </nav>
+
+  <!-- Step 1 -->
+  <section class="step show" id="s1" aria-labelledby="s1h">
+    <h2 id="s1h">What happens on your floor?</h2>
+    <p class="sub">Tick what sounds familiar, up to four. Two or three is plenty.</p>
+    <div class="syms" id="syms">
+      <button type="button" class="sym" aria-pressed="false" data-k="sort"><span class="box" aria-hidden="true"></span><span>Your ERP prints the paperwork in one pile. Someone sorts it by hand and hunts for the missing sheets.</span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="courier"><span class="box" aria-hidden="true"></span><span>Someone checks order numbers one by one to work out which courier it goes with.</span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="pick"><span class="box" aria-hidden="true"></span><span>Picking orders come out of the ERP in one pile. Pickers walk the warehouse in print order, or someone filters and reprints them by hand.</span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="wrong"><span class="box" aria-hidden="true"></span><span>Nobody knows the wrong file was loaded until the part is already made.</span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="custom"><span class="box" aria-hidden="true"></span><span>Custom orders stall while someone emails back and forth for the missing details.</span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="reports"><span class="box" aria-hidden="true"></span><span>The data is all in the system, but the reports are too basic to run the floor on.</span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="setup"><span class="box" aria-hidden="true"></span><span>Setting up a new product range takes hours of manual prep before anything runs.</span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="guess"><span class="box" aria-hidden="true"></span><span>Job times and quotes are based on gut feel and old averages.</span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="export"><span class="box" aria-hidden="true"></span><span>Artwork files get opened and exported to PDF one at a time.</span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="personal"><span class="box" aria-hidden="true"></span><span>Personalised or multi-up print files are built by hand, one order at a time.</span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="unsure"><span class="box" aria-hidden="true"></span><span>None of these, but something on the floor still feels slower than it should.</span></button>
+    </div>
+    <p class="cap-note" id="capnote" role="status"></p>
+  </section>
+
+  <!-- Step 2 -->
+  <section class="step" id="s2" aria-labelledby="s2h">
+    <h2 id="s2h">Put a rough number on it.</h2>
+    <p class="sub" id="s2sub">About how many hours a week does each one take, all people together? Counting the clean-up afterwards. A guess is fine.</p>
+    <div id="qrows"></div>
+    <div id="ratewrap">
+      <p class="group-label">What is an hour of your team's time worth?</p>
+      <div class="chips" id="rate" role="group" aria-label="Hourly cost">
+        <button type="button" class="chip" aria-pressed="false" data-v="15">£15</button>
+        <button type="button" class="chip" aria-pressed="true" data-v="20">£20</button>
+        <button type="button" class="chip" aria-pressed="false" data-v="30">£30</button>
+        <button type="button" class="chip" aria-pressed="false" data-v="40">£40</button>
+      </div>
+      <p class="hint">Your number. I only do the sum. £20 if you skip it.</p>
+    </div>
+    <p class="group-label">Which system holds your orders? <span class="o">(optional)</span></p>
+    <div class="chips" id="erp" role="group" aria-label="ERP">
+      <button type="button" class="chip" aria-pressed="false" data-v="Sage">Sage</button>
+      <button type="button" class="chip" aria-pressed="false" data-v="Epicor">Epicor</button>
+      <button type="button" class="chip" aria-pressed="false" data-v="another ERP">Another ERP</button>
+      <button type="button" class="chip" aria-pressed="false" data-v="spreadsheets">Spreadsheets</button>
+      <button type="button" class="chip" aria-pressed="false" data-v="unsure">Not sure</button>
+    </div>
+  </section>
+
+  <!-- Step 3 -->
+  <section class="step" id="s3" aria-labelledby="s3h">
+    <h2 id="s3h">Your one-page offer.</h2>
+    <p class="sub">Built from your answers. Fixed prices are agreed in writing before any work starts.</p>
+
+    <article class="sheet" aria-label="Offer">
+      <div class="sheet-head">
+        <p class="l">Your floor · <b id="ref">draft</b><br>Built from <b>your answers</b></p>
+        <span class="stamp" id="stamp">FIX FOUND</span>
+      </div>
+
+      <div class="cost" id="cost">
+        <p class="lab now">What these problems cost you now</p>
+        <p class="cost-total" id="ctotal"></p>
+        <p class="cost-who">Your team's time, from your answers. This is not my price.</p>
+        <p class="cost-tool" id="ctool" hidden></p>
+        <p class="cost-hours" id="chours"></p>
+        <ul class="cost-rows" id="crows"></ul>
+        <p class="cost-note" id="cnote"></p>
+      </div>
+
+      <h3>Where I'd start</h3>
+      <p class="sheet-sub" id="startsub"></p>
+      <div class="start" id="start"></div>
+      <div class="vs" id="vs" hidden>
+        <div class="vs-col now"><p class="vs-lab">This one costs you</p><p class="vs-num" id="vsnow"></p><p class="vs-sub" id="vsnowsub"></p></div>
+        <div class="vs-col fix"><p class="vs-lab">A tool like this</p><p class="vs-num" id="vsfix"></p><p class="vs-sub">about, one-off. You own it.</p></div>
+        <p class="vs-line" id="vsline"></p>
+      </div>
+      <p class="erp-line" id="erpline"></p>
+      <h3 id="morehead" style="margin-top:24px">Also on your list</h3>
+      <ul class="more" id="more"></ul>
+      <div class="terms">
+        <p class="lab">Always included</p>
+        <ul>
+          <li>Free 30-minute call first</li>
+          <li>Fixed price in writing, before any work starts</li>
+          <li>First job: you pay when it works as agreed</li>
+          <li>You own the tool. No licence, no subscription</li>
+          <li>A one-day process review is £600, credited in full against any build</li>
+        </ul>
+      </div>
+      <div class="sheet-foot">
+        <p>Tool prices are examples from similar builds. Yours is fixed in writing after the call.</p>
+        <p class="who">Kamil Pojawa · meshlock.co.uk · hello@meshlock.co.uk</p>
+      </div>
+    </article>
+
+    <div class="share">
+      <button type="button" class="btn-outline" id="pdf">Save as PDF</button>
+      <button type="button" class="btn-outline" id="copy">Copy link</button>
+      <span id="copied" role="status"></span>
+    </div>
+
+    <div class="dim"><span class="tick"></span><span class="rule"></span><span>How do you want to go on?</span><span class="rule"></span><span class="tick"></span></div>
+
+    <form id="offer-form" name="offer" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+      <input type="hidden" name="form-name" value="offer">
+      <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+      <input type="hidden" name="method" id="f-method">
+      <input type="hidden" name="slot" id="f-slot">
+      <input type="hidden" name="erp" id="f-erp">
+      <input type="hidden" name="rate" id="f-rate">
+      <input type="hidden" name="summary" id="f-summary">
+      <input type="hidden" name="link" id="f-link">
+      <input type="hidden" name="source" id="f-source">
+
+      <div class="opts" id="opts" role="group" aria-label="Next step">
+      <button type="button" class="opt" aria-pressed="false" data-o="call"><span class="t"><span class="radio"></span>Ring me</span><span class="d">Free, 30 minutes, no preparation needed.</span></button>
+      <div class="detail" id="d-call">
+        <p class="group-label" style="margin-top:0">When suits you?</p>
+        <div class="chips" id="slot" role="group" aria-label="Call time">
+          <button type="button" class="chip" aria-pressed="false" data-v="weekday mornings">Mornings</button>
+          <button type="button" class="chip" aria-pressed="false" data-v="lunchtime">Lunchtime</button>
+          <button type="button" class="chip" aria-pressed="false" data-v="mornings or lunchtime">Either</button>
+        </div>
+        <div class="field"><label for="phone">Your number</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+        <div class="field"><label for="name1">First name <span class="o">(optional)</span></label><input id="name1" name="name" type="text" autocomplete="given-name"></div>
+      </div>
+      <button type="button" class="opt" aria-pressed="false" data-o="mail"><span class="t"><span class="radio"></span>Email me</span><span class="d">I reply within one working day.</span></button>
+      <div class="detail" id="d-mail">
+        <div class="field" style="margin-top:0"><label for="email">Your email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email"></div>
+        <div class="field"><label for="name2">First name <span class="o">(optional)</span></label><input id="name2" name="name" type="text" autocomplete="given-name"></div>
+      </div>
+      <button type="button" class="opt" aria-pressed="false" data-o="later"><span class="t"><span class="radio"></span>Not yet</span><span class="d">Save it as a PDF. Nothing is sent to me.</span></button>
+      <div class="detail" id="d-later"><p style="font-size:14.5px;color:var(--ink-soft)">Save this offer as a PDF and send it to whoever makes the call. Nothing is sent to me.</p><button type="button" class="btn-outline pdf2" style="margin-top:12px">Save as PDF</button></div>
+      </div>
+      <p class="form-error" role="alert" id="err" hidden>That didn't send. Please try again, or email hello@meshlock.co.uk.</p>
+    </form>
+    <p class="hint">Not a pitch, just an honest question. I only use your details to reply to this.</p>
+  </section>
+
+  <section class="done" id="done" aria-live="polite">
+    <span class="stamp land">RECEIVED</span>
+    <h2 id="doneh">Thanks. That's it from you.</h2>
+    <p id="donetext"></p>
+    <ol id="donelist">
+      <li><i>1</i><span id="n1"></span></li>
+      <li><i>2</i><span>A 30-minute call, remote, no preparation needed.</span></li>
+      <li><i>3</i><span>A written proposal with a fixed price, or an honest "you don't need a tool for this".</span></li>
+    </ol>
+  </section>
+
+</main>
+
+<div class="bar" id="bar">
+  <div class="bar-in">
+    <button type="button" class="back" id="back" hidden>Back</button>
+    <p class="bar-note" id="note"></p>
+    <button type="button" class="btn-primary" id="next" disabled>Next →</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  // p: example price from /prices/ ("a tool like this"), 0 = priced after the call
+  var FIX = {
+    sort:{s:"Sorting paperwork by hand",n:"Paperwork sorted, with separators for multi-part orders",r:"About an hour a day, done in a minute. Every order stays together.",p:1000},
+    courier:{s:"Checking which courier",n:"Courier stamped on every sheet",r:"Product-to-slip matching up to 5× faster",p:0},
+    pick:{s:"Filtering picking orders and walking the long way",n:"Picking orders sorted by priority and value, in route order",r:"Up to 12 hours a week of filtering and reprinting saved at peak. Picking rate up about 40%.",p:2250},
+    wrong:{s:"Wrong file caught too late",n:"Quality gate and part preview on the sheet",r:"The operator sees what it should look like",p:1700},
+    custom:{s:"Chasing customers for missing details",n:"Automatic request to customer service",r:"The answer goes straight back onto the sheet",p:0},
+    reports:{s:"Building reports by hand",n:"Automated reports and live dashboards",r:"One current view, nobody compiling it by hand",p:1700},
+    setup:{s:"Prepping a new product range by hand",n:"Standardised machine files with built-in checks",r:"Prep time down 93% in one project",p:0},
+    guess:{s:"Guessing job times and quotes",n:"Calculators and estimates from your own data",r:"From a simple job-time calculator to a model built on your production history",p:0},
+    export:{s:"Exporting artwork one file at a time",n:"Batch export in Adobe, folder by folder",r:"A whole queue of files done in one click, with an error summary",p:500},
+    personal:{s:"Building personalised print files by hand",n:"Adobe layout automation with built-in checks",r:"Print-ready files generated from order data, checked before export",p:0},
+    unsure:{s:"Something feels slow",n:"A fresh pair of eyes on your process",r:"A free 30-minute call first. If a closer look helps, a one-day review is £600, credited in full against any build.",p:0}
+  };
+  // hours a week, per answer. d is "15 or more", so it is a floor.
+  var HRS = {a:0.5,b:3,c:10,d:15};
+  var LBL = {a:'Under 1 h',b:'1 to 5 h',c:'5 to 15 h',d:'15 h or more',n:'No idea'};
+  var WEEKS = 48, MAXTICKS = 4;
+  var DEMO = !/meshlock\.co\.uk$|netlify\.app$/.test(location.hostname);
+  var FRAMED = (function(){try{return window.self!==window.top;}catch(e){return true;}})();
+
+  var st = {f:[], h:{}, rate:20, erp:'', o:'', slot:''};
+  var step = 1, $ = function(id){return document.getElementById(id);};
+  var real = function(){return st.f.filter(function(k){return k!=='unsure';});};
+
+  function money(n){
+    var r = n>=1000 ? Math.round(n/100)*100 : Math.round(n/10)*10;
+    return '£'+r.toLocaleString('en-GB');
+  }
+  function price(n,k){return n? 'about £'+n.toLocaleString('en-GB') : (k==='unsure'?'free to start':'priced after the call');}
+
+  // ---- state in the URL, so a link reopens the same offer
+  function hash(){
+    var f = st.f.map(function(k){return st.h[k]?k+'.'+st.h[k]:k;}).join(',');
+    return '#f='+f+'&rate='+st.rate+(st.erp?'&erp='+encodeURIComponent(st.erp):'');
+  }
+  function link(){return location.href.split('#')[0]+hash();}
+  // Where the visitor came from (printed QR codes carry ?s=kp, kps, pc or pcs). Sent only with the form.
+  var SRC = (new URLSearchParams(location.search).get('s') || '').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20) || 'site';
+  (function(){
+    var p = {};
+    location.hash.replace(/^#/,'').split('&').forEach(function(kv){var a=kv.split('=');if(a[0])p[a[0]]=decodeURIComponent(a[1]||'');});
+    if (!p.f) return;
+    p.f.split(',').forEach(function(x){
+      var a = x.split('.'); if (!FIX[a[0]] || st.f.indexOf(a[0])>-1 || st.f.length>=MAXTICKS) return;
+      st.f.push(a[0]); if (a[1] && LBL[a[1]]) st.h[a[0]] = a[1];
+    });
+    if (['15','20','30','40'].indexOf(p.rate)>-1) st.rate = +p.rate;
+    if (p.erp) st.erp = p.erp;
+    if (!st.f.length) return;
+    step = real().every(function(k){return st.h[k];}) ? 3 : 2;
+  })();
+
+  // ---- step 1
+  var syms = $('syms');
+  function syncSyms(){
+    var full = real().length>=MAXTICKS;
+    syms.querySelectorAll('.sym').forEach(function(b){b.setAttribute('aria-pressed', st.f.indexOf(b.dataset.k)>-1?'true':'false');});
+    $('capnote').textContent = full ? "Four is plenty. I'll find the rest on the call." : '';
+  }
+  syms.addEventListener('click', function(e){
+    var b = e.target.closest('.sym'); if(!b) return;
+    var k = b.dataset.k, i = st.f.indexOf(k);
+    if (i>-1){ st.f.splice(i,1); delete st.h[k]; }
+    else if (k==='unsure'){ st.f=['unsure']; st.h={}; }
+    else {
+      if (real().length>=MAXTICKS){ $('capnote').textContent = "Four is plenty. I'll find the rest on the call."; return; }
+      st.f = st.f.filter(function(x){return x!=='unsure';}); st.f.push(k);
+    }
+    syncSyms(); render();
+  });
+
+  // ---- step 2
+  function buildRows(){
+    var box = $('qrows'); box.innerHTML='';
+    real().forEach(function(k){
+      var row = document.createElement('div'); row.className='qrow'; row.dataset.k=k;
+      row.innerHTML = '<p class="q"></p><div class="chips" role="group"></div>';
+      row.querySelector('.q').textContent = FIX[k].s;
+      row.querySelector('.chips').setAttribute('aria-label', FIX[k].s+', hours a week');
+      ['a','b','c','d','n'].forEach(function(c){
+        var b = document.createElement('button'); b.type='button'; b.className='chip'; b.dataset.v=c; b.textContent=LBL[c];
+        b.setAttribute('aria-pressed', st.h[k]===c?'true':'false'); row.querySelector('.chips').appendChild(b);
+      });
+      box.appendChild(row);
+    });
+    var any = real().length>0;
+    $('ratewrap').style.display = any?'':'none';
+    $('s2sub').textContent = any
+      ? 'About how many hours a week does each one take, all people together? Counting the clean-up afterwards. A guess is fine.'
+      : 'Nothing to add here. Pick your system if you like, then see your offer.';
+  }
+  $('qrows').addEventListener('click', function(e){
+    var c = e.target.closest('.chip'); if(!c) return;
+    var k = c.closest('.qrow').dataset.k; st.h[k] = c.dataset.v;
+    c.parentNode.querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed', x===c?'true':'false');});
+    render();
+  });
+  $('rate').addEventListener('click', function(e){
+    var c = e.target.closest('.chip'); if(!c) return; st.rate = +c.dataset.v;
+    $('rate').querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed', x===c?'true':'false');});
+  });
+  $('erp').addEventListener('click', function(e){
+    var c = e.target.closest('.chip'); if(!c) return;
+    st.erp = st.erp===c.dataset.v ? '' : c.dataset.v; syncChips();
+  });
+  function syncChips(){
+    $('erp').querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed', x.dataset.v===st.erp?'true':'false');});
+    $('rate').querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed', +x.dataset.v===st.rate?'true':'false');});
+  }
+
+  // ---- step 3
+  function costs(){
+    var rows = [], total = 0, hours = 0, floor = false;
+    real().forEach(function(k){
+      var c = st.h[k]; if (!c || !HRS[c]) return;
+      var wk = HRS[c]*st.rate;
+      rows.push({k:k,c:c,wk:wk,yr:wk*WEEKS});
+      total += wk*WEEKS; hours += HRS[c]*WEEKS; if (c==='d') floor = true;
+    });
+    rows.sort(function(a,b){return b.wk-a.wk;});
+    return {rows:rows,total:total,hours:hours,floor:floor};
+  }
+  function buildOffer(){
+    var C = costs();
+    var order = st.f.slice().sort(function(a,b){
+      var wa = (C.rows.filter(function(r){return r.k===a;})[0]||{wk:-1}).wk;
+      var wb = (C.rows.filter(function(r){return r.k===b;})[0]||{wk:-1}).wk;
+      return (wb-wa) || (FIX[a].p-FIX[b].p);
+    });
+    var first = order.filter(function(k){return k!=='unsure';})[0] || 'unsure';
+    var rest = order.filter(function(k){return k!==first;});
+
+    // cost block
+    $('cost').style.display = C.rows.length ? '' : 'none';
+    if (C.rows.length){
+      $('ctotal').innerHTML = ''; 
+      $('ctotal').appendChild(document.createTextNode(money(C.total)));
+      var sm = document.createElement('small'); sm.textContent = C.floor ? 'a year, or more' : 'a year, about'; $('ctotal').appendChild(sm);
+      $('chours').textContent = (C.floor?'At least ':'About ')+(Math.round(C.hours/10)*10).toLocaleString('en-GB')+' hours a year, spent on the problems you ticked.';
+      var ul = $('crows'); ul.innerHTML='';
+      C.rows.forEach(function(r){
+        var li = document.createElement('li');
+        li.innerHTML = '<span><span class="n"></span><span class="h"></span></span><span class="p"></span>';
+        li.querySelector('.n').textContent = FIX[r.k].s;
+        li.querySelector('.h').textContent = LBL[r.c]+' a week';
+        li.querySelector('.p').textContent = (r.c==='d'?'at least ':'')+money(r.yr);
+        ul.appendChild(li);
+      });
+      var skipped = real().length - C.rows.length;
+      $('cnote').innerHTML = '';
+      var b = document.createElement('b'); b.textContent = 'Your answers, rounded. ';
+      $('cnote').appendChild(b);
+      $('cnote').appendChild(document.createTextNode(WEEKS+' weeks a year at £'+st.rate+' an hour. This is what the problems cost now, not a promise of what a fix saves.'+(skipped?' Left out: '+skipped+' you had no number for.':'')));
+    }
+
+    // start box
+    var f = FIX[first], fc = C.rows.filter(function(r){return r.k===first;})[0];
+    $('startsub').textContent = first==='unsure'
+      ? 'A free call is the smallest step. We work out together where the time goes.'
+      : (fc ? 'The one that costs you the most time. It is also the first job, so you pay when it works.' : 'The first job. You pay when it works as agreed.');
+    var s = $('start'); s.innerHTML = '<span class="tag">Start here</span><div class="fix-row"><div><p class="fix-name"></p><p class="fix-res"></p></div><span class="fix-price"></span></div>';
+    s.querySelector('.fix-name').textContent = f.n; s.querySelector('.fix-res').textContent = f.r; s.querySelector('.fix-price').textContent = price(f.p,first);
+    if (!f.p) s.querySelector('.fix-price').classList.add('tbc');
+    // cost now vs one-off tool price, side by side
+    var vs = $('vs');
+    if (fc && f.p){
+      vs.hidden = false;
+      $('vsnow').textContent = money(fc.yr);
+      $('vsnowsub').textContent = 'a year, '+(fc.c==='d'?'at least ':'about ')+money(fc.wk)+' a week';
+      $('ctool').textContent = 'A tool for the biggest one: about £'+f.p.toLocaleString('en-GB')+', one-off. Details below.'; $('ctool').hidden=false;
+      $('vsfix').textContent = '£'+f.p.toLocaleString('en-GB');
+      var wks = Math.max(1, Math.ceil(f.p / fc.wk));
+      $('vsline').innerHTML = '';
+      var t1 = document.createTextNode('At your numbers, the time this problem eats now would cover the tool in about ');
+      var bb = document.createElement('b'); bb.textContent = wks+(wks===1?' week':' weeks');
+      $('vsline').appendChild(t1); $('vsline').appendChild(bb);
+      $('vsline').appendChild(document.createTextNode('. After that, the hours are yours again.'));
+    } else { vs.hidden = true; $('ctool').hidden = true; }
+    var more = $('more'); more.innerHTML='';
+    rest.forEach(function(k){
+      var li = document.createElement('li');
+      li.innerHTML='<div class="fix-row"><div><p class="fix-name"></p><p class="fix-res"></p></div><span class="fix-price"></span></div>';
+      li.querySelector('.fix-name').textContent = FIX[k].n; li.querySelector('.fix-res').textContent = FIX[k].r; li.querySelector('.fix-price').textContent = price(FIX[k].p,k); if(!FIX[k].p) li.querySelector('.fix-price').classList.add('tbc');
+      more.appendChild(li);
+    });
+    $('morehead').style.display = rest.length?'':'none';
+    var line = '';
+    if (st.erp==='Sage'||st.erp==='Epicor') line = 'I work from the exports your '+st.erp+' already produces. Nothing inside it changes.';
+    else if (st.erp==='another ERP') line = 'I work from the exports your ERP already produces. Nothing inside it changes.';
+    else if (st.erp==='spreadsheets') line = 'No ERP needed. I work from the spreadsheets you already keep.';
+    else if (st.erp==='unsure') line = 'No need to know. I work from whatever your system already exports.';
+    $('erpline').textContent = line; $('erpline').style.display = line?'':'none';
+    var n = real().length; $('ref').textContent = n ? n+(n===1?' problem ticked':' problems ticked') : 'free call';
+    return C;
+  }
+  function summary(C){
+    var parts = real().map(function(k){return FIX[k].s+' ('+(st.h[k]?LBL[st.h[k]]+'/week':'no number')+')';});
+    if (st.f.indexOf('unsure')>-1) parts.push('Not sure, something feels slow');
+    var t = 'Ticked: '+parts.join('; ')+'.';
+    if (C.rows.length) t += ' Cost now: '+(C.floor?'at least ':'about ')+money(C.total)+' a year at £'+st.rate+'/h.';
+    if (st.erp) t += ' System: '+st.erp+'.';
+    return t;
+  }
+
+  // ---- reply options
+  $('opts').addEventListener('click', function(e){
+    var b = e.target.closest('.opt'); if(!b) return; st.o = b.dataset.o;
+    $('opts').querySelectorAll('.opt').forEach(function(x){x.setAttribute('aria-pressed', x.dataset.o===st.o?'true':'false');});
+    ['call','mail','later'].forEach(function(k){$('d-'+k).classList.toggle('show', k===st.o);});
+    syncFields();
+    render();
+  });
+  // Only the open panel's inputs are sent, so "name" is never sent twice.
+  function syncFields(){
+    ['call','mail','later'].forEach(function(k){
+      $('d-'+k).querySelectorAll('input').forEach(function(i){ i.disabled = (k!==st.o); });
+    });
+  }
+  $('slot').addEventListener('click', function(e){
+    var c = e.target.closest('.chip'); if(!c) return; st.slot = c.dataset.v;
+    $('slot').querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed', x===c?'true':'false');});
+    render();
+  });
+  ['phone','email'].forEach(function(id){$(id).addEventListener('input', render);});
+
+  function valid(){
+    if (step===1) return st.f.length>0;
+    if (step===2) return real().every(function(k){return st.h[k];});
+    if (step===3){
+      if (st.o==='call') return !!st.slot && $('phone').value.replace(/\D/g,'').length>=9;
+      if (st.o==='mail') return /^\S+@\S+\.\S+$/.test($('email').value);
+      return st.o==='later';
+    }
+    return false;
+  }
+
+  function render(){
+    ['s1','s2','s3'].forEach(function(id,i){ $(id).classList.toggle('show', i+1===step); });
+    document.querySelectorAll('.disc').forEach(function(d){
+      var n = +d.dataset.d; d.classList.toggle('on', n===step); d.classList.toggle('done', n<step); d.textContent = n<step?'✓':n;
+    });
+    $('cap').textContent = 'STEP '+step+' OF 3';
+    $('back').hidden = step===1;
+    var nx = $('next'); $('bar').classList.add('show');
+    if (step===2 && !$('qrows').children.length && real().length) buildRows();
+    nx.disabled = !valid();
+    if (step===1){ nx.textContent='Next →'; $('note').innerHTML = st.f.length ? '<b>'+st.f.length+'</b> ticked' : 'Tick at least one'; }
+    if (step===2){ nx.textContent='Show my offer →'; $('note').textContent = valid()?'':'Answer each one'; }
+    if (step===3){
+      buildOffer();
+      nx.textContent = st.o==='later' ? 'Done' : 'Send to Kamil';
+      $('note').textContent = !st.o ? 'Choose how to go on' : '';
+    }
+    try{ history.replaceState(null,'', st.f.length && step>1 ? location.pathname+location.search+hash() : location.pathname+location.search); }catch(e){}
+  }
+  function go(n){ step=n; if (n===2) buildRows(); render(); var t=$('progress'); window.scrollTo({top:t.offsetTop-12,behavior:'smooth'}); }
+
+  function finish(C){
+    $('s3').classList.remove('show'); $('progress').style.display='none'; $('bar').classList.remove('show');
+    document.querySelector('.intro').style.display='none';
+    var t, n1; $('doneh').textContent = "Thanks. That's it from you.";
+    if (st.o==='call'){ t='I have your answers and your number. You picked '+st.slot+'. I ring you then.'; n1="I read what you ticked before I ring, so you don't have to explain it."; }
+    else if (st.o==='mail'){ t='I have your answers and your email. I reply within one working day.'; n1='I reply by email within one working day.'; }
+    else { $('doneh').textContent = 'Kept, not sent.'; t='Nothing was sent to me. If you saved the PDF, it has everything. The link is also copied, and it opens this page with your answers in place.'; n1='Come back whenever you like.'; try{navigator.clipboard.writeText(link());}catch(e){} }
+    $('donetext').textContent=t; $('n1').textContent=n1;
+    if (st.o==='later') document.querySelectorAll('#donelist li:nth-child(n+2)').forEach(function(x){x.style.display='none';});
+    $('done').classList.add('show'); window.scrollTo({top:0});
+  }
+  function send(){
+    var C = costs();
+    $('f-method').value = st.o==='call'?'Ring me':'Email me';
+    $('f-slot').value = st.o==='call'?st.slot:'';
+    $('f-erp').value = st.erp; $('f-rate').value = '£'+st.rate+'/h';
+    $('f-summary').value = summary(C); $('f-link').value = link(); $('f-source').value = SRC;
+    var form = $('offer-form'), nx = $('next'); $('err').hidden = true; nx.disabled = true;
+    if (DEMO) { finish(C); return; }
+    fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(new FormData(form)).toString()})
+      .then(function(res){ if(!res.ok) throw new Error(res.status); finish(C); })
+      .catch(function(){ $('err').hidden=false; nx.disabled=false; });
+  }
+  $('next').addEventListener('click', function(){
+    if (!valid()) return;
+    if (step<3) return go(step+1);
+    if (st.o==='later') return finish(costs());
+    send();
+  });
+  $('offer-form').addEventListener('submit', function(e){ e.preventDefault(); if (step===3 && valid() && st.o!=='later') send(); });
+  $('back').addEventListener('click', function(){ if(step>1) go(step-1); });
+  document.querySelectorAll('#pdf,.pdf2').forEach(function(b){ b.addEventListener('click', function(){ window.print(); }); });
+  $('copy').addEventListener('click', function(){
+    var u = link(), out = $('copied');
+    function ok(){ out.textContent='Link copied.'; setTimeout(function(){out.textContent='';},2500); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(ok,function(){out.textContent=u;});
+    else out.textContent=u;
+  });
+
+  if (FRAMED) document.querySelectorAll('#pdf,.pdf2').forEach(function(b){ b.hidden = true; });
+  syncSyms(); syncChips(); syncFields(); if (step>=2) buildRows(); render();
+})();
+</script>
+</body>
+</html>
