@@ -231,13 +231,15 @@
   .fam-hint{margin:0 0 16px; color:var(--ink-soft);}
   .symptoms{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px;}
   .sym{
-    display:flex; align-items:flex-start; gap:14px; width:100%; min-height:104px; margin:0;
+    display:flex; align-items:flex-start; gap:14px; width:100%; min-height:0; margin:0;
     padding:18px 18px 16px; text-align:left; cursor:pointer;
     font:inherit; font-size:15px; line-height:1.5; color:var(--ink);
     background:var(--paper-card); border:1.5px solid var(--line); border-radius:var(--radius);
     transition:background .15s ease, border-color .15s ease;
   }
   .sym:hover{border-color:var(--ink-faint);}
+  .sym .st b{display:block; font-weight:600; font-size:16px; line-height:1.3;}
+  .sym .ex{display:block; font-size:13.5px; line-height:1.45; color:var(--ink-soft); margin-top:3px;}
   .sym .box{
     flex:none; width:18px; height:18px; margin-top:2px; position:relative;
     border:1.5px solid var(--ink-faint); border-radius:2px; background:var(--paper-card);
@@ -512,23 +514,21 @@
     <div class="sec-head">
       <p class="label">Diagnosis, the short version</p>
       <h2>Sound familiar?</h2>
-      <p>Tick what happens on your floor. You'll see what usually fixes it.</p>
+      <p>Pick the closest. Yours will be a bit different, and that’s fine. You'll see what usually fixes it.</p>
     </div>
     <div class="fam-grid">
       <div>
         <p class="fam-hint">Two are ticked as an example. Change them to match your floor.</p>
         <div class="symptoms">
-          <button type="button" class="sym" aria-pressed="true" data-fix="sort"><span class="box" aria-hidden="true"></span><span>Your ERP prints the paperwork in one pile. Someone sorts it by hand and hunts for the missing sheets.</span></button>
-          <button type="button" class="sym" aria-pressed="false" data-fix="courier"><span class="box" aria-hidden="true"></span><span>Someone checks order numbers one by one to work out which courier it goes with.</span></button>
-          <button type="button" class="sym" aria-pressed="false" data-fix="pick"><span class="box" aria-hidden="true"></span><span>Picking orders come out of the ERP in one pile. Pickers walk the warehouse in print order, or someone filters and reprints them by hand.</span></button>
-          <button type="button" class="sym" aria-pressed="true" data-fix="wrong"><span class="box" aria-hidden="true"></span><span>Nobody knows the wrong file was loaded until the part is already made.</span></button>
-          <button type="button" class="sym" aria-pressed="false" data-fix="custom"><span class="box" aria-hidden="true"></span><span>Custom orders stall while someone emails back and forth for the missing details.</span></button>
-          <button type="button" class="sym" aria-pressed="false" data-fix="reports"><span class="box" aria-hidden="true"></span><span>The data is all in the system, but the reports are too basic to run the floor on.</span></button>
-          <button type="button" class="sym" aria-pressed="false" data-fix="setup"><span class="box" aria-hidden="true"></span><span>Setting up a new product range takes hours of manual prep before anything runs.</span></button>
-          <button type="button" class="sym" aria-pressed="false" data-fix="guess"><span class="box" aria-hidden="true"></span><span>Job times and quotes are based on gut feel and old averages.</span></button>
-          <button type="button" class="sym" aria-pressed="false" data-fix="export"><span class="box" aria-hidden="true"></span><span>Artwork files get opened and exported to PDF one at a time.</span></button>
-          <button type="button" class="sym" aria-pressed="false" data-fix="personal"><span class="box" aria-hidden="true"></span><span>Personalised or multi-up print files are built by hand, one order at a time.</span></button>
-          <button type="button" class="sym unsure" aria-pressed="false" data-fix="unsure"><span class="box" aria-hidden="true"></span><span>None of these, but something on the floor still feels slower than it should.</span></button>
+          <button type="button" class="sym" aria-pressed="true" data-fix="sort"><span class="box" aria-hidden="true"></span><span class="st"><b>Sorting paperwork by hand</b><span class="ex">Job sheets, picking lists, courier labels.</span></span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="pick"><span class="box" aria-hidden="true"></span><span class="st"><b>Picking the long way round</b><span class="ex">Pickers walking back and forth.</span></span></button>
+          <button type="button" class="sym" aria-pressed="true" data-fix="wrong"><span class="box" aria-hidden="true"></span><span class="st"><b>Mistakes found too late</b><span class="ex">Wrong file or part, found after it’s made.</span></span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="reports"><span class="box" aria-hidden="true"></span><span class="st"><b>Reports you can’t run the floor on</b><span class="ex">The data is in the ERP or spreadsheets. The reports are too basic.</span></span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="machines"><span class="box" aria-hidden="true"></span><span class="st"><b>Machines nobody measures</b><span class="ex">Downtime, output and performance are a guess.</span></span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="export"><span class="box" aria-hidden="true"></span><span class="st"><b>Files done one at a time</b><span class="ex">Exports, print files, new product setup.</span></span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="custom"><span class="box" aria-hidden="true"></span><span class="st"><b>Chasing missing details</b><span class="ex">Emails back and forth before a job can start.</span></span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="guess"><span class="box" aria-hidden="true"></span><span class="st"><b>Guessing times and quotes</b><span class="ex">Gut feel and old averages.</span></span></button>
+          <button type="button" class="sym unsure" aria-pressed="false" data-fix="unsure"><span class="box" aria-hidden="true"></span><span class="st"><b>Something else</b><span class="ex">It just feels slower than it should.</span></span></button>
         </div>
         <div class="callout">
           <p class="label">Most problems don't look like problems</p>
@@ -541,16 +541,14 @@
         <p class="fix-head" aria-live="polite">Your fix list<span class="fix-count"> · <span class="fix-n">2 matches</span></span></p>
         <p class="fix-empty">Tick a problem on the left to see how it's usually fixed.</p>
         <ul class="fix-list">
-          <li class="fix on" data-fix="sort"><div><p class="fix-name">Paperwork sorted, with separators for multi-part orders</p><p class="fix-result">About an hour a day, done in a minute. Every order stays together.</p></div></li>
-          <li class="fix" data-fix="courier"><div><p class="fix-name">Courier stamped on every sheet</p><p class="fix-result">Product-to-slip matching up to 5× faster</p></div></li>
-          <li class="fix" data-fix="pick"><div><p class="fix-name">Picking orders sorted by priority and value, in route order</p><p class="fix-result">Up to 12 hours a week of filtering and reprinting saved at peak. Picking rate up about 40%.</p></div></li>
-          <li class="fix on" data-fix="wrong"><div><p class="fix-name">Quality gate and part preview on the sheet</p><p class="fix-result">The operator sees what it should look like</p></div></li>
-          <li class="fix" data-fix="custom"><div><p class="fix-name">Automatic request to customer service</p><p class="fix-result">The answer goes straight back onto the sheet</p></div></li>
-          <li class="fix" data-fix="reports"><div><p class="fix-name">Automated reports and live dashboards</p><p class="fix-result">One current view, nobody compiling it by hand</p></div></li>
-          <li class="fix" data-fix="setup"><div><p class="fix-name">Standardised machine files with built-in checks</p><p class="fix-result">Prep time down 93% in one project</p></div></li>
-          <li class="fix" data-fix="guess"><div><p class="fix-name">Calculators and estimates from your own data</p><p class="fix-result">From a simple job-time or packaging calculator to a model built on your production history</p></div></li>
-          <li class="fix" data-fix="export"><div><p class="fix-name">Batch export in Adobe, folder by folder</p><p class="fix-result">A whole queue of files done in one click, with an error summary</p></div></li>
-          <li class="fix" data-fix="personal"><div><p class="fix-name">Adobe layout automation with built-in checks</p><p class="fix-result">Print-ready files generated from order data, checked before export</p></div></li>
+          <li class="fix on" data-fix="sort"><div><p class="fix-name">Paperwork sorted by a tool, in the order your floor needs</p><p class="fix-result">Done before: an hour a day of sorting, now a minute.</p></div></li>
+          <li class="fix" data-fix="pick"><div><p class="fix-name">Picking orders put in route order</p><p class="fix-result">Done before: picking rate up about 40%.</p></div></li>
+          <li class="fix on" data-fix="wrong"><div><p class="fix-name">Checks before production, not after</p><p class="fix-result">Done before: up to 10% of machine capacity freed.</p></div></li>
+          <li class="fix" data-fix="reports"><div><p class="fix-name">Reports and dashboards that build themselves</p><p class="fix-result">Done before: one current view, nobody compiling it by hand.</p></div></li>
+          <li class="fix" data-fix="machines"><div><p class="fix-name">Machine data made visible</p><p class="fix-result">Done before: average machine performance from 80% to 91%.</p></div></li>
+          <li class="fix" data-fix="export"><div><p class="fix-name">File work automated, folder by folder</p><p class="fix-result">Done before: whole folders exported in one run. New range prep down 93%.</p></div></li>
+          <li class="fix" data-fix="custom"><div><p class="fix-name">Missing details requested automatically</p><p class="fix-result">Done before: the answer goes straight back onto the paperwork.</p></div></li>
+          <li class="fix" data-fix="guess"><div><p class="fix-name">Estimates from your own data</p><p class="fix-result">From a simple calculator to a model built on your production history.</p></div></li>
           <li class="fix" data-fix="unsure"><div><p class="fix-name">A fresh pair of eyes on your process</p><p class="fix-result">A free 30-minute call first. If a closer look helps, a one-day review is £600, credited in full against any build.</p></div><span class="fix-price">free to start</span></li>
         </ul>
         <p class="fix-prices">Every tool is quoted for your workflow. <a href="/prices/">See example prices →</a></p>

@@ -109,7 +109,8 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 ## One-page offer (/start/)
 
 - Answers live only in the link after `#` (`#f=key.hours,...&rate=..&erp=..`). Nothing is stored on the site until the visitor presses Send, which posts the Netlify Form `name="offer"`.
-- The keys (`sort`, `courier`, `pick`, `wrong`, `custom`, `reports`, `setup`, `guess`, `export`, `personal`, `unsure`) must match the homepage `data-fix` keys and must never be renamed, or old links break.
+- Step 1 and the homepage Sound familiar? show the same nine problem families, a short title plus one grey line of examples, never a description of a finished tool. The offer then shows what was done before as proof.
+- Family keys: `sort`, `pick`, `wrong`, `reports`, `machines`, `export`, `custom`, `guess`, `unsure`. They must match the homepage `data-fix` keys and must never be renamed, or old links break. Older keys still work through `ALIAS`: `courier` opens `sort`, `personal` and `setup` open `export`.
 - Tool prices come from the examples on /prices/. Keep them in line. Problems without an example show "priced after the call".
 - The current cost is the visitor's own cost, shown in red-flag. The tool price sits beside it in green, so the two are never confused.
 - "Not yet" leads to Save as PDF, so the visitor can pass the offer on.

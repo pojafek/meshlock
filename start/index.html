@@ -71,8 +71,13 @@
   .group-label{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin:28px 0 10px;}
   .group-label .o{text-transform:none;letter-spacing:.04em;}
 
-  .syms{display:grid;gap:12px;}
-  .sym{display:flex;align-items:flex-start;gap:14px;width:100%;margin:0;padding:18px 18px 16px;text-align:left;cursor:pointer;font-size:15px;line-height:1.5;background:var(--paper-card);border:1.5px solid var(--line);border-radius:var(--radius);transition:background .15s ease,border-color .15s ease;}
+  .syms{display:grid;gap:10px;}
+  @media (min-width:600px){.syms{grid-template-columns:repeat(2,minmax(0,1fr));}.sym.unsure{grid-column:1/-1;}}
+  .sym .st b{display:block;font-weight:600;font-size:16px;line-height:1.3;}
+  .sym .ex{display:block;font-size:13.5px;line-height:1.45;color:var(--ink-soft);margin-top:3px;}
+  .sym.unsure{background:transparent;border-style:dashed;border-color:var(--ink-faint);}
+  .sym.unsure[aria-pressed="true"]{border-style:solid;}
+  .sym{display:flex;align-items:flex-start;gap:14px;width:100%;margin:0;padding:15px 16px 14px;text-align:left;cursor:pointer;font-size:15px;line-height:1.5;background:var(--paper-card);border:1.5px solid var(--line);border-radius:var(--radius);transition:background .15s ease,border-color .15s ease;}
   .sym:hover{border-color:var(--ink-faint);}
   .sym .box{flex:none;width:18px;height:18px;margin-top:2px;position:relative;border:1.5px solid var(--ink-faint);border-radius:var(--radius-tag);background:var(--paper-card);}
   .sym[aria-pressed="true"]{background:var(--green-bg);border-color:var(--green);}
@@ -230,7 +235,7 @@
     <div class="intro-inner">
       <p class="eyebrow"><span class="led" aria-hidden="true"></span>Your first fix · about 90 seconds</p>
       <h1 id="h">Tick it. Don't write it.</h1>
-      <p class="lede">Tell me what slows your floor down and roughly how much time it eats. You get a one-page offer with fixed prices and what the problem costs you now. Then one tap to talk, or none at all.</p>
+      <p class="lede">Pick what slows you down. Guess the hours. See what it costs you now, and what a fix usually costs.</p>
     </div>
   </section>
 
@@ -247,20 +252,18 @@
 
   <!-- Step 1 -->
   <section class="step show" id="s1" aria-labelledby="s1h">
-    <h2 id="s1h">What happens on your floor?</h2>
-    <p class="sub">Tick what sounds familiar, up to four. Two or three is plenty.</p>
+    <h2 id="s1h">What slows your floor down?</h2>
+    <p class="sub">Pick the closest, up to four. Yours will be a bit different, and that’s fine. Every tool is built for your floor.</p>
     <div class="syms" id="syms">
-      <button type="button" class="sym" aria-pressed="false" data-k="sort"><span class="box" aria-hidden="true"></span><span>Your ERP prints the paperwork in one pile. Someone sorts it by hand and hunts for the missing sheets.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="courier"><span class="box" aria-hidden="true"></span><span>Someone checks order numbers one by one to work out which courier it goes with.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="pick"><span class="box" aria-hidden="true"></span><span>Picking orders come out of the ERP in one pile. Pickers walk the warehouse in print order, or someone filters and reprints them by hand.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="wrong"><span class="box" aria-hidden="true"></span><span>Nobody knows the wrong file was loaded until the part is already made.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="custom"><span class="box" aria-hidden="true"></span><span>Custom orders stall while someone emails back and forth for the missing details.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="reports"><span class="box" aria-hidden="true"></span><span>The data is all in the system, but the reports are too basic to run the floor on.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="setup"><span class="box" aria-hidden="true"></span><span>Setting up a new product range takes hours of manual prep before anything runs.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="guess"><span class="box" aria-hidden="true"></span><span>Job times and quotes are based on gut feel and old averages.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="export"><span class="box" aria-hidden="true"></span><span>Artwork files get opened and exported to PDF one at a time.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="personal"><span class="box" aria-hidden="true"></span><span>Personalised or multi-up print files are built by hand, one order at a time.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="unsure"><span class="box" aria-hidden="true"></span><span>None of these, but something on the floor still feels slower than it should.</span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="sort"><span class="box" aria-hidden="true"></span><span class="st"><b>Sorting paperwork by hand</b><span class="ex">Job sheets, picking lists, courier labels.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="pick"><span class="box" aria-hidden="true"></span><span class="st"><b>Picking the long way round</b><span class="ex">Pickers walking back and forth.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="wrong"><span class="box" aria-hidden="true"></span><span class="st"><b>Mistakes found too late</b><span class="ex">Wrong file or part, found after it’s made.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="reports"><span class="box" aria-hidden="true"></span><span class="st"><b>Reports you can’t run the floor on</b><span class="ex">The data is in the ERP or spreadsheets. The reports are too basic.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="machines"><span class="box" aria-hidden="true"></span><span class="st"><b>Machines nobody measures</b><span class="ex">Downtime, output and performance are a guess.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="export"><span class="box" aria-hidden="true"></span><span class="st"><b>Files done one at a time</b><span class="ex">Exports, print files, new product setup.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="custom"><span class="box" aria-hidden="true"></span><span class="st"><b>Chasing missing details</b><span class="ex">Emails back and forth before a job can start.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="guess"><span class="box" aria-hidden="true"></span><span class="st"><b>Guessing times and quotes</b><span class="ex">Gut feel and old averages.</span></span></button>
+      <button type="button" class="sym unsure" aria-pressed="false" data-k="unsure"><span class="box" aria-hidden="true"></span><span class="st"><b>Something else</b><span class="ex">It just feels slower than it should.</span></span></button>
     </div>
     <p class="cap-note" id="capnote" role="status"></p>
   </section>
@@ -268,7 +271,7 @@
   <!-- Step 2 -->
   <section class="step" id="s2" aria-labelledby="s2h">
     <h2 id="s2h">Put a rough number on it.</h2>
-    <p class="sub" id="s2sub">About how many hours a week does each one take, all people together? Counting the clean-up afterwards. A guess is fine.</p>
+    <p class="sub" id="s2sub">Roughly how many hours a week, all people together? A guess is fine.</p>
     <div id="qrows"></div>
     <div id="ratewrap">
       <p class="group-label">What is an hour of your team's time worth?</p>
@@ -280,6 +283,7 @@
       </div>
       <p class="hint">Your number. I only do the sum. £20 if you skip it.</p>
     </div>
+    <div class="field"><label for="own">What’s different on your floor? <span class="o">(optional, one line)</span></label><input id="own" type="text" maxlength="160" autocomplete="off"></div>
     <p class="group-label">Which system holds your orders? <span class="o">(optional)</span></p>
     <div class="chips" id="erp" role="group" aria-label="ERP">
       <button type="button" class="chip" aria-pressed="false" data-v="Sage">Sage</button>
@@ -356,6 +360,7 @@
       <input type="hidden" name="summary" id="f-summary">
       <input type="hidden" name="link" id="f-link">
       <input type="hidden" name="source" id="f-source">
+      <input type="hidden" name="own" id="f-own">
 
       <div class="opts" id="opts" role="group" aria-label="Next step">
       <button type="button" class="opt" aria-pressed="false" data-o="call"><span class="t"><span class="radio"></span>Ring me</span><span class="d">Free, 30 minutes, no preparation needed.</span></button>
@@ -407,18 +412,18 @@
 (function(){
   // p: example price from /prices/ ("a tool like this"), 0 = priced after the call
   var FIX = {
-    sort:{s:"Sorting paperwork by hand",n:"Paperwork sorted, with separators for multi-part orders",r:"About an hour a day, done in a minute. Every order stays together.",p:1000},
-    courier:{s:"Checking which courier",n:"Courier stamped on every sheet",r:"Product-to-slip matching up to 5× faster",p:0},
-    pick:{s:"Filtering picking orders and walking the long way",n:"Picking orders sorted by priority and value, in route order",r:"Up to 12 hours a week of filtering and reprinting saved at peak. Picking rate up about 40%.",p:2250},
-    wrong:{s:"Wrong file caught too late",n:"Quality gate and part preview on the sheet",r:"The operator sees what it should look like",p:1700},
-    custom:{s:"Chasing customers for missing details",n:"Automatic request to customer service",r:"The answer goes straight back onto the sheet",p:0},
-    reports:{s:"Building reports by hand",n:"Automated reports and live dashboards",r:"One current view, nobody compiling it by hand",p:1700},
-    setup:{s:"Prepping a new product range by hand",n:"Standardised machine files with built-in checks",r:"Prep time down 93% in one project",p:0},
-    guess:{s:"Guessing job times and quotes",n:"Calculators and estimates from your own data",r:"From a simple job-time calculator to a model built on your production history",p:0},
-    export:{s:"Exporting artwork one file at a time",n:"Batch export in Adobe, folder by folder",r:"A whole queue of files done in one click, with an error summary",p:500},
-    personal:{s:"Building personalised print files by hand",n:"Adobe layout automation with built-in checks",r:"Print-ready files generated from order data, checked before export",p:0},
-    unsure:{s:"Something feels slow",n:"A fresh pair of eyes on your process",r:"A free 30-minute call first. If a closer look helps, a one-day review is £600, credited in full against any build.",p:0}
+    sort:{s:"Sorting paperwork by hand",n:"Paperwork sorted by a tool, in the order your floor needs",r:"Done before: an hour a day of sorting, now a minute.",p:1000},
+    pick:{s:"Picking the long way round",n:"Picking orders put in route order",r:"Done before: picking rate up about 40%.",p:2250},
+    wrong:{s:"Mistakes found too late",n:"Checks before production, not after",r:"Done before: up to 10% of machine capacity freed.",p:1700},
+    reports:{s:"Reports you can\u2019t run the floor on",n:"Reports and dashboards that build themselves",r:"Done before: one current view, nobody compiling it by hand.",p:1700},
+    machines:{s:"Machines nobody measures",n:"Machine data made visible",r:"Done before: average machine performance from 80% to 91%.",p:1700},
+    export:{s:"Files done one at a time",n:"File work automated, folder by folder",r:"Done before: whole folders exported in one run. New range prep down 93%.",p:500},
+    custom:{s:"Chasing missing details",n:"Missing details requested automatically",r:"Done before: the answer goes straight back onto the paperwork.",p:0},
+    guess:{s:"Guessing times and quotes",n:"Estimates from your own data",r:"From a simple calculator to a model built on your production history.",p:0},
+    unsure:{s:"Something else",n:"A fresh pair of eyes on your process",r:"A free 30-minute call first. If a closer look helps, a one-day review is \u00a3600, credited in full against any build.",p:0}
   };
+  // Old links and QR codes may carry keys that now belong to a wider family
+  var ALIAS = {courier:'sort', personal:'export', setup:'export'};
   // hours a week, per answer. d is "15 or more", so it is a floor.
   var HRS = {a:0.5,b:3,c:10,d:15};
   var LBL = {a:'Under 1 h',b:'1 to 5 h',c:'5 to 15 h',d:'15 h or more',n:'No idea'};
@@ -449,7 +454,7 @@
     location.hash.replace(/^#/,'').split('&').forEach(function(kv){var a=kv.split('=');if(a[0])p[a[0]]=decodeURIComponent(a[1]||'');});
     if (!p.f) return;
     p.f.split(',').forEach(function(x){
-      var a = x.split('.'); if (!FIX[a[0]] || st.f.indexOf(a[0])>-1 || st.f.length>=MAXTICKS) return;
+      var a = x.split('.'); a[0] = ALIAS[a[0]] || a[0]; if (!FIX[a[0]] || st.f.indexOf(a[0])>-1 || st.f.length>=MAXTICKS) return;
       st.f.push(a[0]); if (a[1] && LBL[a[1]]) st.h[a[0]] = a[1];
     });
     if (['15','20','30','40'].indexOf(p.rate)>-1) st.rate = +p.rate;
@@ -494,7 +499,7 @@
     var any = real().length>0;
     $('ratewrap').style.display = any?'':'none';
     $('s2sub').textContent = any
-      ? 'About how many hours a week does each one take, all people together? Counting the clean-up afterwards. A guess is fine.'
+      ? 'Roughly how many hours a week, all people together? A guess is fine.'
       : 'Nothing to add here. Pick your system if you like, then see your offer.';
   }
   $('qrows').addEventListener('click', function(e){
@@ -607,6 +612,7 @@
     var t = 'Ticked: '+parts.join('; ')+'.';
     if (C.rows.length) t += ' Cost now: '+(C.floor?'at least ':'about ')+money(C.total)+' a year at £'+st.rate+'/h.';
     if (st.erp) t += ' System: '+st.erp+'.';
+    var own = $('own').value.trim(); if (own) t += ' In their words: '+own;
     return t;
   }
 
@@ -679,7 +685,7 @@
     $('f-method').value = st.o==='call'?'Ring me':'Email me';
     $('f-slot').value = st.o==='call'?st.slot:'';
     $('f-erp').value = st.erp; $('f-rate').value = '£'+st.rate+'/h';
-    $('f-summary').value = summary(C); $('f-link').value = link(); $('f-source').value = SRC;
+    $('f-summary').value = summary(C); $('f-link').value = link(); $('f-source').value = SRC; $('f-own').value = $('own').value.trim();
     var form = $('offer-form'), nx = $('next'); $('err').hidden = true; nx.disabled = true;
     if (DEMO) { finish(C); return; }
     fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(new FormData(form)).toString()})
