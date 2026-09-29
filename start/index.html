@@ -166,6 +166,7 @@
   .sheet-foot{padding:14px 0 10px;font-size:13.5px;color:var(--ink-soft);}
   .sheet-foot .who{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;margin-top:6px;color:var(--ink);}
 
+  .pdf-hint{flex-basis:100%;font-size:13px;color:var(--ink-soft);}
   .share{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px 0 0;font-size:14px;color:var(--ink-soft);}
 
   .dim{display:flex;align-items:center;gap:14px;color:var(--ink-soft);margin:34px 0 18px;}
@@ -346,6 +347,7 @@
       <button type="button" class="btn-outline" id="pdf">Save as PDF</button>
       <button type="button" class="btn-outline" id="copy">Copy link</button>
       <span id="copied" role="status"></span>
+      <span class="pdf-hint">Save as PDF opens print. Pick "Save as PDF" as the printer.</span>
     </div>
 
     <div class="dim"><span class="tick"></span><span class="rule"></span><span>How do you want to go on?</span><span class="rule"></span><span class="tick"></span></div>
@@ -685,7 +687,7 @@
     $('f-method').value = st.o==='call'?'Ring me':'Email me';
     $('f-slot').value = st.o==='call'?st.slot:'';
     $('f-erp').value = st.erp; $('f-rate').value = '£'+st.rate+'/h';
-    $('f-summary').value = summary(C); $('f-link').value = link(); $('f-source').value = SRC; $('f-own').value = $('own').value.trim();
+    $('f-summary').value = summary(C); $('f-link').value = hash().slice(1); $('f-source').value = SRC; $('f-own').value = $('own').value.trim();
     var form = $('offer-form'), nx = $('next'); $('err').hidden = true; nx.disabled = true;
     if (DEMO) { finish(C); return; }
     fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(new FormData(form)).toString()})

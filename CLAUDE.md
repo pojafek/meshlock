@@ -113,7 +113,8 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 - Family keys: `sort`, `pick`, `wrong`, `reports`, `machines`, `export`, `custom`, `guess`, `unsure`. They must match the homepage `data-fix` keys and must never be renamed, or old links break. Older keys still work through `ALIAS`: `courier` opens `sort`, `personal` and `setup` open `export`.
 - Tool prices come from the examples on /prices/. Keep them in line. Problems without an example show "priced after the call".
 - The current cost is the visitor's own cost, shown in red-flag. The tool price sits beside it in green, so the two are never confused.
-- "Not yet" leads to Save as PDF, so the visitor can pass the offer on.
+- "Not yet" leads to Save as PDF, so the visitor can pass the offer on. Save as PDF uses the browser's print dialog (print CSS lays out the offer as one page).
+- The form sends the answers as the hash part only (field `link`, for example `f=sort.b,machines.c&rate=20`), not a full URL, so spam filters are less likely to flag it. Reopen it as meshlock.co.uk/start/#<value>.
 - Printed QR codes open `/start/?s=<source>` (`kp` Kamil's card, `kps` Kamil's one-pager, `pc` Patryk's card, `pcs` Patryk's sell sheet). The page sends that tag in the hidden `source` field, `site` when there is none. Never rename a tag already printed.
 
 ## Writing rules
