@@ -92,6 +92,8 @@
 
   .qrow{background:var(--paper-card);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px 16px 18px;margin-bottom:12px;}
   .qrow .q{font-weight:600;font-size:16px;line-height:1.35;margin-bottom:12px;}
+  .qrow .fam{display:block;font-family:'IBM Plex Mono',monospace;font-weight:400;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;}
+  .cost-rows li.vis .p{color:var(--ink-soft);}
 
   /* Sticky bar */
   .bar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--paper);border-top:1px solid var(--line);padding:12px 6vw calc(12px + env(safe-area-inset-bottom));}
@@ -272,7 +274,7 @@
   <!-- Step 2 -->
   <section class="step" id="s2" aria-labelledby="s2h">
     <h2 id="s2h">Put a rough number on it.</h2>
-    <p class="sub" id="s2sub">Roughly how many hours a week, all people together? A guess is fine.</p>
+    <p class="sub" id="s2sub">A rough answer for each, all people together. A guess is fine.</p>
     <div id="qrows"></div>
     <div id="ratewrap">
       <p class="group-label">What is an hour of your team's time worth?</p>
@@ -415,21 +417,24 @@
 (function(){
   // p: example price from /prices/ ("a tool like this"), 0 = priced after the call
   var FIX = {
-    sort:{s:"Sorting paperwork by hand",n:"Paperwork sorted by a tool, in the order your floor needs",r:"Done before: an hour a day of sorting, now a minute.",p:1000},
-    pick:{s:"Picking the long way round",n:"Picking orders put in route order",r:"Done before: picking rate up about 40%.",p:2250},
-    wrong:{s:"Mistakes found too late",n:"Checks before production, not after",r:"Done before: up to 10% of machine capacity freed.",p:1700},
-    reports:{s:"Reports you can\u2019t run the floor on",n:"Reports and dashboards that build themselves",r:"Done before: one current view, nobody compiling it by hand.",p:1700},
-    machines:{s:"Machines nobody measures",n:"Machine data made visible",r:"Done before: average machine performance from 80% to 91%.",p:1700},
-    export:{s:"Files done one at a time",n:"File work automated, folder by folder",r:"Done before: whole folders exported in one run. New range prep down 93%.",p:500},
-    custom:{s:"Chasing missing details",n:"Missing details requested automatically",r:"Done before: the answer goes straight back onto the paperwork.",p:0},
-    guess:{s:"Guessing times and quotes",n:"Estimates from your own data",r:"From a simple calculator to a model built on your production history.",p:0},
+    sort:{s:"Sorting paperwork by hand",q:"Hours a week sorting paperwork?",n:"Paperwork sorted by a tool, in the order your floor needs",r:"Done before: an hour a day of sorting, now a minute.",p:1000},
+    pick:{s:"Picking the long way round",q:"Hours a week lost to extra walking and reprinting?",n:"Picking orders put in route order",r:"Done before: picking rate up about 40%.",p:2250},
+    wrong:{s:"Mistakes found too late",q:"Hours a week lost to rework and re-runs?",n:"Checks before production, not after",r:"Done before: up to 10% of machine capacity freed.",p:1700},
+    reports:{s:"Reports you can\u2019t run the floor on",q:"Hours a week pulling numbers together by hand?",n:"Reports and dashboards that build themselves",r:"Done before: one current view, nobody compiling it by hand.",p:1700},
+    machines:{s:"Machines nobody measures",q:"How many machines?",n:"Machine data made visible",r:"Done before: average machine performance from 80% to 91%.",p:1700},
+    export:{s:"Files done one at a time",q:"Hours a week opening, exporting and prepping files?",n:"File work automated, folder by folder",r:"Done before: whole folders exported in one run. New range prep down 93%.",p:500},
+    custom:{s:"Chasing missing details",q:"Hours a week chasing details?",n:"Missing details requested automatically",r:"Done before: the answer goes straight back onto the paperwork.",p:0},
+    guess:{s:"Guessing times and quotes",q:"Hours a week working out times and quotes?",n:"Estimates from your own data",r:"From a simple calculator to a model built on your production history.",p:0},
     unsure:{s:"Something else",n:"A fresh pair of eyes on your process",r:"A free 30-minute call first. If a closer look helps, a one-day review is \u00a3600, credited in full against any build.",p:0}
   };
   // Old links and QR codes may carry keys that now belong to a wider family
   var ALIAS = {courier:'sort', personal:'export', setup:'export'};
   // hours a week, per answer. d is "15 or more", so it is a floor.
-  var HRS = {a:0.5,b:3,c:10,d:15};
-  var LBL = {a:'Under 1 h',b:'1 to 5 h',c:'5 to 15 h',d:'15 h or more',n:'No idea'};
+  var HRS = {a:0.5,b:3,c:10,d:15,z:0};
+  var LBL = {a:'Under 1 h',b:'1 to 5 h',c:'5 to 15 h',d:'15 h or more',n:'No idea',z:'None. We just don\u2019t have them',m1:'1 to 3',m2:'4 to 10',m3:'11 or more',mn:'Not sure'};
+  // Answer options per family. Machines are a visibility problem: counted in machines, never in hours.
+  function opts(k){ return k==='machines' ? ['m1','m2','m3','mn'] : (k==='reports' ? ['a','b','c','d','z','n'] : ['a','b','c','d','n']); }
+  var VIS = {machines:true};
   var WEEKS = 48, MAXTICKS = 4;
   var DEMO = !/meshlock\.co\.uk$|netlify\.app$/.test(location.hostname);
   var FRAMED = (function(){try{return window.self!==window.top;}catch(e){return true;}})();
@@ -461,7 +466,7 @@
     if (!p.f) return;
     p.f.split(',').forEach(function(x){
       var a = x.split('.'); a[0] = ALIAS[a[0]] || a[0]; if (!FIX[a[0]] || st.f.indexOf(a[0])>-1 || st.f.length>=MAXTICKS) return;
-      st.f.push(a[0]); if (a[1] && LBL[a[1]]) st.h[a[0]] = a[1];
+      st.f.push(a[0]); if (a[1] && opts(a[0]).indexOf(a[1])>-1) st.h[a[0]] = a[1];
     });
     if (['15','20','30','40'].indexOf(p.rate)>-1) st.rate = +p.rate;
     if (p.erp) st.erp = p.erp;
@@ -494,9 +499,10 @@
     real().forEach(function(k){
       var row = document.createElement('div'); row.className='qrow'; row.dataset.k=k;
       row.innerHTML = '<p class="q"></p><div class="chips" role="group"></div>';
-      row.querySelector('.q').textContent = FIX[k].s;
-      row.querySelector('.chips').setAttribute('aria-label', FIX[k].s+', hours a week');
-      ['a','b','c','d','n'].forEach(function(c){
+      row.querySelector('.q').innerHTML = '<span class="fam"></span>';
+      row.querySelector('.fam').textContent = FIX[k].s; row.querySelector('.q').appendChild(document.createTextNode(FIX[k].q));
+      row.querySelector('.chips').setAttribute('aria-label', FIX[k].q);
+      opts(k).forEach(function(c){
         var b = document.createElement('button'); b.type='button'; b.className='chip'; b.dataset.v=c; b.textContent=LBL[c];
         b.setAttribute('aria-pressed', st.h[k]===c?'true':'false'); row.querySelector('.chips').appendChild(b);
       });
@@ -505,7 +511,7 @@
     var any = real().length>0;
     $('ratewrap').style.display = any?'':'none';
     $('s2sub').textContent = any
-      ? 'Roughly how many hours a week, all people together? A guess is fine.'
+      ? 'A rough answer for each, all people together. A guess is fine.'
       : 'Nothing to add here. Pick your system if you like, then see your offer.';
   }
   $('qrows').addEventListener('click', function(e){
@@ -531,7 +537,7 @@
   function costs(){
     var rows = [], total = 0, hours = 0, floor = false;
     real().forEach(function(k){
-      var c = st.h[k]; if (!c || !HRS[c]) return;
+      var c = st.h[k]; if (VIS[k] || !c || !HRS[c]) return;
       var wk = HRS[c]*st.rate;
       rows.push({k:k,c:c,wk:wk,yr:wk*WEEKS});
       total += wk*WEEKS; hours += HRS[c]*WEEKS; if (c==='d') floor = true;
@@ -565,7 +571,14 @@
         li.querySelector('.p').textContent = (r.c==='d'?'at least ':'')+money(r.yr);
         ul.appendChild(li);
       });
-      var skipped = real().length - C.rows.length;
+      var skipped = real().filter(function(k){return !VIS[k] && st.h[k]==='n';}).length;
+      real().filter(function(k){return VIS[k];}).forEach(function(k){
+        var li = document.createElement('li'); li.className='vis';
+        li.innerHTML = '<span><span class="n"></span><span class="h"></span></span><span class="p">not in hours</span>';
+        li.querySelector('.n').textContent = FIX[k].s;
+        li.querySelector('.h').textContent = 'The cost here is capacity you can\u2019t see yet.';
+        ul.appendChild(li);
+      });
       $('cnote').innerHTML = '';
       var b = document.createElement('b'); b.textContent = 'Your answers, rounded. ';
       $('cnote').appendChild(b);
@@ -613,7 +626,7 @@
     return C;
   }
   function summary(C){
-    var parts = real().map(function(k){return FIX[k].s+' ('+(st.h[k]?LBL[st.h[k]]+'/week':'no number')+')';});
+    var parts = real().map(function(k){var v=st.h[k]; return FIX[k].s+' ('+(!v?'no answer':(VIS[k]?LBL[v]+' machines':(v==='z'||v==='n'?LBL[v]:LBL[v]+'/week')))+')';});
     if (st.f.indexOf('unsure')>-1) parts.push('Not sure, something feels slow');
     var t = 'Ticked: '+parts.join('; ')+'.';
     if (C.rows.length) t += ' Cost now: '+(C.floor?'at least ':'about ')+money(C.total)+' a year at £'+st.rate+'/h.';
