@@ -93,7 +93,7 @@
   .qrow{background:var(--paper-card);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px 16px 18px;margin-bottom:12px;}
   .qrow .q{font-weight:600;font-size:16px;line-height:1.35;margin-bottom:12px;}
   .qrow .fam{display:block;font-family:'IBM Plex Mono',monospace;font-weight:400;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;}
-  .cost-rows li.vis .p{color:var(--ink-soft);}
+
 
   /* Sticky bar */
   .bar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--paper);border-top:1px solid var(--line);padding:12px 6vw calc(12px + env(safe-area-inset-bottom));}
@@ -352,7 +352,7 @@
       <span class="pdf-hint">Save as PDF opens print. Pick "Save as PDF" as the printer.</span>
     </div>
 
-    <div class="dim"><span class="tick"></span><span class="rule"></span><span>How do you want to go on?</span><span class="rule"></span><span class="tick"></span></div>
+    <div class="dim"><span class="tick"></span><span class="rule"></span><span>How should I get back to you?</span><span class="rule"></span><span class="tick"></span></div>
 
     <form id="offer-form" name="offer" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field" novalidate>
       <input type="hidden" name="form-name" value="offer">
@@ -368,7 +368,7 @@
       <input type="hidden" name="subject" id="f-subject" value="Meshlock offer">
 
       <div class="opts" id="opts" role="group" aria-label="Next step">
-      <button type="button" class="opt" aria-pressed="false" data-o="call"><span class="t"><span class="radio"></span>Ring me</span><span class="d">Free, 30 minutes, no preparation needed.</span></button>
+      <button type="button" class="opt" aria-pressed="false" data-o="call"><span class="t"><span class="radio"></span>Call me back</span><span class="d">I ring you when it suits. Free, 30 minutes, no preparation needed.</span></button>
       <div class="detail" id="d-call">
         <p class="group-label" style="margin-top:0">When suits you?</p>
         <div class="chips" id="slot" role="group" aria-label="Call time">
@@ -379,7 +379,7 @@
         <div class="field"><label for="phone">Your number</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
         <div class="field"><label for="name1">First name <span class="o">(optional)</span></label><input id="name1" name="name" type="text" autocomplete="given-name"></div>
       </div>
-      <button type="button" class="opt" aria-pressed="false" data-o="mail"><span class="t"><span class="radio"></span>Email me</span><span class="d">I reply within one working day.</span></button>
+      <button type="button" class="opt" aria-pressed="false" data-o="mail"><span class="t"><span class="radio"></span>Email me back</span><span class="d">I reply by email within one working day.</span></button>
       <div class="detail" id="d-mail">
         <div class="field" style="margin-top:0"><label for="email">Your email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email"></div>
         <div class="field"><label for="name2">First name <span class="o">(optional)</span></label><input id="name2" name="name" type="text" autocomplete="given-name"></div>
@@ -421,7 +421,7 @@
     pick:{s:"Picking the long way round",q:"Hours a week lost to extra walking and reprinting?",n:"Picking orders put in route order",r:"Done before: picking rate up about 40%.",p:2250},
     wrong:{s:"Mistakes found too late",q:"Hours a week lost to rework and re-runs?",n:"Checks before production, not after",r:"Done before: up to 10% of machine capacity freed.",p:1700},
     reports:{s:"Reports you can\u2019t run the floor on",q:"Hours a week pulling numbers together by hand?",n:"Reports and dashboards that build themselves",r:"Done before: one current view, nobody compiling it by hand.",p:1700},
-    machines:{s:"Machines nobody measures",q:"How many machines?",n:"Machine data made visible",r:"Done before: average machine performance from 80% to 91%.",p:1700},
+    machines:{s:"Machines nobody measures",q:"How many machines?",n:"Machine data made visible",r:"Output and performance per machine and shift, where the downtime goes, which stops nobody questions, and what ran when. Done before: average machine performance from 80% to 91%.",p:1700},
     export:{s:"Files done one at a time",q:"Hours a week opening, exporting and prepping files?",n:"File work automated, folder by folder",r:"Done before: whole folders exported in one run. New range prep down 93%.",p:500},
     custom:{s:"Chasing missing details",q:"Hours a week chasing details?",n:"Missing details requested automatically",r:"Done before: the answer goes straight back onto the paperwork.",p:0},
     guess:{s:"Guessing times and quotes",q:"Hours a week working out times and quotes?",n:"Estimates from your own data",r:"From a simple calculator to a model built on your production history.",p:0},
@@ -435,6 +435,8 @@
   // Answer options per family. Machines are a visibility problem: counted in machines, never in hours.
   function opts(k){ return k==='machines' ? ['m1','m2','m3','mn'] : (k==='reports' ? ['a','b','c','d','z','n'] : ['a','b','c','d','n']); }
   var VIS = {machines:true};
+  // Our real result, 80% to 91%, is about 14% more output from the same machines. Shown per answer, as machines, never as money.
+  var CAP = {m1:'\u2248 \u2153 machine', m2:'\u2248 1 machine', m3:'1\u00bd+ machines', mn:'hidden'};
   var WEEKS = 48, MAXTICKS = 4;
   var DEMO = !/meshlock\.co\.uk$|netlify\.app$/.test(location.hostname);
   var FRAMED = (function(){try{return window.self!==window.top;}catch(e){return true;}})();
@@ -574,15 +576,16 @@
       var skipped = real().filter(function(k){return !VIS[k] && st.h[k]==='n';}).length;
       real().filter(function(k){return VIS[k];}).forEach(function(k){
         var li = document.createElement('li'); li.className='vis';
-        li.innerHTML = '<span><span class="n"></span><span class="h"></span></span><span class="p">not in hours</span>';
+        li.innerHTML = '<span><span class="n"></span><span class="h"></span></span><span class="p"></span>';
         li.querySelector('.n').textContent = FIX[k].s;
-        li.querySelector('.h').textContent = 'The cost here is capacity you can\u2019t see yet.';
+        li.querySelector('.h').textContent = (st.h[k]&&st.h[k]!=='mn' ? LBL[st.h[k]]+' machines \u00b7 ' : '')+'capacity you pay for but can\u2019t see';
+        li.querySelector('.p').textContent = CAP[st.h[k]]||'hidden';
         ul.appendChild(li);
       });
       $('cnote').innerHTML = '';
       var b = document.createElement('b'); b.textContent = 'Your answers, rounded. ';
       $('cnote').appendChild(b);
-      $('cnote').appendChild(document.createTextNode(WEEKS+' weeks a year at £'+st.rate+' an hour. This is what the problems cost now, not a promise of what a fix saves.'+(skipped?' Left out: '+skipped+' you had no number for.':'')));
+      $('cnote').appendChild(document.createTextNode(WEEKS+' weeks a year at £'+st.rate+' an hour. This is what the problems cost now, not a promise of what a fix saves.'+(skipped?' Left out: '+skipped+' you had no number for.':'')+(real().some(function(k){return VIS[k];})?' Machines are shown in machines, not money: the same gain as ours (80% to 91%) on the number you picked.':'')));
     }
 
     // start box
@@ -682,7 +685,7 @@
     if (step===3){
       buildOffer();
       nx.textContent = st.o==='later' ? 'Done' : 'Send to Kamil';
-      $('note').textContent = !st.o ? 'Choose how to go on' : '';
+      $('note').textContent = !st.o ? 'How should I get back to you?' : '';
     }
     try{ history.replaceState(null,'', st.f.length && step>1 ? location.pathname+location.search+hash() : location.pathname+location.search); }catch(e){}
   }
@@ -701,11 +704,11 @@
   }
   function send(){
     var C = costs();
-    $('f-method').value = st.o==='call'?'Ring me':'Email me';
+    $('f-method').value = st.o==='call'?'Call me back':'Email me back';
     $('f-slot').value = st.o==='call'?st.slot:'';
     $('f-erp').value = st.erp; $('f-rate').value = '£'+st.rate+'/h';
     $('f-summary').value = summary(C); $('f-link').value = hash().slice(1); $('f-source').value = SRC; $('f-own').value = $('own').value.trim();
-    $('f-subject').value = 'Meshlock offer · '+SRC+' · '+(st.o==='call'?'Ring me':'Email me');
+    $('f-subject').value = 'Meshlock offer · '+SRC+' · '+(st.o==='call'?'Call me back':'Email me back');
     var form = $('offer-form'), nx = $('next'); $('err').hidden = true; nx.disabled = true;
     if (DEMO) { finish(C); return; }
     fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(new FormData(form)).toString()})
