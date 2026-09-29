@@ -6,30 +6,23 @@
 <meta name="color-scheme" content="light">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<title>Meshlock · Job traveller sorting</title>
+<title>Meshlock · Job order sorting</title>
 <style>
-
-
-
-/*FONTS*/
 :root{
   --paper:#EEF0EA; --paper-dim:#E3E6DC; --paper-card:#F6F7F2;
   --ink:#171A1D; --ink-soft:#565C58; --ink-faint:#8A9086;
-  --line:#C9CDC0; --amber:#D9A441; --amber-ink:#5A4419;
-  --green:#3F6B52; --green-bg:#E4EBE3; --steel:#37485A; --red:#B5482E;
+  --line:#C9CDC0; --amber:#D9A441; --green:#3F6B52; --green-bg:#E4EBE3; --steel:#37485A; --red:#B5482E;
   --display:'Space Grotesk',sans-serif; --sans:'IBM Plex Sans',sans-serif; --mono:'IBM Plex Mono',monospace;
 }
 *{box-sizing:border-box;}
-html,body{margin:0;background:#1d2023;}
+html,body{margin:0;background:#E3E6DC;}
 body{display:flex;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;}
-.stage{position:relative;width:1920px;height:1080px;background:var(--paper);overflow:hidden;transform-origin:center center;flex:none;
-  font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;}
+html.embed,html.embed body{background:#EEF0EA;}
+.stage{position:relative;width:1920px;height:1080px;background:var(--paper);overflow:hidden;transform-origin:center center;flex:none;font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;}
 .v .stage{width:1080px;height:1920px;}
 .render body,.render html{background:var(--paper);}
 .render body{display:block;min-height:0;}
-.grid{position:absolute;inset:0;
-  background-image:linear-gradient(rgba(201,205,192,.55) 1px,transparent 1px),linear-gradient(90deg,rgba(201,205,192,.55) 1px,transparent 1px);
-  background-size:48px 48px;background-position:-1px -1px;}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,205,192,.55) 1px,transparent 1px),linear-gradient(90deg,rgba(201,205,192,.55) 1px,transparent 1px);background-size:48px 48px;background-position:-1px -1px;}
 .frame{position:absolute;inset:36px;border:1.5px solid var(--ink);pointer-events:none;}
 .frame::before,.frame::after{content:"";position:absolute;width:22px;height:22px;border:1.5px solid var(--ink);}
 .frame::before{left:-12px;top:-12px;border-right:0;border-bottom:0;}
@@ -39,83 +32,77 @@ body{display:flex;align-items:center;justify-content:center;min-height:100vh;ove
 .corner.tr{right:64px;top:52px;}
 .v .corner.tr{display:none;}
 
-/* text column */
-.copy{position:absolute;left:120px;top:150px;width:640px;}
-.v .copy{left:84px;top:140px;width:912px;}
-.label{font-family:var(--mono);font-size:18px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 26px;}
-.head{position:relative;height:250px;}
-.v .head{height:272px;}
-.head h1{position:absolute;left:0;top:0;margin:0;font-family:var(--display);font-weight:700;font-size:58px;line-height:1.08;letter-spacing:-.015em;}
-.v .head h1{font-size:68px;}
-.v .chiprow p{font-size:28px;}
+.copy{position:absolute;left:120px;top:140px;width:700px;}
+.v .copy{left:84px;top:130px;width:912px;}
+.label{font-family:var(--mono);font-size:18px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 22px;}
 .v .label{font-size:20px;}
-.v .meter .t,.v .bar span{font-size:17px;}
-.v .bar .track{height:18px;}
-.chiprow{position:relative;height:44px;margin-top:16px;}
-.chiprow .row{position:absolute;left:0;top:0;display:flex;align-items:center;gap:16px;white-space:nowrap;}
+.head{position:relative;height:200px;}
+.v .head{height:212px;}
+.head h1{position:absolute;left:0;top:0;margin:0;font-family:var(--display);font-weight:700;font-size:52px;line-height:1.08;letter-spacing:-.015em;}
+.v .head h1{font-size:62px;}
+.chiprow{position:relative;height:44px;}
+.chiprow>div{position:absolute;left:0;top:0;display:flex;align-items:center;gap:16px;white-space:nowrap;}
 .chip{font-family:var(--mono);font-size:16px;letter-spacing:.14em;padding:6px 12px;border-radius:2px;border:1.5px solid;}
 .chip.red{color:var(--red);border-color:var(--red);}
 .chip.green{color:var(--green);border-color:var(--green);background:var(--green-bg);}
 .chiprow p{margin:0;font-size:24px;color:var(--ink-soft);}
+.v .chiprow p{font-size:28px;}
 
-/* meter */
-.meter{position:absolute;left:120px;top:640px;width:640px;}
-.v .meter{left:84px;top:1300px;width:912px;}
-.meter .t{font-family:var(--mono);font-size:15px;letter-spacing:.16em;color:var(--ink-soft);margin:0 0 16px;}
-.bar{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:14px;margin-bottom:14px;}
-.bar span{font-family:var(--mono);font-size:15px;letter-spacing:.12em;}
-.bar .track{height:14px;border:1px solid var(--line);background:var(--paper-card);position:relative;}
-.bar .fill{position:absolute;left:0;top:0;bottom:0;width:0;}
-.bar.b .fill{background:var(--red);} .bar.b span{color:var(--red);}
-.bar.a .fill{background:var(--green);} .bar.a span{color:var(--green);}
-
-/* result */
-.result{position:absolute;left:120px;top:800px;width:700px;}
-.v .result{left:84px;top:1520px;width:912px;}
-.stat{display:flex;align-items:flex-end;gap:24px;}
-.stat .num{font-family:var(--display);font-weight:700;font-size:150px;line-height:.82;letter-spacing:-.03em;}
-.stat .cap{padding-bottom:10px;}
-.stat .cap b{display:block;font-family:var(--mono);font-weight:500;font-size:20px;letter-spacing:.16em;}
-.stat .cap i{display:block;font-style:normal;font-size:20px;color:var(--ink-soft);margin-top:6px;}
-.stamp{position:absolute;left:1420px;top:708px;z-index:2;font-family:var(--mono);font-weight:500;font-size:20px;letter-spacing:.12em;color:var(--green);
-  border:2px dashed var(--green);border-radius:2px;padding:10px 16px;background:rgba(228,235,227,.9);}
-.v .stamp{left:600px;top:1126px;}
-.foot{position:absolute;left:120px;bottom:64px;font-family:var(--mono);font-size:14px;letter-spacing:.1em;color:var(--ink-soft);}
-.v .foot{left:84px;bottom:70px;}
-
-
-/* dxf specific */
-.plan{position:absolute;left:830px;top:150px;width:970px;height:679px;}
-.v .plan{left:60px;top:540px;width:960px;height:672px;}
-.plan svg{width:100%;height:100%;overflow:visible;display:block;}
-.checks{position:absolute;left:120px;top:560px;width:640px;}
-.v .checks{left:84px;top:1270px;width:912px;}
-.checks .t{font-family:var(--mono);font-size:15px;letter-spacing:.16em;color:var(--ink-soft);margin:0 0 12px;}
-.row{display:grid;grid-template-columns:30px 190px 1fr;align-items:center;gap:14px;height:50px;border-top:1px dashed var(--line);}
+/* checklist (phase B) */
+.checks{position:absolute;left:120px;top:444px;width:700px;opacity:0;}
+.v .checks{left:84px;top:1280px;width:912px;}
+.checks .t{font-family:var(--mono);font-size:15px;letter-spacing:.16em;color:var(--ink-soft);margin:0 0 10px;}
+.row{display:grid;grid-template-columns:30px 170px 1fr;align-items:center;gap:14px;height:52px;border-top:1px dashed var(--line);}
 .row:last-child{border-bottom:1px dashed var(--line);}
-.v .row{grid-template-columns:34px 250px 1fr;height:56px;}
-.row .nm{font-family:var(--mono);font-size:16px;letter-spacing:.12em;}
+.v .row{grid-template-columns:34px 210px 1fr;height:52px;}
+.row .nm{font-family:var(--mono);font-size:17px;letter-spacing:.12em;color:var(--ink-soft);}
 .v .row .nm{font-size:19px;}
-.row .dt{font-size:19px;color:var(--ink-soft);white-space:nowrap;text-align:right;}
+.row .dt{font-size:20px;color:var(--ink-soft);white-space:nowrap;text-align:right;}
 .v .row .dt{font-size:22px;}
-.st{width:24px;height:24px;border-radius:2px;border:1.5px dashed var(--ink-faint);position:relative;box-sizing:border-box;}
-.st.run{border:2px solid var(--steel);border-radius:50%;border-right-color:transparent;}
+.st{width:24px;height:24px;border-radius:2px;border:1.5px dashed var(--ink-faint);position:relative;}
+.st.run{border:2.5px solid var(--steel);border-radius:50%;border-right-color:transparent;}
 .st.pass{border:none;background:var(--green);}
 .st.pass::after{content:"";position:absolute;left:8px;top:3px;width:6px;height:12px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg);}
-.st.fail{border:none;background:var(--red);}
-.st.fail::before,.st.fail::after{content:"";position:absolute;left:11px;top:4px;width:2.5px;height:16px;background:#fff;}
-.st.fail::before{transform:rotate(45deg);} .st.fail::after{transform:rotate(-45deg);}
-.row.fail .nm,.row.fail .dt{color:var(--red);}
-.row.pass .dt{color:var(--ink);}
-.result{position:absolute;left:830px;top:860px;width:970px;display:flex;align-items:flex-end;gap:26px;}
-.v .result{left:84px;top:1660px;width:912px;}
-.result .num{font-family:var(--display);font-weight:700;font-size:118px;line-height:.82;letter-spacing:-.03em;}
-.result b{display:block;font-family:var(--mono);font-weight:500;font-size:19px;letter-spacing:.14em;}
-.result i{display:block;font-style:normal;font-size:20px;color:var(--ink-soft);margin-top:6px;}
-.stamp{position:absolute;left:1190px;top:452px;z-index:2;font-family:var(--mono);font-weight:500;font-size:20px;letter-spacing:.12em;color:var(--green);border:2px dashed var(--green);border-radius:2px;padding:10px 16px;background:rgba(228,235,227,.92);}
-.v .stamp{left:330px;top:850px;}
+.row.run .nm,.row.run .dt{color:var(--ink);}
+.row.pass .nm{color:var(--green);} .row.pass .dt{color:var(--ink);}
+.clock.b{top:800px;}
+.clock.b .num{font-size:84px;}
+.clock.b .sub{display:none;}
+.v .clock.b{top:1640px;}
+.v .clock.b .num{font-size:96px;}
+.count{font-family:var(--mono);font-weight:500;font-size:20px;letter-spacing:.1em;margin-top:10px;}
+.v .count{font-size:22px;}
+.plus{font-size:22px;color:var(--ink-soft);margin-top:10px;}
+/* clock */
+.clock{position:absolute;left:120px;top:520px;width:660px;}
+.v .clock{left:84px;top:1310px;width:912px;}
+.clock .num{font-family:var(--display);font-weight:700;font-size:150px;line-height:.9;letter-spacing:-.02em;font-variant-numeric:tabular-nums;}
+.v .clock .num{font-size:170px;}
+.clock .cap{font-family:var(--mono);font-size:17px;letter-spacing:.14em;margin-top:10px;}
+.clock .sub{font-size:22px;color:var(--ink-soft);margin-top:8px;}
+
+/* result */
+.result{position:absolute;left:120px;top:520px;width:660px;}
+.v .result{left:84px;top:1310px;width:912px;}
+.result .big{font-family:var(--display);font-weight:700;font-size:118px;line-height:.9;letter-spacing:-.03em;color:var(--green);}
+.result .cap{font-family:var(--mono);font-weight:500;font-size:19px;letter-spacing:.14em;margin-top:14px;}
+.bars{margin-top:34px;display:grid;gap:14px;}
+.bar{display:grid;grid-template-columns:200px 1fr 124px;align-items:center;gap:14px;}
+.v .bar{grid-template-columns:230px 1fr 140px;}
+.bar span{font-family:var(--mono);font-size:15px;letter-spacing:.12em;}
+.v .bar span{font-size:18px;}
+.bar .track{height:16px;border:1px solid var(--line);background:var(--paper-card);position:relative;}
+.bar .fill{position:absolute;left:0;top:0;bottom:0;width:0;}
+.bar.b span{color:var(--red);} .bar.b .fill{background:var(--red);}
+.bar.a span{color:var(--green);} .bar.a .fill{background:var(--green);}
+.bar .v2{text-align:right;}
+
+.plan{position:absolute;left:860px;top:130px;width:940px;height:714px;}
+.v .plan{left:50px;top:470px;width:980px;height:744px;}
+.plan svg{width:100%;height:100%;overflow:visible;display:block;}
 .foot{position:absolute;left:120px;bottom:64px;font-family:var(--mono);font-size:14px;letter-spacing:.1em;color:var(--ink-soft);}
 .v .foot{left:84px;bottom:70px;}
+
 /* sting */
 .sting{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;}
 .sting svg.g{width:560px;height:auto;overflow:visible;}
@@ -127,58 +114,61 @@ body{display:flex;align-items:center;justify-content:center;min-height:100vh;ove
 .v .line{font-size:40px;line-height:1.25;}
 .url{font-family:var(--mono);font-size:20px;letter-spacing:.2em;color:var(--ink-soft);margin-top:22px;}
 
-/* controls (preview only) */
 .ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:8px;z-index:9;}
 .ctl button{font:500 12px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;background:#EEF0EA;color:#171A1D;border:1px solid #171A1D;border-radius:3px;padding:9px 12px;cursor:pointer;}
-.render .ctl{display:none;}
-
-.ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:8px;z-index:9;}
-.ctl button{font:500 12px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;background:#EEF0EA;color:#171A1D;border:1px solid #171A1D;border-radius:3px;padding:9px 12px;cursor:pointer;}
-.render .ctl{display:none;}
-
-.row .dt{font-size:18px;}
-
-html,body{background:#E3E6DC;}
-html.embed,html.embed body{background:#EEF0EA;}
-.embed .ctl{display:none;}
+.render .ctl,.embed .ctl{display:none;}
 .playbtn{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;font:500 15px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;background:#171A1D;color:#EEF0EA;border:0;border-radius:3px;padding:16px 22px;cursor:pointer;box-shadow:3px 4px 0 #D9A441;}
-.playbtn:focus-visible{outline:2.5px solid #37485A;outline-offset:3px;}
+.playbtn:focus-visible,.ctl button:focus-visible{outline:2.5px solid #37485A;outline-offset:3px;}
 </style>
 </head>
 <body>
 <div class="stage" id="stage">
   <div class="grid"></div>
   <div class="frame"></div>
-  <div class="corner tl" id="cornerL">Case file · Job travellers</div>
+  <div class="corner tl" id="cornerL">Case file · Job orders</div>
   <div class="corner tr" id="cornerR">meshlock.co.uk</div>
 
   <div id="scene">
     <div class="copy">
-      <p class="label" id="lbl">The problem</p>
+      <p class="label" id="lbl">By hand</p>
       <div class="head">
-        <h1 id="h1a">The ERP prints job travellers as one long, unsorted stack.</h1>
-        <h1 id="h1b">Sorted, split and stamped in a minute, not an hour.</h1>
+        <h1 id="h1a">Job orders print as one mixed-up stack. Someone sorts them by hand.</h1>
+        <h1 id="h1b">60 job orders. One click. Sorted, grouped and stamped in a minute.</h1>
       </div>
       <div class="chiprow">
-        <div id="chipB" style="position:absolute;left:0;top:0;display:flex;align-items:center;gap:16px;white-space:nowrap"><span class="chip red">BY HAND</span><p>About an hour, every day.</p></div>
-        <div id="chipA" style="position:absolute;left:0;top:0;display:flex;align-items:center;gap:16px;white-space:nowrap"><span class="chip green">AUTOMATED</span><p>Same stack. One click.</p></div>
+        <div id="chipB"><span class="chip red">BY HAND</span><p>About an hour, every day.</p></div>
+        <div id="chipA"><span class="chip green">WITH THE TOOL</span><p>You get on with something else.</p></div>
       </div>
     </div>
 
     <div class="checks" id="checks">
-      <p class="t">JOB TRAVELLERS · TODAY'S PRINT</p>
-      <div class="row" id="r0"><span class="st"></span><span class="nm">SORT</span><span class="dt"></span></div>
-      <div class="row" id="r1"><span class="st"></span><span class="nm">GROUP</span><span class="dt"></span></div>
-      <div class="row" id="r2"><span class="st"></span><span class="nm">SEPARATE</span><span class="dt"></span></div>
-      <div class="row" id="r3"><span class="st"></span><span class="nm">COURIER</span><span class="dt"></span></div>
-      <div class="row" id="r4"><span class="st"></span><span class="nm">PREVIEW</span><span class="dt"></span></div>
+      <p class="t">JOB ORDERS · TODAY'S PRINT</p>
+      <div class="row" id="r0"><span class="st"></span><span class="nm">SORT</span><span class="dt">By priority, then order</span></div>
+      <div class="row" id="r1"><span class="st"></span><span class="nm">GROUP</span><span class="dt">Multi-page orders clipped together</span></div>
+      <div class="row" id="r2"><span class="st"></span><span class="nm">SEPARATE</span><span class="dt">Separator with sheet count</span></div>
+      <div class="row" id="r3"><span class="st"></span><span class="nm">COURIER</span><span class="dt">Courier on every sheet</span></div>
+      <div class="row" id="r4"><span class="st"></span><span class="nm">PREVIEW</span><span class="dt">Part preview on the sheet</span></div>
+      <div class="row" id="r5"><span class="st"></span><span class="nm">MESSAGE</span><span class="dt">Today’s priorities, ready to send</span></div>
+    </div>
+
+    <div class="clock" id="clock">
+      <div class="num" id="clockN">00:00</div>
+      <div class="cap" id="clockC">BY HAND · SPED UP</div>
+      <div class="sub" id="clockS">Find the order. Find its other sheets. Repeat.</div>
+      <div class="count" id="cnt"></div>
+    </div>
+
+    <div class="result" id="result">
+      <div class="big">1 min</div>
+      <div class="cap">INSTEAD OF AN HOUR, EVERY DAY</div>
+      <div class="plus">Plus a ready message: what to do first.</div>
+      <div class="bars">
+        <div class="bar b"><span>BY HAND</span><div class="track"><div class="fill" id="fB"></div></div><span class="v2">60 MIN</span></div>
+        <div class="bar a"><span>WITH THE TOOL</span><div class="track"><div class="fill" id="fA"></div></div><span class="v2">1 MIN</span></div>
+      </div>
     </div>
 
     <div class="plan"><svg id="plan" viewBox="-20 -60 1040 790"></svg></div>
-    <div class="result" id="result">
-      <div class="num" id="num">1 min</div>
-      <div><b>INSTEAD OF AN HOUR, EVERY DAY</b><i>Sorted, split, stamped and previewed.</i></div>
-    </div>
     <div class="foot" id="foot">Orders and layout are illustrative. The time saved is real, rounded.</div>
   </div>
 
@@ -207,9 +197,29 @@ const seg=(t,a,b)=>clamp((t-a)/(b-a));
 const eo=x=>1-Math.pow(1-x,3);
 const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
 const back=x=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);};
-const INK='#171A1D',RED='#B5482E',GREEN='#3F6B52',STEEL='#37485A',SOFT='#565C58',LINE='#C9CDC0',CARD='#F6F7F2',PAPER='#EEF0EA',AMBER='#D9A441';
+const lerp=(a,b,k)=>a+(b-a)*k;
+const INK='#171A1D',RED='#B5482E',GREEN='#3F6B52',STEEL='#37485A',SOFT='#565C58',LINE='#C9CDC0',CARD='#F6F7F2',PAPER='#EEF0EA',DIM='#E3E6DC',AMBER='#D9A441',FAINT='#8A9086';
+function op(e,v){e.style.opacity=v;}
+function tr(e,y){e.style.transform=`translateY(${y}px)`;}
 
-/* ---------- orders ---------- */
+/* ---------- the hand: line drawing, fingertips at 0,0, wrist below ---------- */
+function capsule(x,y,w,h){const r=w/2;return `M${x} ${y+r} A${r} ${r} 0 0 1 ${x+w} ${y+r} V${y+h-r} A${r} ${r} 0 0 1 ${x} ${y+h-r} Z`;}
+function mkHand(parent){
+  const g=el('g',{},parent);
+  const held=el('g',{},g);           // whatever the hand carries sits under the fingers
+  const body=el('g',{},g);
+  const S={fill:CARD,stroke:INK,'stroke-width':3.2,'stroke-linejoin':'round'};
+  el('path',Object.assign({d:'M-40 170 L-44 300 L44 300 L40 170 Z'},{fill:DIM,stroke:INK,'stroke-width':3.2,'stroke-linejoin':'round'}),body); // sleeve
+  el('line',{x1:-42,y1:196,x2:42,y2:196,stroke:INK,'stroke-width':2},body);
+  el('path',Object.assign({d:capsule(-66,58,26,78),transform:'rotate(-38 -53 130)'},S),body);  // thumb
+  el('path',Object.assign({d:'M-46 70 Q-48 60 -38 58 L38 58 Q48 60 46 72 L44 150 Q42 176 20 180 L-20 180 Q-42 176 -44 150 Z'},S),body); // palm
+  [[-44,4,86],[-22,-8,94],[0,-6,92],[22,4,80]].forEach(([x,y,h])=>el('path',Object.assign({d:capsule(x,y,22,h)},S),body)); // fingers
+  [[-44,40],[-22,30],[0,32],[22,40]].forEach(([x,y])=>el('line',{x1:x+6,y1:y,x2:x+16,y2:y,stroke:FAINT,'stroke-width':2,'stroke-linecap':'round'},body));
+  return {g,held};
+}
+function placeHand(h,x,y,rot,sc,o){h.g.setAttribute('transform',`translate(${x},${y}) rotate(${rot}) scale(${sc})`);h.g.setAttribute('opacity',o);}
+
+/* ---------- orders and sheets ---------- */
 function rr(w,h,r){const x=-w/2,y=-h/2;return `M${x+r} ${y} H${x+w-r} A${r} ${r} 0 0 1 ${x+w} ${y+r} V${y+h-r} A${r} ${r} 0 0 1 ${x+w-r} ${y+h} H${x+r} A${r} ${r} 0 0 1 ${x} ${y+h-r} V${y+r} A${r} ${r} 0 0 1 ${x+r} ${y} Z`;}
 function circ(cx,cy,r){return `M${cx-r} ${cy} A${r} ${r} 0 1 0 ${cx+r} ${cy} A${r} ${r} 0 1 0 ${cx-r} ${cy} Z`;}
 const SHAPES={plate:rr(180,130,16)+circ(-45,0,18)+circ(45,0,18),ring:circ(0,0,88)+circ(0,0,40),L:'M-80 -95 H-20 V35 H80 V95 H-80 Z',slot:rr(190,110,55)+'M-45 -16 H45 A16 16 0 0 1 45 16 H-45 A16 16 0 0 1 -45 -16 Z'};
@@ -219,127 +229,241 @@ const ORDERS={
   '1044':{p:'P1',n:2,c:'NEXT DAY',s:'L'},
   '1045':{p:'P3',n:4,c:'PALLET',s:'slot'},
   '1046':{p:'P2',n:2,c:'48H',s:'plate'},
+  '1047':{p:'P1',n:3,c:'NEXT DAY',s:'ring'},
+  '1048':{p:'P3',n:2,c:'PALLET',s:'L'},
+  '1049':{p:'P2',n:3,c:'48H',s:'slot'},
+  '1050':{p:'P1',n:2,c:'NEXT DAY',s:'plate'},
+  '1051':{p:'P3',n:4,c:'PALLET',s:'ring'},
 };
-const PRINTED=[['1045',2],['1042',1],['1043',1],['1046',1],['1044',2],['1045',4],['1042',3],['1045',1],['1046',2],['1042',2],['1044',1],['1045',3]];
-const SORTED_ORDERS=['1042','1044','1043','1046','1045'];
-const CW=130,CH=170,GX=20,GY=26;
-const slotPos=i=>{const c=i%6,r=Math.floor(i/6);return[c*(CW+GX)+ (1000-(6*CW+5*GX))/2, r*(CH+GY)+30];};
-// sorted slots
-const slots=[];SORTED_ORDERS.forEach(o=>{slots.push({sep:o});for(let k=1;k<=ORDERS[o].n;k++)slots.push({o,k});});
+const SORTED=['1042','1044','1047','1050','1043','1046','1049','1045','1048','1051'];
+// the printed stack: every sheet, mixed up (fixed shuffle, so every render is the same)
+const PRINTED=(()=>{const a=[];Object.keys(ORDERS).forEach(o=>{for(let k=1;k<=ORDERS[o].n;k++)a.push([o,k]);});
+  let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;})();
+const CW=96,CH=120,GX=13,GY=16,COLS=9;
+const slotPos=i=>{const c=i%COLS,r=Math.floor(i/COLS);return[c*(CW+GX)+(1000-(COLS*CW+(COLS-1)*GX))/2, r*(CH+GY)];};
+const slots=[];SORTED.forEach(o=>{slots.push({sep:o});for(let k=1;k<=ORDERS[o].n;k++)slots.push({o,k});});
+
 const svg=$('plan');const g0=el('g',{},svg);
-// tray / desk outline
-const tray=el('rect',{x:0,y:0,width:1000,height:650,fill:'none',stroke:'#8A9086','stroke-width':1.5,'stroke-dasharray':'8 7',opacity:0},g0);
-const trayL=el('text',{x:1000,y:-16,'text-anchor':'end','font-family':'IBM Plex Mono','font-size':15,'letter-spacing':2.5,fill:SOFT,opacity:0},g0);trayL.textContent='PRINT TRAY';
+const deskT=el('text',{x:0,y:-22,'font-family':'IBM Plex Mono','font-size':15,'letter-spacing':2.5,fill:SOFT},g0);deskT.textContent='TODAY’S PRINT';
+const deskR=el('text',{x:1000,y:-22,'text-anchor':'end','font-family':'IBM Plex Mono','font-size':15,'letter-spacing':2.5,fill:SOFT},g0);
+const desk=el('rect',{x:0,y:0,width:1000,height:560,fill:'none',stroke:FAINT,'stroke-width':1.5,'stroke-dasharray':'8 7'},g0);
+
+// target piles for sorting by hand (right part of the desk)
+const HAND_ORDERS=['1042','1044','1045','1047','1043','1046'];
+const pilePos=o=>{const i=HAND_ORDERS.indexOf(o);return[360+(i%3)*220,40+Math.floor(i/3)*270];};
+const pileMarks=HAND_ORDERS.map(o=>{const [x,y]=pilePos(o);const g=el('g',{opacity:0},g0);
+  el('rect',{x,y,width:CW+20,height:CH+20,fill:'none',stroke:LINE,'stroke-width':2,'stroke-dasharray':'6 6',rx:3},g);
+  const t=el('text',{x:x+(CW+20)/2,y:y+CH+48,'text-anchor':'middle','font-family':'IBM Plex Mono','font-size':15,'letter-spacing':1.5,fill:SOFT},g);t.textContent='O-'+o;
+  return g;});
+const missing=el('g',{opacity:0},g0);
+{const [x,y]=pilePos('1045');el('rect',{x:x-8,y:y-8,width:CW+36,height:CH+36,fill:'none',stroke:RED,'stroke-width':3,'stroke-dasharray':'10 7',rx:4},missing);
+ const t=el('text',{x:1000,y:y-22,'text-anchor':'end','font-family':'IBM Plex Mono','font-weight':500,'font-size':16,'letter-spacing':1,fill:RED},missing);t.textContent='1 OF 4 FOUND. WHERE ARE THE REST?';}
 
 function mkPage(o,k){
   const O=ORDERS[o];const g=el('g',{},g0);
   el('rect',{x:0,y:0,width:CW,height:CH,fill:CARD,stroke:INK,'stroke-width':2,rx:2},g);
-  const h1=el('text',{x:12,y:26,'font-family':'IBM Plex Mono','font-weight':500,'font-size':16,fill:INK},g);h1.textContent='O-'+o;
-  const pr=el('text',{x:CW-12,y:26,'text-anchor':'end','font-family':'IBM Plex Mono','font-weight':500,'font-size':14,fill:O.p==='P1'?RED:SOFT},g);pr.textContent=O.p;
-  const pg=el('text',{x:12,y:46,'font-family':'IBM Plex Mono','font-size':13,fill:SOFT},g);pg.textContent=`SHEET ${k}/${O.n}`;
-  [64,78,92].forEach((y,i)=>el('rect',{x:12,y,width:i===2?50:70,height:5,fill:LINE},g));
-  // preview box (hidden)
+  const h1=el('text',{x:9,y:22,'font-family':'IBM Plex Mono','font-weight':500,'font-size':14,fill:INK},g);h1.textContent='O-'+o;
+  const pr=el('text',{x:CW-8,y:22,'text-anchor':'end','font-family':'IBM Plex Mono','font-weight':500,'font-size':13,fill:O.p==='P1'?RED:SOFT},g);pr.textContent=O.p;
+  const pg=el('text',{x:9,y:39,'font-family':'IBM Plex Mono','font-size':12,fill:SOFT},g);pg.textContent=`SHEET ${k}/${O.n}`;
+  [52,63,74].forEach((y,i)=>el('rect',{x:9,y,width:i===2?34:46,height:4,fill:LINE},g));
+  const clip=el('g',{opacity:0},g);
+  if(k===1&&O.n>1){el('path',{d:'M44 -12 v24 a7 7 0 0 0 14 0 v-20 a4.5 4.5 0 0 0 -9 0 v18',fill:'none',stroke:STEEL,'stroke-width':2.6,'stroke-linecap':'round'},clip);}
   const pv=el('g',{opacity:0},g);
-  el('rect',{x:CW-52,y:58,width:40,height:40,fill:'#fff',stroke:LINE,'stroke-width':1.5},pv);
-  el('path',{d:SHAPES[O.s],transform:`translate(${CW-32},78) scale(0.16)`,fill:'none',stroke:INK,'stroke-width':12,'fill-rule':'evenodd'},pv);
-  // courier stamp (hidden)
+  el('rect',{x:CW-40,y:48,width:32,height:32,fill:'#fff',stroke:LINE,'stroke-width':1.5},pv);
+  el('path',{d:SHAPES[O.s],transform:`translate(${CW-24},64) scale(0.125)`,fill:'none',stroke:INK,'stroke-width':13,'fill-rule':'evenodd'},pv);
   const st=el('g',{opacity:0},g);
-  const sw=O.c.length*10+18;
-  el('rect',{x:-sw/2,y:-13,width:sw,height:26,fill:'none',stroke:O.c==='NEXT DAY'?RED:STEEL,'stroke-width':2,rx:2},st);
-  const stt=el('text',{y:5,'text-anchor':'middle','font-family':'IBM Plex Mono','font-weight':500,'font-size':13,'letter-spacing':1,fill:O.c==='NEXT DAY'?RED:STEEL},st);stt.textContent=O.c;
-  return{g,pv,st,o,k};
+  const sw=O.c.length*9.5+16, col=O.c==='NEXT DAY'?RED:STEEL;
+  el('rect',{x:-sw/2,y:-12,width:sw,height:24,fill:CARD,stroke:col,'stroke-width':2,rx:2},st);
+  const stt=el('text',{y:5,'text-anchor':'middle','font-family':'IBM Plex Mono','font-weight':500,'font-size':12.5,'letter-spacing':1,fill:col},st);stt.textContent=O.c;
+  return{g,pv,st,clip,o,k};
 }
 function mkSep(o){
   const O=ORDERS[o];const g=el('g',{opacity:0},g0);
   el('rect',{x:0,y:0,width:CW,height:CH,fill:INK,rx:2},g);
-  const a=el('text',{x:CW/2,y:66,'text-anchor':'middle','font-family':'IBM Plex Mono','font-weight':500,'font-size':17,fill:PAPER},g);a.textContent='O-'+o;
-  const b=el('text',{x:CW/2,y:96,'text-anchor':'middle','font-family':'IBM Plex Mono','font-weight':500,'font-size':22,fill:AMBER},g);b.textContent=O.n+(O.n>1?' SHEETS':' SHEET');
-  const c=el('text',{x:CW/2,y:124,'text-anchor':'middle','font-family':'IBM Plex Mono','font-size':12,'letter-spacing':1.5,fill:LINE},g);c.textContent='SEPARATOR';
+  const a=el('text',{x:CW/2,y:48,'text-anchor':'middle','font-family':'IBM Plex Mono','font-weight':500,'font-size':16,fill:PAPER},g);a.textContent='O-'+o;
+  const b=el('text',{x:CW/2,y:74,'text-anchor':'middle','font-family':'IBM Plex Mono','font-weight':500,'font-size':17,fill:AMBER},g);b.textContent=O.n+(O.n>1?' SHEETS':' SHEET');
+  const c=el('text',{x:CW/2,y:98,'text-anchor':'middle','font-family':'IBM Plex Mono','font-size':11,'letter-spacing':1.5,fill:LINE},g);c.textContent='SEPARATOR';
   return g;
 }
-// pages in printed (messy) order
-const pages=PRINTED.map(([o,k],i)=>{
-  const p=mkPage(o,k);
-  const c=i%4,r=Math.floor(i/4);
-  const jit=[[18,-10,-6],[-12,14,5],[8,6,-3],[-6,-14,7],[14,10,4],[-16,4,-7],[10,-8,6],[-8,12,-4],[4,-12,3],[-14,-6,-5],[12,14,6],[-4,6,-2]][i];
-  p.from=[60+c*230+jit[0],40+r*205+jit[1],jit[2]];
-  const si=slots.findIndex(s=>s.o===o&&s.k===k);p.si=si;p.to=[...slotPos(si),0];
-  return p;
-});
-const seps=slots.map((s,i)=>s.sep?{g:mkSep(s.sep),si:i,pos:slotPos(i)}:null).filter(Boolean);
-seps.forEach(s=>s.g.setAttribute('transform',`translate(${s.pos[0]},${s.pos[1]})`));
+// stack on the left; reversed so the first printed sheet sits on top
+const STACK=[40,110];
+const pages=PRINTED.map(([o,k],i)=>{const p=mkPage(o,k);p.i=i;p.si=slots.findIndex(s=>s.o===o&&s.k===k);p.to=slotPos(p.si);return p;});
+// draw order: last printed at the bottom
+pages.slice().reverse().forEach(p=>g0.appendChild(p.g));
+const stackOff=i=>[STACK[0]+((i*37)%11)-5+(PRINTED.length-1-i)*2.6, STACK[1]+(PRINTED.length-1-i)*9+((i*53)%9)-4, ((i*29)%9)-4];
+const seps=slots.map((s,i)=>s.sep?{g:mkSep(s.sep),pos:slotPos(i),si:i}:null).filter(Boolean);
+const groups=[];SORTED.forEach(o=>{const idx=slots.map((s,i)=>(s.sep===o||s.o===o)?i:-1).filter(i=>i>=0);
+  const rows={};idx.forEach(i=>{const r=Math.floor(i/COLS);(rows[r]=rows[r]||[]).push(i);});
+  Object.values(rows).forEach(seg2=>{const a=slotPos(seg2[0]),b=slotPos(seg2[seg2.length-1]);
+    groups.push(el('rect',{x:a[0]-5,y:a[1]-5,width:b[0]-a[0]+CW+10,height:CH+10,fill:'none',stroke:GREEN,'stroke-width':2.5,'stroke-dasharray':'7 5',rx:4,opacity:0},g0));});});
+const ream=el('g',{},g0);
+el('rect',{x:4,y:-6,width:CW+110,height:84,fill:CARD,stroke:INK,'stroke-width':2.2,rx:2},ream);
+for(let j=1;j<14;j++)el('line',{x1:4,x2:4+CW+110,y1:-6+j*6,y2:-6+j*6,stroke:FAINT,'stroke-width':1.2},ream);
+const reamT=el('text',{x:4+(CW+110)/2,y:36,'text-anchor':'middle','font-family':'IBM Plex Mono','font-size':14,'letter-spacing':1.5,fill:SOFT},ream);reamT.textContent='+54 SHEETS';reamT.setAttribute('font-weight','500');reamT.setAttribute('fill',INK);reamT.setAttribute('paint-order','stroke');reamT.setAttribute('stroke',CARD);reamT.setAttribute('stroke-width','8');
+g0.insertBefore(ream,g0.firstChild.nextSibling);
+const stackLbl=el('text',{x:12,y:STACK[1]-26,'text-anchor':'start','font-family':'IBM Plex Mono','font-size':15,'letter-spacing':1.5,fill:SOFT},g0);
+
+// run key and mug (after)
+const key=el('g',{opacity:0},g0);
+el('rect',{x:30,y:610,width:190,height:66,fill:INK,rx:4},key);
+el('rect',{x:30,y:668,width:190,height:10,fill:STEEL,rx:3},key);
+const keyT=el('text',{x:125,y:652,'text-anchor':'middle','font-family':'IBM Plex Mono','font-weight':500,'font-size':22,'letter-spacing':3,fill:PAPER},key);keyT.textContent='RUN';
+const mug=el('g',{opacity:0},g0);
+el('path',{d:'M800 612 H890 V682 Q890 712 860 712 H830 Q800 712 800 682 Z',fill:CARD,stroke:INK,'stroke-width':3.2,'stroke-linejoin':'round'},mug);
+el('path',{d:'M890 627 Q922 627 922 650 Q922 674 890 674',fill:'none',stroke:INK,'stroke-width':3.2},mug);
+const steam=el('g',{},mug);
+[820,845,870].forEach(x=>el('path',{d:`M${x} 597 q-8 -14 0 -26 q8 -12 0 -26`,fill:'none',stroke:FAINT,'stroke-width':2.4,'stroke-linecap':'round'},steam));
+const elseT=el('text',{x:640,y:650,'text-anchor':'end','font-family':'IBM Plex Mono','font-size':14,'letter-spacing':1.5,fill:GREEN,opacity:0},g0);elseT.textContent='YOU: ON SOMETHING ELSE';
+
+const msg=el('g',{opacity:0},g0);
+el('rect',{x:210,y:110,width:580,height:330,fill:CARD,stroke:INK,'stroke-width':2.5,rx:3},msg);
+el('rect',{x:210,y:110,width:580,height:44,fill:INK,rx:3},msg);
+const mh=el('text',{x:230,y:139,'font-family':'IBM Plex Mono','font-weight':500,'font-size':16,'letter-spacing':2,fill:PAPER},msg);mh.textContent='MESSAGE · TO: SHIFT TEAM';
+[['Today: 60 orders, 80 sheets.',200,INK],['12 priority. 5 over £1,000.',240,INK],['Start with these first.',280,INK],['Drafted by the tool from today’s orders.',330,SOFT]].forEach(([tx,y,c],i)=>{const e=el('text',{x:236,y,'font-family':'IBM Plex Sans','font-size':i===3?17:24,fill:c},msg);e.textContent=tx;});
+const sendB=el('g',{},msg);
+el('rect',{x:620,y:372,width:146,height:48,fill:GREEN,rx:3},sendB);
+const sbt=el('text',{x:693,y:403,'text-anchor':'middle','font-family':'IBM Plex Mono','font-weight':500,'font-size':18,'letter-spacing':3,fill:'#fff'},sendB);sbt.textContent='SEND';
+const sent=el('g',{opacity:0},msg);
+el('rect',{x:-70,y:-22,width:140,height:44,fill:'#E4EBE3',stroke:GREEN,'stroke-width':2.5,'stroke-dasharray':'8 5',rx:2},sent);
+const stx=el('text',{y:8,'text-anchor':'middle','font-family':'IBM Plex Mono','font-weight':500,'font-size':20,'letter-spacing':3,fill:GREEN},sent);stx.textContent='SENT';
+const hand=mkHand(g0);
 
 /* ---------- gears (sting) ---------- */
-/* ---------- gears (sting) ---------- */
-const gs=$('gears');
-const CEN=[400,270];
+const gs=$('gears');const CEN=[400,270];
 const OUT=[[304.74,215,-43.3,-25],[495.26,215,43.3,-25],[400,380,0,50]];
-const outG=[],labels=['LEAN','SOFTWARE','ERP'];
-const LPOS=[[252,150,'end'],[548,150,'start'],[400,462,'middle']];
-GEARS.slice(1).forEach((g,i)=>{
-  const w=el('g',{},gs);const r=el('g',{},w);
-  el('path',{d:g.d,fill:'#37485A','fill-rule':'evenodd',stroke:'#37485A','stroke-width':3,'stroke-linejoin':'round'},r);
-  const lt=el('text',{x:LPOS[i][0],y:LPOS[i][1],'text-anchor':LPOS[i][2],'font-family':'IBM Plex Mono','font-weight':500,'font-size':17,'letter-spacing':3,fill:'#37485A'},w);
-  lt.textContent=labels[i];
-  outG.push({w,r,lt,o:OUT[i]});
-});
+const outG=[],labels=['LEAN','SOFTWARE','ERP'],LPOS=[[238,221,'end'],[562,221,'start'],[400,458,'middle']];
+GEARS.slice(1).forEach((gd,i)=>{const w=el('g',{},gs);const r=el('g',{},w);
+  el('path',{d:gd.d,fill:STEEL,'fill-rule':'evenodd',stroke:STEEL,'stroke-width':3,'stroke-linejoin':'round'},r);
+  const lt=el('text',{x:LPOS[i][0],y:LPOS[i][1],'text-anchor':LPOS[i][2],'font-family':'IBM Plex Mono','font-weight':500,'font-size':17,'letter-spacing':3,fill:STEEL},w);lt.textContent=labels[i];
+  outG.push({w,r,lt,o:OUT[i]});});
 const cW=el('g',{},gs);const cR=el('g',{},cW);
-el('path',{d:GEARS[0].d,fill:'#171A1D','fill-rule':'evenodd',stroke:'#171A1D','stroke-width':3,'stroke-linejoin':'round'},cR);
-el('line',{x1:407.2,y1:277.2,x2:431.8,y2:301.8,stroke:'#171A1D','stroke-width':9.5,'stroke-linecap':'round'},cW);
-el('circle',{cx:393.8,cy:263.8,r:15.6,fill:'#D6C29B',stroke:'#171A1D','stroke-width':6.6},cW);
-// adjust gear label positions for layout
-LPOS[0]=[238,221,'end'];LPOS[1]=[562,221,'start'];LPOS[2]=[400,458,'middle'];
-outG.forEach((g,i)=>{g.lt.setAttribute('x',LPOS[i][0]);g.lt.setAttribute('y',LPOS[i][1]);});
-
-
+el('path',{d:GEARS[0].d,fill:INK,'fill-rule':'evenodd',stroke:INK,'stroke-width':3,'stroke-linejoin':'round'},cR);
+el('line',{x1:407.2,y1:277.2,x2:431.8,y2:301.8,stroke:INK,'stroke-width':9.5,'stroke-linecap':'round'},cW);
+el('circle',{cx:393.8,cy:263.8,r:15.6,fill:'#D6C29B',stroke:INK,'stroke-width':6.6},cW);
 
 /* ---------- timeline ---------- */
-const C=[[3.2,5.4],[5.4,6.0],[6.1,7.4],[7.5,9.0],[9.1,10.6]];
-const T={x0:10.9,r0:11.6,s0:16.6,s1:17.2};
+// by hand: the hand moves a few sheets, one at a time, from the stack to order piles
+const MOVES=(()=>{const m=[];let has45=false;PRINTED.forEach(([o],i)=>{if(m.length>=8||!HAND_ORDERS.includes(o))return;if(o==='1045'){if(has45)return;has45=true;}m.push(i);});return m;})();
+const M0=1.6, MD=.58;                   // first move, seconds per move
+const HUNT=[M0+MD*8+.05, M0+MD*8+1.2];   // hunting for the missing sheet
+const T={a1:7.6,x0:8.0,x1:9.0,run:8.9,b0:9.6,b1:15.3,r0:18.4,s0:23.2,s1:23.8};
+const STEP=[[9.6,11.0],[11.2,12.0],[12.2,13.2],[13.4,14.3],[14.5,15.3],[15.5,17.4]]; // sort, group, separate, courier, preview, message
 T.g0=T.s1;T.g1=T.g0+2.2;T.w0=T.g1+.1;T.end=T.w0+3.4;
 const DUR=T.end;
-function op(e,v){e.style.opacity=v;}
-function tr(e,y){e.style.transform=`translateY(${y}px)`;}
-function setRow(i,state,txt){const r=$('r'+i);r.className='row '+state;r.querySelector('.st').className='st '+(state==='pend'?'':state);r.querySelector('.dt').textContent=txt;}
-function row(i,t,run,done){if(t<C[i][0])setRow(i,'pend','');else if(t<C[i][1])setRow(i,'run',run);else setRow(i,'pass',done);}
+const moveOf=i=>MOVES.indexOf(i);
+const moved=MOVES.map(i=>{const o=PRINTED[i][0];return HAND_ORDERS.includes(o)?o:null;});
+// how many sheets already sit on each pile, for a small offset
+const pileCount={};const pileIdx=MOVES.map(i=>{const o=PRINTED[i][0];pileCount[o]=(pileCount[o]||0)+1;return pileCount[o]-1;});
+
+function handPoseAt(t){
+  // default: resting beside the stack
+  let x=STACK[0]+CW+90,y=STACK[1]+CH+60,rot=-18,sc=1,o=seg(t,1.2,1.8);
+  if(t>=M0&&t<M0+MD*MOVES.length){
+    const m=Math.floor((t-M0)/MD), f=(t-M0)/MD-m, i=MOVES[m];
+    const src=stackOff(i), dst=pilePos(PRINTED[i][0]);
+    const sx=src[0]+CW/2, sy=src[1]+CH/2, dx=dst[0]+10+CW/2+pileIdx[m]*6, dy=dst[1]+10+CH/2+pileIdx[m]*6;
+    if(f<.25){const k=eio(f/.25);const px=m?pilePos(PRINTED[MOVES[m-1]][0]):[STACK[0]+CW+40,STACK[1]+CH];x=lerp(m?px[0]+10+CW/2:x,sx,k);y=lerp(m?px[1]+10+CH/2:y,sy,k);rot=lerp(-10,-6,k);}
+    else if(f<.8){const k=eio((f-.25)/.55);x=lerp(sx,dx,k);y=lerp(sy,dy,k)-Math.sin(k*Math.PI)*40;rot=-6+6*Math.sin(k*Math.PI);}
+    else{x=dx;y=dy;rot=0;sc=1-.04*Math.sin((f-.8)/.2*Math.PI);}
+  } else if(t>=M0+MD*MOVES.length&&t<T.x0){
+    // flicking through the stack, looking for the missing sheet
+    const k=t-(M0+MD*MOVES.length);x=STACK[0]+CW/2+Math.sin(k*9)*26;y=STACK[1]+CH/2-10+Math.cos(k*7)*10;rot=-8+Math.sin(k*9)*6;
+  }
+  return{x,y,rot,sc,o};
+}
 
 function render(t){
-  tray.setAttribute('opacity',seg(t,.2,.8));trayL.setAttribute('opacity',seg(t,.2,.8));
   // copy
-  op($('lbl'),seg(t,.2,.8));
-  const xa=eio(seg(t,T.x0-.5,T.x0)), xb=eio(seg(t,T.x0,T.x0+.5));
+  const xa=eio(seg(t,T.x0-.4,T.x0)), xb=eio(seg(t,T.x0,T.x0+.5));
+  op($('lbl'),seg(t,.2,.8)); $('lbl').textContent=t<T.x0?'By hand':'With the tool';
   op($('h1a'),seg(t,.3,1.1)*(1-xa)); tr($('h1a'),(1-eo(seg(t,.3,1.1)))*18-xa*14);
   op($('h1b'),xb); tr($('h1b'),(1-xb)*18);
-  const cb=seg(t,1.2,1.8)*(1-xa); op($('chipB'),cb); tr($('chipB'),(1-eo(seg(t,1.2,1.8)))*12);
-  op($('chipA'),xb); tr($('chipA'),(1-xb)*12);
-  $('lbl').textContent=t<T.x0?'The problem':'The fix';
-  op($('checks'),seg(t,2.5,3.0));
-  row(0,t,'moving sheets','By priority, then order');
-  row(1,t,'grouping','Multi-page orders together');
-  row(2,t,'inserting','Separator with sheet count');
-  row(3,t,'stamping','Courier on every sheet');
-  row(4,t,'adding','Part preview from cut code');
-  // pages
-  pages.forEach((p,i)=>{
-    const d=seg(t,.4+i*.12,.9+i*.12);
-    const drop=(1-eo(d))*-60;
-    const m=eio(seg(t,C[0][0]+p.si*.07,C[0][0]+1.2+p.si*.07));
-    const x=p.from[0]+(p.to[0]-p.from[0])*m, y=p.from[1]+(p.to[1]-p.from[1])*m+drop, a=p.from[2]*(1-m);
-    p.g.setAttribute('transform',`translate(${x},${y}) rotate(${a} ${CW/2} ${CH/2})`);
-    p.g.setAttribute('opacity',seg(t,.4+i*.12,.7+i*.12));
-    // stamp
-    const s0=C[3][0]+p.si*.07, sp=seg(t,s0,s0+.3);
-    p.st.setAttribute('opacity',sp>0?Math.min(1,sp*3):0);
-    p.st.setAttribute('transform',`translate(${CW/2},${CH-26}) rotate(-6) scale(${sp<=0?1.6:1.6-.6*back(sp)})`);
-    const v0=C[4][0]+p.si*.07;p.pv.setAttribute('opacity',seg(t,v0,v0+.25));
-  });
-  seps.forEach((s,j)=>{const s0=C[2][0]+j*.22,k=back(seg(t,s0,s0+.35));s.g.setAttribute('opacity',seg(t,s0,s0+.12));
-    s.g.setAttribute('transform',`translate(${s.pos[0]+CW/2},${s.pos[1]+CH/2}) scale(${Math.max(0,k)}) translate(${-CW/2},${-CH/2})`);});
+  op($('chipB'),seg(t,1.0,1.6)*(1-xa)); op($('chipA'),xb);
+  // clock
+  const inB=t>=T.x0;
+  const hand01=seg(t,M0-.4,T.a1);
+  let secs=inB?60*seg(t,T.b0,T.b1):3600*hand01;
+  const mm=Math.floor(secs/60),ss=Math.floor(secs%60);
+  $('clockN').textContent=String(mm).padStart(2,'0')+':'+String(ss).padStart(2,'0');
+  $('clockN').style.color=inB?GREEN:(hand01>=1?RED:INK);
+  $('clockC').textContent=inB?'WITH THE TOOL':'BY HAND · SPED UP';$('clockC').style.color=inB?GREEN:RED;
+  $('clockS').textContent='Find the order. Find its other sheets. Repeat.';
+  const cf=inB?seg(t,STEP[0][0],STEP[0][1]):hand01;
+  $('cnt').textContent='ORDERS '+Math.round(60*cf)+' / 60 · SHEETS '+Math.round(80*cf)+' / 80';$('cnt').style.color=inB?GREEN:(hand01>=1?RED:INK);
+  $('clock').classList.toggle('b',inB);
+  op($('clock'),seg(t,1.4,2.0)*(1-eio(seg(t,T.x0-.4,T.x0)))+(inB?seg(t,T.x0+.2,T.x0+.7):0)*(1-eio(seg(t,T.r0-.4,T.r0))));
+  op($('checks'),seg(t,T.run+.2,T.run+.7)*(1-eio(seg(t,T.r0-.4,T.r0))));
+  STEP.forEach(([a,b],i)=>{const r=$('r'+i);const st=t<a?'':(t<b?'run':'pass');if(r.dataset.s!==st){r.dataset.s=st;r.className='row '+st;r.querySelector('.st').className='st '+st;}});
+  // message card
+  const mo=eo(seg(t,STEP[5][0],STEP[5][0]+.5));msg.setAttribute('opacity',mo*(1-seg(t,T.r0-.2,T.r0+.4)*.0));msg.setAttribute('transform',`translate(0,${(1-mo)*24})`);
+  const sp2=seg(t,STEP[5][0]+1.55,STEP[5][0]+1.9);sent.setAttribute('opacity',sp2>0?Math.min(1,sp2*3):0);sent.setAttribute('transform',`translate(540,396) rotate(-6) scale(${sp2<=0?1.6:1.6-.6*back(sp2)})`);
+  groups.forEach(g=>g.setAttribute('opacity',seg(t,STEP[1][0],STEP[1][0]+.4)*(1-.65*seg(t,STEP[2][1],STEP[2][1]+.4))));
   // result
-  const rr2=eo(seg(t,T.r0,T.r0+.7));op($('result'),rr2);tr($('result'),(1-rr2)*24);
-  const mins=Math.max(1,Math.round(60-59*eo(seg(t,T.r0,T.r0+1.3))));
-  $('num').textContent=mins+' min';
-  op($('foot'),seg(t,T.r0+.4,T.r0+1));
+  const rr2=eo(seg(t,T.r0,T.r0+.7)); op($('result'),rr2); tr($('result'),(1-rr2)*24);
+  $('fB').style.width=(100*eo(seg(t,T.r0+.3,T.r0+1.3)))+'%';
+  $('fA').style.width=(100/60*eo(seg(t,T.r0+1.1,T.r0+1.6)))+'%';
+  op($('foot'),seg(t,T.r0+.6,T.r0+1.2));
+
+  // desk
+  const pileOn=seg(t,1.4,2.0)*(1-seg(t,T.x0-.3,T.x0));
+  pileMarks.forEach(g=>g.setAttribute('opacity',pileOn));
+  const left=PRINTED.length-MOVES.filter((i,m)=>t>=M0+MD*(m+.8)).length;
+  stackLbl.textContent=inB?'':'80 SHEETS · 60 JOB ORDERS';
+  const rv=seg(t,.2,.8)*(1-seg(t,STEP[0][0],STEP[0][0]+1.0));
+  ream.setAttribute('opacity',rv);ream.setAttribute('transform',`translate(0,${STACK[1]+(PRINTED.length-1)*9+CH+14})`);
+  stackLbl.setAttribute('opacity',seg(t,1.0,1.6)*(1-seg(t,T.x0-.3,T.x0)));
+  deskR.textContent=inB?'SHOWING 10 OF 60 ORDERS':'60 JOB ORDERS · MIXED UP';
+  const miss=seg(t,HUNT[0],HUNT[0]+.3)*(1-seg(t,T.x0-.4,T.x0));
+  missing.setAttribute('opacity',miss);
+
+  pages.forEach(p=>{
+    const drop=eo(seg(t,.3+p.i*.04,.8+p.i*.04));
+    const s=stackOff(p.i);
+    let x=s[0],y=s[1]-(1-drop)*60,a=s[2];
+    const m=moveOf(p.i);
+    if(m>=0){
+      const ms=M0+MD*m;
+      const dst=pilePos(PRINTED[p.i][0]);const dx=dst[0]+10+pileIdx[m]*6,dy=dst[1]+10+pileIdx[m]*6;
+      const k=eio(seg(t,ms+MD*.25,ms+MD*.8));
+      x=lerp(x,dx,k);y=lerp(y,dy,k)-Math.sin(k*Math.PI)*40;a=lerp(a,((p.i*13)%7)-3,k);
+    }
+    // reset to the stack at the switch, then fly to sorted slots
+    const back2=eio(seg(t,T.x0-.2,T.x0+.6));
+    if(back2>0){x=lerp(x,s[0],back2);y=lerp(y,s[1],back2);a=lerp(a,s[2],back2);}
+    const f=eio(seg(t,STEP[0][0]+p.si*.04,STEP[0][0]+.8+p.si*.04));
+    x=lerp(x,p.to[0],f);y=lerp(y,p.to[1],f);a=lerp(a,0,f);
+    p.g.setAttribute('transform',`translate(${x},${y}) rotate(${a} ${CW/2} ${CH/2})`);
+    p.g.setAttribute('opacity',seg(t,.3+p.i*.04,.5+p.i*.04));
+    const s0=STEP[3][0]+p.si*.04, sp=seg(t,s0,s0+.3);
+    p.st.setAttribute('opacity',sp>0?Math.min(1,sp*3):0);
+    p.st.setAttribute('transform',`translate(${CW/2},${CH-22}) rotate(-6) scale(${sp<=0?1.6:1.6-.6*back(sp)})`);
+    const v0=STEP[4][0]+p.si*.03;p.pv.setAttribute('opacity',seg(t,v0,v0+.25));
+    p.clip.setAttribute('opacity',seg(t,STEP[1][0]+.1,STEP[1][0]+.5));
+  });
+  // pages arrive in slot order so later slots draw on top
+  seps.forEach((s,j)=>{const s0=STEP[2][0]+j*.1,k=back(seg(t,s0,s0+.35));s.g.setAttribute('opacity',seg(t,s0,s0+.12));
+    s.g.setAttribute('transform',`translate(${s.pos[0]+CW/2},${s.pos[1]+CH/2}) scale(${Math.max(0,k)}) translate(${-CW/2},${-CH/2})`);});
+
+  // key, mug, hand
+  key.setAttribute('opacity',seg(t,T.x0+.3,T.x0+.8));
+  const press=Math.sin(Math.PI*seg(t,T.run,T.run+.4));
+  key.setAttribute('transform',`translate(0,${press*6})`);
+  mug.setAttribute('opacity',seg(t,T.run+.6,T.run+1.1));
+  steam.setAttribute('transform',`translate(0,${-((t*18)%14)})`);steam.setAttribute('opacity',.6+.4*Math.sin(t*3));
+  elseT.setAttribute('opacity',seg(t,T.run+1.2,T.run+1.7));
+  let P;
+  if(!inB)P=handPoseAt(t);
+  else{
+    const k1=eio(seg(t,T.x0+.2,T.run)), k2=eio(seg(t,T.run+.45,T.run+1.3));
+    const from=handPoseAt(T.x0-.01);
+    const kx=125,ky=648;
+    P={x:lerp(lerp(from.x,kx,k1),808,k2),y:lerp(lerp(from.y,ky-6,k1),658,k2)+press*6,rot:lerp(lerp(from.rot,0,k1),58,k2),sc:1,o:1};
+    const k3=eio(seg(t,STEP[5][0]+.7,STEP[5][0]+1.3)), pr2=Math.sin(Math.PI*seg(t,STEP[5][0]+1.3,STEP[5][0]+1.6));
+    P.x=lerp(P.x,700,k3);P.y=lerp(P.y,404,k3)+pr2*6;P.rot=lerp(P.rot,-8,k3);
+  }
+  placeHand(hand,P.x,P.y,P.rot,.95*P.sc,P.o*(1-seg(t,T.r0-.2,T.r0+.3)*0));
+
   // scene out + sting
   const so=eio(seg(t,T.s0,T.s1));op($('scene'),1-so);op($('cornerL'),1-so);op($('cornerR'),1-so);
   op($('sting'),seg(t,T.s0+.2,T.s1));
@@ -351,12 +475,12 @@ function render(t){
   const l=eo(seg(t,T.w0+.5,T.w0+1.2));op($('line'),l);tr($('line'),(1-l)*16);
   op($('url'),seg(t,T.w0+1.0,T.w0+1.6));
 }
-window.DUR=DUR;window.renderAt=render;
+window.DUR=DUR;window.renderAt=render;window.STILL=T.s0-.3;
 function fit(){if(RENDER)return;const s=$('stage');const W=V?1080:1920,H=V?1920:1080;const k=Math.min(innerWidth/W,(innerHeight-(EMBED?0:56))/H);s.style.transform=`scale(${k})`;s.style.margin=`${(H*k-H)/2}px ${(W*k-W)/2}px`;}
 addEventListener('resize',fit);fit();
 const RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 function addPlay(){const b=document.createElement('button');b.className='playbtn';b.type='button';b.textContent='▶ Play animation';b.onclick=()=>{params.set('play','1');location.search=params.toString();};document.body.appendChild(b);}
-if(RM&&!RENDER&&!params.has('play')){render(T.s0-.3);addPlay();}
+if(RM&&!RENDER&&!params.has('play')){render(window.STILL);addPlay();}
 else if(!RENDER){let t0=performance.now();const loop=now=>{let t=(now-t0)/1000;if(t>DUR+1.5){t0=now;t=0;}render(Math.min(t,DUR));requestAnimationFrame(loop);};requestAnimationFrame(loop);
   $('replay').onclick=()=>{t0=performance.now();};$('fmt').textContent=V?'Horizontal':'Vertical';$('fmt').onclick=()=>{params.set('v',V?'0':'1');location.search=params.toString();};}
 else{render(0);}
