@@ -114,8 +114,8 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 - Step 2 asks each family its own question (`q` in `FIX`). Time problems ask hours a week; reports also allow "None. We just don't have them". Machines are a visibility problem: the question is how many machines, and they never add to the red cost. The offer lists them as "not in hours".
 - Tool prices come from the examples on /prices/. Keep them in line. Problems without an example show "priced after the call".
 - The current cost is the visitor's own cost, shown in red-flag. The tool price sits beside it in green, so the two are never confused.
-- "Not yet" leads to Save as PDF, so the visitor can pass the offer on. Save as PDF uses the browser's print dialog (print CSS lays out the offer as one page).
-- The form sends the answers as the hash part only (field `link`, for example `f=sort.b,machines.c&rate=20`), not a full URL, so spam filters are less likely to flag it. Reopen it as meshlock.co.uk/start/#<value>.
+- Save as PDF and Copy link sit only inside "Not yet · pass it on", for someone who has to show the offer to whoever decides. After sending, the thank-you screen offers one "Save as PDF" link. Save as PDF uses the browser's print dialog (print CSS lays out the offer as one page).
+- The form sends a full clickable link to the offer (field `link`) and the offer as the client saw it (field `shown`: cost now, where to start with its example price and weeks to cover it, and every other item). If submissions land in spam, mark them verified in Netlify.
 - Printed QR codes open `/start/?s=<source>` (`kp` Kamil's card, `kps` Kamil's one-pager, `pc` Patryk's card, `pcs` Patryk's sell sheet). The tag is kept for the browser tab in `sessionStorage` (`ml-src`), so it survives a detour through the site. Both the offer and the homepage contact form send it in a hidden `source` field, `site` when there is none. The hidden `subject` field sets the notification email subject: "Meshlock offer · <source> · Call me back|Email me back". Never rename a tag already printed.
 
 ## Writing rules

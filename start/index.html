@@ -169,6 +169,9 @@
   .sheet-foot .who{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;margin-top:6px;color:var(--ink);}
 
   .pdf-hint{flex-basis:100%;font-size:13px;color:var(--ink-soft);}
+  .detail .share{margin-top:12px;}
+  .done-pdf{margin-top:26px;}
+  .linkbtn{background:none;border:0;padding:0;font:inherit;font-size:14.5px;color:var(--ink);text-decoration:underline;text-decoration-color:var(--ink-faint);text-underline-offset:4px;cursor:pointer;}
   .share{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px 0 0;font-size:14px;color:var(--ink-soft);}
 
   .dim{display:flex;align-items:center;gap:14px;color:var(--ink-soft);margin:34px 0 18px;}
@@ -207,6 +210,8 @@
   @page{margin:16mm;}
   @media print{
     .top .text-link,.intro,.progress,.bar,.share,.dim,.opts,.hint,#s3>h2,#s3>.sub,#s3 form,.form-error{display:none!important;}
+    body.print-offer .done{display:none!important;}
+    body.print-offer #s3{display:block!important;padding-bottom:0;}
     html,body{background:#fff;}
     body{font-size:13px;}
     .js .step.show{padding-bottom:0;animation:none;}
@@ -276,6 +281,7 @@
     <h2 id="s2h">Put a rough number on it.</h2>
     <p class="sub" id="s2sub">A rough answer for each, all people together. A guess is fine.</p>
     <div id="qrows"></div>
+    <div class="field" id="ownwrap"><label for="own">In your own words <span class="o">(optional, one line)</span></label><input id="own" type="text" maxlength="160" autocomplete="off" placeholder="e.g. Our orders come from two systems"></div>
     <div id="ratewrap">
       <p class="group-label">What is an hour of your team's time worth?</p>
       <div class="chips" id="rate" role="group" aria-label="Hourly cost">
@@ -286,7 +292,6 @@
       </div>
       <p class="hint">Your number. I only do the sum. £20 if you skip it.</p>
     </div>
-    <div class="field"><label for="own">What’s different on your floor? <span class="o">(optional, one line)</span></label><input id="own" type="text" maxlength="160" autocomplete="off"></div>
     <p class="group-label">Which system holds your orders? <span class="o">(optional)</span></p>
     <div class="chips" id="erp" role="group" aria-label="ERP">
       <button type="button" class="chip" aria-pressed="false" data-v="Sage">Sage</button>
@@ -345,12 +350,6 @@
       </div>
     </article>
 
-    <div class="share">
-      <button type="button" class="btn-outline" id="pdf">Save as PDF</button>
-      <button type="button" class="btn-outline" id="copy">Copy link</button>
-      <span id="copied" role="status"></span>
-      <span class="pdf-hint">Save as PDF opens print. Pick "Save as PDF" as the printer.</span>
-    </div>
 
     <div class="dim"><span class="tick"></span><span class="rule"></span><span>How should I get back to you?</span><span class="rule"></span><span class="tick"></span></div>
 
@@ -365,6 +364,7 @@
       <input type="hidden" name="link" id="f-link">
       <input type="hidden" name="source" id="f-source">
       <input type="hidden" name="own" id="f-own">
+      <input type="hidden" name="shown" id="f-shown">
       <input type="hidden" name="subject" id="f-subject" value="Meshlock offer">
 
       <div class="opts" id="opts" role="group" aria-label="Next step">
@@ -384,8 +384,9 @@
         <div class="field" style="margin-top:0"><label for="email">Your email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email"></div>
         <div class="field"><label for="name2">First name <span class="o">(optional)</span></label><input id="name2" name="name" type="text" autocomplete="given-name"></div>
       </div>
-      <button type="button" class="opt" aria-pressed="false" data-o="later"><span class="t"><span class="radio"></span>Not yet</span><span class="d">Save it as a PDF. Nothing is sent to me.</span></button>
-      <div class="detail" id="d-later"><p style="font-size:14.5px;color:var(--ink-soft)">Save this offer as a PDF and send it to whoever makes the call. Nothing is sent to me.</p><button type="button" class="btn-outline pdf2" style="margin-top:12px">Save as PDF</button></div>
+      <button type="button" class="opt" aria-pressed="false" data-o="later"><span class="t"><span class="radio"></span>Not yet · pass it on</span><span class="d">Not your call? Save it or send the link on. Nothing is sent to me.</span></button>
+      <div class="detail" id="d-later"><p style="font-size:14.5px;color:var(--ink-soft)">Send it to whoever makes the call. The link opens this offer with your answers in place, any time.</p>
+        <div class="share"><button type="button" class="btn-outline pdf2">Save as PDF</button><button type="button" class="btn-outline" id="copy">Copy link</button><span id="copied" role="status"></span><span class="pdf-hint">Save as PDF opens print. Pick "Save as PDF" as the printer.</span></div></div>
       </div>
       <p class="form-error" role="alert" id="err" hidden>That didn't send. Please try again, or email hello@meshlock.co.uk.</p>
     </form>
@@ -401,6 +402,7 @@
       <li><i>2</i><span>A 30-minute call, remote, no preparation needed.</span></li>
       <li><i>3</i><span>A written proposal with a fixed price, or an honest "you don't need a tool for this".</span></li>
     </ol>
+    <p class="done-pdf" id="donepdf"><button type="button" class="linkbtn pdf2">Want a copy for your records? Save as PDF</button></p>
   </section>
 
 </main>
@@ -436,7 +438,7 @@
   function opts(k){ return k==='machines' ? ['m1','m2','m3','mn'] : (k==='reports' ? ['a','b','c','d','z','n'] : ['a','b','c','d','n']); }
   var VIS = {machines:true};
   // Our real result, 80% to 91%, is about 14% more output from the same machines. Shown per answer, as machines, never as money.
-  var CAP = {m1:'\u2248 \u2153 machine', m2:'\u2248 1 machine', m3:'1\u00bd+ machines', mn:'hidden'};
+  var CAP = {m1:'\u2248 1/3 machine', m2:'\u2248 1 machine', m3:'1.5+ machines', mn:'hidden'};
   var WEEKS = 48, MAXTICKS = 4;
   var DEMO = !/meshlock\.co\.uk$|netlify\.app$/.test(location.hostname);
   var FRAMED = (function(){try{return window.self!==window.top;}catch(e){return true;}})();
@@ -628,6 +630,31 @@
     var n = real().length; $('ref').textContent = n ? n+(n===1?' problem ticked':' problems ticked') : 'free call';
     return C;
   }
+  // The offer as the client saw it, so the reply starts from the same numbers
+  function shown(C){
+    var order = st.f.slice().sort(function(a,b){
+      var wa = (C.rows.filter(function(r){return r.k===a;})[0]||{wk:-1}).wk, wb = (C.rows.filter(function(r){return r.k===b;})[0]||{wk:-1}).wk;
+      return (wb-wa) || (FIX[a].p-FIX[b].p);
+    });
+    function row(k){ return C.rows.filter(function(r){return r.k===k;})[0]; }
+    function line(k){
+      var r = row(k), t = FIX[k].n+' · '+price(FIX[k].p,k);
+      if (r) t += ' (costs them '+(r.c==='d'?'at least ':'about ')+money(r.yr)+' a year)';
+      else if (VIS[k]) t += ' (hidden capacity '+(CAP[st.h[k]]||'hidden')+', '+(LBL[st.h[k]]||'not sure')+' machines)';
+      else if (st.h[k]==='z') t += ' (no hours: they have no reports)';
+      else if (st.h[k]==='n') t += ' (no number given)';
+      return t;
+    }
+    var out = [];
+    if (C.rows.length) out.push('Cost now: '+(C.floor?'at least ':'about ')+money(C.total)+' a year, about '+(Math.round(C.hours/10)*10).toLocaleString('en-GB')+' h a year at £'+st.rate+'/h.');
+    var first = order.filter(function(k){return k!=='unsure';})[0] || 'unsure', fr = row(first);
+    var t = 'Start here: '+line(first)+'.';
+    if (fr && FIX[first].p) t += ' Covers the tool in about '+Math.max(1,Math.ceil(FIX[first].p/fr.wk))+' weeks.';
+    out.push(t);
+    var rest = order.filter(function(k){return k!==first;});
+    if (rest.length) out.push('Also shown: '+rest.map(line).join('; ')+'.');
+    return out.join(' ');
+  }
   function summary(C){
     var parts = real().map(function(k){var v=st.h[k]; return FIX[k].s+' ('+(!v?'no answer':(VIS[k]?LBL[v]+' machines':(v==='z'||v==='n'?LBL[v]:LBL[v]+'/week')))+')';});
     if (st.f.indexOf('unsure')>-1) parts.push('Not sure, something feels slow');
@@ -700,6 +727,7 @@
     else { $('doneh').textContent = 'Kept, not sent.'; t='Nothing was sent to me. If you saved the PDF, it has everything. The link is also copied, and it opens this page with your answers in place.'; n1='Come back whenever you like.'; try{navigator.clipboard.writeText(link());}catch(e){} }
     $('donetext').textContent=t; $('n1').textContent=n1;
     if (st.o==='later') document.querySelectorAll('#donelist li:nth-child(n+2)').forEach(function(x){x.style.display='none';});
+    $('donepdf').style.display = (st.o==='later'||FRAMED) ? 'none' : '';
     $('done').classList.add('show'); window.scrollTo({top:0});
   }
   function send(){
@@ -707,7 +735,7 @@
     $('f-method').value = st.o==='call'?'Call me back':'Email me back';
     $('f-slot').value = st.o==='call'?st.slot:'';
     $('f-erp').value = st.erp; $('f-rate').value = '£'+st.rate+'/h';
-    $('f-summary').value = summary(C); $('f-link').value = hash().slice(1); $('f-source').value = SRC; $('f-own').value = $('own').value.trim();
+    $('f-summary').value = summary(C); $('f-link').value = 'https://meshlock.co.uk/start/'+location.search+hash(); $('f-shown').value = shown(C); $('f-source').value = SRC; $('f-own').value = $('own').value.trim();
     $('f-subject').value = 'Meshlock offer · '+SRC+' · '+(st.o==='call'?'Call me back':'Email me back');
     var form = $('offer-form'), nx = $('next'); $('err').hidden = true; nx.disabled = true;
     if (DEMO) { finish(C); return; }
@@ -723,7 +751,9 @@
   });
   $('offer-form').addEventListener('submit', function(e){ e.preventDefault(); if (step===3 && valid() && st.o!=='later') send(); });
   $('back').addEventListener('click', function(){ if(step>1) go(step-1); });
-  document.querySelectorAll('#pdf,.pdf2').forEach(function(b){ b.addEventListener('click', function(){ window.print(); }); });
+  // Print always shows the offer sheet, also from the thank-you screen
+  document.querySelectorAll('.pdf2').forEach(function(b){ b.addEventListener('click', function(){ document.body.classList.add('print-offer'); window.print(); }); });
+  window.addEventListener('afterprint', function(){ document.body.classList.remove('print-offer'); });
   $('copy').addEventListener('click', function(){
     var u = link(), out = $('copied');
     function ok(){ out.textContent='Link copied.'; setTimeout(function(){out.textContent='';},2500); }
@@ -731,7 +761,7 @@
     else out.textContent=u;
   });
 
-  if (FRAMED) document.querySelectorAll('#pdf,.pdf2').forEach(function(b){ b.hidden = true; });
+  if (FRAMED) document.querySelectorAll('.pdf2,.pdf-hint').forEach(function(b){ b.hidden = true; });
   syncSyms(); syncChips(); syncFields(); if (step>=2) buildRows(); render();
 })();
 </script>
