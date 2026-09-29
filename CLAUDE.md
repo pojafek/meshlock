@@ -109,7 +109,7 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 - Tool prices come from the examples on /prices/. Keep them in line. Problems without an example show "priced after the call".
 - The current cost is the visitor's own cost, shown in red-flag. The tool price sits beside it in green, so the two are never confused.
 - "Not yet" leads to Save as PDF, so the visitor can pass the offer on.
-- Printed QR codes open `/start/?s=<source>` (for example `kp`, `pc`, `sheet`). The page sends that tag in the hidden `source` field, `site` when there is none. Never rename a tag already printed.
+- Printed QR codes open `/start/?s=<source>` (`kp` Kamil's card, `kps` Kamil's one-pager, `pc` Patryk's card, `pcs` Patryk's sell sheet). The page sends that tag in the hidden `source` field, `site` when there is none. Never rename a tag already printed.
 
 ## Writing rules
 

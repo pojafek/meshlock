@@ -442,7 +442,7 @@
     return '#f='+f+'&rate='+st.rate+(st.erp?'&erp='+encodeURIComponent(st.erp):'');
   }
   function link(){return location.href.split('#')[0]+hash();}
-  // Where the visitor came from (a printed QR code carries ?s=kp, ?s=pc or ?s=sheet). Sent only with the form.
+  // Where the visitor came from (printed QR codes carry ?s=kp, kps, pc or pcs). Sent only with the form.
   var SRC = (new URLSearchParams(location.search).get('s') || '').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20) || 'site';
   (function(){
     var p = {};
