@@ -14,7 +14,7 @@ Plain static HTML and CSS. No framework, no build step, no package.json. Keep it
 
 ```
 index.html                    Homepage (all CSS inline in <style>)
-tools/index.html              Tools in action: ERP intro with stats, four full-width live animations (Full screen button), more case files
+tools/index.html              Tools in action: ERP intro with stats, five full-width live animations (Full screen button), each with a price line and a link to the offer, more case files
 prices/index.html             How a price is set, example prices, how you pay, Always included, FAQ (FAQPage JSON-LD lives here)
 apple-touch-icon.png          180px icon
 sitemap.xml                   Sitemap for /, /tools/, /prices/, /notes/ and each article
@@ -29,11 +29,12 @@ assets/
   og-image.png                1200×630 link-preview image (gear lockup, "Lean, software and ERP. One person."). Pages link it as og-image.png?v=2; bump the number whenever the image changes so LinkedIn fetches the new one
   email/meshlock-signature.png  360×56 wordmark on white for the email signature (shown at 180×28). Linked from Gmail, so never rename or remove it
   anim/                       Case file animations (self-contained HTML, noindex)
-    picking-route.html        Smarter picking
-    dxf-check.html            Pre-production quality gate
-    job-travellers.html       Job traveller tool (ERP band)
-    machine-data.html         Machine run data and cut time model
-    thumbs/*.webp             960x540 still frames for the homepage tiles
+    job-travellers.html       Job orders (file name kept so old links work)
+    picking-route.html        Picking routes
+    dxf-check.html            Cut file check, a digital quality gate
+    machine-data.html         Machine data: downtime made visible, 80% to 91%
+    batch-export.html         Batch export (Adobe), on /tools/ only
+    thumbs/*.webp             960x540 still frames for the tiles
 notes/
   index.html                  Field Notes list
   doing-it-by-hand.html       First article
@@ -101,15 +102,21 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 - Inside a page, all motion comes from one `render(t)` function. With reduced motion the page shows one still frame of the result.
 - On-screen parts, orders, machine names and times are illustrative and say so in the footer line. Results shown must match the case file text.
 - Say "machine", never the specific machine type, in site copy and animations. Specific process words make the source easy to guess.
+- Every animation runs before and after: the job by hand (a drawn hand, a clock or counter), then the same job with the tool, then the result and the gear sting. Each works at 16:9 and 9:16.
+- Never write "despatch" or the old tool names in copy. Use "job orders" (not job travellers) and "picking routes". The cut time model stays out of public copy.
+- The homepage shows four tiles (job orders, picking routes, cut file check, machine data). Batch export lives on /tools/ only.
 
 ## One-page offer (/start/)
 
 - Answers live only in the link after `#` (`#f=key.hours,...&rate=..&erp=..`). Nothing is stored on the site until the visitor presses Send, which posts the Netlify Form `name="offer"`.
-- The keys (`sort`, `courier`, `pick`, `wrong`, `custom`, `reports`, `setup`, `guess`, `export`, `personal`, `unsure`) must match the homepage `data-fix` keys and must never be renamed, or old links break.
+- Step 1 and the homepage Sound familiar? show the same nine problem families, a short title plus one grey line of examples, never a description of a finished tool. The offer then shows what was done before as proof.
+- Family keys: `sort`, `pick`, `wrong`, `reports`, `machines`, `export`, `custom`, `guess`, `unsure`. They must match the homepage `data-fix` keys and must never be renamed, or old links break. Older keys still work through `ALIAS`: `courier` opens `sort`, `personal` and `setup` open `export`.
+- Step 2 asks each family its own question (`q` in `FIX`). Time problems ask hours a week; reports also allow "None. We just don't have them". Machines are a visibility problem: the question is how many machines, and they never add to the red cost. The offer lists them as "not in hours".
 - Tool prices come from the examples on /prices/. Keep them in line. Problems without an example show "priced after the call".
 - The current cost is the visitor's own cost, shown in red-flag. The tool price sits beside it in green, so the two are never confused.
-- "Not yet" leads to Save as PDF, so the visitor can pass the offer on.
-- Printed QR codes open `/start/?s=<source>` (`kp` Kamil's card, `kps` Kamil's one-pager, `pc` Patryk's card, `pcs` Patryk's sell sheet). The page sends that tag in the hidden `source` field, `site` when there is none. Never rename a tag already printed.
+- Save as PDF and Copy link sit only inside "Not yet · pass it on", for someone who has to show the offer to whoever decides. After sending, the thank-you screen offers one "Save as PDF" link. Save as PDF uses the browser's print dialog (print CSS lays out the offer as one page). With "Not yet" picked there is no send button, only a note in the bar; the privacy line shows only for Call me back and Email me back.
+- The form sends a full clickable link to the offer (field `link`) and the offer as the client saw it (field `shown`: cost now, where to start with its example price and weeks to cover it, and every other item). If submissions land in spam, mark them verified in Netlify.
+- Printed QR codes open `/start/?s=<source>` (`kp` Kamil's card, `kps` Kamil's one-pager, `pc` Patryk's card, `pcs` Patryk's sell sheet). The tag is kept for the browser tab in `sessionStorage` (`ml-src`), so it survives a detour through the site. Both the offer and the homepage contact form send it in a hidden `source` field, `site` when there is none. The hidden `subject` field sets the notification email subject: "Meshlock offer · <source> · Call me back|Email me back". Never rename a tag already printed.
 
 ## Writing rules
 
@@ -134,6 +141,8 @@ Page order in `index.html`:
 8. Footer
 
 Nav on every page: Tools in action · Prices · About (/#about) · Field notes, plus Book a call. Under 640px the links show short labels (`.nl-short`): Tools · Prices · About · Notes.
+
+Subpages open with a breadcrumb label (`.crumbs`: "Meshlock / Page") whose first part links home. Every subpage ends with a way forward: Book a free call and the one-page offer (/start/). The footer on every page links the offer.
 
 Pricing works by method, not a price list: each quote is based on the work involved and how complex it is, as one fixed price in writing. The site never shows a day rate or hourly rate. The example prices on /prices/ are the reference. Change them only when asked. Each case file on /tools/ shows the matching example price ("A tool like this: about £…"), so keep the two in line. The Sound familiar? fix list shows no prices, only one line under the list linking to /prices/.
 

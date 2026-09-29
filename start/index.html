@@ -71,8 +71,13 @@
   .group-label{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin:28px 0 10px;}
   .group-label .o{text-transform:none;letter-spacing:.04em;}
 
-  .syms{display:grid;gap:12px;}
-  .sym{display:flex;align-items:flex-start;gap:14px;width:100%;margin:0;padding:18px 18px 16px;text-align:left;cursor:pointer;font-size:15px;line-height:1.5;background:var(--paper-card);border:1.5px solid var(--line);border-radius:var(--radius);transition:background .15s ease,border-color .15s ease;}
+  .syms{display:grid;gap:10px;}
+  @media (min-width:600px){.syms{grid-template-columns:repeat(2,minmax(0,1fr));}.sym.unsure{grid-column:1/-1;}}
+  .sym .st b{display:block;font-weight:600;font-size:16px;line-height:1.3;}
+  .sym .ex{display:block;font-size:13.5px;line-height:1.45;color:var(--ink-soft);margin-top:3px;}
+  .sym.unsure{background:transparent;border-style:dashed;border-color:var(--ink-faint);}
+  .sym.unsure[aria-pressed="true"]{border-style:solid;}
+  .sym{display:flex;align-items:flex-start;gap:14px;width:100%;margin:0;padding:15px 16px 14px;text-align:left;cursor:pointer;font-size:15px;line-height:1.5;background:var(--paper-card);border:1.5px solid var(--line);border-radius:var(--radius);transition:background .15s ease,border-color .15s ease;}
   .sym:hover{border-color:var(--ink-faint);}
   .sym .box{flex:none;width:18px;height:18px;margin-top:2px;position:relative;border:1.5px solid var(--ink-faint);border-radius:var(--radius-tag);background:var(--paper-card);}
   .sym[aria-pressed="true"]{background:var(--green-bg);border-color:var(--green);}
@@ -87,6 +92,8 @@
 
   .qrow{background:var(--paper-card);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px 16px 18px;margin-bottom:12px;}
   .qrow .q{font-weight:600;font-size:16px;line-height:1.35;margin-bottom:12px;}
+  .qrow .fam{display:block;font-family:'IBM Plex Mono',monospace;font-weight:400;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;}
+
 
   /* Sticky bar */
   .bar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--paper);border-top:1px solid var(--line);padding:12px 6vw calc(12px + env(safe-area-inset-bottom));}
@@ -97,6 +104,7 @@
   .btn-primary,.btn-outline{font-family:'IBM Plex Mono',monospace;font-size:13px;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;border-radius:var(--radius);text-decoration:none;display:inline-block;text-align:center;}
   .btn-primary{background:var(--ink);color:var(--paper);padding:14px 22px;border:1px solid var(--ink);transition:transform .15s ease,box-shadow .15s ease;}
   .btn-primary:hover{transform:translateY(-1px);box-shadow:3px 4px 0 var(--amber);}
+  .btn-primary[hidden]{display:none;}
   .btn-primary[disabled]{background:var(--paper-dim);color:var(--ink-soft);border-color:var(--line);cursor:not-allowed;transform:none;box-shadow:none;}
   .btn-outline{font-size:12.5px;background:none;border:1px solid var(--ink);padding:11px 16px;color:var(--ink);}
   .btn-outline:hover{background:var(--ink);color:var(--paper);}
@@ -161,6 +169,10 @@
   .sheet-foot{padding:14px 0 10px;font-size:13.5px;color:var(--ink-soft);}
   .sheet-foot .who{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;margin-top:6px;color:var(--ink);}
 
+  .pdf-hint{flex-basis:100%;font-size:13px;color:var(--ink-soft);}
+  .detail .share{margin-top:12px;}
+  .done-pdf{margin-top:26px;}
+  .linkbtn{background:none;border:0;padding:0;font:inherit;font-size:14.5px;color:var(--ink);text-decoration:underline;text-decoration-color:var(--ink-faint);text-underline-offset:4px;cursor:pointer;}
   .share{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px 0 0;font-size:14px;color:var(--ink-soft);}
 
   .dim{display:flex;align-items:center;gap:14px;color:var(--ink-soft);margin:34px 0 18px;}
@@ -199,6 +211,8 @@
   @page{margin:16mm;}
   @media print{
     .top .text-link,.intro,.progress,.bar,.share,.dim,.opts,.hint,#s3>h2,#s3>.sub,#s3 form,.form-error{display:none!important;}
+    body.print-offer .done{display:none!important;}
+    body.print-offer #s3{display:block!important;padding-bottom:0;}
     html,body{background:#fff;}
     body{font-size:13px;}
     .js .step.show{padding-bottom:0;animation:none;}
@@ -230,7 +244,7 @@
     <div class="intro-inner">
       <p class="eyebrow"><span class="led" aria-hidden="true"></span>Your first fix · about 90 seconds</p>
       <h1 id="h">Tick it. Don't write it.</h1>
-      <p class="lede">Tell me what slows your floor down and roughly how much time it eats. You get a one-page offer with fixed prices and what the problem costs you now. Then one tap to talk, or none at all.</p>
+      <p class="lede">Pick what slows you down. Guess the hours. See what it costs you now, and what a fix usually costs.</p>
     </div>
   </section>
 
@@ -247,20 +261,18 @@
 
   <!-- Step 1 -->
   <section class="step show" id="s1" aria-labelledby="s1h">
-    <h2 id="s1h">What happens on your floor?</h2>
-    <p class="sub">Tick what sounds familiar, up to four. Two or three is plenty.</p>
+    <h2 id="s1h">What slows your floor down?</h2>
+    <p class="sub">Pick the closest, up to four. Yours will be a bit different, and that’s fine. Every tool is built for your floor.</p>
     <div class="syms" id="syms">
-      <button type="button" class="sym" aria-pressed="false" data-k="sort"><span class="box" aria-hidden="true"></span><span>Your ERP prints the paperwork in one pile. Someone sorts it by hand and hunts for the missing sheets.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="courier"><span class="box" aria-hidden="true"></span><span>Someone checks order numbers one by one to work out which courier it goes with.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="pick"><span class="box" aria-hidden="true"></span><span>Picking orders come out of the ERP in one pile. Pickers walk the warehouse in print order, or someone filters and reprints them by hand.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="wrong"><span class="box" aria-hidden="true"></span><span>Nobody knows the wrong file was loaded until the part is already made.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="custom"><span class="box" aria-hidden="true"></span><span>Custom orders stall while someone emails back and forth for the missing details.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="reports"><span class="box" aria-hidden="true"></span><span>The data is all in the system, but the reports are too basic to run the floor on.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="setup"><span class="box" aria-hidden="true"></span><span>Setting up a new product range takes hours of manual prep before anything runs.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="guess"><span class="box" aria-hidden="true"></span><span>Job times and quotes are based on gut feel and old averages.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="export"><span class="box" aria-hidden="true"></span><span>Artwork files get opened and exported to PDF one at a time.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="personal"><span class="box" aria-hidden="true"></span><span>Personalised or multi-up print files are built by hand, one order at a time.</span></button>
-      <button type="button" class="sym" aria-pressed="false" data-k="unsure"><span class="box" aria-hidden="true"></span><span>None of these, but something on the floor still feels slower than it should.</span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="sort"><span class="box" aria-hidden="true"></span><span class="st"><b>Sorting paperwork by hand</b><span class="ex">Job sheets, picking lists, courier labels.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="pick"><span class="box" aria-hidden="true"></span><span class="st"><b>Picking the long way round</b><span class="ex">Pickers walking back and forth.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="wrong"><span class="box" aria-hidden="true"></span><span class="st"><b>Mistakes found too late</b><span class="ex">Wrong file or part, found after it’s made.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="reports"><span class="box" aria-hidden="true"></span><span class="st"><b>Reports you can’t run the floor on</b><span class="ex">The data is in the ERP or spreadsheets. The reports are too basic.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="machines"><span class="box" aria-hidden="true"></span><span class="st"><b>Machines nobody measures</b><span class="ex">Downtime, output and performance are a guess.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="export"><span class="box" aria-hidden="true"></span><span class="st"><b>Files done one at a time</b><span class="ex">Exports, print files, new product setup.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="custom"><span class="box" aria-hidden="true"></span><span class="st"><b>Chasing missing details</b><span class="ex">Emails back and forth before a job can start.</span></span></button>
+      <button type="button" class="sym" aria-pressed="false" data-k="guess"><span class="box" aria-hidden="true"></span><span class="st"><b>Guessing times and quotes</b><span class="ex">Gut feel and old averages.</span></span></button>
+      <button type="button" class="sym unsure" aria-pressed="false" data-k="unsure"><span class="box" aria-hidden="true"></span><span class="st"><b>Something else</b><span class="ex">It just feels slower than it should.</span></span></button>
     </div>
     <p class="cap-note" id="capnote" role="status"></p>
   </section>
@@ -268,8 +280,9 @@
   <!-- Step 2 -->
   <section class="step" id="s2" aria-labelledby="s2h">
     <h2 id="s2h">Put a rough number on it.</h2>
-    <p class="sub" id="s2sub">About how many hours a week does each one take, all people together? Counting the clean-up afterwards. A guess is fine.</p>
+    <p class="sub" id="s2sub">A rough answer for each, all people together. A guess is fine.</p>
     <div id="qrows"></div>
+    <div class="field" id="ownwrap"><label for="own">In your own words <span class="o">(optional, one line)</span></label><input id="own" type="text" maxlength="160" autocomplete="off" placeholder="e.g. Our orders come from two systems"></div>
     <div id="ratewrap">
       <p class="group-label">What is an hour of your team's time worth?</p>
       <div class="chips" id="rate" role="group" aria-label="Hourly cost">
@@ -338,13 +351,8 @@
       </div>
     </article>
 
-    <div class="share">
-      <button type="button" class="btn-outline" id="pdf">Save as PDF</button>
-      <button type="button" class="btn-outline" id="copy">Copy link</button>
-      <span id="copied" role="status"></span>
-    </div>
 
-    <div class="dim"><span class="tick"></span><span class="rule"></span><span>How do you want to go on?</span><span class="rule"></span><span class="tick"></span></div>
+    <div class="dim"><span class="tick"></span><span class="rule"></span><span>How should I get back to you?</span><span class="rule"></span><span class="tick"></span></div>
 
     <form id="offer-form" name="offer" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field" novalidate>
       <input type="hidden" name="form-name" value="offer">
@@ -356,9 +364,12 @@
       <input type="hidden" name="summary" id="f-summary">
       <input type="hidden" name="link" id="f-link">
       <input type="hidden" name="source" id="f-source">
+      <input type="hidden" name="own" id="f-own">
+      <input type="hidden" name="shown" id="f-shown">
+      <input type="hidden" name="subject" id="f-subject" value="Meshlock offer">
 
       <div class="opts" id="opts" role="group" aria-label="Next step">
-      <button type="button" class="opt" aria-pressed="false" data-o="call"><span class="t"><span class="radio"></span>Ring me</span><span class="d">Free, 30 minutes, no preparation needed.</span></button>
+      <button type="button" class="opt" aria-pressed="false" data-o="call"><span class="t"><span class="radio"></span>Call me back</span><span class="d">I ring you when it suits. Free, 30 minutes, no preparation needed.</span></button>
       <div class="detail" id="d-call">
         <p class="group-label" style="margin-top:0">When suits you?</p>
         <div class="chips" id="slot" role="group" aria-label="Call time">
@@ -369,17 +380,18 @@
         <div class="field"><label for="phone">Your number</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
         <div class="field"><label for="name1">First name <span class="o">(optional)</span></label><input id="name1" name="name" type="text" autocomplete="given-name"></div>
       </div>
-      <button type="button" class="opt" aria-pressed="false" data-o="mail"><span class="t"><span class="radio"></span>Email me</span><span class="d">I reply within one working day.</span></button>
+      <button type="button" class="opt" aria-pressed="false" data-o="mail"><span class="t"><span class="radio"></span>Email me back</span><span class="d">I reply by email within one working day.</span></button>
       <div class="detail" id="d-mail">
         <div class="field" style="margin-top:0"><label for="email">Your email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email"></div>
         <div class="field"><label for="name2">First name <span class="o">(optional)</span></label><input id="name2" name="name" type="text" autocomplete="given-name"></div>
       </div>
-      <button type="button" class="opt" aria-pressed="false" data-o="later"><span class="t"><span class="radio"></span>Not yet</span><span class="d">Save it as a PDF. Nothing is sent to me.</span></button>
-      <div class="detail" id="d-later"><p style="font-size:14.5px;color:var(--ink-soft)">Save this offer as a PDF and send it to whoever makes the call. Nothing is sent to me.</p><button type="button" class="btn-outline pdf2" style="margin-top:12px">Save as PDF</button></div>
+      <button type="button" class="opt" aria-pressed="false" data-o="later"><span class="t"><span class="radio"></span>Not yet · pass it on</span><span class="d">Not your call? Save it or send the link on. Nothing is sent to me.</span></button>
+      <div class="detail" id="d-later"><p style="font-size:14.5px;color:var(--ink-soft)">Send it to whoever makes the call. The link opens this offer with your answers in place, any time.</p>
+        <div class="share"><button type="button" class="btn-outline pdf2">Save as PDF</button><button type="button" class="btn-outline" id="copy">Copy link</button><span id="copied" role="status"></span><span class="pdf-hint">Save as PDF opens print. Pick "Save as PDF" as the printer.</span></div></div>
       </div>
       <p class="form-error" role="alert" id="err" hidden>That didn't send. Please try again, or email hello@meshlock.co.uk.</p>
     </form>
-    <p class="hint">Not a pitch, just an honest question. I only use your details to reply to this.</p>
+    <p class="hint" id="privacy">Not a pitch, just an honest question. I only use your details to reply to this.</p>
   </section>
 
   <section class="done" id="done" aria-live="polite">
@@ -391,6 +403,7 @@
       <li><i>2</i><span>A 30-minute call, remote, no preparation needed.</span></li>
       <li><i>3</i><span>A written proposal with a fixed price, or an honest "you don't need a tool for this".</span></li>
     </ol>
+    <p class="done-pdf" id="donepdf"><button type="button" class="linkbtn pdf2">Want a copy for your records? Save as PDF</button></p>
   </section>
 
 </main>
@@ -407,21 +420,26 @@
 (function(){
   // p: example price from /prices/ ("a tool like this"), 0 = priced after the call
   var FIX = {
-    sort:{s:"Sorting paperwork by hand",n:"Paperwork sorted, with separators for multi-part orders",r:"About an hour a day, done in a minute. Every order stays together.",p:1000},
-    courier:{s:"Checking which courier",n:"Courier stamped on every sheet",r:"Product-to-slip matching up to 5× faster",p:0},
-    pick:{s:"Filtering picking orders and walking the long way",n:"Picking orders sorted by priority and value, in route order",r:"Up to 12 hours a week of filtering and reprinting saved at peak. Picking rate up about 40%.",p:2250},
-    wrong:{s:"Wrong file caught too late",n:"Quality gate and part preview on the sheet",r:"The operator sees what it should look like",p:1700},
-    custom:{s:"Chasing customers for missing details",n:"Automatic request to customer service",r:"The answer goes straight back onto the sheet",p:0},
-    reports:{s:"Building reports by hand",n:"Automated reports and live dashboards",r:"One current view, nobody compiling it by hand",p:1700},
-    setup:{s:"Prepping a new product range by hand",n:"Standardised machine files with built-in checks",r:"Prep time down 93% in one project",p:0},
-    guess:{s:"Guessing job times and quotes",n:"Calculators and estimates from your own data",r:"From a simple job-time calculator to a model built on your production history",p:0},
-    export:{s:"Exporting artwork one file at a time",n:"Batch export in Adobe, folder by folder",r:"A whole queue of files done in one click, with an error summary",p:500},
-    personal:{s:"Building personalised print files by hand",n:"Adobe layout automation with built-in checks",r:"Print-ready files generated from order data, checked before export",p:0},
-    unsure:{s:"Something feels slow",n:"A fresh pair of eyes on your process",r:"A free 30-minute call first. If a closer look helps, a one-day review is £600, credited in full against any build.",p:0}
+    sort:{s:"Sorting paperwork by hand",q:"Hours a week sorting paperwork?",n:"Paperwork sorted by a tool, in the order your floor needs",r:"Done before: an hour a day of sorting, now a minute.",p:1000},
+    pick:{s:"Picking the long way round",q:"Hours a week lost to extra walking and reprinting?",n:"Picking orders put in route order",r:"Done before: picking rate up about 40%.",p:2250},
+    wrong:{s:"Mistakes found too late",q:"Hours a week lost to rework and re-runs?",n:"Checks before production, not after",r:"Done before: up to 10% of machine capacity freed.",p:1700},
+    reports:{s:"Reports you can\u2019t run the floor on",q:"Hours a week pulling numbers together by hand?",n:"Reports and dashboards that build themselves",r:"Done before: one current view, nobody compiling it by hand.",p:1700},
+    machines:{s:"Machines nobody measures",q:"How many machines?",n:"Machine data made visible",r:"Output and performance per machine and shift, where the downtime goes, which stops nobody questions, and what ran when. Done before: average machine performance from 80% to 91%.",p:1700},
+    export:{s:"Files done one at a time",q:"Hours a week opening, exporting and prepping files?",n:"File work automated, folder by folder",r:"Done before: whole folders exported in one run. New range prep down 93%.",p:500},
+    custom:{s:"Chasing missing details",q:"Hours a week chasing details?",n:"Missing details requested automatically",r:"Done before: the answer goes straight back onto the paperwork.",p:0},
+    guess:{s:"Guessing times and quotes",q:"Hours a week working out times and quotes?",n:"Estimates from your own data",r:"From a simple calculator to a model built on your production history.",p:0},
+    unsure:{s:"Something else",n:"A fresh pair of eyes on your process",r:"A free 30-minute call first. If a closer look helps, a one-day review is \u00a3600, credited in full against any build.",p:0}
   };
+  // Old links and QR codes may carry keys that now belong to a wider family
+  var ALIAS = {courier:'sort', personal:'export', setup:'export'};
   // hours a week, per answer. d is "15 or more", so it is a floor.
-  var HRS = {a:0.5,b:3,c:10,d:15};
-  var LBL = {a:'Under 1 h',b:'1 to 5 h',c:'5 to 15 h',d:'15 h or more',n:'No idea'};
+  var HRS = {a:0.5,b:3,c:10,d:15,z:0};
+  var LBL = {a:'Under 1 h',b:'1 to 5 h',c:'5 to 15 h',d:'15 h or more',n:'No idea',z:'None. We just don\u2019t have them',m1:'1 to 3',m2:'4 to 10',m3:'11 or more',mn:'Not sure'};
+  // Answer options per family. Machines are a visibility problem: counted in machines, never in hours.
+  function opts(k){ return k==='machines' ? ['m1','m2','m3','mn'] : (k==='reports' ? ['a','b','c','d','z','n'] : ['a','b','c','d','n']); }
+  var VIS = {machines:true};
+  // Our real result, 80% to 91%, is about 14% more output from the same machines. Shown per answer, as machines, never as money.
+  var CAP = {m1:'\u2248 1/3 machine', m2:'\u2248 1 machine', m3:'1.5+ machines', mn:'hidden'};
   var WEEKS = 48, MAXTICKS = 4;
   var DEMO = !/meshlock\.co\.uk$|netlify\.app$/.test(location.hostname);
   var FRAMED = (function(){try{return window.self!==window.top;}catch(e){return true;}})();
@@ -443,14 +461,17 @@
   }
   function link(){return location.href.split('#')[0]+hash();}
   // Where the visitor came from (printed QR codes carry ?s=kp, kps, pc or pcs). Sent only with the form.
-  var SRC = (new URLSearchParams(location.search).get('s') || '').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20) || 'site';
+  // The tag is kept in this browser tab only (sessionStorage), so it survives a detour to the rest of the site.
+  var SRC = (new URLSearchParams(location.search).get('s') || '').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20);
+  try { if (SRC) sessionStorage.setItem('ml-src', SRC); else SRC = sessionStorage.getItem('ml-src') || ''; } catch(e){}
+  SRC = SRC || 'site';
   (function(){
     var p = {};
     location.hash.replace(/^#/,'').split('&').forEach(function(kv){var a=kv.split('=');if(a[0])p[a[0]]=decodeURIComponent(a[1]||'');});
     if (!p.f) return;
     p.f.split(',').forEach(function(x){
-      var a = x.split('.'); if (!FIX[a[0]] || st.f.indexOf(a[0])>-1 || st.f.length>=MAXTICKS) return;
-      st.f.push(a[0]); if (a[1] && LBL[a[1]]) st.h[a[0]] = a[1];
+      var a = x.split('.'); a[0] = ALIAS[a[0]] || a[0]; if (!FIX[a[0]] || st.f.indexOf(a[0])>-1 || st.f.length>=MAXTICKS) return;
+      st.f.push(a[0]); if (a[1] && opts(a[0]).indexOf(a[1])>-1) st.h[a[0]] = a[1];
     });
     if (['15','20','30','40'].indexOf(p.rate)>-1) st.rate = +p.rate;
     if (p.erp) st.erp = p.erp;
@@ -483,9 +504,10 @@
     real().forEach(function(k){
       var row = document.createElement('div'); row.className='qrow'; row.dataset.k=k;
       row.innerHTML = '<p class="q"></p><div class="chips" role="group"></div>';
-      row.querySelector('.q').textContent = FIX[k].s;
-      row.querySelector('.chips').setAttribute('aria-label', FIX[k].s+', hours a week');
-      ['a','b','c','d','n'].forEach(function(c){
+      row.querySelector('.q').innerHTML = '<span class="fam"></span>';
+      row.querySelector('.fam').textContent = FIX[k].s; row.querySelector('.q').appendChild(document.createTextNode(FIX[k].q));
+      row.querySelector('.chips').setAttribute('aria-label', FIX[k].q);
+      opts(k).forEach(function(c){
         var b = document.createElement('button'); b.type='button'; b.className='chip'; b.dataset.v=c; b.textContent=LBL[c];
         b.setAttribute('aria-pressed', st.h[k]===c?'true':'false'); row.querySelector('.chips').appendChild(b);
       });
@@ -494,7 +516,7 @@
     var any = real().length>0;
     $('ratewrap').style.display = any?'':'none';
     $('s2sub').textContent = any
-      ? 'About how many hours a week does each one take, all people together? Counting the clean-up afterwards. A guess is fine.'
+      ? 'A rough answer for each, all people together. A guess is fine.'
       : 'Nothing to add here. Pick your system if you like, then see your offer.';
   }
   $('qrows').addEventListener('click', function(e){
@@ -520,7 +542,7 @@
   function costs(){
     var rows = [], total = 0, hours = 0, floor = false;
     real().forEach(function(k){
-      var c = st.h[k]; if (!c || !HRS[c]) return;
+      var c = st.h[k]; if (VIS[k] || !c || !HRS[c]) return;
       var wk = HRS[c]*st.rate;
       rows.push({k:k,c:c,wk:wk,yr:wk*WEEKS});
       total += wk*WEEKS; hours += HRS[c]*WEEKS; if (c==='d') floor = true;
@@ -554,11 +576,19 @@
         li.querySelector('.p').textContent = (r.c==='d'?'at least ':'')+money(r.yr);
         ul.appendChild(li);
       });
-      var skipped = real().length - C.rows.length;
+      var skipped = real().filter(function(k){return !VIS[k] && st.h[k]==='n';}).length;
+      real().filter(function(k){return VIS[k];}).forEach(function(k){
+        var li = document.createElement('li'); li.className='vis';
+        li.innerHTML = '<span><span class="n"></span><span class="h"></span></span><span class="p"></span>';
+        li.querySelector('.n').textContent = FIX[k].s;
+        li.querySelector('.h').textContent = (st.h[k]&&st.h[k]!=='mn' ? LBL[st.h[k]]+' machines \u00b7 ' : '')+'capacity you pay for but can\u2019t see';
+        li.querySelector('.p').textContent = CAP[st.h[k]]||'hidden';
+        ul.appendChild(li);
+      });
       $('cnote').innerHTML = '';
       var b = document.createElement('b'); b.textContent = 'Your answers, rounded. ';
       $('cnote').appendChild(b);
-      $('cnote').appendChild(document.createTextNode(WEEKS+' weeks a year at £'+st.rate+' an hour. This is what the problems cost now, not a promise of what a fix saves.'+(skipped?' Left out: '+skipped+' you had no number for.':'')));
+      $('cnote').appendChild(document.createTextNode(WEEKS+' weeks a year at £'+st.rate+' an hour. This is what the problems cost now, not a promise of what a fix saves.'+(skipped?' Left out: '+skipped+' you had no number for.':'')+(real().some(function(k){return VIS[k];})?' Machines are shown in machines, not money: the same gain as ours (80% to 91%) on the number you picked.':'')));
     }
 
     // start box
@@ -601,12 +631,38 @@
     var n = real().length; $('ref').textContent = n ? n+(n===1?' problem ticked':' problems ticked') : 'free call';
     return C;
   }
+  // The offer as the client saw it, so the reply starts from the same numbers
+  function shown(C){
+    var order = st.f.slice().sort(function(a,b){
+      var wa = (C.rows.filter(function(r){return r.k===a;})[0]||{wk:-1}).wk, wb = (C.rows.filter(function(r){return r.k===b;})[0]||{wk:-1}).wk;
+      return (wb-wa) || (FIX[a].p-FIX[b].p);
+    });
+    function row(k){ return C.rows.filter(function(r){return r.k===k;})[0]; }
+    function line(k){
+      var r = row(k), t = FIX[k].n+' · '+price(FIX[k].p,k);
+      if (r) t += ' (costs them '+(r.c==='d'?'at least ':'about ')+money(r.yr)+' a year)';
+      else if (VIS[k]) t += ' (hidden capacity '+(CAP[st.h[k]]||'hidden')+', '+(LBL[st.h[k]]||'not sure')+' machines)';
+      else if (st.h[k]==='z') t += ' (no hours: they have no reports)';
+      else if (st.h[k]==='n') t += ' (no number given)';
+      return t;
+    }
+    var out = [];
+    if (C.rows.length) out.push('Cost now: '+(C.floor?'at least ':'about ')+money(C.total)+' a year, about '+(Math.round(C.hours/10)*10).toLocaleString('en-GB')+' h a year at £'+st.rate+'/h.');
+    var first = order.filter(function(k){return k!=='unsure';})[0] || 'unsure', fr = row(first);
+    var t = 'Start here: '+line(first)+'.';
+    if (fr && FIX[first].p) t += ' Covers the tool in about '+Math.max(1,Math.ceil(FIX[first].p/fr.wk))+' weeks.';
+    out.push(t);
+    var rest = order.filter(function(k){return k!==first;});
+    if (rest.length) out.push('Also shown: '+rest.map(line).join('; ')+'.');
+    return out.join(' ');
+  }
   function summary(C){
-    var parts = real().map(function(k){return FIX[k].s+' ('+(st.h[k]?LBL[st.h[k]]+'/week':'no number')+')';});
+    var parts = real().map(function(k){var v=st.h[k]; return FIX[k].s+' ('+(!v?'no answer':(VIS[k]?LBL[v]+' machines':(v==='z'||v==='n'?LBL[v]:LBL[v]+'/week')))+')';});
     if (st.f.indexOf('unsure')>-1) parts.push('Not sure, something feels slow');
     var t = 'Ticked: '+parts.join('; ')+'.';
     if (C.rows.length) t += ' Cost now: '+(C.floor?'at least ':'about ')+money(C.total)+' a year at £'+st.rate+'/h.';
     if (st.erp) t += ' System: '+st.erp+'.';
+    var own = $('own').value.trim(); if (own) t += ' In their words: '+own;
     return t;
   }
 
@@ -652,12 +708,15 @@
     var nx = $('next'); $('bar').classList.add('show');
     if (step===2 && !$('qrows').children.length && real().length) buildRows();
     nx.disabled = !valid();
+    if (step<3){ nx.hidden = false; }
     if (step===1){ nx.textContent='Next →'; $('note').innerHTML = st.f.length ? '<b>'+st.f.length+'</b> ticked' : 'Tick at least one'; }
     if (step===2){ nx.textContent='Show my offer →'; $('note').textContent = valid()?'':'Answer each one'; }
     if (step===3){
       buildOffer();
-      nx.textContent = st.o==='later' ? 'Done' : 'Send to Kamil';
-      $('note').textContent = !st.o ? 'Choose how to go on' : '';
+      // Not yet: nothing to send, the actions are Save as PDF and Copy link in its panel
+      nx.textContent = 'Send to Kamil'; nx.hidden = st.o==='later';
+      $('note').textContent = !st.o ? 'How should I get back to you?' : (st.o==='later' ? 'Nothing is sent. Save it or copy the link above.' : '');
+      $('privacy').hidden = !(st.o==='call'||st.o==='mail');
     }
     try{ history.replaceState(null,'', st.f.length && step>1 ? location.pathname+location.search+hash() : location.pathname+location.search); }catch(e){}
   }
@@ -672,14 +731,16 @@
     else { $('doneh').textContent = 'Kept, not sent.'; t='Nothing was sent to me. If you saved the PDF, it has everything. The link is also copied, and it opens this page with your answers in place.'; n1='Come back whenever you like.'; try{navigator.clipboard.writeText(link());}catch(e){} }
     $('donetext').textContent=t; $('n1').textContent=n1;
     if (st.o==='later') document.querySelectorAll('#donelist li:nth-child(n+2)').forEach(function(x){x.style.display='none';});
+    $('donepdf').style.display = (st.o==='later'||FRAMED) ? 'none' : '';
     $('done').classList.add('show'); window.scrollTo({top:0});
   }
   function send(){
     var C = costs();
-    $('f-method').value = st.o==='call'?'Ring me':'Email me';
+    $('f-method').value = st.o==='call'?'Call me back':'Email me back';
     $('f-slot').value = st.o==='call'?st.slot:'';
     $('f-erp').value = st.erp; $('f-rate').value = '£'+st.rate+'/h';
-    $('f-summary').value = summary(C); $('f-link').value = link(); $('f-source').value = SRC;
+    $('f-summary').value = summary(C); $('f-link').value = 'https://meshlock.co.uk/start/'+location.search+hash(); $('f-shown').value = shown(C); $('f-source').value = SRC; $('f-own').value = $('own').value.trim();
+    $('f-subject').value = 'Meshlock offer · '+SRC+' · '+(st.o==='call'?'Call me back':'Email me back');
     var form = $('offer-form'), nx = $('next'); $('err').hidden = true; nx.disabled = true;
     if (DEMO) { finish(C); return; }
     fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(new FormData(form)).toString()})
@@ -694,7 +755,9 @@
   });
   $('offer-form').addEventListener('submit', function(e){ e.preventDefault(); if (step===3 && valid() && st.o!=='later') send(); });
   $('back').addEventListener('click', function(){ if(step>1) go(step-1); });
-  document.querySelectorAll('#pdf,.pdf2').forEach(function(b){ b.addEventListener('click', function(){ window.print(); }); });
+  // Print always shows the offer sheet, also from the thank-you screen
+  document.querySelectorAll('.pdf2').forEach(function(b){ b.addEventListener('click', function(){ document.body.classList.add('print-offer'); window.print(); }); });
+  window.addEventListener('afterprint', function(){ document.body.classList.remove('print-offer'); });
   $('copy').addEventListener('click', function(){
     var u = link(), out = $('copied');
     function ok(){ out.textContent='Link copied.'; setTimeout(function(){out.textContent='';},2500); }
@@ -702,7 +765,7 @@
     else out.textContent=u;
   });
 
-  if (FRAMED) document.querySelectorAll('#pdf,.pdf2').forEach(function(b){ b.hidden = true; });
+  if (FRAMED) document.querySelectorAll('.pdf2,.pdf-hint').forEach(function(b){ b.hidden = true; });
   syncSyms(); syncChips(); syncFields(); if (step>=2) buildRows(); render();
 })();
 </script>
