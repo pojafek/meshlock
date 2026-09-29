@@ -451,7 +451,10 @@
   }
   function link(){return location.href.split('#')[0]+hash();}
   // Where the visitor came from (printed QR codes carry ?s=kp, kps, pc or pcs). Sent only with the form.
-  var SRC = (new URLSearchParams(location.search).get('s') || '').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20) || 'site';
+  // The tag is kept in this browser tab only (sessionStorage), so it survives a detour to the rest of the site.
+  var SRC = (new URLSearchParams(location.search).get('s') || '').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20);
+  try { if (SRC) sessionStorage.setItem('ml-src', SRC); else SRC = sessionStorage.getItem('ml-src') || ''; } catch(e){}
+  SRC = SRC || 'site';
   (function(){
     var p = {};
     location.hash.replace(/^#/,'').split('&').forEach(function(kv){var a=kv.split('=');if(a[0])p[a[0]]=decodeURIComponent(a[1]||'');});

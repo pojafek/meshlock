@@ -694,6 +694,7 @@
       <div class="form-box">
         <form class="contact-form" name="contact" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field">
           <input type="hidden" name="form-name" value="contact">
+          <input type="hidden" name="source" id="c-source" value="site">
           <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
           <div class="field-row">
             <p class="field"><label for="f-name">Name</label><input id="f-name" name="name" type="text" autocomplete="name" required></p>
@@ -815,6 +816,8 @@
   // Without JavaScript the form posts normally and lands on /thanks.html.
   (function(){
     var form = document.querySelector('.contact-form');
+    // Where the visitor came from: a printed QR code tag kept for this tab (see /start/), else 'site'.
+    try { var src = new URLSearchParams(location.search).get('s') || sessionStorage.getItem('ml-src'); if (src) { src = src.toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20); sessionStorage.setItem('ml-src', src); if (form) form.querySelector('#c-source').value = src; } } catch(e){}
     if (!form || !window.fetch || !window.FormData) return;
     var err = form.querySelector('.form-error');
     var btn = form.querySelector('button[type="submit"]');
