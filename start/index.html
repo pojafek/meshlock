@@ -104,6 +104,7 @@
   .btn-primary,.btn-outline{font-family:'IBM Plex Mono',monospace;font-size:13px;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;border-radius:var(--radius);text-decoration:none;display:inline-block;text-align:center;}
   .btn-primary{background:var(--ink);color:var(--paper);padding:14px 22px;border:1px solid var(--ink);transition:transform .15s ease,box-shadow .15s ease;}
   .btn-primary:hover{transform:translateY(-1px);box-shadow:3px 4px 0 var(--amber);}
+  .btn-primary[hidden]{display:none;}
   .btn-primary[disabled]{background:var(--paper-dim);color:var(--ink-soft);border-color:var(--line);cursor:not-allowed;transform:none;box-shadow:none;}
   .btn-outline{font-size:12.5px;background:none;border:1px solid var(--ink);padding:11px 16px;color:var(--ink);}
   .btn-outline:hover{background:var(--ink);color:var(--paper);}
@@ -390,7 +391,7 @@
       </div>
       <p class="form-error" role="alert" id="err" hidden>That didn't send. Please try again, or email hello@meshlock.co.uk.</p>
     </form>
-    <p class="hint">Not a pitch, just an honest question. I only use your details to reply to this.</p>
+    <p class="hint" id="privacy">Not a pitch, just an honest question. I only use your details to reply to this.</p>
   </section>
 
   <section class="done" id="done" aria-live="polite">
@@ -707,12 +708,15 @@
     var nx = $('next'); $('bar').classList.add('show');
     if (step===2 && !$('qrows').children.length && real().length) buildRows();
     nx.disabled = !valid();
+    if (step<3){ nx.hidden = false; }
     if (step===1){ nx.textContent='Next →'; $('note').innerHTML = st.f.length ? '<b>'+st.f.length+'</b> ticked' : 'Tick at least one'; }
     if (step===2){ nx.textContent='Show my offer →'; $('note').textContent = valid()?'':'Answer each one'; }
     if (step===3){
       buildOffer();
-      nx.textContent = st.o==='later' ? 'Done' : 'Send to Kamil';
-      $('note').textContent = !st.o ? 'How should I get back to you?' : '';
+      // Not yet: nothing to send, the actions are Save as PDF and Copy link in its panel
+      nx.textContent = 'Send to Kamil'; nx.hidden = st.o==='later';
+      $('note').textContent = !st.o ? 'How should I get back to you?' : (st.o==='later' ? 'Nothing is sent. Save it or copy the link above.' : '');
+      $('privacy').hidden = !(st.o==='call'||st.o==='mail');
     }
     try{ history.replaceState(null,'', st.f.length && step>1 ? location.pathname+location.search+hash() : location.pathname+location.search); }catch(e){}
   }
