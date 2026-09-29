@@ -14,7 +14,7 @@ Plain static HTML and CSS. No framework, no build step, no package.json. Keep it
 
 ```
 index.html                    Homepage (all CSS inline in <style>)
-tools/index.html              Tools in action: ERP intro with stats, four full-width live animations (Full screen button), more case files
+tools/index.html              Tools in action: ERP intro with stats, five full-width live animations (Full screen button), each with a price line and a link to the offer, more case files
 prices/index.html             How a price is set, example prices, how you pay, Always included, FAQ (FAQPage JSON-LD lives here)
 apple-touch-icon.png          180px icon
 sitemap.xml                   Sitemap for /, /tools/, /prices/, /notes/ and each article
@@ -29,11 +29,12 @@ assets/
   og-image.png                1200×630 link-preview image (gear lockup, "Lean, software and ERP. One person."). Pages link it as og-image.png?v=2; bump the number whenever the image changes so LinkedIn fetches the new one
   email/meshlock-signature.png  360×56 wordmark on white for the email signature (shown at 180×28). Linked from Gmail, so never rename or remove it
   anim/                       Case file animations (self-contained HTML, noindex)
-    picking-route.html        Smarter picking
-    dxf-check.html            Pre-production quality gate
-    job-travellers.html       Job traveller tool (ERP band)
-    machine-data.html         Machine run data and cut time model
-    thumbs/*.webp             960x540 still frames for the homepage tiles
+    job-travellers.html       Job orders (file name kept so old links work)
+    picking-route.html        Picking routes
+    dxf-check.html            Cut file check, a digital quality gate
+    machine-data.html         Machine data: downtime made visible, 80% to 91%
+    batch-export.html         Batch export (Adobe), on /tools/ only
+    thumbs/*.webp             960x540 still frames for the tiles
 notes/
   index.html                  Field Notes list
   doing-it-by-hand.html       First article
@@ -101,6 +102,9 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 - Inside a page, all motion comes from one `render(t)` function. With reduced motion the page shows one still frame of the result.
 - On-screen parts, orders, machine names and times are illustrative and say so in the footer line. Results shown must match the case file text.
 - Say "machine", never the specific machine type, in site copy and animations. Specific process words make the source easy to guess.
+- Every animation runs before and after: the job by hand (a drawn hand, a clock or counter), then the same job with the tool, then the result and the gear sting. Each works at 16:9 and 9:16.
+- Never write "despatch" or the old tool names in copy. Use "job orders" (not job travellers) and "picking routes". The cut time model stays out of public copy.
+- The homepage shows four tiles (job orders, picking routes, cut file check, machine data). Batch export lives on /tools/ only.
 
 ## One-page offer (/start/)
 
@@ -134,6 +138,8 @@ Page order in `index.html`:
 8. Footer
 
 Nav on every page: Tools in action · Prices · About (/#about) · Field notes, plus Book a call. Under 640px the links show short labels (`.nl-short`): Tools · Prices · About · Notes.
+
+Subpages open with a breadcrumb label (`.crumbs`: "Meshlock / Page") whose first part links home. Every subpage ends with a way forward: Book a free call and the one-page offer (/start/). The footer on every page links the offer.
 
 Pricing works by method, not a price list: each quote is based on the work involved and how complex it is, as one fixed price in writing. The site never shows a day rate or hourly rate. The example prices on /prices/ are the reference. Change them only when asked. Each case file on /tools/ shows the matching example price ("A tool like this: about £…"), so keep the two in line. The Sound familiar? fix list shows no prices, only one line under the list linking to /prices/.
 

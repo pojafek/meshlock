@@ -162,3 +162,9 @@ footer .wordmark img{height:20px;}
 .thanks{padding:80px 0 110px;}
 .thanks h1{max-width:18ch; line-height:1.15;}
 .thanks-links{display:flex; align-items:center; flex-wrap:wrap; gap:18px 26px; margin-top:32px;}
+
+/* Breadcrumb on subpages: the first part links home */
+.crumbs a{color:inherit; text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:4px;}
+.crumbs a:hover{color:var(--ink); text-decoration-color:var(--ink);}
+.article-footer .nav-cta + p{margin:18px 0 0; font-size:15px;}
+.article-footer .nav-cta + p a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:4px;}
