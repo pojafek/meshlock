@@ -141,7 +141,7 @@ html.embed,html.embed body{background:#EEF0EA;}
       </div>
       <div class="chiprow">
         <div id="chipB"><span class="chip red">BY HAND</span><p>Found after cutting. Time and material gone.</p></div>
-        <div id="chipA"><span class="chip green">ON SCREEN</span><p>Poka-yoke before the first cut.</p></div>
+        <div id="chipA"><span class="chip green">DIGITALISED</span><p>A digital quality gate. Poka-yoke before the first cut.</p></div>
       </div>
     </div>
 
@@ -355,7 +355,7 @@ function render(t){
   const inB=t>=T.x0;
   // copy
   const xa=eio(seg(t,T.x0-.4,T.x0)), xb=eio(seg(t,T.x0,T.x0+.5));
-  op($('lbl'),seg(t,.2,.8)); $('lbl').textContent=inB?'On screen':'By hand';
+  op($('lbl'),seg(t,.2,.8)); $('lbl').textContent=inB?'Digitalised':'By hand';
   op($('h1a'),seg(t,.3,1.1)*(1-xa)); tr($('h1a'),(1-eo(seg(t,.3,1.1)))*18-xa*14);
   op($('h1b'),xb); tr($('h1b'),(1-xb)*18);
   op($('chipB'),seg(t,1.0,1.6)*(1-xa)); op($('chipA'),xb);
@@ -365,7 +365,7 @@ function render(t){
     $('clockN').style.color=hmin>=59.9?RED:INK;$('clockC').textContent='PER NEW DESIGN · SPED UP';$('clockC').style.color=RED;
     $('clockS').textContent=t<LOOP[0]?'Test cut. Count every part by hand.':'Fix the file. Cut again. Count again.';
     $('cnt').textContent=t>=TOBIN[1]?'SCRAPPED: 1 SHEET':'';$('cnt').style.color=RED;}
-  else{$('clockN').textContent='0';$('clockN').style.color=GREEN;$('clockC').textContent='SHEETS SCRAPPED · ON SCREEN';$('clockC').style.color=GREEN;
+  else{$('clockN').textContent='0';$('clockN').style.color=GREEN;$('clockC').textContent='SHEETS SCRAPPED · DIGITAL CHECK';$('clockC').style.color=GREEN;
     const iss=t<T.rep?'':(t<T.ok?'ISSUES 4 · FIX IN THE FILE':'ISSUES 0 · PARTS 12 / 12');$('cnt').textContent=iss;$('cnt').style.color=t<T.ok?RED:GREEN;}
   $('clock').classList.toggle('b',inB);
   op($('clock'),seg(t,TALLY[0]-.4,TALLY[0])*(1-eio(seg(t,T.x0-.4,T.x0)))+(inB?seg(t,T.x0+.2,T.x0+.7):0)*(1-eio(seg(t,T.r0-.4,T.r0))));
