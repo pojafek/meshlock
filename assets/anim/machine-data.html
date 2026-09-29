@@ -240,7 +240,7 @@ logs.setAttribute('clip-path','url(#pclip)');
 const evs=[];lanes.forEach((ev,i)=>ev.forEach(e=>{evs.push([e.a,i,'START']);evs.push([e.b,i,e.k==='down'?'FAULT':'STOP']);}));evs.sort((a,b)=>a[0]-b[0]);
 for(let j=0;j<40;j++){const e=evs[(j*5)%evs.length];
   const tx=el('text',{x:28,y:40+j*30,'font-family':'IBM Plex Mono','font-size':17,fill:SOFT,opacity:0},logs);
-  tx.textContent=`2024-03-11 ${fmt(e[0])}  L${e[1]+1}  ${e[2].padEnd(5,' ')}  JOB ${4100+((j*37)%900)}  0x${(0x3f2a+j*97).toString(16).toUpperCase()}`;
+  tx.textContent=`2024-03-11 ${fmt(e[0])}  M${e[1]+1}  ${e[2].padEnd(5,' ')}  JOB ${4100+((j*37)%900)}  0x${(0x3f2a+j*97).toString(16).toUpperCase()}`;
   logLines.push(tx);}
 // gantt
 const gantt=el('g',{opacity:0},g0);
@@ -251,7 +251,7 @@ const laneG=el('g',{},gantt);const bars=el('g',{},gantt);
 const bclip=el('clipPath',{id:'bclip'},svg);const bcr=el('rect',{x:0,y:0,width:0,height:650},bclip);
 bars.setAttribute('clip-path','url(#bclip)');
 lanes.forEach((ev,i)=>{
-  const lb=el('text',{x:24,y:LY(i)+LH/2+6,'font-family':'IBM Plex Mono','font-weight':500,'font-size':17,fill:INK},gantt);lb.textContent='L'+(i+1);
+  const lb=el('text',{x:24,y:LY(i)+LH/2+6,'font-family':'IBM Plex Mono','font-weight':500,'font-size':17,fill:INK},gantt);lb.textContent='M'+(i+1);
   el('line',{x1:X0,x2:X1,y1:LY(i)+LH/2,y2:LY(i)+LH/2,stroke:LINE,'stroke-width':1.5,'stroke-dasharray':'4 5'},laneG);
   ev.forEach(e=>el('rect',{x:xOf(e.a),y:LY(i)+(e.k==='down'?2:6),width:Math.max(2,xOf(e.b)-xOf(e.a)-1.5),height:e.k==='down'?LH-4:LH-12,fill:e.k==='down'?RED:GREEN,rx:2},bars));
 });
@@ -270,7 +270,7 @@ el('rect',{x:xOf(HL.start)-8,y:LY(HL.lane)-8,width:xOf(HL.end)-xOf(HL.start)+16,
 const cbx=Math.min(hx+60,1000-360),cby=LY(HL.lane)-96;
 el('line',{x1:hx+10,y1:LY(HL.lane)-8,x2:cbx+20,y2:cby+62,stroke:RED,'stroke-width':2},call);
 el('rect',{x:cbx,y:cby,width:350,height:62,fill:RED,rx:2},call);
-const c1=el('text',{x:cbx+14,y:cby+26,'font-family':'IBM Plex Mono','font-weight':500,'font-size':16,'letter-spacing':1,fill:PAPER},call);c1.textContent=`L3 · STOPPED 15 MIN 24 S`;
+const c1=el('text',{x:cbx+14,y:cby+26,'font-family':'IBM Plex Mono','font-weight':500,'font-size':16,'letter-spacing':1,fill:PAPER},call);c1.textContent=`M3 · STOPPED 15 MIN 24 S`;
 const c2=el('text',{x:cbx+14,y:cby+48,'font-family':'IBM Plex Mono','font-size':15,fill:PAPER},call);c2.textContent=`${fmt(HL.start)} → ${fmt(HL.end)} · ASK WHY`;
 // lens
 const lens=el('g',{opacity:0},g0);

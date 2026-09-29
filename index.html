@@ -271,6 +271,8 @@
   .fix-result{font-size:14px; color:var(--ink-soft); margin:0; line-height:1.5;}
   .fix-price{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--amber-ink); white-space:nowrap; text-align:right;}
   .fix-prices{margin:16px 0 0; font-size:14.5px; line-height:1.5; color:var(--ink-soft);}
+  .fix-offer{margin:8px 0 0; font-size:14.5px;}
+  .js .fix-panel.empty .fix-offer{display:none;}
   .fix-prices a{color:var(--ink);}
   .js .fix-panel.empty .fix-prices{display:none;}
   .fix-stamp-row{display:flex; justify-content:flex-end; margin:18px 4px 20px;}
@@ -518,7 +520,7 @@
         <div class="symptoms">
           <button type="button" class="sym" aria-pressed="true" data-fix="sort"><span class="box" aria-hidden="true"></span><span>Your ERP prints the paperwork in one pile. Someone sorts it by hand and hunts for the missing sheets.</span></button>
           <button type="button" class="sym" aria-pressed="false" data-fix="courier"><span class="box" aria-hidden="true"></span><span>Despatch checks order numbers one by one to work out which courier it goes with.</span></button>
-          <button type="button" class="sym" aria-pressed="false" data-fix="pick"><span class="box" aria-hidden="true"></span><span>Pickers walk the warehouse in whatever order the paperwork comes out.</span></button>
+          <button type="button" class="sym" aria-pressed="false" data-fix="pick"><span class="box" aria-hidden="true"></span><span>Picking orders get sorted by hand, then pickers walk the warehouse in whatever order they come out.</span></button>
           <button type="button" class="sym" aria-pressed="true" data-fix="wrong"><span class="box" aria-hidden="true"></span><span>Nobody knows the wrong file was loaded until the part is already made.</span></button>
           <button type="button" class="sym" aria-pressed="false" data-fix="custom"><span class="box" aria-hidden="true"></span><span>Custom orders stall while someone emails back and forth for the missing details.</span></button>
           <button type="button" class="sym" aria-pressed="false" data-fix="reports"><span class="box" aria-hidden="true"></span><span>The data is all in the system, but the reports are too basic to run the floor on.</span></button>
@@ -541,7 +543,7 @@
         <ul class="fix-list">
           <li class="fix on" data-fix="sort"><div><p class="fix-name">Paperwork sorted, with separators for multi-part orders</p><p class="fix-result">Up to 12 hours a week saved at peak. Every order stays together.</p></div></li>
           <li class="fix" data-fix="courier"><div><p class="fix-name">Courier stamped on every sheet</p><p class="fix-result">Product-to-slip matching up to 5× faster</p></div></li>
-          <li class="fix" data-fix="pick"><div><p class="fix-name">Picking routes and order sequence</p><p class="fix-result">Picking rate up by about 40%</p></div></li>
+          <li class="fix" data-fix="pick"><div><p class="fix-name">Picking orders sorted by priority and value, in route order</p><p class="fix-result">Picking rate up by about 40%</p></div></li>
           <li class="fix on" data-fix="wrong"><div><p class="fix-name">Quality gate and part preview on the sheet</p><p class="fix-result">The operator sees what it should look like</p></div></li>
           <li class="fix" data-fix="custom"><div><p class="fix-name">Automatic request to customer service</p><p class="fix-result">The answer goes straight back onto the sheet</p></div></li>
           <li class="fix" data-fix="reports"><div><p class="fix-name">Automated reports and live dashboards</p><p class="fix-result">One current view, nobody compiling it by hand</p></div></li>
@@ -552,6 +554,7 @@
           <li class="fix" data-fix="unsure"><div><p class="fix-name">A fresh pair of eyes on your process</p><p class="fix-result">A free 30-minute call first. If a closer look helps, a one-day review is £600, credited in full against any build.</p></div><span class="fix-price">free to start</span></li>
         </ul>
         <p class="fix-prices">Every tool is quoted for your workflow. <a href="/prices/">See example prices →</a></p>
+        <p class="fix-offer"><a class="text-link" id="fix-offer" href="/start/">Put your numbers on it · one-page offer →</a></p>
         <div class="fix-stamp-row"><span class="fix-stamp">PASS · FIX FOUND</span></div>
         <p class="fix-note">First job: you pay when it works. Review fees are credited against any build.</p>
         <a class="btn-primary" href="#contact">Talk it through · Free 30 min</a>
@@ -773,6 +776,10 @@
         var row = panel.querySelector('.fix[data-fix="' + b.getAttribute('data-fix') + '"]');
         if (row) row.classList.toggle('on', on);
       });
+      var keys = [];
+      buttons.forEach(function(b){ if (b.getAttribute('aria-pressed') === 'true' && b.getAttribute('data-fix') !== 'unsure') keys.push(b.getAttribute('data-fix')); });
+      var offerLink = document.getElementById('fix-offer');
+      if (offerLink) offerLink.setAttribute('href', '/start/' + (keys.length ? '#f=' + keys.slice(0, 4).join(',') : ''));
       countEl.textContent = count + (count === 1 ? ' match' : ' matches');
       panel.classList.toggle('empty', count === 0);
       barN.textContent = count;
