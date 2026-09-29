@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<title>Meshlock · Despatch sorting and picking routes</title>
+<title>Meshlock · Picking routes</title>
 <style>
 :root{
   --paper:#EEF0EA; --paper-dim:#E3E6DC; --paper-card:#F6F7F2;
@@ -102,19 +102,19 @@ html.embed,html.embed body{background:#EEF0EA;}
 <div class="stage" id="stage">
   <div class="grid"></div>
   <div class="frame"></div>
-  <div class="corner tl" id="cornerL">Case file · Despatch and picking</div>
+  <div class="corner tl" id="cornerL">Case file · Picking routes</div>
   <div class="corner tr" id="cornerR">meshlock.co.uk</div>
 
   <div id="scene">
     <div class="copy">
       <p class="label" id="lbl">By hand</p>
       <div class="head">
-        <h1 id="h1a">Picking orders get sorted by hand. Then pickers walk them in that order.</h1>
-        <h1 id="h1b">Sorted by priority, value and size. Then put in route order.</h1>
+        <h1 id="h1a">Picking orders come off the ERP as one pile, in print order.</h1>
+        <h1 id="h1b">One pile in. Sorted your way, mapped to the warehouse, in route order.</h1>
       </div>
       <div class="chiprow">
-        <div id="chipB"><span class="chip red">BY HAND</span><p>Up to 12 hours a week at peak.</p></div>
-        <div id="chipA"><span class="chip green">WITH THE TOOL</span><p>You get on with something else.</p></div>
+        <div id="chipB"><span class="chip red">BY HAND</span><p>Walked as printed. Then filtered and reprinted by hand.</p></div>
+        <div id="chipA"><span class="chip green">WITH THE TOOL</span><p>Your ERP stays. The tool works from what it prints.</p></div>
       </div>
     </div>
 
@@ -128,7 +128,7 @@ html.embed,html.embed body{background:#EEF0EA;}
       <div class="big">+40%</div>
       <div class="cap">PICKING RATE</div>
       <div class="bars">
-        <div class="bar b"><span>SORTING BY HAND</span><div class="track"><div class="fill" id="fB"></div></div><span class="v2">UP TO 12 H</span></div>
+        <div class="bar b"><span>FILTERING BY HAND</span><div class="track"><div class="fill" id="fB"></div></div><span class="v2">12 H / WEEK</span></div>
         <div class="bar a"><span>WITH THE TOOL</span><div class="track"><div class="fill" id="fA"></div></div><span class="v2">SECONDS</span></div>
       </div>
     </div>
@@ -196,7 +196,7 @@ const ORD={
   H:{n:'2048',p:2,v:75,  sz:'S'},
 };
 const PRINT=['E','B','H','A','G','C','F','D'];       // the order the ERP printed them
-const HAND=['A','B','C','D','G','H','E','F'];        // sorted by hand: priority, then order number
+const HAND=['A','B','C','D','G','H','E','F'];        // tool pass 1: priority, then order number
 const ROUTE=['B','A','C','G','D','H','E','F'];       // the tool: priority waves, route order inside each
 const KEYS=Object.keys(ORD);
 
@@ -215,11 +215,11 @@ function build(order){
   return{pts:out,cum,len:cum[cum.length-1],stopAt,d:'M'+out.map(p=>p.join(' ')).join(' L')};
 }
 function posAt(r,s){s=clamp(s,0,r.len);let i=1;while(i<r.cum.length-1&&r.cum[i]<s)i++;const a=r.pts[i-1],b=r.pts[i],sl=r.cum[i]-r.cum[i-1]||1,f=(s-r.cum[i-1])/sl;return[a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f];}
-const RB=build(HAND), RA=build(ROUTE);
+const RB=build(PRINT), RA=build(ROUTE);
 function binOf(k){const [x,y,s]=P[k];let r;if(s>0)r=RACKS.findIndex(rx=>rx>x);else{r=-1;RACKS.forEach((rx,i)=>{if(rx+60<x)r=i;});}return 'R'+(r+1)+'-'+(Math.floor((y-90)/43)+1);}
 
 const svg=$('plan');const g0=el('g',{},svg);
-const topT=el('text',{x:0,y:-22,'font-family':'IBM Plex Mono','font-size':15,'letter-spacing':2.5,fill:SOFT},g0);topT.textContent='PICKING ORDERS';
+const topT=el('text',{x:0,y:-22,'font-family':'IBM Plex Mono','font-size':15,'letter-spacing':2.5,fill:SOFT},g0);topT.textContent='PICKING ORDERS · FROM THE ERP';
 const topR=el('text',{x:1000,y:-22,'text-anchor':'end','font-family':'IBM Plex Mono','font-size':15,'letter-spacing':2.5,fill:SOFT},g0);
 
 /* warehouse */
@@ -270,9 +270,9 @@ PRINT.slice().reverse().forEach(k=>{
 function GREEN_BG(){return '#E4EBE3';}
 
 /* passes and waves (tool) */
-const PASSES=['PRIORITY','VALUE','SIZE','ROUTE'];
-const passG=PASSES.map((p,i)=>{const g=el('g',{opacity:0,transform:`translate(${SX+i*212},${SY+CH+36})`},g0);
-  const r=el('rect',{x:0,y:-20,width:196,height:32,fill:CARD,stroke:LINE,'stroke-width':1.5,rx:2},g);
+const PASSES=['PRIORITY','VALUE','SIZE','MAP','ROUTE'];
+const passG=PASSES.map((p,i)=>{const g=el('g',{opacity:0,transform:`translate(${SX+i*170},${SY+CH+36})`},g0);
+  const r=el('rect',{x:0,y:-20,width:156,height:32,fill:CARD,stroke:LINE,'stroke-width':1.5,rx:2},g);
   const b=el('rect',{x:10,y:-12,width:16,height:16,fill:'none',stroke:FAINT,'stroke-width':1.5,rx:2},g);
   const ck=el('path',{d:'M13 -4 l4 4 l7 -9',fill:'none',stroke:'#fff','stroke-width':2.4,'stroke-linecap':'round','stroke-linejoin':'round',opacity:0},g);
   const t=el('text',{x:36,y:1,'font-family':'IBM Plex Mono','font-weight':500,'font-size':14,'letter-spacing':2,fill:SOFT},g);t.textContent=p;
@@ -282,6 +282,25 @@ const waves=[[0,3,'P1'],[3,6,'P2'],[6,8,'P3']].map(([a,b,l])=>{const g=el('g',{o
   el('path',{d:`M${x1} ${SY-10} V${SY-16} H${x2} V${SY-10}`,fill:'none',stroke:INK,'stroke-width':1.5},g);
   const t=el('text',{x:(x1+x2)/2,y:SY-22,'text-anchor':'middle','font-family':'IBM Plex Mono','font-size':12.5,'letter-spacing':1.5,fill:INK},g);t.textContent=l+' WAVE';
   return g;});
+
+/* ERP window: filtering and printing by hand */
+const FILTERS=['AISLE R1','AISLE R2','AISLE R3','AISLE R4','AISLE R5','VALUE > £1,000'];
+const erp=el('g',{opacity:0},g0);
+el('rect',{x:150,y:0,width:470,height:205,fill:CARD,stroke:INK,'stroke-width':2.2,rx:3},erp);
+el('rect',{x:150,y:0,width:470,height:34,fill:INK,rx:3},erp);
+const et=el('text',{x:166,y:23,'font-family':'IBM Plex Mono','font-weight':500,'font-size':14,'letter-spacing':2,fill:PAPER},erp);et.textContent='ERP · PICKING ORDERS';
+const fl=el('text',{x:166,y:78,'font-family':'IBM Plex Mono','font-size':13,'letter-spacing':1.5,fill:SOFT},erp);fl.textContent='FILTER';
+el('rect',{x:230,y:56,width:210,height:34,fill:'#fff',stroke:INK,'stroke-width':1.5,rx:2},erp);
+const fv=el('text',{x:242,y:78,'font-family':'IBM Plex Mono','font-weight':500,'font-size':14,fill:INK},erp);
+const pbtn=el('g',{},erp);
+el('rect',{x:460,y:56,width:140,height:34,fill:STEEL,rx:2},pbtn);
+const pbt=el('text',{x:530,y:78,'text-anchor':'middle','font-family':'IBM Plex Mono','font-weight':500,'font-size':14,'letter-spacing':2,fill:'#fff'},pbtn);pbt.textContent='PRINT';
+for(let j=0;j<5;j++)el('rect',{x:166,y:108+j*18,width:[380,300,340,260,320][j],height:7,fill:LINE},erp);
+const minis=FILTERS.map((f,i)=>{const g=el('g',{opacity:0},g0);const x=640+i*60;
+  for(let j=2;j>=0;j--)el('rect',{x:x+j*3,y:30+j*4,width:46,height:58,fill:CARD,stroke:INK,'stroke-width':1.6,rx:2},g);
+  const t=el('text',{x:x+26,y:118,'text-anchor':'middle','font-family':'IBM Plex Mono','font-size':12,'letter-spacing':.5,fill:SOFT},g);t.textContent=i<5?'R'+(i+1):'£1K+';
+  return g;});
+const mapL={};KEYS.forEach(k=>{mapL[k]=el('path',{d:'',fill:'none',stroke:GREEN,'stroke-width':2,'stroke-dasharray':'6 5',opacity:0},g0);});
 
 /* key and mug */
 const key=el('g',{opacity:0},g0);
@@ -311,45 +330,44 @@ el('line',{x1:407.2,y1:277.2,x2:431.8,y2:301.8,stroke:INK,'stroke-width':9.5,'st
 el('circle',{cx:393.8,cy:263.8,r:15.6,fill:'#D6C29B',stroke:INK,'stroke-width':6.6},cW);
 
 /* ---------- timeline ---------- */
-const M0=1.8, MD=.72;                        // hand moves: one card per MD seconds, in HAND order
-const WALK_B=[8.1,12.1];                     // picker walks the hand-sorted queue
+const WALK_B=[1.9,5.2];                      // picker walks the pile in print order
 const SPEED=RB.len/(WALK_B[1]-WALK_B[0]);
-const T={x0:12.8,run:13.8,p1:14.6,p2:15.9,p3:16.6,p4:17.3,wa:18.6,r0:0,s0:0,s1:0};
+const F0=5.9, FD=.78;                         // filter and print by hand, one pass per FD seconds
+const T={x0:0,run:0};
+T.x0=F0+FD*FILTERS.length+.5; T.run=T.x0+1.0;
+T.p1=T.run+.8; T.p2=T.p1+1.1; T.p3=T.p2+.6; T.map=T.p3+.6; T.p5=T.map+1.2; T.wa=T.p5+1.4;
 T.wa1=T.wa+RA.len/SPEED; T.r0=T.wa1+.6; T.s0=T.r0+4.6; T.s1=T.s0+.6;
 T.g0=T.s1;T.g1=T.g0+2.2;T.w0=T.g1+.1;T.end=T.w0+3.4;
 const DUR=T.end;
+const PT=[T.p1,T.p2,T.p3,T.map,T.p5];
+
+// pin centre on the plan, in desk units
+function pinXY(k){const [x,y,s]=P[k];return[WX+(x+s*36)*WS,WY+y*WS];}
 
 function handPoseAt(t){
   const pile=pileOff(PRINT[0]);
-  let x=pile[0]+CW+80,y=pile[1]+CH+70,rot=-20,sc=1,o=seg(t,1.0,1.6);
-  const end=M0+MD*HAND.length;
-  if(t>=M0&&t<end){
-    const m=Math.floor((t-M0)/MD), f=(t-M0)/MD-m, k=HAND[m];
-    const src=pileOff(k), sx=src[0]+CW/2, sy=src[1]+CH/2, dx=slotX(m)+CW/2, dy=SY+CH/2;
-    const prev=m?[slotX(m-1)+CW/2,SY+CH/2]:[x,y];
-    if(f<.3){const q=eio(f/.3);x=lerp(prev[0],sx,q);y=lerp(prev[1],sy,q);rot=lerp(-10,-4,q);}
-    else if(f<.85){const q=eio((f-.3)/.55);x=lerp(sx,dx,q);y=lerp(sy,dy,q)-Math.sin(q*Math.PI)*30;rot=-4+4*Math.sin(q*Math.PI);}
-    else{x=dx;y=dy;rot=0;sc=1-.04*Math.sin((f-.85)/.15*Math.PI);}
-  } else if(t>=end){
-    // step back out of the way while the picker walks
-    const q=eio(seg(t,end,end+.8));x=lerp(slotX(7)+CW/2,930,q);y=lerp(SY+CH/2,560,q);rot=lerp(0,-24,q);
-  }
+  let x=pile[0]+CW+60,y=pile[1]+CH+80,rot=-20,sc=1,o=seg(t,1.0,1.6);
+  const end=F0+FD*FILTERS.length;
+  if(t>=F0-.6&&t<end){
+    // walk over to the ERP window, then: click the filter, click PRINT, repeat
+    const fx=335,fy=80,px=530,py=80;
+    if(t<F0){const q=eio(seg(t,F0-.6,F0));x=lerp(x,fx,q);y=lerp(y,fy+6,q);rot=lerp(rot,-6,q);}
+    else{const m=Math.floor((t-F0)/FD),f=(t-F0)/FD-m;
+      if(f<.35){const q=eio(f/.35);x=lerp(m?px:fx,fx,q);y=fy+6-Math.sin(q*Math.PI)*18;rot=-6;}
+      else if(f<.45){x=fx;y=fy+6+Math.sin((f-.35)/.1*Math.PI)*5;rot=-6;}
+      else if(f<.8){const q=eio((f-.45)/.35);x=lerp(fx,px,q);y=fy+6-Math.sin(q*Math.PI)*18;rot=-6;}
+      else{x=px;y=py+6+Math.sin((f-.8)/.2*Math.PI)*5;rot=-6;}}
+  } else if(t>=end){const q=eio(seg(t,end,end+.5));x=lerp(530,300,q);y=lerp(86,210,q);rot=lerp(-6,-14,q);}
   return{x,y,rot,sc,o};
 }
 
 function cardPos(k,t){
   const p=pileOff(k);let x=p[0],y=p[1],a=p[2];
   const drop=eo(seg(t,.3+PRINT.indexOf(k)*.06,.8+PRINT.indexOf(k)*.06));y-=(1-drop)*60;
-  const m=HAND.indexOf(k), ms=M0+MD*m;
-  const q=eio(seg(t,ms+MD*.3,ms+MD*.85));
-  x=lerp(x,slotX(m),q);y=lerp(y,SY,q)-Math.sin(q*Math.PI)*30;a=lerp(a,0,q);
-  // back to the pile for the tool run
-  const b=eio(seg(t,T.x0-.2,T.x0+.6));x=lerp(x,p[0],b);y=lerp(y,p[1],b);a=lerp(a,p[2],b);
-  // pass 1: into priority groups (same as HAND order), fast
+  const m=HAND.indexOf(k);
   const q1=eio(seg(t,T.p1+m*.05,T.p1+.7+m*.05));x=lerp(x,slotX(m),q1);y=lerp(y,SY,q1);a=lerp(a,0,q1);
-  // pass 4: route order inside each wave
   const r=ROUTE.indexOf(k);
-  const q4=eio(seg(t,T.p4,T.p4+.9));x=lerp(x,slotX(r),q4);y=y-(r!==m?Math.sin(q4*Math.PI)*34:0);
+  const q4=eio(seg(t,T.p5,T.p5+.9));x=lerp(x,slotX(r),q4);y=y-(r!==m?Math.sin(q4*Math.PI)*34:0);
   return[x,y,a];
 }
 
@@ -361,35 +379,46 @@ function render(t){
   op($('h1a'),seg(t,.3,1.1)*(1-xa)); tr($('h1a'),(1-eo(seg(t,.3,1.1)))*18-xa*14);
   op($('h1b'),xb); tr($('h1b'),(1-xb)*18);
   op($('chipB'),seg(t,1.0,1.6)*(1-xa)); op($('chipA'),xb);
-  // clock: hours a week spent sorting by hand at peak (sped up)
-  const h=inB?0:12*eio(seg(t,M0-.2,M0+MD*HAND.length));
+  // clock: hours a week spent filtering and printing by hand at peak (sped up)
+  const h=12*eio(seg(t,F0,F0+FD*FILTERS.length));
   $('clockN').textContent=(inB?'0':Math.round(h))+' h';
   $('clockN').style.color=inB?GREEN:(h>=11.95?RED:INK);
-  $('clockC').textContent=inB?'OF SORTING BY HAND · WITH THE TOOL':'A WEEK AT PEAK · BY HAND · SPED UP';$('clockC').style.color=inB?GREEN:RED;
-  const walking=!inB&&t>=WALK_B[0]-.4;
-  $('clockS').textContent=inB?'Sorted in seconds, then walked in one loop.':(walking?'Then the walk, in the order they were sorted.':'Read each order. Decide where it goes. Repeat.');
-  op($('clock'),seg(t,1.4,2.0)*(1-eio(seg(t,T.r0-.4,T.r0))));
+  $('clockC').textContent=inB?'OF FILTERING BY HAND · WITH THE TOOL':'A WEEK AT PEAK · BY HAND · SPED UP';$('clockC').style.color=inB?GREEN:RED;
+  $('clockS').textContent=inB?'One pile in. Sorted, mapped and routed in seconds.':'Filter by aisle or value. Print. Repeat.';
+  op($('clock'),seg(t,F0-.4,F0+.1)*(1-eio(seg(t,T.x0-.4,T.x0)))+(inB?seg(t,T.x0+.2,T.x0+.7):0)*(1-eio(seg(t,T.r0-.4,T.r0))));
   // result
   const rr2=eo(seg(t,T.r0,T.r0+.7)); op($('result'),rr2); tr($('result'),(1-rr2)*24);
   $('fB').style.width=(100*eo(seg(t,T.r0+.3,T.r0+1.3)))+'%';
   $('fA').style.width=(1.2*eo(seg(t,T.r0+1.1,T.r0+1.5)))+'%';
   op($('foot'),seg(t,T.r0+.6,T.r0+1.2));
 
-  topR.textContent=inB?'':'SORTED BY HAND';
+  topT.textContent=inB?'':'PICKING ORDERS · FROM THE ERP';
+  topR.textContent=inB?'':(t<F0-.4?'ONE PILE · PRINT ORDER':'FILTERED AND PRINTED BY HAND');
+  // ERP window and the reprinted stacks
+  erp.setAttribute('opacity',seg(t,F0-.7,F0-.3)*(1-seg(t,T.x0-.3,T.x0)));
+  const pass=Math.min(FILTERS.length-1,Math.max(0,Math.floor((t-F0)/FD)));
+  fv.textContent=t<F0?'ALL ORDERS':FILTERS[pass];
+  const pr=Math.sin(Math.PI*clamp(((t-F0)/FD-pass-.8)/.2));pbtn.setAttribute('transform',`translate(0,${t>=F0?pr*3:0})`);
+  minis.forEach((g,i)=>{const s0=F0+FD*(i+.9);g.setAttribute('opacity',seg(t,s0,s0+.15)*(1-seg(t,T.x0-.3,T.x0)));
+    g.setAttribute('transform',`translate(0,${(1-eo(seg(t,s0,s0+.3)))*-14})`);});
   // cards
   KEYS.forEach(k=>{const [x,y,a]=cardPos(k,t);const c=cards[k];
     c.g.setAttribute('transform',`translate(${x},${y}) rotate(${a} ${CW/2} ${CH/2})`);
     c.g.setAttribute('opacity',seg(t,.3+PRINT.indexOf(k)*.06,.5+PRINT.indexOf(k)*.06));
     const tt=c.kind==='value'?T.p2:T.p3, sp=seg(t,tt,tt+.3);
     c.tag.setAttribute('opacity',c.kind?sp:0);
-    const bs=back(seg(t,T.p4+1.0+ROUTE.indexOf(k)*.06,T.p4+1.35+ROUTE.indexOf(k)*.06));
-    c.badge.setAttribute('opacity',seg(t,T.p4+1.0+ROUTE.indexOf(k)*.06,T.p4+1.1+ROUTE.indexOf(k)*.06));
+    const bs=back(seg(t,T.p5+1.0+ROUTE.indexOf(k)*.06,T.p5+1.35+ROUTE.indexOf(k)*.06));
+    c.badge.setAttribute('opacity',seg(t,T.p5+1.0+ROUTE.indexOf(k)*.06,T.p5+1.1+ROUTE.indexOf(k)*.06));
     c.badge.setAttribute('transform',`translate(${CW-6},${CH-6}) scale(${Math.max(0,bs)})`);
+    // map: a line from the card down to its location on the plan
+    const [px,py]=pinXY(k), i=HAND.indexOf(k), l0=T.map+i*.1, lk=eo(seg(t,l0,l0+.4));
+    const sx=x+CW/2, sy=y+CH;
+    mapL[k].setAttribute('d',`M${sx} ${sy} L${lerp(sx,px,lk)} ${lerp(sy,py-18,lk)}`);
+    mapL[k].setAttribute('opacity',seg(t,l0,l0+.1)*(1-seg(t,T.wa-.2,T.wa+.4)*.8));
   });
   // passes
-  const pt=[T.p1,T.p2,T.p3,T.p4];
   passG.forEach((p,i)=>{p.g.setAttribute('opacity',seg(t,T.run+.3+i*.08,T.run+.6+i*.08));
-    const done=t>=pt[i]+.6, act=t>=pt[i]&&!done;
+    const done=t>=PT[i]+.6, act=t>=PT[i]&&!done;
     p.b.setAttribute('fill',done?GREEN:'none');p.b.setAttribute('stroke',done?GREEN:(act?STEEL:FAINT));
     p.ck.setAttribute('opacity',done?1:0);p.t.setAttribute('fill',done?GREEN:(act?INK:SOFT));
     p.r.setAttribute('stroke',act?STEEL:(done?GREEN:LINE));});
@@ -403,9 +432,9 @@ function render(t){
   if(!inB){pos=posAt(RB,seg(t,WALK_B[0],WALK_B[1])*RB.len);col=RED;}else{pos=posAt(RA,pa*RA.len);col=GREEN;}
   picker.setAttribute('transform',`translate(${pos[0]},${pos[1]})`);dot.setAttribute('fill',col);halo.setAttribute('fill',col);
   halo.setAttribute('r',26+5*Math.sin(t*6));
-  picker.setAttribute('opacity',clamp(seg(t,WALK_B[0]-.5,WALK_B[0])*(1-seg(t,T.x0,T.x0+.3))+seg(t,T.wa-.4,T.wa)));
+  picker.setAttribute('opacity',clamp(seg(t,WALK_B[0]-.5,WALK_B[0])*(1-seg(t,WALK_B[1]+.2,WALK_B[1]+.6))+seg(t,T.wa-.4,T.wa)));
   KEYS.forEach(k=>{const sB=WALK_B[0]+RB.stopAt[k]/SPEED, sA=T.wa+RA.stopAt[k]/SPEED;let f=CARD,s=INK,tc=INK;
-    if(t>=sB&&t<T.x0+.3){f=RED;s=RED;tc=CARD;} if(t>=sA){f=GREEN;s=GREEN;tc=CARD;}
+    if(t>=sB&&t<T.x0+.3){f=RED;s=RED;tc=CARD;} if(inB&&t>=T.map+HAND.indexOf(k)*.1+.4){f=CARD;s=GREEN;tc=GREEN;} if(t>=sA){f=GREEN;s=GREEN;tc=CARD;}
     pins[k].c.setAttribute('fill',f);pins[k].c.setAttribute('stroke',s);pins[k].t.setAttribute('fill',tc);});
 
   // key, mug, hand
