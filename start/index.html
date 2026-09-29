@@ -363,6 +363,7 @@
       <input type="hidden" name="link" id="f-link">
       <input type="hidden" name="source" id="f-source">
       <input type="hidden" name="own" id="f-own">
+      <input type="hidden" name="subject" id="f-subject" value="Meshlock offer">
 
       <div class="opts" id="opts" role="group" aria-label="Next step">
       <button type="button" class="opt" aria-pressed="false" data-o="call"><span class="t"><span class="radio"></span>Ring me</span><span class="d">Free, 30 minutes, no preparation needed.</span></button>
@@ -688,6 +689,7 @@
     $('f-slot').value = st.o==='call'?st.slot:'';
     $('f-erp').value = st.erp; $('f-rate').value = '£'+st.rate+'/h';
     $('f-summary').value = summary(C); $('f-link').value = hash().slice(1); $('f-source').value = SRC; $('f-own').value = $('own').value.trim();
+    $('f-subject').value = 'Meshlock offer · '+SRC+' · '+(st.o==='call'?'Ring me':'Email me');
     var form = $('offer-form'), nx = $('next'); $('err').hidden = true; nx.disabled = true;
     if (DEMO) { finish(C); return; }
     fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(new FormData(form)).toString()})
