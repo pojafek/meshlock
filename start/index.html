@@ -301,7 +301,7 @@
         <button type="button" class="chip" aria-pressed="false" data-v="30">£30</button>
         <button type="button" class="chip" aria-pressed="false" data-v="40">£40</button>
       </div>
-      <p class="hint">Your number. I only do the sum. £20 if you skip it.</p>
+      <p class="hint" data-pc="Your number. The page only does the sum. £20 if you skip it.">Your number. I only do the sum. £20 if you skip it.</p>
     </div>
     <p class="group-label">Which system holds your orders? <span class="o">(optional)</span></p>
     <div class="chips" id="erp" role="group" aria-label="ERP">
@@ -328,14 +328,14 @@
       <div class="cost" id="cost">
         <p class="lab now">What these problems cost you now</p>
         <p class="cost-total" id="ctotal"></p>
-        <p class="cost-who">Your team's time, from your answers. This is not my price.</p>
+        <p class="cost-who" data-pc="Your team's time, from your answers. This is not our price.">Your team's time, from your answers. This is not my price.</p>
         <p class="cost-tool" id="ctool" hidden></p>
         <p class="cost-hours" id="chours"></p>
         <ul class="cost-rows" id="crows"></ul>
         <p class="cost-note" id="cnote"></p>
       </div>
 
-      <h3>Where I'd start</h3>
+      <h3 data-pc="Where to start">Where I'd start</h3>
       <p class="sheet-sub" id="startsub"></p>
       <div class="start" id="start"></div>
       <div class="vs" id="vs" hidden>
@@ -358,13 +358,13 @@
       </div>
       <div class="sheet-foot">
         <p>Tool prices are examples from similar builds. Yours is fixed in writing after the call.</p>
-        <p class="who">Kamil Pojawa · meshlock.co.uk · hello@meshlock.co.uk</p>
+        <p class="who" data-pc="Patryk Chojnacki · Business Development Lead · 07501 839466 · hello@meshlock.co.uk">Kamil Pojawa · meshlock.co.uk · hello@meshlock.co.uk</p>
         <div class="reopen" id="reopen"><span id="reqr"></span><p class="rt"><b>Open this offer again</b>Scan the code or click the link. It opens with the same answers and prices as on this sheet, any time.<br><a id="relink" href="/start/">meshlock.co.uk/start/</a></p></div>
       </div>
     </article>
 
 
-    <div class="dim"><span class="tick"></span><span class="rule"></span><span>How should I get back to you?</span><span class="rule"></span><span class="tick"></span></div>
+    <div class="dim"><span class="tick"></span><span class="rule"></span><span data-pc="How should Patryk get back to you?">How should I get back to you?</span><span class="rule"></span><span class="tick"></span></div>
 
     <form id="offer-form" name="offer" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field" novalidate>
       <input type="hidden" name="form-name" value="offer">
@@ -381,7 +381,7 @@
       <input type="hidden" name="subject" id="f-subject" value="Meshlock offer">
 
       <div class="opts" id="opts" role="group" aria-label="Next step">
-      <button type="button" class="opt" aria-pressed="false" data-o="call"><span class="t"><span class="radio"></span>Call me back</span><span class="d">I ring you when it suits. Free, 30 minutes, no preparation needed.</span></button>
+      <button type="button" class="opt" aria-pressed="false" data-o="call"><span class="t"><span class="radio"></span>Call me back</span><span class="d" data-pc="Patryk rings you when it suits. Free, 30 minutes, no preparation needed.">I ring you when it suits. Free, 30 minutes, no preparation needed.</span></button>
       <div class="detail" id="d-call">
         <p class="group-label" style="margin-top:0">When suits you?</p>
         <div class="chips" id="slot" role="group" aria-label="Call time">
@@ -392,18 +392,18 @@
         <div class="field"><label for="phone">Your number</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
         <div class="field"><label for="name1">First name <span class="o">(optional)</span></label><input id="name1" name="name" type="text" autocomplete="given-name"></div>
       </div>
-      <button type="button" class="opt" aria-pressed="false" data-o="mail"><span class="t"><span class="radio"></span>Email me back</span><span class="d">I reply by email within one working day.</span></button>
+      <button type="button" class="opt" aria-pressed="false" data-o="mail"><span class="t"><span class="radio"></span>Email me back</span><span class="d" data-pc="Patryk replies by email within one working day.">I reply by email within one working day.</span></button>
       <div class="detail" id="d-mail">
         <div class="field" style="margin-top:0"><label for="email">Your email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email"></div>
         <div class="field"><label for="name2">First name <span class="o">(optional)</span></label><input id="name2" name="name" type="text" autocomplete="given-name"></div>
       </div>
-      <button type="button" class="opt" aria-pressed="false" data-o="later"><span class="t"><span class="radio"></span>Not yet · pass it on</span><span class="d">Not your call? Save it or send the link on. Both open this offer again. Nothing is sent to me.</span></button>
+      <button type="button" class="opt" aria-pressed="false" data-o="later"><span class="t"><span class="radio"></span>Not yet · pass it on</span><span class="d" data-pc="Not your call? Save it or send the link on. Both open this offer again. Nothing is sent.">Not your call? Save it or send the link on. Both open this offer again. Nothing is sent to me.</span></button>
       <div class="detail" id="d-later"><p style="font-size:14.5px;color:var(--ink-soft)">Send it to whoever makes the call. The link and the PDF both open this offer again, any time, with the same answers and the same prices you see now.</p>
         <div class="share"><button type="button" class="btn-outline pdf2">Save as PDF</button><button type="button" class="btn-outline" id="copy">Copy link</button><span id="copied" role="status"></span><span class="pdf-hint">Save as PDF opens print. Pick "Save as PDF" as the printer. The PDF has a link and a QR code back to this offer.</span></div></div>
       </div>
       <p class="form-error" role="alert" id="err" hidden>That didn't send. Please try again, or email hello@meshlock.co.uk.</p>
     </form>
-    <p class="hint" id="privacy">Not a pitch, just an honest question. I only use your details to reply to this.</p>
+    <p class="hint" id="privacy" data-pc="Not a pitch, just an honest question. Your details are only used to reply to this.">Not a pitch, just an honest question. I only use your details to reply to this.</p>
   </section>
 
   <section class="done" id="done" aria-live="polite">
@@ -490,6 +490,10 @@
   var SRC = (new URLSearchParams(location.search).get('s') || '').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20);
   try { if (SRC) sessionStorage.setItem('ml-src', SRC); else SRC = sessionStorage.getItem('ml-src') || ''; } catch(e){}
   SRC = SRC || 'site';
+  // Patryk's materials carry tags starting with "pc" (pc, pcs). His clients see his name and number, never Kamil's.
+  var PC = /^pc/.test(SRC);
+  function V(kamil, patryk){ return PC ? patryk : kamil; }
+  if (PC) document.querySelectorAll('[data-pc]').forEach(function(e){ e.textContent = e.getAttribute('data-pc'); });
   (function(){
     var p = {};
     location.hash.replace(/^#/,'').split('&').forEach(function(kv){var a=kv.split('=');if(a[0])p[a[0]]=decodeURIComponent(a[1]||'');});
@@ -513,7 +517,7 @@
   function syncSyms(){
     var full = real().length>=MAXTICKS;
     syms.querySelectorAll('.sym').forEach(function(b){b.setAttribute('aria-pressed', st.f.indexOf(b.dataset.k)>-1?'true':'false');});
-    $('capnote').textContent = full ? "Four is plenty. I'll find the rest on the call." : '';
+    $('capnote').textContent = full ? V("Four is plenty. I'll find the rest on the call.","Four is plenty. We'll find the rest on the call.") : '';
   }
   syms.addEventListener('click', function(e){
     var b = e.target.closest('.sym'); if(!b) return;
@@ -522,7 +526,7 @@
     if (i>-1){ st.f.splice(i,1); delete st.h[k]; }
     else if (k==='unsure'){ st.f=['unsure']; st.h={}; }
     else {
-      if (real().length>=MAXTICKS){ $('capnote').textContent = "Four is plenty. I'll find the rest on the call."; return; }
+      if (real().length>=MAXTICKS){ $('capnote').textContent = V("Four is plenty. I'll find the rest on the call.","Four is plenty. We'll find the rest on the call."); return; }
       st.f = st.f.filter(function(x){return x!=='unsure';}); st.f.push(k);
     }
     syncSyms(); render();
@@ -653,11 +657,11 @@
       more.appendChild(li);
     });
     $('morehead').style.display = rest.length?'':'none';
-    var line = '';
-    if (st.erp==='Sage'||st.erp==='Epicor') line = 'I work from the exports your '+st.erp+' already produces. Nothing inside it changes.';
-    else if (st.erp==='another ERP') line = 'I work from the exports your ERP already produces. Nothing inside it changes.';
-    else if (st.erp==='spreadsheets') line = 'No ERP needed. I work from the spreadsheets you already keep.';
-    else if (st.erp==='unsure') line = 'No need to know. I work from whatever your system already exports.';
+    var line = '', we = V('I work','We work');
+    if (st.erp==='Sage'||st.erp==='Epicor') line = we+' from the exports your '+st.erp+' already produces. Nothing inside it changes.';
+    else if (st.erp==='another ERP') line = we+' from the exports your ERP already produces. Nothing inside it changes.';
+    else if (st.erp==='spreadsheets') line = 'No ERP needed. '+we+' from the spreadsheets you already keep.';
+    else if (st.erp==='unsure') line = 'No need to know. '+we+' from whatever your system already exports.';
     $('erpline').textContent = line; $('erpline').style.display = line?'':'none';
     var n = real().length; $('ref').textContent = n ? n+(n===1?' problem ticked':' problems ticked') : 'free call';
     $('made').textContent = st.d ? 'Offer made '+dayText(st.d) : '';
@@ -765,8 +769,8 @@
       freeze();
       buildOffer();
       // Not yet: nothing to send, the actions are Save as PDF and Copy link in its panel
-      nx.textContent = 'Send to Kamil'; nx.hidden = st.o==='later';
-      $('note').textContent = !st.o ? 'How should I get back to you?' : (st.o==='later' ? 'Nothing is sent. Save it or copy the link above.' : '');
+      nx.textContent = V('Send to Kamil','Send to Patryk'); nx.hidden = st.o==='later';
+      $('note').textContent = !st.o ? V('How should I get back to you?','How should Patryk get back to you?') : (st.o==='later' ? 'Nothing is sent. Save it or copy the link above.' : '');
       $('privacy').hidden = !(st.o==='call'||st.o==='mail');
     }
     try{ history.replaceState(null,'', st.f.length && step>1 ? location.pathname+location.search+hash() : location.pathname+location.search); }catch(e){}
@@ -777,9 +781,9 @@
     $('s3').classList.remove('show'); $('progress').style.display='none'; $('bar').classList.remove('show');
     document.querySelector('.intro').style.display='none';
     var t, n1; $('doneh').textContent = "Thanks. That's it from you.";
-    if (st.o==='call'){ t='I have your answers and your number. You picked '+st.slot+'. I ring you then.'; n1="I read what you ticked before I ring, so you don't have to explain it."; }
-    else if (st.o==='mail'){ t='I have your answers and your email. I reply within one working day.'; n1='I reply by email within one working day.'; }
-    else { $('doneh').textContent = 'Kept, not sent.'; t='Nothing was sent to me. The link is copied. It opens this offer with the same answers and prices, any time. If you saved the PDF, the same link and a QR code are on it.'; n1='Come back whenever you like.'; try{navigator.clipboard.writeText(link());}catch(e){} }
+    if (st.o==='call'){ t=V('I have your answers and your number. You picked '+st.slot+'. I ring you then.','Patryk has your answers and your number. You picked '+st.slot+'. He rings you then.'); n1=V("I read what you ticked before I ring, so you don't have to explain it.","He reads what you ticked before he rings, so you don't have to explain it."); }
+    else if (st.o==='mail'){ t=V('I have your answers and your email. I reply within one working day.','Patryk has your answers and your email. He replies within one working day.'); n1=V('I reply by email within one working day.','Patryk replies by email within one working day.'); }
+    else { $('doneh').textContent = 'Kept, not sent.'; t=V('Nothing was sent to me.','Nothing was sent.')+' The link is copied. It opens this offer with the same answers and prices, any time. If you saved the PDF, the same link and a QR code are on it.'; n1='Come back whenever you like.'; try{navigator.clipboard.writeText(link());}catch(e){} }
     $('donetext').textContent=t; $('n1').textContent=n1;
     if (st.o==='later') document.querySelectorAll('#donelist li:nth-child(n+2)').forEach(function(x){x.style.display='none';});
     $('donepdf').style.display = (st.o==='later'||FRAMED) ? 'none' : '';
