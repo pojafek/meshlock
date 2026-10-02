@@ -240,6 +240,7 @@
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>
+<script src="/assets/stats.js" defer></script>
 </head>
 <body>
 
@@ -493,6 +494,10 @@
   // Patryk's materials carry tags starting with "pc" (pc, pcs). His clients see his name and number, never Kamil's.
   var PC = /^pc/.test(SRC);
   function V(kamil, patryk){ return PC ? patryk : kamil; }
+  // Anonymous step counts per source tag (assets/stats.js). Never sends answers, only the step name.
+  var sent1 = {};
+  function track(n, once){ if (once){ if (sent1[n]) return; sent1[n] = 1; } (window.mlTrack || function(x){ (window.mlq = window.mlq || []).push(x); })(n); }
+  track('offer/open/'+SRC);
   if (PC) document.querySelectorAll('[data-pc]').forEach(function(e){ e.textContent = e.getAttribute('data-pc'); });
   (function(){
     var p = {};
@@ -509,7 +514,7 @@
     if (p.own) st.own = p.own.slice(0,160);
     if (!st.f.length) return;
     step = real().every(function(k){return st.h[k];}) ? 3 : 2;
-    if (px && step===3){ st.d = p.d; st.px = frozen; restored = true; }
+    if (px && step===3){ st.d = p.d; st.px = frozen; restored = true; track('offer/reopen/'+SRC+(/[?&]pdf=1/.test(location.search)?'/pdf':'')); }
   })();
 
   // ---- step 1
@@ -767,6 +772,8 @@
     if (step===2){ nx.textContent='Show my offer →'; $('note').textContent = valid()?'':'Answer each one'; }
     if (step===3){
       freeze();
+      if (!restored && !sent1.result){ sent1.result = 1; track('offer/result/'+SRC); st.f.forEach(function(k){ track('offer/problem/'+k); }); }
+      if (st.o==='later') track('offer/not-yet/'+SRC, true);
       buildOffer();
       // Not yet: nothing to send, the actions are Save as PDF and Copy link in its panel
       nx.textContent = V('Send to Kamil','Send to Patryk'); nx.hidden = st.o==='later';
@@ -799,7 +806,7 @@
     var form = $('offer-form'), nx = $('next'); $('err').hidden = true; nx.disabled = true;
     if (DEMO) { finish(C); return; }
     fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(new FormData(form)).toString()})
-      .then(function(res){ if(!res.ok) throw new Error(res.status); finish(C); })
+      .then(function(res){ if(!res.ok) throw new Error(res.status); track('offer/sent-'+st.o+'/'+SRC, true); finish(C); })
       .catch(function(){ $('err').hidden=false; nx.disabled=false; });
   }
   $('next').addEventListener('click', function(){
@@ -811,10 +818,10 @@
   $('offer-form').addEventListener('submit', function(e){ e.preventDefault(); if (step===3 && valid() && st.o!=='later') send(); });
   $('back').addEventListener('click', function(){ if(step>1) go(step-1); });
   // Print always shows the offer sheet, also from the thank-you screen
-  document.querySelectorAll('.pdf2').forEach(function(b){ b.addEventListener('click', function(){ document.body.classList.add('print-offer'); window.print(); }); });
+  document.querySelectorAll('.pdf2').forEach(function(b){ b.addEventListener('click', function(){ track('offer/pdf/'+SRC); document.body.classList.add('print-offer'); window.print(); }); });
   window.addEventListener('afterprint', function(){ document.body.classList.remove('print-offer'); });
   $('copy').addEventListener('click', function(){
-    var u = link(), out = $('copied');
+    var u = link(), out = $('copied'); track('offer/copy-link/'+SRC);
     function ok(){ out.textContent='Link copied. It opens this offer as it is now.'; setTimeout(function(){out.textContent='';},3500); }
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(ok,function(){out.textContent=u;});
     else out.textContent=u;
