@@ -170,6 +170,10 @@
   .sheet-foot .who{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;margin-top:6px;color:var(--ink);}
 
   .pdf-hint{flex-basis:100%;font-size:13px;color:var(--ink-soft);}
+  .saved{margin:0 0 16px;padding:12px 14px;background:var(--paper-card);border:1px dashed var(--ink-faint);border-radius:var(--radius);font-size:14.5px;color:var(--ink-soft);}
+  .saved b{color:var(--ink);font-weight:600;}
+  .made{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--ink-soft);}
+  .reopen{display:none;}
   .detail .share{margin-top:12px;}
   .done-pdf{margin-top:26px;}
   .linkbtn{background:none;border:0;padding:0;font:inherit;font-size:14.5px;color:var(--ink);text-decoration:underline;text-decoration-color:var(--ink-faint);text-underline-offset:4px;cursor:pointer;}
@@ -227,6 +231,12 @@
     .more li{padding:8px 0;}
     .terms{margin:12px -16px 0;padding:12px 16px;}
     .sheet-foot{padding:8px 0 6px;}
+    .saved{display:none!important;}
+    .reopen{display:flex;gap:14px;align-items:center;margin-top:10px;padding-top:10px;border-top:1px dashed #000;break-inside:avoid;}
+    .reopen svg{width:26mm;height:26mm;flex:none;}
+    .reopen .rt{font-size:12px;line-height:1.45;color:var(--ink-soft);}
+    .reopen .rt b{display:block;font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--ink);margin-bottom:2px;}
+    .reopen a{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--ink);word-break:break-all;}
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>
@@ -308,9 +318,10 @@
     <h2 id="s3h">Your one-page offer.</h2>
     <p class="sub">Built from your answers. Fixed prices are agreed in writing before any work starts.</p>
 
+    <p class="saved" id="saved" hidden></p>
     <article class="sheet" aria-label="Offer">
       <div class="sheet-head">
-        <p class="l">Your floor · <b id="ref">draft</b><br>Built from <b>your answers</b></p>
+        <p class="l">Your floor · <b id="ref">draft</b><br>Built from <b>your answers</b><br><span class="made" id="made"></span></p>
         <span class="stamp" id="stamp">FIX FOUND</span>
       </div>
 
@@ -348,6 +359,7 @@
       <div class="sheet-foot">
         <p>Tool prices are examples from similar builds. Yours is fixed in writing after the call.</p>
         <p class="who">Kamil Pojawa · meshlock.co.uk · hello@meshlock.co.uk</p>
+        <div class="reopen" id="reopen"><span id="reqr"></span><p class="rt"><b>Open this offer again</b>Scan the code or click the link. It opens with the same answers and prices as on this sheet, any time.<br><a id="relink" href="/start/">meshlock.co.uk/start/</a></p></div>
       </div>
     </article>
 
@@ -385,9 +397,9 @@
         <div class="field" style="margin-top:0"><label for="email">Your email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email"></div>
         <div class="field"><label for="name2">First name <span class="o">(optional)</span></label><input id="name2" name="name" type="text" autocomplete="given-name"></div>
       </div>
-      <button type="button" class="opt" aria-pressed="false" data-o="later"><span class="t"><span class="radio"></span>Not yet · pass it on</span><span class="d">Not your call? Save it or send the link on. Nothing is sent to me.</span></button>
-      <div class="detail" id="d-later"><p style="font-size:14.5px;color:var(--ink-soft)">Send it to whoever makes the call. The link opens this offer with your answers in place, any time.</p>
-        <div class="share"><button type="button" class="btn-outline pdf2">Save as PDF</button><button type="button" class="btn-outline" id="copy">Copy link</button><span id="copied" role="status"></span><span class="pdf-hint">Save as PDF opens print. Pick "Save as PDF" as the printer.</span></div></div>
+      <button type="button" class="opt" aria-pressed="false" data-o="later"><span class="t"><span class="radio"></span>Not yet · pass it on</span><span class="d">Not your call? Save it or send the link on. Both open this offer again. Nothing is sent to me.</span></button>
+      <div class="detail" id="d-later"><p style="font-size:14.5px;color:var(--ink-soft)">Send it to whoever makes the call. The link and the PDF both open this offer again, any time, with the same answers and the same prices you see now.</p>
+        <div class="share"><button type="button" class="btn-outline pdf2">Save as PDF</button><button type="button" class="btn-outline" id="copy">Copy link</button><span id="copied" role="status"></span><span class="pdf-hint">Save as PDF opens print. Pick "Save as PDF" as the printer. The PDF has a link and a QR code back to this offer.</span></div></div>
       </div>
       <p class="form-error" role="alert" id="err" hidden>That didn't send. Please try again, or email hello@meshlock.co.uk.</p>
     </form>
@@ -403,7 +415,7 @@
       <li><i>2</i><span>A 30-minute call, remote, no preparation needed.</span></li>
       <li><i>3</i><span>A written proposal with a fixed price, or an honest "you don't need a tool for this".</span></li>
     </ol>
-    <p class="done-pdf" id="donepdf"><button type="button" class="linkbtn pdf2">Want a copy for your records? Save as PDF</button></p>
+    <p class="done-pdf" id="donepdf"><button type="button" class="linkbtn pdf2">Want a copy for your records? Save as PDF</button><br><span style="font-size:13.5px;color:var(--ink-soft)">It has a link and a QR code back to this offer, with the same answers and prices.</span></p>
   </section>
 
 </main>
@@ -416,6 +428,7 @@
   </div>
 </div>
 
+<script src="/assets/qrcode.js"></script>
 <script>
 (function(){
   // p: example price from /prices/ ("a tool like this"), 0 = priced after the call
@@ -444,7 +457,10 @@
   var DEMO = !/meshlock\.co\.uk$|netlify\.app$/.test(location.hostname);
   var FRAMED = (function(){try{return window.self!==window.top;}catch(e){return true;}})();
 
-  var st = {f:[], h:{}, rate:20, erp:'', o:'', slot:''};
+  // d: the day the offer was first shown (YYYYMMDD). px: tool prices frozen on that day, so a saved link or PDF
+  // always shows the same numbers, even after /prices/ changes. Any change to the answers makes a new offer.
+  var st = {f:[], h:{}, rate:20, erp:'', o:'', slot:'', own:'', d:'', px:null};
+  var restored = false;
   var step = 1, $ = function(id){return document.getElementById(id);};
   var real = function(){return st.f.filter(function(k){return k!=='unsure';});};
 
@@ -453,13 +469,22 @@
     return '£'+r.toLocaleString('en-GB');
   }
   function price(n,k){return n? 'about £'+n.toLocaleString('en-GB') : (k==='unsure'?'free to start':'priced after the call');}
+  function P(k){return st.px && st.px[k]!=null ? st.px[k] : FIX[k].p;}
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function today(){var d=new Date();return ''+d.getFullYear()+('0'+(d.getMonth()+1)).slice(-2)+('0'+d.getDate()).slice(-2);}
+  function dayText(d){return +d.slice(6,8)+' '+MONTHS[+d.slice(4,6)-1]+' '+d.slice(0,4);}
+  function freeze(){ if (st.d) return; st.d = today(); st.px = {}; st.f.forEach(function(k){st.px[k]=FIX[k].p;}); }
+  function newOffer(){ st.d = ''; st.px = null; restored = false; }
 
   // ---- state in the URL, so a link reopens the same offer
   function hash(){
     var f = st.f.map(function(k){return st.h[k]?k+'.'+st.h[k]:k;}).join(',');
-    return '#f='+f+'&rate='+st.rate+(st.erp?'&erp='+encodeURIComponent(st.erp):'');
+    return '#f='+f+'&rate='+st.rate+(st.erp?'&erp='+encodeURIComponent(st.erp):'')
+      +(st.own?'&own='+encodeURIComponent(st.own):'')
+      +(st.d?'&d='+st.d+'&p='+st.f.map(P).join('.'):'');
   }
-  function link(){return location.href.split('#')[0]+hash();}
+  // The link always carries the source tag, so a forwarded offer stays attributed
+  function link(){return location.origin+location.pathname+(SRC!=='site'?'?s='+SRC:'')+hash();}
   // Where the visitor came from (printed QR codes carry ?s=kp, kps, pc or pcs). Sent only with the form.
   // The tag is kept in this browser tab only (sessionStorage), so it survives a detour to the rest of the site.
   var SRC = (new URLSearchParams(location.search).get('s') || '').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20);
@@ -469,14 +494,18 @@
     var p = {};
     location.hash.replace(/^#/,'').split('&').forEach(function(kv){var a=kv.split('=');if(a[0])p[a[0]]=decodeURIComponent(a[1]||'');});
     if (!p.f) return;
-    p.f.split(',').forEach(function(x){
+    var px = /^\d{8}$/.test(p.d||'') && p.p ? p.p.split('.') : null, frozen = {};
+    p.f.split(',').forEach(function(x,i){
       var a = x.split('.'); a[0] = ALIAS[a[0]] || a[0]; if (!FIX[a[0]] || st.f.indexOf(a[0])>-1 || st.f.length>=MAXTICKS) return;
       st.f.push(a[0]); if (a[1] && opts(a[0]).indexOf(a[1])>-1) st.h[a[0]] = a[1];
+      if (px && /^\d{1,6}$/.test(px[i]||'')) frozen[a[0]] = +px[i];
     });
     if (['15','20','30','40'].indexOf(p.rate)>-1) st.rate = +p.rate;
     if (p.erp) st.erp = p.erp;
+    if (p.own) st.own = p.own.slice(0,160);
     if (!st.f.length) return;
     step = real().every(function(k){return st.h[k];}) ? 3 : 2;
+    if (px && step===3){ st.d = p.d; st.px = frozen; restored = true; }
   })();
 
   // ---- step 1
@@ -489,6 +518,7 @@
   syms.addEventListener('click', function(e){
     var b = e.target.closest('.sym'); if(!b) return;
     var k = b.dataset.k, i = st.f.indexOf(k);
+    newOffer();
     if (i>-1){ st.f.splice(i,1); delete st.h[k]; }
     else if (k==='unsure'){ st.f=['unsure']; st.h={}; }
     else {
@@ -521,17 +551,17 @@
   }
   $('qrows').addEventListener('click', function(e){
     var c = e.target.closest('.chip'); if(!c) return;
-    var k = c.closest('.qrow').dataset.k; st.h[k] = c.dataset.v;
+    var k = c.closest('.qrow').dataset.k; if (st.h[k]!==c.dataset.v) newOffer(); st.h[k] = c.dataset.v;
     c.parentNode.querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed', x===c?'true':'false');});
     render();
   });
   $('rate').addEventListener('click', function(e){
-    var c = e.target.closest('.chip'); if(!c) return; st.rate = +c.dataset.v;
+    var c = e.target.closest('.chip'); if(!c) return; if (st.rate!==+c.dataset.v) newOffer(); st.rate = +c.dataset.v;
     $('rate').querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed', x===c?'true':'false');});
   });
   $('erp').addEventListener('click', function(e){
     var c = e.target.closest('.chip'); if(!c) return;
-    st.erp = st.erp===c.dataset.v ? '' : c.dataset.v; syncChips();
+    newOffer(); st.erp = st.erp===c.dataset.v ? '' : c.dataset.v; syncChips();
   });
   function syncChips(){
     $('erp').querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed', x.dataset.v===st.erp?'true':'false');});
@@ -555,7 +585,7 @@
     var order = st.f.slice().sort(function(a,b){
       var wa = (C.rows.filter(function(r){return r.k===a;})[0]||{wk:-1}).wk;
       var wb = (C.rows.filter(function(r){return r.k===b;})[0]||{wk:-1}).wk;
-      return (wb-wa) || (FIX[a].p-FIX[b].p);
+      return (wb-wa) || (P(a)-P(b));
     });
     var first = order.filter(function(k){return k!=='unsure';})[0] || 'unsure';
     var rest = order.filter(function(k){return k!==first;});
@@ -597,17 +627,18 @@
       ? 'A free call is the smallest step. We work out together where the time goes.'
       : (fc ? 'The one that costs you the most time. It is also the first job, so you pay when it works.' : 'The first job. You pay when it works as agreed.');
     var s = $('start'); s.innerHTML = '<span class="tag">Start here</span><div class="fix-row"><div><p class="fix-name"></p><p class="fix-res"></p></div><span class="fix-price"></span></div>';
-    s.querySelector('.fix-name').textContent = f.n; s.querySelector('.fix-res').textContent = f.r; s.querySelector('.fix-price').textContent = price(f.p,first);
-    if (!f.p) s.querySelector('.fix-price').classList.add('tbc');
+    var fp = P(first);
+    s.querySelector('.fix-name').textContent = f.n; s.querySelector('.fix-res').textContent = f.r; s.querySelector('.fix-price').textContent = price(fp,first);
+    if (!fp) s.querySelector('.fix-price').classList.add('tbc');
     // cost now vs one-off tool price, side by side
     var vs = $('vs');
-    if (fc && f.p){
+    if (fc && fp){
       vs.hidden = false;
       $('vsnow').textContent = money(fc.yr);
       $('vsnowsub').textContent = 'a year, '+(fc.c==='d'?'at least ':'about ')+money(fc.wk)+' a week';
-      $('ctool').textContent = 'A tool for the biggest one: about £'+f.p.toLocaleString('en-GB')+', one-off. Details below.'; $('ctool').hidden=false;
-      $('vsfix').textContent = '£'+f.p.toLocaleString('en-GB');
-      var wks = Math.max(1, Math.ceil(f.p / fc.wk));
+      $('ctool').textContent = 'A tool for the biggest one: about £'+fp.toLocaleString('en-GB')+', one-off. Details below.'; $('ctool').hidden=false;
+      $('vsfix').textContent = '£'+fp.toLocaleString('en-GB');
+      var wks = Math.max(1, Math.ceil(fp / fc.wk));
       $('vsline').innerHTML = '';
       var t1 = document.createTextNode('At your numbers, the time this problem eats now would cover the tool in about ');
       var bb = document.createElement('b'); bb.textContent = wks+(wks===1?' week':' weeks');
@@ -618,7 +649,7 @@
     rest.forEach(function(k){
       var li = document.createElement('li');
       li.innerHTML='<div class="fix-row"><div><p class="fix-name"></p><p class="fix-res"></p></div><span class="fix-price"></span></div>';
-      li.querySelector('.fix-name').textContent = FIX[k].n; li.querySelector('.fix-res').textContent = FIX[k].r; li.querySelector('.fix-price').textContent = price(FIX[k].p,k); if(!FIX[k].p) li.querySelector('.fix-price').classList.add('tbc');
+      li.querySelector('.fix-name').textContent = FIX[k].n; li.querySelector('.fix-res').textContent = FIX[k].r; li.querySelector('.fix-price').textContent = price(P(k),k); if(!P(k)) li.querySelector('.fix-price').classList.add('tbc');
       more.appendChild(li);
     });
     $('morehead').style.display = rest.length?'':'none';
@@ -629,17 +660,35 @@
     else if (st.erp==='unsure') line = 'No need to know. I work from whatever your system already exports.';
     $('erpline').textContent = line; $('erpline').style.display = line?'':'none';
     var n = real().length; $('ref').textContent = n ? n+(n===1?' problem ticked':' problems ticked') : 'free call';
+    $('made').textContent = st.d ? 'Offer made '+dayText(st.d) : '';
+    $('saved').hidden = !restored;
+    if (restored){ $('saved').innerHTML = ''; var sb = document.createElement('b'); sb.textContent = 'Your saved offer from '+dayText(st.d)+'.';
+      $('saved').appendChild(sb); $('saved').appendChild(document.createTextNode(' Same answers, same prices as that day. Change an answer and it becomes a new offer.')); }
+    reopen();
     return C;
+  }
+  // Print only: a link and a QR code back to this exact offer
+  function reopen(){
+    // pdf=1 makes the printed link differ from this page's own address, so print to PDF keeps it as a real web link
+    var u = link().replace(/^([^#?]*)(\?[^#]*)?/, function(m,a,q){return a+(q?q+'&':'?')+'pdf=1';}), a = $('relink');
+    a.href = u; a.textContent = location.host.replace(/^www\./,'')+'/start · your offer from '+dayText(st.d);
+    if (typeof qrcode !== 'function') return;
+    try{
+      var q = qrcode(0, u.length>140?'L':'M'); q.addData(u); q.make();
+      var n = q.getModuleCount(), d = '';
+      for (var r=0;r<n;r++) for (var c=0;c<n;c++) if (q.isDark(r,c)) d += 'M'+c+' '+r+'h1v1h-1z';
+      $('reqr').innerHTML = '<svg viewBox="-2 -2 '+(n+4)+' '+(n+4)+'" role="img" aria-label="QR code to this offer"><rect x="-2" y="-2" width="'+(n+4)+'" height="'+(n+4)+'" fill="#fff"/><path d="'+d+'" fill="#171A1D"/></svg>';
+    }catch(e){ $('reqr').innerHTML = ''; }
   }
   // The offer as the client saw it, so the reply starts from the same numbers
   function shown(C){
     var order = st.f.slice().sort(function(a,b){
       var wa = (C.rows.filter(function(r){return r.k===a;})[0]||{wk:-1}).wk, wb = (C.rows.filter(function(r){return r.k===b;})[0]||{wk:-1}).wk;
-      return (wb-wa) || (FIX[a].p-FIX[b].p);
+      return (wb-wa) || (P(a)-P(b));
     });
     function row(k){ return C.rows.filter(function(r){return r.k===k;})[0]; }
     function line(k){
-      var r = row(k), t = FIX[k].n+' · '+price(FIX[k].p,k);
+      var r = row(k), t = FIX[k].n+' · '+price(P(k),k);
       if (r) t += ' (costs them '+(r.c==='d'?'at least ':'about ')+money(r.yr)+' a year)';
       else if (VIS[k]) t += ' (hidden capacity '+(CAP[st.h[k]]||'hidden')+', '+(LBL[st.h[k]]||'not sure')+' machines)';
       else if (st.h[k]==='z') t += ' (no hours: they have no reports)';
@@ -647,10 +696,11 @@
       return t;
     }
     var out = [];
+    if (st.d) out.push('Offer made '+dayText(st.d)+'.');
     if (C.rows.length) out.push('Cost now: '+(C.floor?'at least ':'about ')+money(C.total)+' a year, about '+(Math.round(C.hours/10)*10).toLocaleString('en-GB')+' h a year at £'+st.rate+'/h.');
     var first = order.filter(function(k){return k!=='unsure';})[0] || 'unsure', fr = row(first);
     var t = 'Start here: '+line(first)+'.';
-    if (fr && FIX[first].p) t += ' Covers the tool in about '+Math.max(1,Math.ceil(FIX[first].p/fr.wk))+' weeks.';
+    if (fr && P(first)) t += ' Covers the tool in about '+Math.max(1,Math.ceil(P(first)/fr.wk))+' weeks.';
     out.push(t);
     var rest = order.filter(function(k){return k!==first;});
     if (rest.length) out.push('Also shown: '+rest.map(line).join('; ')+'.');
@@ -662,7 +712,7 @@
     var t = 'Ticked: '+parts.join('; ')+'.';
     if (C.rows.length) t += ' Cost now: '+(C.floor?'at least ':'about ')+money(C.total)+' a year at £'+st.rate+'/h.';
     if (st.erp) t += ' System: '+st.erp+'.';
-    var own = $('own').value.trim(); if (own) t += ' In their words: '+own;
+    var own = st.own.trim(); if (own) t += ' In their words: '+own;
     return t;
   }
 
@@ -712,6 +762,7 @@
     if (step===1){ nx.textContent='Next →'; $('note').innerHTML = st.f.length ? '<b>'+st.f.length+'</b> ticked' : 'Tick at least one'; }
     if (step===2){ nx.textContent='Show my offer →'; $('note').textContent = valid()?'':'Answer each one'; }
     if (step===3){
+      freeze();
       buildOffer();
       // Not yet: nothing to send, the actions are Save as PDF and Copy link in its panel
       nx.textContent = 'Send to Kamil'; nx.hidden = st.o==='later';
@@ -728,7 +779,7 @@
     var t, n1; $('doneh').textContent = "Thanks. That's it from you.";
     if (st.o==='call'){ t='I have your answers and your number. You picked '+st.slot+'. I ring you then.'; n1="I read what you ticked before I ring, so you don't have to explain it."; }
     else if (st.o==='mail'){ t='I have your answers and your email. I reply within one working day.'; n1='I reply by email within one working day.'; }
-    else { $('doneh').textContent = 'Kept, not sent.'; t='Nothing was sent to me. If you saved the PDF, it has everything. The link is also copied, and it opens this page with your answers in place.'; n1='Come back whenever you like.'; try{navigator.clipboard.writeText(link());}catch(e){} }
+    else { $('doneh').textContent = 'Kept, not sent.'; t='Nothing was sent to me. The link is copied. It opens this offer with the same answers and prices, any time. If you saved the PDF, the same link and a QR code are on it.'; n1='Come back whenever you like.'; try{navigator.clipboard.writeText(link());}catch(e){} }
     $('donetext').textContent=t; $('n1').textContent=n1;
     if (st.o==='later') document.querySelectorAll('#donelist li:nth-child(n+2)').forEach(function(x){x.style.display='none';});
     $('donepdf').style.display = (st.o==='later'||FRAMED) ? 'none' : '';
@@ -739,7 +790,7 @@
     $('f-method').value = st.o==='call'?'Call me back':'Email me back';
     $('f-slot').value = st.o==='call'?st.slot:'';
     $('f-erp').value = st.erp; $('f-rate').value = '£'+st.rate+'/h';
-    $('f-summary').value = summary(C); $('f-link').value = 'https://meshlock.co.uk/start/'+location.search+hash(); $('f-shown').value = shown(C); $('f-source').value = SRC; $('f-own').value = $('own').value.trim();
+    $('f-summary').value = summary(C); $('f-link').value = link(); $('f-shown').value = shown(C); $('f-source').value = SRC; $('f-own').value = st.own.trim();
     $('f-subject').value = 'Meshlock offer · '+SRC+' · '+(st.o==='call'?'Call me back':'Email me back');
     var form = $('offer-form'), nx = $('next'); $('err').hidden = true; nx.disabled = true;
     if (DEMO) { finish(C); return; }
@@ -760,12 +811,14 @@
   window.addEventListener('afterprint', function(){ document.body.classList.remove('print-offer'); });
   $('copy').addEventListener('click', function(){
     var u = link(), out = $('copied');
-    function ok(){ out.textContent='Link copied.'; setTimeout(function(){out.textContent='';},2500); }
+    function ok(){ out.textContent='Link copied. It opens this offer as it is now.'; setTimeout(function(){out.textContent='';},3500); }
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(ok,function(){out.textContent=u;});
     else out.textContent=u;
   });
 
   if (FRAMED) document.querySelectorAll('.pdf2,.pdf-hint').forEach(function(b){ b.hidden = true; });
+  $('own').value = st.own;
+  $('own').addEventListener('input', function(){ st.own = $('own').value; render(); });
   syncSyms(); syncChips(); syncFields(); if (step>=2) buildRows(); render();
 })();
 </script>

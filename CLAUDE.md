@@ -26,6 +26,7 @@ assets/
   notes.css                   Base stylesheet (tokens, nav, footer) for every page except the homepage
   site.css                    Extra styles for /tools/ and /prices/, loaded after notes.css
   kamil-pojawa.jpg            Profile photo for "Who's behind this"
+  qrcode.js                   QR code generator (MIT, Kazuhiko Arase), used only by /start/ for the PDF
   og-image.png                1200×630 link-preview image (gear lockup, "Lean, software and ERP. One person."). Pages link it as og-image.png?v=2; bump the number whenever the image changes so LinkedIn fetches the new one
   email/meshlock-signature.png  360×56 wordmark on white for the email signature (shown at 180×28). Linked from Gmail, so never rename or remove it
   anim/                       Case file animations (self-contained HTML, noindex)
@@ -108,7 +109,9 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 
 ## One-page offer (/start/)
 
-- Answers live only in the link after `#` (`#f=key.hours,...&rate=..&erp=..`). Nothing is stored on the site until the visitor presses Send, which posts the Netlify Form `name="offer"`.
+- Answers live only in the link after `#` (`#f=key.hours,...&rate=..&erp=..&own=..&d=YYYYMMDD&p=price.price...`). Nothing is stored on the site until the visitor presses Send, which posts the Netlify Form `name="offer"`.
+- A saved offer never changes. When step 3 first shows, the page stamps the date (`d`) and freezes the tool prices of that day (`p`, one per key in `f`, same order). A link or PDF with `d` and `p` always shows the same answers, cost and prices, even after /prices/ changes, with a "Your saved offer from …" note above the sheet. Changing any answer (ticks, hours, rate, system) makes a new offer with today's prices. Never remove this, and if the cost maths (`HRS`, `WEEKS`, `CAP`) ever changes, keep the old values for links dated before the change.
+- Copy link, the form's `link` field and the PDF always carry the source tag (`?s=`). The printed PDF ends with "Open this offer again": a QR code (`assets/qrcode.js`, MIT, vendored) and a clickable link with `pdf=1` added (without it, print to PDF turns a link to the same page into an internal link).
 - Step 1 and the homepage Sound familiar? show the same nine problem families, a short title plus one grey line of examples, never a description of a finished tool. The offer then shows what was done before as proof.
 - Family keys: `sort`, `pick`, `wrong`, `reports`, `machines`, `export`, `custom`, `guess`, `unsure`. They must match the homepage `data-fix` keys and must never be renamed, or old links break. Older keys still work through `ALIAS`: `courier` opens `sort`, `personal` and `setup` open `export`.
 - Step 2 asks each family its own question (`q` in `FIX`). Time problems ask hours a week; reports also allow "None. We just don't have them". Machines are a visibility problem: the question is how many machines, and they never add to the red cost. The offer lists them as "not in hours".
