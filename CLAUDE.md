@@ -86,6 +86,11 @@ Fonts (Google Fonts): Space Grotesk for headings, IBM Plex Sans for body, IBM Pl
 Main line: "Lean, software and ERP. One person." Used under the wordmark in the hero lockup, in the footer and in link previews.
 Longer line, used as the About heading where there is room to explain the name: "Software engineer, Lean consultant or ERP specialist? You don't have to choose. I mesh all three." Short form: `SOFTWARE · LEAN · ERP`.
 
+Three layers, kept apart:
+- Values: how we think and decide. Internal only, never on the site or print: respect what isn't ours, fit the work not a template, say the price and keep it, leave clients stronger not dependent, look closer, here for the long run.
+- Our promise: what every client always gets. Public, same words, order and icons everywhere (site, cards, flyers, sheets), always labelled "Our promise", never "values": Your ERP stays (database in a dashed ring) · Bespoke build (caliper) · Fixed price (price tag with £) · You own it (key). One line each: "We work around it. Never inside it." / "Made for your process. Not bent to fit it." / "Agreed in writing before we start." / "The tool and its documentation stay with you." Icons are line drawings with round caps, each in a box with corner marks, one accent detail (amber on ink, green on paper). Place the promise band at the end of a page, not under the hero, because the hero already says "Your ERP stays". It appears on the homepage (before Contact), /prices/ and /tools/ (both just before the closing call band). Homepage styles are inline in `index.html`; the subpages use the same rules in `assets/site.css`. Keep both in sync.
+- Offer: what we give now, to start. "Your first tool is paid for only when it works as agreed." Sales materials and the offer page only, never presented as a promise, because it covers the first tool only.
+
 Visual identity: engineering drawing and inspection language. Grid paper, dimension lines, gears, inspection stamps. Flat colour, no gradients, no drop shadows.
 
 ### Logo
@@ -120,7 +125,7 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 - The current cost is the visitor's own cost, shown in red-flag. The tool price sits beside it in green, so the two are never confused.
 - Save as PDF and Copy link sit only inside "Not yet · pass it on", for someone who has to show the offer to whoever decides. After sending, the thank-you screen offers one "Save as PDF" link. Save as PDF uses the browser's print dialog (print CSS lays out the offer as one page). With "Not yet" picked there is no send button, only a note in the bar; the privacy line shows only for Call me back and Email me back.
 - The form sends a full clickable link to the offer (field `link`) and the offer as the client saw it (field `shown`: cost now, where to start with its example price and weeks to cover it, and every other item). If submissions land in spam, mark them verified in Netlify.
-- Printed QR codes open `/start/?s=<source>` (`kp` Kamil's card, `kps` Kamil's one-pager, `pc` Patryk's card, `pcs` Patryk's sell sheet, `kpf` the A5 flyer). The tag is kept for the browser tab in `sessionStorage` (`ml-src`), so it survives a detour through the site. Both the offer and the homepage contact form send it in a hidden `source` field, `site` when there is none. The hidden `subject` field sets the notification email subject: "Meshlock offer · <source> · Call me back|Email me back". Never rename a tag already printed.
+- Printed QR codes open `/start/?s=<source>` (`kp` Kamil's card, `kps` Kamil's one-pager, `kpf` Kamil's A5 flyer, `pc` Patryk's card, `pcs` Patryk's sell sheet, `pcf` Patryk's A5 flyer). The tag is kept for the browser tab in `sessionStorage` (`ml-src`), so it survives a detour through the site. Both the offer and the homepage contact form send it in a hidden `source` field, `site` when there is none. The hidden `subject` field sets the notification email subject: "Meshlock offer · <source> · Call me back|Email me back". Never rename a tag already printed.
 - Counting (assets/stats.js, dashboard meshlock.goatcounter.com): every page opened with `?s=` counts `in/<tag>/<page>`. The offer counts steps as events, each with the tag: `offer/open`, `offer/result` (step 3 first shown), `offer/problem/<key>`, `offer/not-yet`, `offer/pdf`, `offer/copy-link`, `offer/reopen` (`/pdf` when opened from a PDF), `offer/sent-call`, `offer/sent-mail`. Only step names and tags are sent, never answers, hours, prices or anything after `#`. Every new page links `/assets/stats.js` with `defer` in `<head>`.
 - Tags starting with `pc` belong to Patryk Chojnacki (Business Development Lead). With such a tag the offer speaks for him: his name and phone in the sheet footer and PDF, "Send to Patryk", "Patryk rings you", "Where to start", "This is not our price", and no first person. Static lines carry the alternative in `data-pc`, script lines use `V(kamil, patryk)`. Contact email stays hello@meshlock.co.uk. Kamil's name never shows to his clients. Any new line in first person needs its Patryk version.
 
@@ -143,8 +148,9 @@ Page order in `index.html`:
 4. Tools in action strip (`id="tools"`): four tiles that open the animation viewer, link to /tools/
 5. How an engagement runs
 6. Who's behind this (`id="about"`)
-7. Contact (`id="contact"`)
-8. Footer
+7. Our promise (`id="promise"`): dark band, the four promises with icons
+8. Contact (`id="contact"`)
+9. Footer
 
 Nav on every page: Tools in action · Prices · About (/#about) · Field notes, plus Book a call. Under 640px the links show short labels (`.nl-short`): Tools · Prices · About · Notes.
 
