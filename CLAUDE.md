@@ -86,7 +86,10 @@ Fonts (Google Fonts): Space Grotesk for headings, IBM Plex Sans for body, IBM Pl
 Main line: "Lean, software and ERP. One person." Used under the wordmark in the hero lockup, in the footer and in link previews.
 Longer line, used as the About heading where there is room to explain the name: "Software engineer, Lean consultant or ERP specialist? You don't have to choose. I mesh all three." Short form: `SOFTWARE · LEAN · ERP`.
 
-Values (same words, order and icons everywhere: site, cards, flyers, sheets): Your ERP stays (database in a dashed ring) · Bespoke build (caliper) · Fixed price (price tag with £) · You own it (key). One line each: "We work around it. Never inside it." / "Made for your process. Not bent to fit it." / "Agreed in writing before we start." / "The tool and its documentation stay with you." Icons are line drawings with round caps, each in a box with corner marks, one accent detail (amber on ink, green on paper). Place the values band at the end of a page, not under the hero, because the hero already says "Your ERP stays".
+Three layers, kept apart:
+- Values: how we think and decide. Internal only, never on the site or print: respect what isn't ours, fit the work not a template, say the price and keep it, leave clients stronger not dependent, look closer, here for the long run.
+- Our promise: what every client always gets. Public, same words, order and icons everywhere (site, cards, flyers, sheets), always labelled "Our promise", never "values": Your ERP stays (database in a dashed ring) · Bespoke build (caliper) · Fixed price (price tag with £) · You own it (key). One line each: "We work around it. Never inside it." / "Made for your process. Not bent to fit it." / "Agreed in writing before we start." / "The tool and its documentation stay with you." Icons are line drawings with round caps, each in a box with corner marks, one accent detail (amber on ink, green on paper). Place the promise band at the end of a page, not under the hero, because the hero already says "Your ERP stays".
+- Offer: what we give now, to start. "Your first tool is paid for only when it works as agreed." Sales materials and the offer page only, never presented as a promise, because it covers the first tool only.
 
 Visual identity: engineering drawing and inspection language. Grid paper, dimension lines, gears, inspection stamps. Flat colour, no gradients, no drop shadows.
 
@@ -145,7 +148,7 @@ Page order in `index.html`:
 4. Tools in action strip (`id="tools"`): four tiles that open the animation viewer, link to /tools/
 5. How an engagement runs
 6. Who's behind this (`id="about"`)
-7. Our values (`id="values"`): dark band, four values with icons
+7. Our promise (`id="promise"`): dark band, the four promises with icons
 8. Contact (`id="contact"`)
 9. Footer
 
