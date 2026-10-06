@@ -359,7 +359,7 @@
       </div>
       <div class="sheet-foot">
         <p>Tool prices are examples from similar builds. Yours is fixed in writing after the call.</p>
-        <p class="who" data-pc="Patryk Chojnacki · Business Development Lead · 07501 839466 · hello@meshlock.co.uk">Kamil Pojawa · meshlock.co.uk · hello@meshlock.co.uk</p>
+        <p class="who" data-pc="Patryk Chojnacki · Business Development Lead · 07501 839466 · patryk@meshlock.co.uk">Kamil Pojawa · meshlock.co.uk · hello@meshlock.co.uk</p>
         <div class="reopen" id="reopen"><span id="reqr"></span><p class="rt"><b>Open this offer again</b>Scan the code or click the link. It opens with the same answers and prices as on this sheet, any time.<br><a id="relink" href="/start/">meshlock.co.uk/start/</a></p></div>
       </div>
     </article>
@@ -402,7 +402,11 @@
       <div class="detail" id="d-later"><p style="font-size:14.5px;color:var(--ink-soft)">Send it to whoever makes the call. The link and the PDF both open this offer again, any time, with the same answers and the same prices you see now.</p>
         <div class="share"><button type="button" class="btn-outline pdf2">Save as PDF</button><button type="button" class="btn-outline" id="copy">Copy link</button><span id="copied" role="status"></span><span class="pdf-hint">Save as PDF opens print. Pick "Save as PDF" as the printer. The PDF has a link and a QR code back to this offer.</span></div></div>
       </div>
-      <p class="form-error" role="alert" id="err" hidden>That didn't send. Please try again, or email hello@meshlock.co.uk.</p>
+      <p class="form-error" role="alert" id="err" hidden data-pc="That didn't send. Please try again, or email patryk@meshlock.co.uk.">That didn't send. Please try again, or email hello@meshlock.co.uk.</p>
+    </form>
+    <!-- Netlify only registers forms it finds in the HTML at deploy. Offers from Patryk's tags (pc...) post to "offer-pc", so Netlify can email them to him. Same fields as "offer". Never shown. -->
+    <form name="offer-pc" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true">
+      <input type="hidden" name="form-name" value="offer-pc"><input name="bot-field"><input name="method"><input name="slot"><input name="erp"><input name="rate"><input name="summary"><input name="link"><input name="source"><input name="own"><input name="shown"><input name="subject"><input name="phone"><input name="name"><input name="email">
     </form>
     <p class="hint" id="privacy" data-pc="Not a pitch, just an honest question. Your details are only used to reply to this.">Not a pitch, just an honest question. I only use your details to reply to this.</p>
   </section>
@@ -491,7 +495,7 @@
   var SRC = (new URLSearchParams(location.search).get('s') || '').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20);
   try { if (SRC) sessionStorage.setItem('ml-src', SRC); else SRC = sessionStorage.getItem('ml-src') || ''; } catch(e){}
   SRC = SRC || 'site';
-  // Patryk's materials carry tags starting with "pc" (pc, pcs). His clients see his name and number, never Kamil's.
+  // Patryk's materials carry tags starting with "pc" (pc, pcs, pcf). His clients see his name and number, never Kamil's.
   var PC = /^pc/.test(SRC);
   function V(kamil, patryk){ return PC ? patryk : kamil; }
   // Anonymous step counts per source tag (assets/stats.js). Never sends answers, only the step name.
@@ -805,7 +809,9 @@
     $('f-subject').value = 'Meshlock offer · '+SRC+' · '+(st.o==='call'?'Call me back':'Email me back');
     var form = $('offer-form'), nx = $('next'); $('err').hidden = true; nx.disabled = true;
     if (DEMO) { finish(C); return; }
-    fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(new FormData(form)).toString()})
+    // Patryk's offers go to their own Netlify form, whose email notification goes to him
+    var fd = new FormData(form); fd.set('form-name', PC ? 'offer-pc' : 'offer');
+    fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(fd).toString()})
       .then(function(res){ if(!res.ok) throw new Error(res.status); track('offer/sent-'+st.o+'/'+SRC, true); finish(C); })
       .catch(function(){ $('err').hidden=false; nx.disabled=false; });
   }
