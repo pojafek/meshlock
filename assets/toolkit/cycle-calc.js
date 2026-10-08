@@ -8,7 +8,12 @@
      data-where       where "your machine records" links (default: the six places in the machine data note)
      data-note        link "the machine data note" in the running % helper to this address
      data-offer-tag   fallback tag on the "Get your real number" offer link (a stored tag still wins)
-   Nothing typed here is sent anywhere: no counting events, no form, values stay in this page. */
+     data-remember    keep the inputs on this device (localStorage 'ml-cycle') and reopen with them next
+                      time, when the link carries none (the toolkit page)
+   Once the puzzle on the page is solved, its % fills the running % by itself if none is chosen yet.
+   Print result uses assets/toolkit/print.js (one clean page). Copy for an email copies plain text.
+   Nothing typed here is sent anywhere: no counting events, no form, values stay in this page
+   (and, with data-remember, in this browser). */
 (function(){
   'use strict';
   var EXAMPLE = { c: '43:39', n: '36', h: '8', d: '', q: '', r: '', m: '' };
@@ -74,6 +79,7 @@
   // ---------- one calculator
   function build(root){
     var id = 'cc' + (++count), useHash = root.hasAttribute('data-hash'), usePuzzle = root.hasAttribute('data-puzzle');
+    var remember = root.hasAttribute('data-remember'), RKEY = 'ml-cycle';
     var where = root.getAttribute('data-where') || '/notes/your-machines-already-know.html#six-places';
     var note = root.getAttribute('data-note'), offerTag = root.getAttribute('data-offer-tag');
     var offer = '/start/' + (offerTag ? '?s=' + encodeURIComponent(offerTag) : '') + '#f=machines';
@@ -111,7 +117,8 @@
             stat('pshift', 'Parts per shift') + stat('pday', 'Average parts per day') + stat('porder', 'Time to finish the order') + '</div>' +
         '</div>' +
         '<div class="cc-note"><span data-o="note"></span> <a class="cc-link" data-o="link" href="#"></a></div>' +
-        '<div class="cc-actions"><button type="button" class="cc-copy">Copy result</button><span class="cc-status" role="status"></span></div>' +
+        '<div class="cc-actions"><button type="button" class="cc-print">Print result</button><button type="button" class="cc-copy">Copy for an email</button><span class="cc-status" role="status"></span>' +
+          '<span class="cc-again" hidden>Your last numbers, kept on this device. <button type="button" class="cc-ex">Back to the example</button></span></div>' +
       '</div>';
     function field(k, label, extra, ph, mode){
       return '<div class="cc-f"><label for="' + id + k + '">' + label + (extra ? '<span class="o">' + extra + '</span>' : '') + '</label>' +
@@ -123,12 +130,13 @@
     }
     var $ = function(s){ return root.querySelector(s); };
     var inp = {}; ['c', 'n', 'h', 'd', 'q', 'r', 'g'].forEach(function(k){ inp[k] = $('[data-k="' + k + '"]'); });
-    var out = $('.cc-out'), copy = $('.cc-copy'), status = $('.cc-status'), last = null;
+    var out = $('.cc-out'), copy = $('.cc-copy'), prt = $('.cc-print'), status = $('.cc-status'), last = null;
     var mode = '', puzzlePct = null;
 
     // Start values: the link after # (standalone page), else the worked example
-    var start = Object.assign({}, EXAMPLE);
+    var start = Object.assign({}, EXAMPLE), restored = false;
     if (useHash && /(^#|&)c=/.test(location.hash)) start = { c: '', n: '', h: '', d: '', q: '', r: '', m: '' };
+    else if (remember) { try { var kept = JSON.parse(localStorage.getItem(RKEY) || 'null'); if (kept && kept.c) { start = Object.assign({ c: '', n: '', h: '', d: '', q: '', r: '', m: '' }, kept); restored = true; } } catch(e){} }
     if (useHash) location.hash.replace(/^#/, '').split('&').forEach(function(kv){
       var a = kv.split('='); if (a[0] in start) { try { start[a[0]] = decodeURIComponent(a[1] || ''); } catch(e){} }
     });
@@ -146,9 +154,12 @@
       });
     });
     if (usePuzzle) {
+      // The puzzle's % fills in by itself, unless the reader already picked measured or a guess
       var offerPuzzle = function(pct){
         puzzlePct = pct; var b = $('.cc-mode[data-m="puzzle"]');
-        b.querySelector('.cc-pz').textContent = pctText(pct); b.hidden = false; update(false);
+        b.querySelector('.cc-pz').textContent = pctText(pct); b.hidden = false;
+        if (!mode) mode = 'puzzle';
+        update(false);
       };
       if (typeof window.mlPuzzlePct === 'number') offerPuzzle(window.mlPuzzlePct);
       document.addEventListener('ml:puzzle', function(e){ if (e.detail && typeof e.detail.pct === 'number') offerPuzzle(e.detail.pct); });
@@ -193,6 +204,13 @@
       } else if (mode === 'guess') { p = +inp.g.value; $('.cc-gv').textContent = p + '%'; }
       else if (mode === 'puzzle') p = puzzlePct;
 
+      if (remember && typed) {
+        var keep = {}; ['c', 'n', 'h', 'd', 'q'].forEach(function(k){ keep[k] = inp[k].value.trim(); });
+        if (mode === 'measured' && rRaw) { keep.r = rRaw; keep.m = 'measured'; }
+        if (mode === 'guess') { keep.r = inp.g.value; keep.m = 'guess'; }
+        try { if (keep.c) localStorage.setItem(RKEY, JSON.stringify(keep)); } catch(e){}
+        $('.cc-again').hidden = true;
+      }
       if (useHash && typed) {
         var parts = ['c', 'n', 'h', 'd', 'q'].filter(function(k){ return inp[k].value.trim(); })
           .map(function(k){ return k + '=' + encodeURIComponent(inp[k].value.trim()); });
@@ -200,7 +218,7 @@
         if (mode === 'guess') parts.push('r=' + inp.g.value, 'm=guess');
         try { history.replaceState(null, '', location.pathname + location.search + (parts.length ? '#' + parts.join('&') : '')); } catch(e){}
       }
-      out.classList.toggle('is-off', !ok); copy.disabled = !ok; status.textContent = '';
+      out.classList.toggle('is-off', !ok); copy.disabled = !ok; prt.disabled = !ok; status.textContent = '';
       var keys = ['part', 'hour', 'cshift', 'cday', 'corder', 'pshift', 'pday', 'porder'];
       if (!ok) { keys.forEach(function(k){ show(k, ''); }); setNote(''); last = null; return; }
 
@@ -243,9 +261,8 @@
       else { a.hidden = true; a.removeAttribute('href'); }
     }
 
-    copy.addEventListener('click', function(){
-      if (!last) return;
-      var L = last, lines = [
+    function lines(L){
+      return [
         'Cycle time calculator · meshlock.co.uk/toolkit/cycle-time/',
         'Cycle time: ' + L.c + ' (' + spoken(L.cs) + ')',
         'Parts per cycle: ' + group(L.n),
@@ -258,8 +275,12 @@
         'Ceiling at 100%: ' + L.cshift + ' parts per shift · ' + L.cday + ' parts per day · ' + (L.corder ? 'order in ' + L.corder + ' (' + L.corderX + ')' : 'no order quantity'),
         L.p ? 'Planned at ' + pctText(L.p) + ' (' + MODE[L.mode] + '): ' + L.pshift + ' parts per shift · ' + L.pday + ' parts per day on average · ' + (L.porder ? 'order in ' + L.porder + ' (' + L.porderX + ')' : 'no order quantity') : 'Planned: needs your real running %',
         NOTE[L.p ? L.mode : 'none']
-      ], text = lines.join('\n');
-      function done(){ status.textContent = 'Copied'; setTimeout(function(){ status.textContent = ''; }, 2500); }
+      ];
+    }
+    copy.addEventListener('click', function(){
+      if (!last) return;
+      var text = lines(last).join('\n');
+      function done(){ status.textContent = 'Copied. Paste it into an email or a message.'; setTimeout(function(){ status.textContent = ''; }, 4000); }
       function fallback(){
         var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', '');
         ta.style.position = 'absolute'; ta.style.left = '-9999px'; document.body.appendChild(ta); ta.select();
@@ -267,6 +288,34 @@
         document.body.removeChild(ta);
       }
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+    });
+    // Print result: the inputs and both rows as one clean page (assets/toolkit/print.js)
+    prt.addEventListener('click', function(){
+      if (!last || !window.mlPrint) return;
+      var L = last, e = window.mlPrint.esc;
+      var row = function(k, v){ return '<tr><th>' + e(k) + '</th><td>' + e(v) + '</td></tr>'; };
+      var html = '<table class="ccp">' +
+        '<tr><td colspan="2" class="ccp-h">Inputs</td></tr>' +
+        row('Cycle time', L.c + ' (' + spoken(L.cs) + ')') + row('Parts per cycle', group(L.n)) + row('Shift length', hours(L.sh)) +
+        row('Shifts per day', L.d) + row('Order quantity', L.q ? group(L.q) : 'not set') +
+        row('Real running %', L.p ? pctText(L.p) + ' (' + MODE[L.mode] + ')' : 'not set') +
+        '<tr><td colspan="2" class="ccp-h">Per part</td></tr>' + row('Time per part', L.part) + row('Parts per hour', L.hour) +
+        '<tr><td colspan="2" class="ccp-h">Ceiling at 100%</td></tr>' + row('Parts per shift', L.cshift) + row('Parts per day', L.cday) +
+        row('Time to finish the order', L.corder ? L.corder + ' · ' + L.corderX : 'no order quantity') +
+        '<tr><td colspan="2" class="ccp-h">' + (L.p ? 'Planned at ' + e(pctText(L.p)) + ' (' + MODE[L.mode] + ')' : 'Planned at your real %') + '</td></tr>' +
+        (L.p ? row('Parts per shift', L.pshift) + row('Average parts per day', L.pday) + row('Time to finish the order', L.porder ? L.porder + ' · ' + L.porderX : 'no order quantity')
+             : row('Planned numbers', 'need your real running %')) +
+        '</table><p class="ccp-note">' + e(NOTE[L.p ? L.mode : 'none']) + '</p>' +
+        '<style>.ccp{width:100%;border-collapse:collapse;font-size:13px}.ccp th,.ccp td{text-align:left;padding:6px 8px;border-bottom:1px solid #C9CDC0}' +
+        '.ccp th{font-weight:400;color:#565C58;width:45%}.ccp td{font-weight:600}.ccp .ccp-h{font:500 10.5px/1.4 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:#171A1D;border-bottom:1.5px solid #171A1D;padding-top:14px}' +
+        '.ccp-note{font-size:12.5px;color:#565C58;margin:12px 0 0}</style>';
+      window.mlPrint({ title: 'Cycle time calculator', tool: '/toolkit/cycle-time/', fallback: root.getAttribute('data-offer-tag'), html: html });
+    });
+    if (restored) $('.cc-again').hidden = false;
+    $('.cc-ex').addEventListener('click', function(){
+      try { localStorage.removeItem(RKEY); } catch(e){}
+      ['c', 'n', 'h', 'd', 'q'].forEach(function(k){ inp[k].value = EXAMPLE[k]; });
+      mode = ''; $('.cc-again').hidden = true; update(true);
     });
     update(false);
   }

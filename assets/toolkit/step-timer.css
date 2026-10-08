@@ -67,18 +67,13 @@
 .st-foot{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-top:4px;}
 .st-foot .st-paper{margin-top:0;}
 .st-clear{appearance:none; background:none; border:0; border-bottom:1px solid var(--ink-faint); color:var(--ink-soft); font:400 12px/1.2 'IBM Plex Mono',monospace; letter-spacing:.06em; text-transform:uppercase; padding:4px 0; cursor:pointer;}
-.st-print-head{display:none;}
 .st-nojs{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-soft); border:1.5px dashed var(--ink-faint); border-radius:3px; padding:14px 16px; margin:18px 0;}
 @media (max-width:520px){
   .st-body{padding:16px 14px;}
   .st-head{padding:12px 14px;}
 }
 @media (prefers-reduced-motion:reduce){ .st *{transition:none!important;} }
-/* Print result: only the results, nothing else on the page */
-@media print{
-  body.print-tool *{visibility:hidden;}
-  body.print-tool .st-print-target,body.print-tool .st-print-target *{visibility:visible;}
-  body.print-tool .st-print-target{position:absolute; left:0; top:0; width:100%; padding:0;}
-  body.print-tool .st-print-head{display:block; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; margin:0 0 10px;}
-  body.print-tool .st-input{border:0; padding:0; min-height:0; background:none;}
-}
+/* Print result (assets/toolkit/print.js): the results only, no frame or buttons */
+.st-printed{border:0; background:none; margin:0;}
+.st-printed .st-body{padding:0;}
+.st-then{margin:20px 0 0; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft);}

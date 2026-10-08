@@ -21,9 +21,12 @@ It prints one `FAIL` line per problem and ends with `N passed, N failed`. It exi
 3. **pc tag**: after opening `/?s=pc`, every page in the same tab speaks for Patryk. No "Kamil", no hello@, his email in the footer, LinkedIn hidden, every offer link carries `pc`.
 4. **Slow load**: with `site.js` held back, Kamil's lines stay hidden for a `pc` visitor until the swap, and a visitor with no tag sees the page at once.
 5. **stats.js blocked**: tags still carry over and Patryk's version still works.
-6. **Puzzle**: solving Decode the log gives 76%, and the cycle time calculator in the same article offers it and plans with it.
+6. **Puzzle**: solving Decode the log gives 76%, the cycle time calculator in the same article plans with it by itself, the button after the puzzle leads to the calculator, and the side window shows keep it at the calculator and the offer from What I do with it on.
 7. **Tools**: the cycle time calculator works and keeps its inputs in the link, the step timer runs and links to the offer with `tk-timer`, and Worth automating? gives a verdict.
 8. **Not published**: `_redirects` answers 404 for `/tests` and `/tests/*`.
+9. **Print**: every print button prints only its part, on the expected number of A4 pages (calculator and step timer result 1, machine checklist 1, shift logs one per machine, paper sheet 1), with the tag and a QR code in the footer; the checklist and paper sheet keep what was typed.
+10. **Checklist text**: the checklist in the machine data note matches the printable checklist item for item, and no step needs IT or opening anything. YOU GET links point to parts of the note, and tools sit in a Yours to keep frame.
+11. **Kept tools**: toolkit pages put the tag in their address, keep links carry it, a tool reopened in a new tab (like a home screen icon) still speaks for Patryk, the rest of the site does not.
 
 ## Extending it
 

@@ -5,36 +5,37 @@
 <script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||(/^\/toolkit\//.test(location.pathname)&&(function(k){return k&&k.t&&Date.now()-k.at<15552e6?k.t:''})(JSON.parse(localStorage.getItem('ml-keep')||'null')))||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
-<title>Cycle Time Calculator | Meshlock Toolkit</title>
-<meta name="description" content="Turn one machine cycle into time per part, parts per hour, parts per shift and time to finish an order. Type it as 43:39 or plain seconds from a log. Free, nothing is sent.">
-<link rel="canonical" href="https://meshlock.co.uk/toolkit/cycle-time/">
+<title>Machine Data Checklist | Meshlock Toolkit</title>
+<meta name="description" content="Find where each machine keeps its data and start a record with a pen: a checklist for your machines and a one-week shift log per machine, ready to print. No IT needed. Free, nothing is sent.">
+<link rel="canonical" href="https://meshlock.co.uk/toolkit/machine-data/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Meshlock">
-<meta property="og:title" content="Cycle time calculator | Meshlock Toolkit">
-<meta property="og:description" content="Turn one machine cycle into time per part, parts per hour, parts per shift and time to finish an order. Type it as 43:39 or plain seconds from a log. Free, nothing is sent.">
-<meta property="og:url" content="https://meshlock.co.uk/toolkit/cycle-time/">
+<meta property="og:title" content="Machine data checklist | Meshlock Toolkit">
+<meta property="og:description" content="A checklist for your machines and a one-week shift log per machine, ready to print. No IT needed. Free, nothing is sent.">
+<meta property="og:url" content="https://meshlock.co.uk/toolkit/machine-data/">
 <meta property="og:image" content="https://meshlock.co.uk/assets/og-image.png?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="manifest" href="/toolkit/cycle-time/manifest.webmanifest">
+<link rel="manifest" href="/toolkit/machine-data/manifest.webmanifest">
 <meta name="theme-color" content="#EEF0EA">
-<meta name="apple-mobile-web-app-title" content="Cycle time">
+<meta name="apple-mobile-web-app-title" content="Machine data">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/notes.css">
-<link rel="stylesheet" href="/assets/toolkit/cycle-calc.css">
+<link rel="stylesheet" href="/assets/toolkit/machine-sheet.css">
 <script src="/assets/site.js" defer></script>
 <script src="/assets/stats.js" defer></script>
 <script src="/assets/qrcode.js" defer></script>
 <script src="/assets/toolkit/print.js" defer></script>
-<script src="/assets/toolkit/cycle-calc.js" defer></script>
+<script src="/assets/toolkit/machine-sheet.js" defer></script>
 <style>
 .prose .tool-more{font-size:15.5px; color:var(--ink-soft); margin:26px 0 0;}
 .prose .tool-more a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:4px;}
 .tool-page .article-footer{margin-top:44px;}
+.ms-nojs{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-soft); border:1.5px dashed var(--ink-faint); border-radius:3px; padding:14px 16px; margin:18px 0;}
 </style>
 </head>
 <body id="top">
@@ -56,25 +57,25 @@
 <section class="article-header">
   <div class="wrap">
     <p class="eyebrow crumbs"><a href="/">Meshlock</a> / <a href="/toolkit/">Toolkit</a></p>
-    <h1>Cycle time calculator</h1>
+    <h1>Machine data checklist</h1>
   </div>
 </section>
 
 <section class="article-body tool-page">
   <div class="wrap prose">
-    <p>Take one cycle from a machine log, for example a 43:39 cycle that makes 36 parts, and see the ceiling per part, per hour and per shift. Then add the machine's real running % to plan real work. It works for cutting, printing or moulding: anything that runs in cycles.</p>
-    <p class="keep-note"><span class="keep-stamp">Yours to keep</span> Bookmark it or add it to your home screen. It reopens with your last numbers, kept on this device.</p>
+    <p>Find out where each machine keeps its data, and start a record of your own with a pen. Add your machines and the people to ask, then print the checklist and one shift log per machine. Everything here can be done at the machine by an operator or a team leader: no IT, no tools, nothing opened.</p>
+    <p class="keep-note"><span class="keep-stamp">Yours to keep</span> Bookmark it and reprint the shift logs every week. Your machines and names stay on this device.</p>
 
-    <div data-tool="cycle-time" data-hash data-remember data-note="/notes/your-machines-already-know.html" data-where="/notes/your-machines-already-know.html#six-places" data-offer-tag="tk-cycle">
-      <noscript><div class="cc-nojs">The cycle time calculator needs JavaScript switched on.</div></noscript>
+    <div data-tool="machine-sheet" data-offer-tag="tk-machine">
+      <noscript><div class="ms-nojs">The checklist needs JavaScript switched on to add your machines. The list itself is in <a href="/notes/your-machines-already-know.html#checklist">the machine data note</a>.</div></noscript>
     </div>
 
-    <p class="tool-more">Where does a cycle time come from, and why is the real number lower? <a href="/notes/your-machines-already-know.html">Read: Your machines already know how long they stand still →</a></p>
+    <p class="tool-more">Why the number in your head is too kind, and what the machine log really says. <a href="/notes/your-machines-already-know.html">Read: Your machines already know how long they stand still →</a> Got a cycle time from the log? <a href="/toolkit/cycle-time/">Plan with it in the cycle time calculator →</a></p>
 
     <div class="article-footer">
-      <p>Want the real number for every machine, stops included, every day?</p>
+      <p>Got a week of readings? Bring them to a free 30-minute call, or put your numbers on it.</p>
       <a class="nav-cta" href="/#contact">Book a free call</a>
-      <p><a href="/start/?s=tk-cycle">Or tick what happens on your floor and get a one-page offer →</a></p>
+      <p><a href="/start/?s=tk-machine">Or tick what happens on your floor and get a one-page offer →</a></p>
     </div>
   </div>
 </section>
@@ -87,7 +88,7 @@
   <ul class="foot-links">
     <li><a href="/tools/">Tools in action</a></li>
     <li><a href="/prices/">Prices</a></li>
-    <li><a href="/start/?s=tk-cycle">One-page offer</a></li>
+    <li><a href="/start/?s=tk-machine">One-page offer</a></li>
     <li><a href="/notes/">Field notes</a></li>
     <li><a href="/toolkit/">Toolkit</a></li>
     <li data-pc-hide><a href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn</a></li>
