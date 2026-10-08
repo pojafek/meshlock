@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Your Machines Already Know How Long They Stand Still | Meshlock Field Notes</title>
+<meta name="description" content="Where machine data hides on a small factory floor, who to ask, how to save it before it is written over, and a two-minute puzzle that turns a raw log into a shift you can read.">
+<link rel="canonical" href="https://meshlock.co.uk/notes/your-machines-already-know.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Meshlock">
+<meta property="og:title" content="Your machines already know how long they stand still">
+<meta property="og:description" content="Where machine data hides, who to ask, and a two-minute puzzle: decode a raw machine log yourself.">
+<meta property="og:url" content="https://meshlock.co.uk/notes/your-machines-already-know.html">
+<meta property="og:image" content="https://meshlock.co.uk/assets/og-image.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/notes.css">
+<script src="/assets/stats.js" defer></script>
+<style>
+/* ---------- Article layout with a side callout ---------- */
+.article-body .layout{max-width:66ch;margin:0 auto}
+@media (min-width:1180px){
+  .article-body .layout{max-width:calc(66ch + 300px);display:grid;grid-template-columns:minmax(0,66ch) 252px;gap:48px;align-items:start}
+}
+.prose h2{font-size:26px;line-height:1.2;margin:46px 0 16px}
+.prose h3{font-size:19px;line-height:1.3;margin:0 0 6px}
+.prose ol{margin:0 0 22px;padding-left:22px}
+.prose ol li{margin:0 0 8px;font-size:17px;line-height:1.6}
+.prose ol li::marker{font-family:'IBM Plex Mono',monospace;color:var(--green);font-size:14px}
+.prose ul.plain{margin:0 0 22px;padding-left:20px}
+.prose ul.plain li{margin:0 0 10px;font-size:17px;line-height:1.6}
+.prose b,.prose strong{font-weight:600}
+
+/* Side window: "Decode a raw log yourself" */
+.try{background:var(--ink);color:var(--paper);border-radius:var(--radius);padding:22px 22px 20px;position:relative}
+.try .t-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin:0 0 12px;display:block}
+.try h3{font-family:'Space Grotesk',sans-serif;font-size:21px;line-height:1.25;margin:0 0 10px;color:var(--paper)}
+.try p{font-size:15px;line-height:1.55;color:#dfe2da;margin:0 0 14px}
+.try ul{list-style:none;margin:0 0 18px;padding:0;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#c9cdc0}
+.try li{padding:6px 0;border-top:1px dashed #3a3f43}
+.try li span{color:var(--amber);margin-right:8px}
+.try a.go{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;background:var(--paper);color:var(--ink);text-decoration:none;padding:11px 16px;border-radius:var(--radius);transition:transform .12s,box-shadow .12s}
+.try a.go:hover{transform:translateY(-1px);box-shadow:3px 4px 0 var(--amber)}
+.try .gears{position:absolute;top:16px;right:16px;width:46px;height:30px;opacity:.9}
+.try-inline{margin:30px 0 34px}
+.try-side{display:none}
+@media (min-width:1180px){
+  .try-inline{display:none}
+  .try-side{display:block;position:sticky;top:110px;margin-top:6px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .try .g1{animation:spin 6s linear infinite;transform-origin:14px 15px}
+  .try .g2{animation:spin 4s linear infinite reverse;transform-origin:34.5px 17px}
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Figures */
+figure.fig{margin:34px 0 38px}
+figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.04em;color:var(--ink-soft);margin-top:10px;line-height:1.5}
+figure.fig svg{display:block;width:100%;height:auto}
+.fig-card{background:var(--paper-card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* Hero figure: raw vs readable */
+.rvr{display:grid;gap:14px}
+@media (min-width:640px){.rvr{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center}}
+.rvr .raw{background:var(--paper-card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 0;font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.8;color:var(--ink-soft);overflow:hidden;white-space:nowrap}
+.rvr .raw span{display:block;padding:0 12px;overflow:hidden;text-overflow:ellipsis}
+.rvr .lab{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;display:inline-block;padding:3px 8px;border-radius:2px;margin-bottom:8px}
+.lab.bad{color:var(--red-flag);background:#F3E4DF;border:1px dashed var(--red-flag)}
+.lab.good{color:var(--green);background:var(--green-bg);border:1px dashed var(--green)}
+.rvr .arrow{font-family:'IBM Plex Mono',monospace;color:var(--ink-faint);text-align:center;font-size:20px}
+@media (max-width:639px){.rvr .arrow{transform:rotate(90deg)}}
+.rvr .read{background:var(--paper-card);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
+
+/* Cards: who to ask, six places */
+.cards{display:grid;gap:12px;margin:8px 0 26px}
+@media (min-width:640px){.cards.two{grid-template-columns:1fr 1fr}}
+.card{background:var(--paper-card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
+.card .who{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;margin:0 0 4px}
+.card .why{font-size:14.5px;color:var(--ink-soft);margin:0 0 10px;line-height:1.5}
+.card .ask{font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.6;margin:0;padding-left:12px;border-left:2px solid var(--green);color:var(--ink)}
+.place{display:grid;grid-template-columns:34px 1fr;gap:4px 14px}
+.place > p{grid-column:2}
+.place .n{grid-column:1;grid-row:1 / span 4;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--ink);font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:27px;text-align:center}
+.place .what{font-size:15px;margin:0;line-height:1.55}
+.place .how{font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:var(--ink-soft);margin:6px 0 0}
+.place .tells{font-size:14.5px;margin:6px 0 0;color:var(--green);line-height:1.5}
+.place .tells::before{content:"→ ";font-family:'IBM Plex Mono',monospace}
+
+.aside-box{border-left:3px solid var(--amber);background:var(--paper-card);padding:14px 18px;margin:0 0 22px}
+.aside-box .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--amber-ink);display:block;margin-bottom:4px}
+.aside-box p{margin:0;font-size:15.5px}
+
+pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radius:var(--radius);font:400 12px/1.75 'IBM Plex Mono',monospace;padding:12px 14px;overflow-x:auto;margin:0 0 22px;color:var(--ink-soft)}
+
+/* Checklist */
+.checklist{background:var(--paper-card);border:1.5px solid var(--ink);border-radius:var(--radius);padding:22px 24px;margin:20px 0 28px}
+.checklist h3{font-size:20px;margin:0 0 4px}
+.checklist .sub{font-size:14.5px;color:var(--ink-soft);margin:0 0 14px}
+.checklist .grp{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:16px 0 6px}
+.checklist ul{list-style:none;margin:0;padding:0}
+.checklist li{display:flex;gap:10px;font-size:15px;line-height:1.5;padding:5px 0;border-bottom:1px dashed var(--line)}
+.checklist li::before{content:"";flex:none;width:15px;height:15px;border:1.5px solid var(--ink-faint);border-radius:2px;margin-top:3px}
+.checklist .foot{margin:16px 0 0;font-size:14.5px}
+.checklist .print{appearance:none;background:none;border:0;border-bottom:1px solid var(--ink-faint);font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;padding:4px 0;margin-top:14px;cursor:pointer;color:var(--ink)}
+.checklist .print-only{display:none}
+
+/* ---------- Puzzle (scoped under .pz) ---------- */
+.pz{margin:40px 0 44px;border:1.5px solid var(--ink);border-radius:var(--radius);background:var(--paper);scroll-margin-top:90px}
+.pz-head{background:var(--ink);color:var(--paper);padding:20px 22px}
+.pz-head .t-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);display:block;margin-bottom:8px}
+.pz-head h2{color:var(--paper);margin:0 0 6px;font-size:24px}
+.pz-head p{color:#dfe2da;margin:0;font-size:15px;line-height:1.55}
+.pz .step{padding:22px;border-top:1px solid var(--line);scroll-margin-top:90px}
+.pz .step:first-of-type{border-top:0}
+.pz .step-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:12px}
+.pz .disc{flex:none;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--ink);font:500 13px/27px 'IBM Plex Mono',monospace;text-align:center;margin-top:1px}
+.pz .step.done .disc{background:var(--green);border-color:var(--green);color:var(--paper)}
+.pz h3{font-size:19px;margin:0}
+.pz .step-head p{margin:4px 0 0;color:var(--ink-soft);font-size:15px;line-height:1.5}
+.pz .step.locked{opacity:.42}
+.pz .step.locked .body{display:none}
+.pz .lock-note{display:none;font:400 12px/1.4 'IBM Plex Mono',monospace;color:var(--ink-soft);margin:0}
+.pz .step.locked .lock-note{display:block}
+.pz .btn{appearance:none;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);font:400 12.5px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;padding:12px 16px;border-radius:3px;cursor:pointer;transition:transform .12s,box-shadow .12s}
+.pz .btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:3px 4px 0 var(--amber)}
+.pz .btn:disabled{opacity:.4;cursor:not-allowed}
+.pz .btn-ghost{appearance:none;background:none;border:0;border-bottom:1px solid var(--ink-faint);color:var(--ink);font:400 12.5px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;padding:4px 0;cursor:pointer}
+.pz .guess-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.pz input[type=range]{flex:1 1 200px;accent-color:var(--ink);height:28px}
+.pz .guess-val{font:700 32px/1 'Space Grotesk',sans-serif;min-width:3.2ch}
+.pz .guess-locked{font:400 12.5px/1.4 'IBM Plex Mono',monospace;color:var(--green);margin:10px 0 0;display:none}
+.pz .log{background:var(--paper-card);border:1px solid var(--line);border-radius:3px;font:400 11.5px/1.75 'IBM Plex Mono',monospace;max-height:280px;overflow:auto;padding:10px 0;margin:0;color:var(--ink)}
+.pz .log .ln{display:block;white-space:pre;padding:0 12px;border-left:3px solid transparent;transition:background .2s,color .2s}
+.pz .log .ln.k-start{border-left-color:var(--green);color:var(--green)}
+.pz .log .ln.k-end{border-left-color:var(--ink);font-weight:500}
+.pz .log .ln.k-fon,.pz .log .ln.k-foff{border-left-color:var(--red-flag);color:var(--red-flag)}
+.pz .log .ln.dim{color:var(--ink-faint)}
+.pz .log .ln.scan{background:var(--amber);color:var(--ink)!important}
+.pz .log-cap,.pz .code-cap{font:400 11.5px/1.45 'IBM Plex Mono',monospace;color:var(--ink-soft);margin:8px 0 0}
+.pz .chips,.pz .meanings,.pz .palette{display:flex;flex-wrap:wrap;gap:10px}
+.pz .chip,.pz .meaning,.pz .block{appearance:none;font:500 12.5px/1.2 'IBM Plex Mono',monospace;border:1.5px solid var(--ink);background:var(--paper-card);color:var(--ink);border-radius:3px;padding:10px 12px;cursor:pointer;min-height:44px}
+.pz .chip[aria-pressed=true],.pz .slot[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.pz .chip.ok{border-color:var(--green);background:var(--green-bg);color:var(--green);cursor:default}
+.pz .meaning{font-family:'IBM Plex Sans',sans-serif;font-size:14.5px}
+.pz .meaning.used{border-style:dashed;color:var(--ink-soft)}
+.pz .label{font:400 11px/1.4 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:16px 0 8px}
+.pz .msg{min-height:1.6em;font-size:15px;margin:12px 0 0;line-height:1.5}
+.pz .msg.bad{color:var(--red-flag)}
+.pz .msg.good{color:var(--green)}
+.pz .shake{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.pz .clue{border-left:3px solid var(--amber);background:var(--paper-card);padding:10px 14px;font-size:14.5px;line-height:1.5;margin-top:14px}
+.pz .clue b{font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-ink);display:block;margin-bottom:2px}
+.pz .rule{border:1px solid var(--line);background:var(--paper-card);border-radius:3px;padding:12px 14px;margin-bottom:10px;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.pz .rule .name{font:700 16px/1.2 'Space Grotesk',sans-serif;min-width:6.2em}
+.pz .rule .word{color:var(--ink-soft);font-size:15px}
+.pz .slot{appearance:none;font:500 12.5px/1.2 'IBM Plex Mono',monospace;min-width:112px;min-height:40px;border:1.5px dashed var(--ink-faint);background:transparent;color:var(--ink-soft);border-radius:3px;padding:8px 10px;cursor:pointer}
+.pz .slot.filled{border-style:solid;border-color:var(--ink);color:var(--ink)}
+.pz .rule.ok{border-color:var(--green)}
+.pz .rule.ok .slot{border-color:var(--green);color:var(--green);background:var(--green-bg);cursor:default}
+.pz .rule.bad{border-color:var(--red-flag)}
+.pz .rule .tick{margin-left:auto;font:500 10.5px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;color:var(--green);border:1.5px dashed var(--green);padding:5px 7px;border-radius:2px;transform:rotate(-5deg);display:none}
+.pz .rule.ok .tick{display:inline-block;animation:stamp .35s cubic-bezier(.3,1.6,.5,1)}
+@keyframes stamp{from{transform:scale(1.5) rotate(-5deg);opacity:0}to{transform:scale(1) rotate(-5deg);opacity:1}}
+.pz pre.code{background:var(--ink);color:#c9cdc0;border-radius:3px;padding:14px 16px;font:400 clamp(11px,3vw,12.5px)/1.7 'IBM Plex Mono',monospace;overflow-x:auto;margin:16px 0 0}
+.pz pre.code .c{color:#8a9086}
+.pz pre.code .lit{color:var(--amber)}
+.pz pre.code .off{opacity:.28}
+.pz pre.code .on{color:#eef0ea}
+.pz .chart{background:var(--paper-card);border:1px solid var(--line);border-radius:3px;padding:14px 14px 8px;margin-top:16px}
+.pz .chart svg{display:block;width:100%;height:auto}
+.pz .legend{display:flex;flex-wrap:wrap;gap:14px;font:400 12px/1.4 'IBM Plex Mono',monospace;color:var(--ink-soft);margin-top:6px}
+.pz .legend i{display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-right:6px;border:1px solid var(--ink-faint)}
+.pz .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;margin-top:16px;overflow:hidden}
+@media (min-width:620px){.pz .stats{grid-template-columns:repeat(4,1fr)}}
+.pz .stat{background:var(--paper-card);padding:14px}
+.pz .stat .v{font:700 26px/1.05 'Space Grotesk',sans-serif}
+.pz .stat .k{font:400 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:6px}
+.pz .compare{margin-top:20px;padding:16px;border:1.5px solid var(--ink);border-radius:3px;position:relative;background:var(--paper-card)}
+.pz .compare p{margin:0;font-size:16px;line-height:1.55}
+.pz .compare .big{font:700 19px/1.3 'Space Grotesk',sans-serif;margin-bottom:6px}
+.pz .stamp{position:absolute;top:-14px;right:12px;font:500 10.5px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;color:var(--green);background:var(--paper);border:1.5px dashed var(--green);padding:6px 8px;border-radius:2px;transform:rotate(-6deg);animation:stamp .4s cubic-bezier(.3,1.6,.5,1)}
+.pz .end p{margin:0 0 12px;font-size:16px}
+.pz .hidden{display:none!important}
+.pz-foot{font:400 11px/1.5 'IBM Plex Mono',monospace;color:var(--ink-soft);padding:12px 22px;border-top:1px solid var(--line)}
+@media (max-width:520px){.pz .step{padding:20px 16px}.pz-head{padding:18px 16px}}
+@media (prefers-reduced-motion:reduce){.pz *,.try *{animation:none!important;transition:none!important}}
+
+/* Print only the checklist */
+@media print{
+  body.print-checklist *{visibility:hidden}
+  body.print-checklist #checklist,body.print-checklist #checklist *{visibility:visible}
+  body.print-checklist #checklist{position:absolute;left:0;top:0;width:100%;margin:0;border:1.5px solid #000}
+  body.print-checklist #checklist .print{display:none}
+  body.print-checklist #checklist .print-only{display:block}
+}
+/* notes.css enlarges the first <p> in every block; keep that only for the lead */
+.article-body .prose p:first-of-type{font-size:17px;color:var(--ink)}
+.article-body .prose p.lead{font-size:19px;color:var(--ink-soft)}
+.article-body .prose .try p,.article-body .prose .pz-head p{font-size:15px;color:#dfe2da;line-height:1.55}
+.article-body .prose .aside-box p{font-size:15.5px}
+.article-body .prose .checklist .sub{font-size:14.5px;color:var(--ink-soft)}
+.article-body .prose .pz .step-head p{font-size:15px;color:var(--ink-soft);line-height:1.5}
+.article-body .prose .pz .lock-note{font-size:12px;color:var(--ink-soft)}
+.article-body .prose .pz .log-cap{font-size:11.5px;color:var(--ink-soft)}
+.article-body .prose .pz .compare .big{font-size:19px}
+.article-body .prose .pz-foot{font-size:11px;color:var(--ink-soft)}
+.article-body .prose .article-footer p{font-size:15.5px;color:var(--ink-soft)}
+.try p.clues{font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.04em;color:var(--amber);margin:0}
+.article-body .prose .try p.clues{font-size:12.5px;color:var(--amber)}
+.ts-bar{height:6px;background:#3a3f43;border-radius:1px;overflow:hidden;margin:4px 0 8px}
+.ts-bar span{display:block;height:100%;width:0;background:var(--amber);transition:width .2s linear}
+.try .ts-cap{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;color:#c9cdc0;margin:0}
+.try a.go.hidden-go{display:none;margin-top:16px}
+.try.solved a.go.hidden-go{display:inline-block}
+.try.solved .ts-bar,.try.solved .ts-cap{display:none}
+</style>
+</head>
+<body id="top">
+
+<nav>
+  <div class="brand">
+    <a class="wordmark" href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="178" height="28"></a>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="/tools/"><span class="nl-long">Tools in action</span><span class="nl-short">Tools</span></a>
+    <a class="nav-link" href="/prices/">Prices</a>
+    <a class="nav-link" href="/#about">About</a>
+    <a class="nav-link" href="/notes/"><span class="nl-long">Field notes</span><span class="nl-short">Notes</span></a>
+  </div>
+  <a class="nav-cta" href="/#contact">Book a call</a>
+</nav>
+<div class="offer-bar"><p><span class="ob-long">Here for the long run. So your first tool is paid for only when it works as agreed.</span><span class="ob-short">First tool: pay only when it works.</span> <a href="/#how">How it works →</a></p></div>
+
+<section class="article-header">
+  <div class="wrap">
+    <p class="eyebrow crumbs"><a href="/">Meshlock</a> / <a href="/notes/">Field notes</a></p>
+    <h1>Your machines already know how long they stand still</h1>
+    <div class="article-meta">
+      <span>2026</span>
+      <span class="tick"></span>
+      <span>8 min read</span>
+      <span class="tick"></span>
+      <span>With a puzzle</span>
+    </div>
+  </div>
+</section>
+
+<section class="article-body">
+  <div class="wrap layout">
+  <div class="prose">
+
+    <p class="lead">Most factories already record how long every machine runs and stands still. Nobody reads it, because it sits inside the machine in a format built for service engineers.</p>
+
+    <figure class="fig">
+      <div class="rvr">
+        <div>
+          <span class="lab bad">What the machine saves</span>
+          <div class="raw" aria-label="Raw log lines">
+            <span>06:04:12;EV17;0;D:\PRG\A4471_R2.PRG;S;0001</span>
+            <span>06:52:40;EV18;0;D:\PRG\A4471_R2.PRG;E;0001</span>
+            <span>06:53:30;EV03;1;;;</span>
+            <span>06:58:11;AL214;2;DOOR INTLK;;</span>
+            <span>07:03:02;AL214;0;;;</span>
+            <span>07:05:31;EV17;0;D:\PRG\B0920_R1.PRG;S;0002</span>
+            <span>08:21:07;EV18;0;D:\PRG\B0920_R1.PRG;E;0002</span>
+          </div>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div>
+          <span class="lab good">What you need to see</span>
+          <div class="read">
+            <svg viewBox="0 0 300 96" role="img" aria-label="The same morning as a bar: running in green, stopped hatched, one fault in red">
+              <defs><pattern id="h1" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#F6F7F2"/><line x1="0" y1="0" x2="0" y2="6" stroke="#8A9086" stroke-width="2"/></pattern></defs>
+              <text x="10" y="12" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing="1" fill="#565C58">M2 · 06:00 TO 09:00</text>
+              <rect x="10" y="22" width="280" height="30" fill="url(#h1)" stroke="#171A1D"/>
+              <rect x="16.5" y="22" width="75.4" height="30" fill="#3F6B52"/>
+              <rect x="100.5" y="22" width="7.5" height="30" fill="#B5482E"/>
+              <rect x="111.9" y="22" width="117.6" height="30" fill="#3F6B52"/>
+              <rect x="270.2" y="22" width="19.8" height="30" fill="#3F6B52"/>
+              <g stroke="#171A1D"><line x1="10" y1="56" x2="10" y2="62"/><line x1="103.3" y1="56" x2="103.3" y2="62"/><line x1="196.7" y1="56" x2="196.7" y2="62"/><line x1="290" y1="56" x2="290" y2="62"/></g>
+              <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#565C58" text-anchor="middle"><text x="10" y="74" text-anchor="start">06:00</text><text x="103.3" y="74">07:00</text><text x="196.7" y="74">08:00</text><text x="290" y="74" text-anchor="end">09:00</text></g>
+              <text x="10" y="91" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#3F6B52">RUNNING 2H 16M OF 3H · 76%</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <figcaption>Same morning, same data. Left as the controller writes it, right as a production manager needs it. Illustrative data.</figcaption>
+    </figure>
+
+    <p>I saw this first-hand in a UK factory running six machines. Everyone had a feel for how busy the machines were. "Pretty much flat out" was the usual answer. Nobody had a number, because nobody believed the data existed.</p>
+
+    <p>It did. Every machine kept its own job history. It just looked like noise: codes, timestamps, file paths, no totals. Once those files were turned into one readable view, the first measured day showed the machines running about 80% of planned time. A good chunk of every shift had gone missing between jobs, and no one had noticed.</p>
+
+    <p>The number alone changed things. Once the team could see it every day, the average climbed to about 91%. Same machines, same people. The only new thing was being able to see.</p>
+
+    <aside class="try try-inline" aria-label="Coming up: a puzzle">
+      <svg class="gears" viewBox="0 0 46 30" aria-hidden="true"><g class="g1"><circle cx="14" cy="15" r="6.5" fill="none" stroke="#D9A441" stroke-width="3"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(0 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(45 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(90 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(135 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(180 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(225 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(270 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(315 14 15)"/></g><g class="g2"><circle cx="34.5" cy="17" r="3.8" fill="none" stroke="#EEF0EA" stroke-width="2"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(0 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(45 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(90 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(135 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(180 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(225 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(270 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(315 34.5 17)"/></g></svg>
+      <span class="t-tag">Coming up in this note</span>
+      <h3>You will decode a raw machine log yourself</h3>
+      <p>Halfway down there is a two-minute puzzle: one real-looking log, one shift. Crack the codes, write the rules and watch the noise turn into a clear picture of the shift. It is oddly satisfying, and it shows exactly what my tools do and how.</p>
+      <p class="clues">The next sections are your clues. Read on.</p>
+    </aside>
+
+    <p>This guide shows you where that data hides on your own floor, who to ask, and what to do in your first afternoon.</p>
+
+    <h2>Why the number in your head is too kind</h2>
+
+    <p>If you track stoppages at all, you probably do it by hand. A sheet by the machine, a box on the job card, a figure at the end of the shift. That is honest work, but it misses the same things in every factory.</p>
+
+    <ul class="plain">
+      <li><b>Short stops.</b> Two minutes waiting for material does not feel worth writing down. Forty of them is over an hour.</li>
+      <li><b>The gap between jobs.</b> Unloading, finding the next file, a quick chat. The machine is idle, but nobody calls it a stop.</li>
+      <li><b>Rounded memory.</b> A stop written down at 10 pm about something at 3 pm becomes "about 15 minutes".</li>
+      <li><b>Running slow.</b> A machine running at half speed counts as running. The lost time never shows up as a stop.</li>
+    </ul>
+
+    <p>None of this is anyone's fault. People are there to make parts, not to keep a stopwatch. Companies that sell monitoring systems often say the first automatic measurement shows two to three times more lost time than the plant believed. Treat that as a rough guide, not a promise. The point is simpler: the machine keeps a more honest record than any of us can.</p>
+
+    <h2>Who to ask</h2>
+
+    <p>You do not need IT or a consultant to start. The answers usually sit with four people you already know.</p>
+
+    <div class="cards two">
+      <div class="card"><p class="who">The operator</p><p class="why">Uses the screen every day and has seen menus nobody else opens.</p><p class="ask">"Is there a history, log or report screen on the machine? Can it save to a USB stick?"</p></div>
+      <div class="card"><p class="who">Maintenance</p><p class="why">Knows the drives, panels and hour counters inside the cabinet.</p><p class="ask">"Do the drives or the panel keep run hours or an alarm history? Can we read it without changing anything?"</p></div>
+      <div class="card"><p class="who">The machine supplier's service engineer</p><p class="why">Knows exactly what the controller stores and how to get it out.</p><p class="ask">"What does this controller log, how many days does it keep, and how do we export it?"</p></div>
+      <div class="card"><p class="who">Whoever looks after the ERP</p><p class="why">Knows what gets booked against each job.</p><p class="ask">"Do we record job start and finish times, or quantities per shift? Can I get last month as a spreadsheet?"</p></div>
+    </div>
+
+    <p>One tip: ask about exports, not changes. "Can we save what is already there?" gets a yes far more often than "Can we connect something to the machine?"</p>
+
+    <h2>Six places the data hides</h2>
+
+    <p>Start with the one closest to hand. You only need one source to begin.</p>
+
+    <figure class="fig">
+      <div class="fig-card">
+      <svg viewBox="0 0 560 306" role="img" aria-label="Drawing of a machine with six numbered places where data is kept: controller, drive cabinet, operator panel, ERP, file folders and the power cable">
+        <defs>
+          <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#C9CDC0" stroke-width=".6"/></pattern>
+        </defs>
+        <rect width="560" height="306" fill="url(#grid)" opacity=".55"/>
+        <!-- floor -->
+        <line x1="20" y1="252" x2="540" y2="252" stroke="#171A1D" stroke-width="1.5"/>
+        <!-- drive cabinet -->
+        <rect x="40" y="110" width="78" height="142" fill="#F6F7F2" stroke="#171A1D" stroke-width="1.5" rx="2"/>
+        <g stroke="#8A9086" stroke-width="1.2"><line x1="54" y1="128" x2="104" y2="128"/><line x1="54" y1="136" x2="104" y2="136"/><line x1="54" y1="144" x2="104" y2="144"/></g>
+        <rect x="58" y="164" width="42" height="22" fill="#171A1D" rx="1"/>
+        <text x="79" y="179" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#D9A441">1824h</text>
+        <!-- cable from cabinet to machine -->
+        <path d="M118 236 H170" fill="none" stroke="#171A1D" stroke-width="3"/>
+        <rect x="134" y="228" width="14" height="16" rx="3" fill="none" stroke="#3F6B52" stroke-width="2"/>
+        <!-- machine body -->
+        <rect x="170" y="96" width="230" height="156" fill="#F6F7F2" stroke="#171A1D" stroke-width="1.5" rx="3"/>
+        <rect x="190" y="118" width="128" height="96" fill="#E3E6DC" stroke="#171A1D" stroke-width="1" rx="2"/>
+        <line x1="190" y1="166" x2="318" y2="166" stroke="#8A9086" stroke-dasharray="4 3"/>
+        <rect x="236" y="148" width="36" height="18" fill="#C9CDC0" stroke="#171A1D" stroke-width="1"/>
+        <!-- operator panel -->
+        <rect x="334" y="114" width="52" height="66" fill="#171A1D" rx="2"/>
+        <rect x="340" y="120" width="40" height="30" fill="#37485A"/>
+        <g stroke="#D9A441" stroke-width="1.2"><line x1="344" y1="128" x2="372" y2="128"/><line x1="344" y1="134" x2="366" y2="134"/><line x1="344" y1="140" x2="370" y2="140"/></g>
+        <g fill="#C9CDC0"><circle cx="346" cy="162" r="3"/><circle cx="360" cy="162" r="3"/><circle cx="374" cy="162" r="3"/></g>
+        <!-- USB -->
+        <rect x="380" y="188" width="10" height="6" fill="#171A1D"/>
+        <!-- office: ERP screen and folder -->
+        <line x1="430" y1="60" x2="430" y2="252" stroke="#8A9086" stroke-dasharray="3 4"/>
+        <text x="486" y="78" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="1.5" fill="#565C58">OFFICE</text>
+        <rect x="452" y="100" width="70" height="48" fill="#F6F7F2" stroke="#171A1D" stroke-width="1.5" rx="2"/>
+        <g fill="#C9CDC0"><rect x="460" y="108" width="54" height="5"/><rect x="460" y="117" width="40" height="5"/><rect x="460" y="126" width="48" height="5"/><rect x="460" y="135" width="30" height="5"/></g>
+        <line x1="487" y1="148" x2="487" y2="158" stroke="#171A1D" stroke-width="1.5"/><line x1="472" y1="158" x2="502" y2="158" stroke="#171A1D" stroke-width="1.5"/>
+        <path d="M456 196 h20 l6 7 h36 v40 h-62 z" fill="#F6F7F2" stroke="#171A1D" stroke-width="1.5"/>
+        <!-- callouts -->
+        <g font-family="IBM Plex Mono, monospace" font-size="20" font-weight="500" text-anchor="middle">
+          <line x1="254" y1="118" x2="254" y2="58" stroke="#171A1D"/><circle cx="254" cy="44" r="19" fill="#EEF0EA" stroke="#171A1D" stroke-width="1.5"/><text x="254" y="51">1</text>
+          <line x1="79" y1="110" x2="79" y2="58" stroke="#171A1D"/><circle cx="79" cy="44" r="19" fill="#EEF0EA" stroke="#171A1D" stroke-width="1.5"/><text x="79" y="51">2</text>
+          <line x1="360" y1="114" x2="360" y2="58" stroke="#171A1D"/><circle cx="360" cy="44" r="19" fill="#EEF0EA" stroke="#171A1D" stroke-width="1.5"/><text x="360" y="51">3</text>
+          <line x1="487" y1="100" x2="487" y2="96" stroke="#171A1D"/><circle cx="520" cy="44" r="19" fill="#EEF0EA" stroke="#171A1D" stroke-width="1.5"/><path d="M509 54 L490 98" fill="none" stroke="#171A1D"/><text x="520" y="51">4</text>
+          <line x1="487" y1="243" x2="487" y2="276" stroke="#171A1D"/><circle cx="487" cy="282" r="19" fill="#EEF0EA" stroke="#171A1D" stroke-width="1.5"/><text x="487" y="289">5</text>
+          <line x1="141" y1="244" x2="141" y2="268" stroke="#3F6B52"/><circle cx="141" cy="282" r="19" fill="#E4EBE3" stroke="#3F6B52" stroke-width="1.5"/><text x="141" y="289" fill="#3F6B52">6</text>
+        </g>
+      </svg>
+      </div>
+      <figcaption>Six places to look. Four on the floor, two in the office. Number 6 is for older machines that have nothing to export yet.</figcaption>
+    </figure>
+
+    <div class="cards">
+      <div class="card place"><span class="n">1</span><p class="who">The machine's own controller</p><p class="what">A history of programs or jobs run, with start and finish times. Moulding machines often keep shot counts and cycle times.</p><p class="how">Look for History, Log, Job report or Statistics on the screen. Many save as CSV to a USB stick.</p><p class="tells">When the machine actually worked, job by job.</p></div>
+      <div class="card place"><span class="n">2</span><p class="who">The drive cabinet</p><p class="what">Many drives count "run hours" and "power-on hours" separately.</p><p class="how">Maintenance can read both from the drive's display, usually without changing a setting.</p><p class="tells">Two numbers, one ratio: how much of its switched-on time the machine really works.</p></div>
+      <div class="card place"><span class="n">3</span><p class="who">The operator panel</p><p class="what">Alarm history: every fault, when it started and when it cleared.</p><p class="how">Often an "export alarm history" option to USB or SD card.</p><p class="tells">Which stops repeat, and how long each one costs.</p></div>
+      <div class="card place"><span class="n">4</span><p class="who">Your ERP or job system</p><p class="what">Job start and finish bookings, quantities per shift, scrap booked.</p><p class="how">A standard report exported to Excel. Ask for one month.</p><p class="tells">Planned against actual, per job. Useful even with no machine data at all.</p></div>
+      <div class="card place"><span class="n">5</span><p class="who">Your file folders</p><p class="what">Programs and job files, each with the date and time it was saved.</p><p class="how">Sort the folder by "date modified".</p><p class="tells">A rough timeline of what was prepared and sent to the floor.</p></div>
+      <div class="card place"><span class="n">6</span><p class="who">The power cable</p><p class="what">Nothing yet, on older machines with no screen worth asking.</p><p class="how">A clamp-on current sensor around the supply cable. It does not touch the machine's controls.</p><p class="tells">Running, idle or off, minute by minute. On presses and moulding machines it can even count cycles.</p></div>
+    </div>
+
+    <div class="aside-box"><span class="tag">For the curious</span><p>A controller is the small computer that runs the machine. It logs events for its own use and for service visits. Nobody designed those logs for a production manager, which is why they look so unfriendly.</p></div>
+
+    <p><b>One warning:</b> most machines only keep a short history. Some keep about a month of jobs, some the last thousand cycles, some only the last day. Older records are written over.</p>
+
+    <figure class="fig">
+      <div class="fig-card">
+      <svg viewBox="0 0 360 112" role="img" aria-label="Sixty days of history: the first thirty already written over, only the last thirty still in the machine">
+        <defs><pattern id="h2" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#F3E4DF"/><line x1="0" y1="0" x2="0" y2="5" stroke="#B5482E" stroke-width="1.4"/></pattern></defs>
+        <rect x="10" y="44" width="167" height="26" fill="url(#h2)" stroke="#B5482E"/>
+        <rect x="183" y="44" width="167" height="26" fill="#E4EBE3" stroke="#3F6B52"/>
+        <g stroke="#3F6B52" stroke-width=".8" opacity=".55">
+          <line x1="188.6" y1="44" x2="188.6" y2="70"/><line x1="194.1" y1="44" x2="194.1" y2="70"/><line x1="199.7" y1="44" x2="199.7" y2="70"/><line x1="216.4" y1="44" x2="216.4" y2="70"/><line x1="233.1" y1="44" x2="233.1" y2="70"/><line x1="249.8" y1="44" x2="249.8" y2="70"/><line x1="266.5" y1="44" x2="266.5" y2="70"/><line x1="283.2" y1="44" x2="283.2" y2="70"/><line x1="299.9" y1="44" x2="299.9" y2="70"/><line x1="316.6" y1="44" x2="316.6" y2="70"/><line x1="333.3" y1="44" x2="333.3" y2="70"/>
+        </g>
+        <!-- dimension line over the kept part -->
+        <g stroke="#171A1D"><line x1="183" y1="24" x2="183" y2="36"/><line x1="350" y1="24" x2="350" y2="36"/></g>
+        <line x1="183" y1="30" x2="350" y2="30" stroke="#C9CDC0" stroke-dasharray="4 2"/>
+        <text x="266.5" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing="1" fill="#171A1D">ABOUT 30 DAYS KEPT</text>
+        <text x="93.5" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing="1" fill="#B5482E">ALREADY WRITTEN OVER</text>
+        <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#565C58"><text x="10" y="88">60 DAYS AGO</text><text x="350" y="88" text-anchor="end">TODAY</text></g>
+        <text x="10" y="106" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#3F6B52">SAVE ONE EXPORT A WEEK AND NOTHING IS LOST</text>
+      </svg>
+      </div>
+      <figcaption>A typical controller memory. Every week you wait is a week of data you cannot get back.</figcaption>
+    </figure>
+
+    <h2>Your first afternoon: save it, don't read it</h2>
+
+    <p>Your only job today is to make sure the data stops disappearing. Understanding it can wait.</p>
+
+    <ol>
+      <li>Pick one machine. The busiest one, or the one everyone argues about.</li>
+      <li>Find one export from the six places above. Ask the operator first.</li>
+      <li>Save it to a USB stick, then copy it somewhere safe with the machine name and today's date in the file name.</li>
+      <li>Do the same again next week. You now have a habit, and the history stops being written over.</li>
+    </ol>
+
+    <p>Then open the file, if you are curious. It will probably look something like this:</p>
+
+<pre class="rawlog">2026-10-06 06:02:11;EV17;0;D:\PRG\A4471_R2.PRG;S;0001
+2026-10-06 06:02:14;EV03;1;;;
+2026-10-06 06:41:57;EV18;0;D:\PRG\A4471_R2.PRG;E;0001;002385
+2026-10-06 06:58:30;AL214;2;DOOR INTLK;;
+2026-10-06 07:03:02;AL214;0;;;
+2026-10-06 07:03:09;EV17;0;D:\PRG\A4471_R2.PRG;S;0002</pre>
+
+    <p>If that means nothing to you, good. It means nothing to most people. It was written for a service engineer with the manual open, not for someone running a shift.</p>
+
+    <p>But look closer. Every line has a time. Somewhere in those lines is when the machine started, when it stopped, why it stopped, and for how long. Across a month of files, that is every shift you ran. You were just never given a way to read it. So let's read one.</p>
+
+    <!-- ===================== PUZZLE ===================== -->
+    <div class="pz" id="decode">
+      <div class="pz-head">
+        <span class="t-tag">Try it yourself · about 2 minutes</span>
+        <h2>Decode a raw machine log</h2>
+        <p>One machine, one 8-hour shift, exactly as the controller saved it. No software skills needed. You will do by hand what my tools do every night.</p>
+      </div>
+
+      <section class="step" id="s1">
+        <div class="step-head"><span class="disc">1</span><div><h3>Make a guess first</h3><p>How much of the shift do you think this machine was actually running?</p></div></div>
+        <div class="body">
+          <div class="guess-row">
+            <input type="range" id="guess" min="50" max="100" step="1" value="88" aria-label="Your guess, percent of shift running">
+            <span class="guess-val" id="guessVal">88%</span>
+          </div>
+          <p style="margin:10px 0 0"><button class="btn" id="lockGuess">Lock in my guess</button></p>
+          <p class="guess-locked" id="guessLocked"></p>
+        </div>
+      </section>
+
+      <section class="step locked" id="s2">
+        <div class="step-head"><span class="disc">2</span><div><h3>Crack the four codes</h3><p>Most lines are noise. Four codes carry the story. Tap a code, then tap what you think it means.</p></div></div>
+        <p class="lock-note">Lock in your guess first.</p>
+        <div class="body">
+          <pre class="log" id="log" aria-label="Raw machine log"></pre>
+          <p class="log-cap">D:\LOG\EVT_20261006.CSV · <span id="nLines"></span> lines · saved by the machine, not written for you</p>
+          <p class="label">Codes</p>
+          <div class="chips" id="chips"></div>
+          <p class="label">Meanings</p>
+          <div class="meanings" id="meanings"></div>
+          <p class="msg" id="decodeMsg" role="status"></p>
+          <div class="clue"><b>Clue from the service manual</b>Look at the letter after the file name, S or E. Alarm lines repeat their code: the number after it is 2 while the fault is active and 0 once it clears.</div>
+          <p style="margin:12px 0 0"><button class="btn-ghost" id="hint">Show me one</button></p>
+        </div>
+      </section>
+
+      <section class="step locked" id="s3">
+        <div class="step-head"><span class="disc">3</span><div><h3>Write the rules</h3><p>Now tell the decoder what to measure. Tap an empty box, then tap the event that belongs there.</p></div></div>
+        <p class="lock-note">Crack all four codes first.</p>
+        <div class="body">
+          <div id="rules"></div>
+          <p class="label">Events</p>
+          <div class="palette" id="palette"></div>
+          <p class="msg" id="ruleMsg" role="status"></p>
+          <pre class="code" id="code" aria-label="The rules as code"></pre>
+          <p class="code-cap">Your rules, written as code. Each rule you get right switches its lines on. This is the core of a real decoder.</p>
+        </div>
+      </section>
+
+      <section class="step locked" id="s4">
+        <div class="step-head"><span class="disc">4</span><div><h3>Run it</h3><p>The decoder reads every line, keeps what your rules care about and draws the shift.</p></div></div>
+        <p class="lock-note">Finish all three rules first.</p>
+        <div class="body">
+          <button class="btn" id="run">Run the decoder</button>
+          <div class="chart hidden" id="chartBox">
+            <svg id="chart" viewBox="0 0 600 92" role="img" aria-label="Shift timeline from 06:00 to 14:00"></svg>
+            <div class="legend"><span><i style="background:var(--green);border-color:var(--green)"></i>Running</span><span><i id="lgStop"></i>Stopped</span><span><i style="background:var(--red-flag);border-color:var(--red-flag)"></i>Fault</span></div>
+          </div>
+          <div class="stats hidden" id="stats"></div>
+          <div class="compare hidden" id="compare"></div>
+        </div>
+      </section>
+
+      <section class="step locked" id="s5">
+        <div class="step-head"><span class="disc">5</span><div><h3>Now picture your whole floor</h3></div></div>
+        <p class="lock-note">Run the decoder first.</p>
+        <div class="body end">
+          <p>You decoded one machine for one shift. A real floor has several machines, each writing its own format, and the files get written over every few weeks. That is the part I build, and it is what the rest of this note is about.</p>
+          <p style="margin:0"><a class="btn" style="text-decoration:none;display:inline-block" href="#what-i-build">See what the tool does ↓</a> <button class="btn-ghost" id="again" style="margin-left:14px">Try again</button></p>
+        </div>
+      </section>
+      <noscript><p class="pz-foot">The puzzle needs JavaScript switched on. The rest of this note reads fine without it.</p></noscript>
+      <p class="pz-foot">Example data, invented for this exercise. Not from any real machine or client.</p>
+    </div>
+    <!-- =================== END PUZZLE =================== -->
+
+    <h2 id="what-i-build">What I do with it</h2>
+
+    <p>This is the part I build. You bring the files you saved. I turn them into something you can run the floor on.</p>
+
+    <figure class="fig">
+      <div class="fig-card">
+      <svg viewBox="0 0 360 318" role="img" aria-label="Three machines writing three different file formats feed one decoder, which builds one continuous record by week">
+        <g font-family="IBM Plex Mono, monospace" font-size="10">
+          <!-- three raw files -->
+          <g><rect x="14" y="14" width="96" height="58" fill="#F6F7F2" stroke="#171A1D" rx="2"/><text x="24" y="32" font-size="10.5" font-weight="500" fill="#171A1D">M1 · .CSV</text><g fill="#C9CDC0"><rect x="24" y="40" width="70" height="4"/><rect x="24" y="49" width="56" height="4"/><rect x="24" y="58" width="64" height="4"/></g></g>
+          <g><rect x="132" y="14" width="96" height="58" fill="#F6F7F2" stroke="#171A1D" rx="2"/><text x="142" y="32" font-size="10.5" font-weight="500" fill="#171A1D">M2 · .LOG</text><g fill="#C9CDC0"><rect x="142" y="40" width="48" height="4"/><rect x="142" y="49" width="72" height="4"/><rect x="142" y="58" width="40" height="4"/></g></g>
+          <g><rect x="250" y="14" width="96" height="58" fill="#F6F7F2" stroke="#171A1D" rx="2"/><text x="260" y="32" font-size="10.5" font-weight="500" fill="#171A1D">M3 · .TXT</text><g fill="#C9CDC0"><rect x="260" y="40" width="66" height="4"/><rect x="260" y="49" width="44" height="4"/><rect x="260" y="58" width="74" height="4"/></g></g>
+          <text x="180" y="90" text-anchor="middle" fill="#565C58" letter-spacing="1">THREE MACHINES, THREE FORMATS</text>
+          <!-- arrows into decoder -->
+          <g stroke="#8A9086" stroke-dasharray="4 3" fill="none"><path d="M62 72 V112 H150"/><path d="M180 72 V108"/><path d="M298 72 V112 H210"/></g>
+          <!-- decoder with gear -->
+          <rect x="110" y="112" width="140" height="62" fill="#171A1D" rx="3"/>
+          <g transform="translate(140 143)">
+            <g class="dg">
+            <circle r="13" fill="none" stroke="#D9A441" stroke-width="5"/>
+            <g fill="#D9A441"><rect x="-3.5" y="-20" width="7" height="8" rx="2"/><rect x="-3.5" y="12" width="7" height="8" rx="2"/><rect x="-20" y="-3.5" width="8" height="7" rx="2"/><rect x="12" y="-3.5" width="8" height="7" rx="2"/><rect x="-3.5" y="-20" width="7" height="8" rx="2" transform="rotate(45)"/><rect x="-3.5" y="12" width="7" height="8" rx="2" transform="rotate(45)"/><rect x="-20" y="-3.5" width="8" height="7" rx="2" transform="rotate(45)"/><rect x="12" y="-3.5" width="8" height="7" rx="2" transform="rotate(45)"/></g>
+            </g>
+          </g>
+          <text x="168" y="139" font-size="11" font-weight="500" fill="#EEF0EA">DECODER</text>
+          <text x="168" y="154" font-size="9.5" fill="#C9CDC0">your rules</text>
+          <!-- arrow down -->
+          <path d="M180 174 V200" stroke="#3F6B52" stroke-width="1.5"/><path d="M175 194 L180 202 L185 194" fill="none" stroke="#3F6B52" stroke-width="1.5"/>
+          <text x="180" y="218" text-anchor="middle" fill="#3F6B52" letter-spacing="1">ONE CONTINUOUS RECORD</text>
+          <!-- weeks -->
+          <g fill="#565C58"><text x="14" y="244">W38</text><text x="14" y="264">W39</text><text x="14" y="284">W40</text><text x="14" y="304">W41</text></g>
+          <g>
+            <rect x="50" y="234" width="296" height="12" fill="#E3E6DC"/><rect x="50" y="234" width="231" height="12" fill="#3F6B52"/>
+            <rect x="50" y="254" width="296" height="12" fill="#E3E6DC"/><rect x="50" y="254" width="246" height="12" fill="#3F6B52"/>
+            <rect x="50" y="274" width="296" height="12" fill="#E3E6DC"/><rect x="50" y="274" width="263" height="12" fill="#3F6B52"/>
+            <rect x="50" y="294" width="296" height="12" fill="#E3E6DC"/><rect x="50" y="294" width="269" height="12" fill="#3F6B52"/>
+          </g>
+        </g>
+      </svg>
+      </div>
+      <figcaption>Every machine writes its own way. The decoder makes them speak one language and adds each new export to the same record. Illustrative data.</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><b>Readable.</b> Each raw log becomes a plain picture of the shift: running, stopped, changing over. Per machine, per day, with the hours added up.</li>
+      <li><b>Standardised.</b> Every machine writes its files differently. I make them all speak the same language, so every new export joins the ones before it in one continuous record.</li>
+      <li><b>Kept.</b> Your history stops being written over. Pick any week or month you have exports for and compare it with any other.</li>
+    </ul>
+
+    <p>The tool only reads the exports you already make. It does not connect to your machines or your ERP, and it does not change a single setting. It is built around how your team already works, and you own it. You can <a href="/tools/">watch the machine data tool run</a> on the tools page.</p>
+
+    <p>A tool like this costs about £1,700, as a fixed price agreed in writing. Your first tool is paid for only when it works as agreed.</p>
+
+    <h2>Checklist: find your machine data</h2>
+
+    <div class="checklist" id="checklist">
+      <h3>Find your machine data</h3>
+      <p class="sub">One machine, one afternoon. Machine: ______________________</p>
+      <p class="grp">Ask around</p>
+      <ul>
+        <li>Operator: is there a history, log or report screen? Can it save to USB?</li>
+        <li>Maintenance: do the drives or panel keep run hours or alarm history?</li>
+        <li>Machine supplier: what does the controller log, and for how many days?</li>
+        <li>ERP: can I get last month's job start and finish times as a spreadsheet?</li>
+      </ul>
+      <p class="grp">Look in six places</p>
+      <ul>
+        <li>Machine controller: job or program history</li>
+        <li>Drive cabinet: run hours and power-on hours</li>
+        <li>Operator panel: alarm history export</li>
+        <li>ERP or job system: bookings per job and shift</li>
+        <li>File folders: program files sorted by date</li>
+        <li>Power cable: clamp-on sensor for older machines</li>
+      </ul>
+      <p class="grp">Save it</p>
+      <ul>
+        <li>Export one file to USB today</li>
+        <li>Name it: machine, source, date (for example M2_history_2026-10-08.csv)</li>
+        <li>Repeat every week so nothing gets written over</li>
+      </ul>
+      <p class="foot"><b>Can't read it? That's normal.</b> Bring one file to a free 30-minute call.</p>
+      <p class="print-only mono" style="font-size:12px;margin:8px 0 0">meshlock.co.uk/start/?s=fn-data-pdf · hello@meshlock.co.uk</p>
+      <button class="print" type="button" id="printList">Print this checklist</button>
+    </div>
+
+    <div class="article-footer">
+      <p>Bring one exported file to a free 30-minute call. I will show you what is inside it.</p>
+      <a class="nav-cta" href="/#contact">Book a free call</a>
+      <p><a href="/start/?s=fn-data">Or tick what happens on your floor and get a one-page offer →</a></p>
+    </div>
+
+  </div><!-- /prose -->
+
+  <aside class="try try-side" id="trySide" aria-label="Puzzle progress">
+    <svg class="gears" viewBox="0 0 46 30" aria-hidden="true"><g class="g1"><circle cx="14" cy="15" r="6.5" fill="none" stroke="#D9A441" stroke-width="3"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(0 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(45 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(90 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(135 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(180 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(225 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(270 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(315 14 15)"/></g><g class="g2"><circle cx="34.5" cy="17" r="3.8" fill="none" stroke="#EEF0EA" stroke-width="2"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(0 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(45 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(90 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(135 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(180 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(225 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(270 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(315 34.5 17)"/></g></svg>
+    <span class="t-tag" id="tsTag">Coming up in this note</span>
+    <h3 id="tsHead">Decode a raw machine log</h3>
+    <p id="tsText">A two-minute puzzle waits halfway down. Crack the codes, write the rules, watch the noise turn into a clear shift. The sections on the way are your clues.</p>
+    <div class="ts-bar" aria-hidden="true"><span id="tsFill"></span></div>
+    <p class="ts-cap" id="tsCap">0% of the way there</p>
+    <a class="go hidden-go" id="tsGo" href="/start/?s=fn-data-puzzle">Put your numbers on it</a>
+  </aside>
+
+  </div>
+</section>
+
+<footer>
+  <div class="foot-brand">
+    <a class="wordmark" href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="127" height="20"></a>
+    <p class="foot-tag">Lean, software and ERP. One person.</p>
+  </div>
+  <ul class="foot-links">
+    <li><a href="/tools/">Tools in action</a></li>
+    <li><a href="/prices/">Prices</a></li>
+    <li><a href="/start/">One-page offer</a></li>
+    <li><a href="/notes/">Field notes</a></li>
+    <li><a href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn</a></li>
+    <li><a href="mailto:hello@meshlock.co.uk">hello@meshlock.co.uk</a></li>
+    <li><a href="#top">Back to top ↑</a></li>
+    <li class="copy">© 2026 Meshlock</li>
+  </ul>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var $ = function(id){return document.getElementById(id);};
+
+/* Print only the checklist */
+$("printList").addEventListener("click",function(){
+  document.body.classList.add("print-checklist");
+  window.print();
+  setTimeout(function(){document.body.classList.remove("print-checklist");},500);
+});
+
+
+/* Side window: progress to the puzzle, then a call to action once solved */
+var side=$("trySide"),pz=$("decode");
+function sideUpdate(){
+  if(!side||side.classList.contains("solved"))return;
+  var top=function(el){return el.getBoundingClientRect().top+window.scrollY;};
+  var start=top(document.querySelector(".article-body")),target=top(pz)-window.innerHeight*0.4;
+  var pct=Math.max(0,Math.min(100,Math.round((window.scrollY-start+window.innerHeight*0.2)/(target-start)*100)));
+  $("tsFill").style.width=pct+"%";
+  if(pct>=100){$("tsTag").textContent="You are here";$("tsCap").textContent="Work through the steps on the left";}
+  else{$("tsTag").textContent="Coming up in this note";$("tsCap").textContent=pct+"% of the way there";}
+}
+window.addEventListener("scroll",sideUpdate,{passive:true});window.addEventListener("resize",sideUpdate);sideUpdate();
+function sideSolved(pct){
+  if(!side)return;side.classList.add("solved");
+  $("tsTag").textContent="Decoded";$("tsHead").textContent="One shift, read in two minutes";
+  $("tsText").textContent="The log said "+pct+"%. Imagine that for every machine, every day. Read on to see how the tool works, or put your own numbers on it.";
+}
+
+/* ---------- Puzzle data: one invented shift ---------- */
+var DAY="2026-10-06 ";
+var JOBS=[["06:04:12","06:52:40","A4471_R2"],["07:05:31","08:21:07","B0920_R1"],["08:47:15","09:40:52","A4471_R2"],
+  ["09:49:03","10:58:26","C1188_R4"],["11:36:44","12:30:19","B0920_R1"],["12:41:08","13:44:35","D0057_R1"]];
+var FAULTS=[["06:58:11","07:03:02","AL214","DOOR INTLK"],["11:02:37","11:24:50","AL507","AIR PRESS LOW"]];
+var NOISE=[["06:00:03","EV09;0;SYS OK;;"],["06:02:14","EV03;1;;;"],["06:03:40","PAR;FEED;100;;"],["06:53:30","EV03;1;;;"],
+  ["07:00:00","EV09;0;SYS OK;;"],["08:22:10","EV03;1;;;"],["08:46:02","PAR;FEED;90;;"],["09:00:00","EV09;0;SYS OK;;"],
+  ["09:41:20","EV03;1;;;"],["10:59:02","EV03;1;;;"],["11:00:00","EV09;0;SYS OK;;"],["12:31:00","EV03;1;;;"],
+  ["13:00:00","EV09;0;SYS OK;;"],["13:45:10","EV03;1;;;"]];
+function sec(t){var p=t.split(":");return (+p[0])*3600+(+p[1])*60+(+p[2]);}
+var SHIFT0=sec("06:00:00"),SHIFT1=sec("14:00:00");
+var lines=[];
+JOBS.forEach(function(j,i){
+  var n=String(i+1).padStart(4,"0"),d=sec(j[1])-sec(j[0]);
+  lines.push({t:j[0],kind:"start",raw:DAY+j[0]+";EV17;0;D:\\PRG\\"+j[2]+".PRG;S;"+n});
+  lines.push({t:j[1],kind:"end",raw:DAY+j[1]+";EV18;0;D:\\PRG\\"+j[2]+".PRG;E;"+n+";"+String(d).padStart(6,"0")});
+});
+FAULTS.forEach(function(f){
+  lines.push({t:f[0],kind:"fon",raw:DAY+f[0]+";"+f[2]+";2;"+f[3]+";;"});
+  lines.push({t:f[1],kind:"foff",raw:DAY+f[1]+";"+f[2]+";0;;;"});
+});
+NOISE.forEach(function(n){lines.push({t:n[0],kind:"noise",raw:DAY+n[0]+";"+n[1]});});
+lines.sort(function(a,b){return sec(a.t)-sec(b.t);});
+$("nLines").textContent=lines.length;
+lines.forEach(function(l){var s=document.createElement("span");s.className="ln";s.textContent=l.raw;l.el=s;$("log").appendChild(s);});
+
+/* Step 1 */
+var guess=88;
+$("guess").addEventListener("input",function(e){guess=+e.target.value;$("guessVal").textContent=guess+"%";});
+$("lockGuess").addEventListener("click",function(){
+  $("guess").disabled=true;this.disabled=true;
+  var g=$("guessLocked");g.textContent="Locked: "+guess+"%. Let's see what the machine says.";g.style.display="block";
+  complete("s1","s2");
+});
+
+/* Step 2 */
+var CODES=[{id:"start",label:"EV17"},{id:"end",label:"EV18"},{id:"fon",label:"AL… ;2"},{id:"foff",label:"AL… ;0"}];
+var MEAN=[{id:"end",label:"Job end"},{id:"fon",label:"Fault on"},{id:"start",label:"Job start"},{id:"foff",label:"Fault cleared"}];
+var NAMES={start:"Job start",end:"Job end",fon:"Fault on",foff:"Fault cleared"};
+var picked=null,solved={};
+CODES.forEach(function(c){
+  var b=document.createElement("button");b.className="chip";b.type="button";b.textContent=c.label;b.dataset.id=c.id;b.setAttribute("aria-pressed","false");
+  b.addEventListener("click",function(){
+    if(solved[c.id])return;
+    document.querySelectorAll(".pz .chip").forEach(function(x){x.setAttribute("aria-pressed","false");});
+    picked=c.id;b.setAttribute("aria-pressed","true");say("decodeMsg","Now tap what "+c.label+" means.","");
+  });
+  $("chips").appendChild(b);
+});
+MEAN.forEach(function(m){
+  var b=document.createElement("button");b.className="meaning";b.type="button";b.textContent=m.label;b.dataset.id=m.id;
+  b.addEventListener("click",function(){
+    if(solved[m.id])return;
+    if(!picked){say("decodeMsg","Tap a code first, then its meaning.","bad");return;}
+    if(picked===m.id)solve(m.id);
+    else{
+      var hint={start:"Lines with EV17 have an S near the end. S for start.",end:"EV18 lines carry an E and a long number: seconds the job took.",
+        fon:"A fault can't clear before it starts. Look at the number after the alarm code.",foff:"The 0 comes after the 2. What happens second?"}[picked];
+      say("decodeMsg","Not quite. "+hint,"bad");shake(b);
+    }
+  });
+  $("meanings").appendChild(b);
+});
+function solve(id){
+  solved[id]=true;picked=null;
+  var chip=document.querySelector('.pz .chip[data-id="'+id+'"]');chip.classList.add("ok");chip.setAttribute("aria-pressed","false");
+  chip.textContent=chip.textContent+" = "+NAMES[id];
+  document.querySelector('.pz .meaning[data-id="'+id+'"]').classList.add("used");
+  lines.forEach(function(l){if(l.kind===id)l.el.classList.add("k-"+id);});
+  var n=Object.keys(solved).length;
+  if(n===4){
+    lines.forEach(function(l){if(l.kind==="noise")l.el.classList.add("dim");});
+    say("decodeMsg","All four cracked. Everything else in the log is noise you can ignore.","good");
+    complete("s2","s3");
+  } else say("decodeMsg","Correct. "+(4-n)+" to go.","good");
+}
+$("hint").addEventListener("click",function(){
+  var left=CODES.filter(function(c){return !solved[c.id];});
+  if(left.length)solve(left[0].id);
+});
+
+/* Step 3 */
+var RULES=[
+  {id:"run",name:"Running",a:"start",b:"end",why:"A machine runs from the moment a job starts until that job ends."},
+  {id:"stop",name:"Stopped",a:"end",b:"next",why:"It stands still from the end of one job until the next one starts."},
+  {id:"fault",name:"Fault",a:"fon",b:"foff",why:"A fault lasts from the alarm going on until it clears."}];
+var BLOCKS=[{id:"end",label:"Job end"},{id:"fon",label:"Fault on"},{id:"next",label:"Next job start"},{id:"start",label:"Job start"},{id:"foff",label:"Fault cleared"}];
+var fill={},activeSlot=null,rulesOK={};
+RULES.forEach(function(r){
+  var d=document.createElement("div");d.className="rule";d.id="rule-"+r.id;
+  d.innerHTML='<span class="name">'+r.name+'</span><span class="word">from</span>'+
+    '<button type="button" class="slot" data-r="'+r.id+'" data-p="a" aria-pressed="false">empty</button>'+
+    '<span class="word">to</span><button type="button" class="slot" data-r="'+r.id+'" data-p="b" aria-pressed="false">empty</button>'+
+    '<span class="tick">OK</span>';
+  $("rules").appendChild(d);
+});
+document.querySelectorAll(".pz .slot").forEach(function(s){
+  s.addEventListener("click",function(){
+    var r=s.dataset.r;if(rulesOK[r])return;
+    var key=r+s.dataset.p;
+    if(fill[key]){delete fill[key];s.textContent="empty";s.classList.remove("filled");$("rule-"+r).classList.remove("bad");}
+    document.querySelectorAll(".pz .slot").forEach(function(x){x.setAttribute("aria-pressed","false");});
+    activeSlot=s;s.setAttribute("aria-pressed","true");
+    say("ruleMsg","Now tap an event to put in that box.","");
+  });
+});
+BLOCKS.forEach(function(b){
+  var el=document.createElement("button");el.type="button";el.className="block";el.textContent=b.label;
+  el.addEventListener("click",function(){
+    if(!activeSlot){var first=document.querySelector('.pz .rule:not(.ok) .slot:not(.filled)');if(!first)return;activeSlot=first;}
+    var r=activeSlot.dataset.r,p=activeSlot.dataset.p;
+    fill[r+p]=b.id;activeSlot.textContent=b.label;activeSlot.classList.add("filled");activeSlot.setAttribute("aria-pressed","false");
+    activeSlot=document.querySelector('.pz .rule:not(.ok) .slot:not(.filled)');
+    if(activeSlot)activeSlot.setAttribute("aria-pressed","true");
+    check(r);
+  });
+  $("palette").appendChild(el);
+});
+function check(r){
+  var rule=RULES.filter(function(x){return x.id===r;})[0],a=fill[r+"a"],b=fill[r+"b"],box=$("rule-"+r);
+  if(!a||!b){say("ruleMsg","","");return;}
+  if(a===rule.a&&b===rule.b){
+    rulesOK[r]=true;box.classList.remove("bad");box.classList.add("ok");renderCode();
+    var n=Object.keys(rulesOK).length;
+    if(n===3){say("ruleMsg","All three rules written. That's a working decoder.","good");activeSlot=null;
+      document.querySelectorAll(".pz .slot").forEach(function(x){x.setAttribute("aria-pressed","false");});complete("s3","s4");}
+    else say("ruleMsg",rule.name+" is right. "+(3-n)+" to go.","good");
+  } else {box.classList.add("bad");shake(box);say("ruleMsg","Not quite. "+rule.why+" Tap a box to clear it.","bad");}
+}
+function renderCode(){
+  var on=function(r){return rulesOK[r]?"on":"off";};
+  $("code").innerHTML=
+'<span class="c"># read every line</span>\n'+
+'for line in log:\n'+
+'<span class="'+on("run")+'">    if line.code == <span class="lit">"EV17"</span>:      <span class="c"># Job start</span>\n'+
+'        run_from = line.time</span>\n'+
+'<span class="'+on("run")+'">    if line.code == <span class="lit">"EV18"</span>:      <span class="c"># Job end</span>\n'+
+'        running += line.time - run_from</span>\n'+
+'<span class="'+on("stop")+'">        stop_from = line.time\n'+
+'    if line.code == <span class="lit">"EV17"</span> and stop_from:\n'+
+'        stopped += line.time - stop_from</span>\n'+
+'<span class="'+on("fault")+'">    if line.code.startswith(<span class="lit">"AL"</span>) and line.state == <span class="lit">2</span>:\n'+
+'        fault_from = line.time\n'+
+'    if line.code.startswith(<span class="lit">"AL"</span>) and line.state == <span class="lit">0</span>:\n'+
+'        faults += line.time - fault_from</span>';
+}
+renderCode();
+
+/* Step 4 */
+var W=600,X0=22,X1=578;
+function x(t){return X0+(t-SHIFT0)/(SHIFT1-SHIFT0)*(X1-X0);}
+function svg(tag,attrs){var e=document.createElementNS("http://www.w3.org/2000/svg",tag);for(var k in attrs)e.setAttribute(k,attrs[k]);return e;}
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+function fmt(s){var h=Math.floor(s/3600),m=Math.round((s%3600)/60);if(m===60){h++;m=0;}return h+"h "+String(m).padStart(2,"0")+"m";}
+function hm(s){return String(Math.floor(s/3600)).padStart(2,"0")+":"+String(Math.floor((s%3600)/60)).padStart(2,"0");}
+function drawFrame(){
+  var c=$("chart");c.innerHTML="";
+  W=Math.max(300,Math.round(c.getBoundingClientRect().width||600));X0=22;X1=W-22;
+  c.setAttribute("viewBox","0 0 "+W+" 92");
+  var defs=svg("defs",{}),pat=svg("pattern",{id:"hatch",width:"6",height:"6",patternUnits:"userSpaceOnUse",patternTransform:"rotate(45)"});
+  pat.appendChild(svg("rect",{width:"6",height:"6",fill:css("--paper-card")}));
+  pat.appendChild(svg("line",{x1:"0",y1:"0",x2:"0",y2:"6",stroke:css("--ink-faint"),"stroke-width":"2"}));
+  defs.appendChild(pat);c.appendChild(defs);
+  c.appendChild(svg("rect",{x:X0,y:22,width:X1-X0,height:30,fill:"url(#hatch)",stroke:css("--ink"),"stroke-width":"1"}));
+  for(var h=6;h<=14;h++){
+    var xx=x(h*3600);
+    c.appendChild(svg("line",{x1:xx,y1:56,x2:xx,y2:h%2?60:64,stroke:css("--ink"),"stroke-width":"1"}));
+    if(h%2===0){var t=svg("text",{x:xx,y:78,"text-anchor":"middle","font-family":"IBM Plex Mono, monospace","font-size":"11",fill:css("--ink-soft")});t.textContent=String(h).padStart(2,"0")+":00";c.appendChild(t);}
+  }
+  var cap=svg("text",{x:X0,y:13,"font-family":"IBM Plex Mono, monospace","font-size":"10.5","letter-spacing":"1.2",fill:css("--ink-soft")});cap.textContent="MACHINE M2 · SHIFT 06:00 TO 14:00";c.appendChild(cap);
+  $("lgStop").style.background="repeating-linear-gradient(45deg,"+css("--ink-faint")+" 0 2px,"+css("--paper-card")+" 2px 5px)";
+}
+$("run").addEventListener("click",function(){
+  var btn=this;btn.disabled=true;btn.textContent="Reading the log…";
+  $("chartBox").classList.remove("hidden");drawFrame();
+  var c=$("chart"),runFrom=null,faultFrom=null,running=0,faults=0,faultN=0,i=0,delay=reduce?0:85;
+  function step(){
+    if(i>0)lines[i-1].el.classList.remove("scan");
+    if(i>=lines.length){finish(running,faults,faultN);btn.textContent="Decoded";return;}
+    var l=lines[i],t=sec(l.t);
+    l.el.classList.add("scan");
+    if(!reduce){var box=$("log"),top=l.el.offsetTop-box.offsetTop;if(top<box.scrollTop||top>box.scrollTop+box.clientHeight-20)box.scrollTop=top-60;}
+    if(l.kind==="start")runFrom=t;
+    if(l.kind==="end"&&runFrom!==null){
+      running+=t-runFrom;
+      var r=svg("rect",{x:x(runFrom),y:22,width:Math.max(1,x(t)-x(runFrom)),height:30,fill:css("--green")});
+      r.style.transformBox="fill-box";r.style.transformOrigin="left";
+      c.appendChild(r);
+      if(!reduce&&r.animate)r.animate([{transform:"scaleX(0)"},{transform:"scaleX(1)"}],{duration:260,easing:"ease-out"});
+      runFrom=null;
+    }
+    if(l.kind==="fon")faultFrom=t;
+    if(l.kind==="foff"&&faultFrom!==null){
+      faults+=t-faultFrom;faultN++;
+      c.appendChild(svg("rect",{x:x(faultFrom),y:22,width:Math.max(2,x(t)-x(faultFrom)),height:30,fill:css("--red-flag")}));
+      faultFrom=null;
+    }
+    i++;
+    if(delay)setTimeout(step,delay);else step();
+  }
+  step();
+});
+function finish(running,faults,faultN){
+  lines.forEach(function(l){l.el.classList.remove("scan");});
+  var total=SHIFT1-SHIFT0,stopped=total-running,longest=0,at=0,prevEnd=SHIFT0;
+  JOBS.forEach(function(j){var g=sec(j[0])-prevEnd;if(g>longest){longest=g;at=prevEnd;}prevEnd=sec(j[1]);});
+  if(SHIFT1-prevEnd>longest){longest=SHIFT1-prevEnd;at=prevEnd;}
+  var pct=Math.round(running/total*100);
+  $("stats").innerHTML=stat(fmt(running),"Running · "+pct+"%")+stat(fmt(stopped),"Stopped")+
+    stat(Math.round(faults/60)+" min",faultN+" faults")+stat(Math.round(longest/60)+" min","Longest stop, "+hm(at));
+  $("stats").classList.remove("hidden");
+  var gap=guess-pct,mins=Math.round(Math.abs(gap)/100*total/60),cmp=$("compare"),head="You guessed "+guess+"%. The log says "+pct+"%.",body;
+  if(gap>2)body="That's about "+mins+" minutes of this shift you couldn't see. Across 5 shifts a week and a few machines, it adds up to days.";
+  else if(gap<-2)body="You were tougher on this machine than it deserved. Most people guess high. Either way, the log settles it.";
+  else body="Spot on. Most people guess higher. Now imagine knowing that for every machine, every day, without guessing.";
+  cmp.innerHTML='<span class="stamp">DECODED · 1 SHIFT</span><p class="big">'+head+'</p><p>'+body+'</p>';
+  cmp.classList.remove("hidden");
+  sideSolved(pct);
+  complete("s4","s5");
+}
+function stat(v,k){return '<div class="stat"><div class="v">'+v+'</div><div class="k">'+k+'</div></div>';}
+function say(id,text,kind){var m=$(id);m.textContent=text;m.className="msg"+(kind?" "+kind:"");}
+function shake(el){if(reduce)return;el.classList.remove("shake");void el.offsetWidth;el.classList.add("shake");}
+function complete(doneId,nextId){
+  $(doneId).classList.add("done");
+  var n=$(nextId);n.classList.remove("locked");
+  if(!reduce)setTimeout(function(){n.scrollIntoView({behavior:"smooth",block:"start"});},350);
+}
+$("again").addEventListener("click",function(){location.hash="decode";location.reload();});
+})();
+</script>
+</body>
+</html>
