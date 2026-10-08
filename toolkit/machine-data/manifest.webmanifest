@@ -1,0 +1,16 @@
+{
+  "name": "Machine data checklist \u00b7 Meshlock",
+  "short_name": "Machine data",
+  "start_url": "/toolkit/machine-data/",
+  "scope": "/toolkit/machine-data/",
+  "display": "standalone",
+  "background_color": "#EEF0EA",
+  "theme_color": "#EEF0EA",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

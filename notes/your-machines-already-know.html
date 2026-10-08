@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
+<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||(/^\/toolkit\//.test(location.pathname)&&(function(k){return k&&k.t&&Date.now()-k.at<15552e6?k.t:''})(JSON.parse(localStorage.getItem('ml-keep')||'null')))||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <title>Your Machines Already Know How Long They Stand Still | Meshlock Field Notes</title>
@@ -25,6 +25,8 @@
 <link rel="stylesheet" href="/assets/toolkit/cycle-calc.css">
 <script src="/assets/site.js" defer></script>
 <script src="/assets/stats.js" defer></script>
+<script src="/assets/qrcode.js" defer></script>
+<script src="/assets/toolkit/print.js" defer></script>
 <script src="/assets/toolkit/cycle-calc.js" defer></script>
 <style>
 /* ---------- Article layout with a side callout ---------- */
@@ -113,8 +115,12 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
 .checklist li{display:flex;gap:10px;font-size:15px;line-height:1.5;padding:5px 0;border-bottom:1px dashed var(--line)}
 .checklist li::before{content:"";flex:none;width:15px;height:15px;border:1.5px solid var(--ink-faint);border-radius:2px;margin-top:3px}
 .checklist .foot{margin:16px 0 0;font-size:14.5px}
-.checklist .print{appearance:none;background:none;border:0;border-bottom:1px solid var(--ink-faint);font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;padding:4px 0;margin-top:14px;cursor:pointer;color:var(--ink)}
-.checklist .print-only{display:none}
+.checklist .rule{border-left:3px solid var(--amber);background:var(--paper);padding:10px 14px;font-size:15px;line-height:1.5;margin:0 0 6px}
+.checklist .rule b{font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-ink);margin-right:8px}
+.checklist .cl-go{margin:18px 0 0}
+.checklist a.cl-print{display:inline-block;font:400 12.5px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--paper);background:var(--ink);text-decoration:none;padding:13px 16px;border-radius:var(--radius);transition:transform .12s,box-shadow .12s}
+.checklist a.cl-print:hover{transform:translateY(-1px);box-shadow:3px 4px 0 var(--amber)}
+.checklist .cl-more{font-size:14px;color:var(--ink-soft);margin:10px 0 0;line-height:1.5}
 
 /* ---------- Puzzle (scoped under .pz) ---------- */
 .pz{margin:40px 0 44px;border:1.5px solid var(--ink);border-radius:var(--radius);background:var(--paper);scroll-margin-top:90px}
@@ -198,20 +204,15 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
 @media (max-width:520px){.pz .step{padding:20px 16px}.pz-head{padding:18px 16px}}
 @media (prefers-reduced-motion:reduce){.pz *,.try *{animation:none!important;transition:none!important}}
 
-/* Print only the checklist */
-@media print{
-  body.print-checklist *{visibility:hidden}
-  body.print-checklist #checklist,body.print-checklist #checklist *{visibility:visible}
-  body.print-checklist #checklist{position:absolute;left:0;top:0;width:100%;margin:0;border:1.5px solid #000}
-  body.print-checklist #checklist .print{display:none}
-  body.print-checklist #checklist .print-only{display:block}
-}
 /* notes.css enlarges the first <p> in every block; keep that only for the lead */
 .article-body .prose p:first-of-type{font-size:17px;color:var(--ink)}
 .article-body .prose p.lead{font-size:19px;color:var(--ink-soft)}
 .article-body .prose .try p,.article-body .prose .pz-head p{font-size:15px;color:#dfe2da;line-height:1.55}
 .article-body .prose .aside-box p{font-size:15.5px}
 .article-body .prose .checklist .sub{font-size:14.5px;color:var(--ink-soft)}
+.article-body .prose .checklist .rule{font-size:15px;color:var(--ink)}
+.article-body .prose .checklist .cl-more{font-size:14px;color:var(--ink-soft)}
+.article-body .prose .checklist .foot{font-size:14.5px}
 .article-body .prose .pz .step-head p{font-size:15px;color:var(--ink-soft);line-height:1.5}
 .article-body .prose .pz .lock-note{font-size:12px;color:var(--ink-soft)}
 .article-body .prose .pz .log-cap{font-size:11.5px;color:var(--ink-soft)}
@@ -224,8 +225,8 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
 .ts-bar span{display:block;height:100%;width:0;background:var(--amber);transition:width .2s linear}
 .try .ts-cap{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;color:#c9cdc0;margin:0}
 .try a.go.hidden-go{display:none;margin-top:16px}
-.try.solved a.go.hidden-go{display:inline-block}
-.try.solved .ts-bar,.try.solved .ts-cap{display:none}
+.try.show-go a.go.hidden-go{display:inline-block}
+.try.show-go .ts-bar,.try.show-go .ts-cap{display:none}
 </style>
 </head>
 <body id="top">
@@ -253,7 +254,7 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
       <div class="tb-cell tb-time"><span class="tb-k">Time</span><span class="tb-v">8 min + 2 min puzzle</span></div>
       <div class="tb-cell tb-stamp"><span>NO IT NEEDED</span></div>
       <div class="tb-cell"><span class="tb-k">You'll learn</span><span class="tb-v">Where machine data hides · who to ask · how to save it before it is written over</span></div>
-      <div class="tb-cell"><span class="tb-k">You get</span><span class="tb-v">A printable checklist · a log to decode yourself · a cycle time calculator</span></div>
+      <div class="tb-cell"><span class="tb-k">You get</span><span class="tb-v"><a href="#decode">A log to decode yourself</a> · <a href="#cycle-time">a cycle time calculator</a> · <a href="#checklist">a checklist and shift log to print</a></span></div>
     </div>
   </div>
 </section>
@@ -398,11 +399,11 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
 
     <div class="cards">
       <div class="card place"><span class="n">1</span><p class="who">The machine's own controller</p><p class="what">A history of programs or jobs run, with start and finish times. Moulding machines often keep shot counts and cycle times.</p><p class="how">Look for History, Log, Job report or Statistics on the screen. Many save as CSV to a USB stick.</p><p class="tells">When the machine actually worked, job by job.</p></div>
-      <div class="card place"><span class="n">2</span><p class="who">The drive cabinet</p><p class="what">Many drives count "run hours" and "power-on hours" separately.</p><p class="how">Maintenance can read both from the drive's display, usually without changing a setting.</p><p class="tells">Two numbers, one ratio: how much of its switched-on time the machine really works.</p></div>
+      <div class="card place"><span class="n">2</span><p class="who">The drive cabinet</p><p class="what">Many drives count "run hours" and "power-on hours" separately.</p><p class="how">Ask maintenance to read both from the drive's display. It needs no setting changed, but the cabinet is theirs: never open it yourself.</p><p class="tells">Two numbers, one ratio: how much of its switched-on time the machine really works.</p></div>
       <div class="card place"><span class="n">3</span><p class="who">The operator panel</p><p class="what">Alarm history: every fault, when it started and when it cleared.</p><p class="how">Often an "export alarm history" option to USB or SD card.</p><p class="tells">Which stops repeat, and how long each one costs.</p></div>
       <div class="card place"><span class="n">4</span><p class="who">Your ERP or job system</p><p class="what">Job start and finish bookings, quantities per shift, scrap booked.</p><p class="how">A standard report exported to Excel. Ask for one month.</p><p class="tells">Planned against actual, per job. Useful even with no machine data at all.</p></div>
       <div class="card place"><span class="n">5</span><p class="who">Your file folders</p><p class="what">Programs and job files, each with the date and time it was saved.</p><p class="how">Sort the folder by "date modified".</p><p class="tells">A rough timeline of what was prepared and sent to the floor.</p></div>
-      <div class="card place"><span class="n">6</span><p class="who">The power cable</p><p class="what">Nothing yet, on older machines with no screen worth asking.</p><p class="how">A clamp-on current sensor around the supply cable. It does not touch the machine's controls.</p><p class="tells">Running, idle or off, minute by minute. On presses and moulding machines it can even count cycles.</p></div>
+      <div class="card place"><span class="n">6</span><p class="who">The power cable</p><p class="what">Nothing yet, on older machines with no screen worth asking.</p><p class="how">A clamp-on current sensor on one wire of the supply. It does not touch the machine's controls, but it goes inside the electrical panel, so an electrician fits it.</p><p class="tells">Running, idle or off, minute by minute. On presses and moulding machines it can even count cycles.</p></div>
     </div>
 
     <div class="aside-box"><span class="tag">For the curious</span><p>A controller is the small computer that runs the machine. It logs events for its own use and for service visits. Nobody designed those logs for a production manager, which is why they look so unfriendly.</p></div>
@@ -436,9 +437,9 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
 
     <ol>
       <li>Pick one machine. The busiest one, or the one everyone argues about.</li>
-      <li>Find one export from the six places above. Ask the operator first.</li>
-      <li>Save it to a USB stick, then copy it somewhere safe with the machine name and today's date in the file name.</li>
-      <li>Do the same again next week. You now have a habit, and the history stops being written over.</li>
+      <li>Look at its screen with the operator. Find the history, counter or alarm page.</li>
+      <li>Write down the counters at the start and end of every shift for a week, and every stop over 5 minutes. The shift log in the checklist below is made for this.</li>
+      <li>If the screen offers an export, ask whoever looks after the machine whether a USB stick is allowed. Many sites block them, and that is fine: a week of readings is enough to start. If you can export, save one file a week with the machine name and date in the file name, so the history stops being written over.</li>
     </ol>
 
     <p>Then open the file, if you are curious. It will probably look something like this:</p>
@@ -521,8 +522,9 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
         <div class="step-head"><span class="disc">5</span><div><h3>Now picture your whole floor</h3></div></div>
         <p class="lock-note">Run the decoder first.</p>
         <div class="body end">
-          <p data-pc="You decoded one machine for one shift. A real floor has several machines, each writing its own format, and the files get written over every few weeks. That is the part Meshlock builds, and it is what the rest of this note is about.">You decoded one machine for one shift. A real floor has several machines, each writing its own format, and the files get written over every few weeks. That is the part I build, and it is what the rest of this note is about.</p>
-          <p style="margin:0"><a class="btn" style="text-decoration:none;display:inline-block" href="#what-i-build">See what the tool does ↓</a> <button class="btn-ghost" id="again" style="margin-left:14px">Try again</button></p>
+          <p>You decoded one machine for one shift. Next, put that number to work on a real job: the calculator below already has it.</p>
+          <p data-pc="After that: a real floor has several machines, each writing its own format, and the files get written over every few weeks. That is the part Meshlock builds.">After that: a real floor has several machines, each writing its own format, and the files get written over every few weeks. That is the part I build.</p>
+          <p style="margin:0"><a class="btn" style="text-decoration:none;display:inline-block" href="#cycle-time">Put it on a real job ↓</a> <button class="btn-ghost" id="again" style="margin-left:14px">Try again</button></p>
         </div>
       </section>
       <noscript><p class="pz-foot">The puzzle needs JavaScript switched on. The rest of this note reads fine without it.</p></noscript>
@@ -530,14 +532,18 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
     </div>
     <!-- =================== END PUZZLE =================== -->
 
-    <h2 id="cycle-time">Turn one job into a number you can plan with</h2>
+    <section class="keep" id="cycle-time">
+      <div class="keep-head"><span class="keep-k">Keep it · free tool</span><span class="keep-stamp">Yours to keep</span></div>
+      <h2>Turn one job into a number you can plan with</h2>
+      <p class="keep-why">This one is yours, not part of the puzzle. Bookmark it and use it whenever an order lands and someone asks when it will be done.</p>
+      <p>One line from a log is enough. Take how long a cycle ran and how many parts it made, and see the ceiling: what the machine makes if it never stops. No machine does, so it plans with a real running % too. Measured, guessed, or the puzzle's number, which drops in by itself once you solve it.</p>
+      <p class="keep-use"><b>Use it when</b>an order lands · a customer asks for a date · someone says "flat out"</p>
 
-    <p>One line from the log is enough to start. Take how long a cycle ran and how many parts it made, and see the ceiling: what the machine makes if it never stops. No machine does, so then add its real running %. Measured, guessed, or the number you just decoded in the puzzle.</p>
-
-    <div data-tool="cycle-time" data-puzzle data-where="#six-places" data-offer-tag="fn-data">
-      <noscript><div class="cc-nojs">The cycle time calculator needs JavaScript switched on.</div></noscript>
-    </div>
-    <p class="tool-own"><a href="/toolkit/cycle-time/">Open it on its own page →</a></p>
+      <div data-tool="cycle-time" data-puzzle data-where="#six-places" data-offer-tag="fn-data">
+        <noscript><div class="cc-nojs">The cycle time calculator needs JavaScript switched on.</div></noscript>
+      </div>
+      <p class="tool-own"><a href="/toolkit/cycle-time/" data-keep>Keep it: open it on its own page and bookmark it →</a></p>
+    </section>
 
     <h2 id="what-i-build" data-pc="What we do with it">What I do with it</h2>
 
@@ -591,40 +597,44 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
 
     <p>A tool like this costs about £1,700, as a fixed price agreed in writing. Your first tool is paid for only when it works as agreed.</p>
 
-    <h2>Checklist: find your machine data</h2>
+    <section class="keep" id="checklist">
+      <div class="keep-head"><span class="keep-k">Keep it · free to print</span><span class="keep-stamp">Yours to keep</span></div>
+      <h2>Checklist and shift log: find your machine data</h2>
+      <p class="keep-why">Everything here can be done at the machine with a pen. No IT, no tools, nothing opened.</p>
 
-    <div class="checklist" id="checklist">
-      <h3>Find your machine data</h3>
-      <p class="sub">One machine, one afternoon. Machine: ______________________</p>
-      <p class="grp">Ask around</p>
-      <ul>
-        <li>Operator: is there a history, log or report screen? Can it save to USB?</li>
-        <li>Maintenance: do the drives or panel keep run hours or alarm history?</li>
-        <li>Machine supplier: what does the controller log, and for how many days?</li>
-        <li>ERP: can I get last month's job start and finish times as a spreadsheet?</li>
-      </ul>
-      <p class="grp">Look in six places</p>
-      <ul>
-        <li>Machine controller: job or program history</li>
-        <li>Drive cabinet: run hours and power-on hours</li>
-        <li>Operator panel: alarm history export</li>
-        <li>ERP or job system: bookings per job and shift</li>
-        <li>File folders: program files sorted by date</li>
-        <li>Power cable: clamp-on sensor for older machines</li>
-      </ul>
-      <p class="grp">Save it</p>
-      <ul>
-        <li>Export one file to USB today</li>
-        <li>Name it: machine, source, date (for example M2_history_2026-10-08.csv)</li>
-        <li>Repeat every week so nothing gets written over</li>
-      </ul>
-      <p class="foot"><b>Can't read it? That's normal.</b> Bring one file to a free 30-minute call.</p>
-      <p class="print-only mono" style="font-size:12px;margin:8px 0 0" data-pc="meshlock.co.uk/start/?s={tag} · patryk@meshlock.co.uk">meshlock.co.uk/start/?s=fn-data-pdf · hello@meshlock.co.uk</p>
-      <button class="print" type="button" id="printList">Print this checklist</button>
-    </div>
+      <div class="checklist">
+        <h3>Find your machine data</h3>
+        <p class="sub">One machine, one week.</p>
+        <p class="rule"><b>Rule first</b>Look, don't open. Anything behind a cover or panel goes to maintenance. Follow your site's rules.</p>
+        <p class="grp">Look at the screen</p>
+        <ul>
+          <li>Job or program history: is there a page listing past jobs?</li>
+          <li>Counters: parts made, run hours, power-on hours</li>
+          <li>Alarm history: which alarms come up most?</li>
+        </ul>
+        <p class="grp">Write it down, each shift</p>
+        <ul>
+          <li>Counter readings at the start and end of the shift</li>
+          <li>Every stop over 5 minutes: when, how long, why</li>
+          <li>A photo of the history page, where phones are allowed</li>
+        </ul>
+        <p class="grp">Ask on the floor</p>
+        <ul>
+          <li>Operators: when does it stop most, and why?</li>
+          <li>Supplier, on the next service visit: what does the controller log, and for how long?</li>
+        </ul>
+        <p class="grp">Keep the sheets</p>
+        <ul>
+          <li>One sheet per machine, one week. Keep the sheets together.</li>
+        </ul>
+        <p class="foot"><b>Got a week of readings?</b> That's enough to start.</p>
+        <p class="cl-go"><a class="cl-print" href="/toolkit/machine-data/" data-keep>Print it with your machines on it →</a></p>
+        <p class="cl-more">Add your machines and who to ask, then print the checklist (one page) and a one-week shift log for each machine. It remembers your machines for next week.</p>
+      </div>
+    </section>
 
     <div class="article-footer">
-      <p data-pc="Bring one exported file to a free 30-minute call. We will show you what is inside it.">Bring one exported file to a free 30-minute call. I will show you what is inside it.</p>
+      <p data-pc="Bring a week of readings, or one exported file, to a free 30-minute call. We will show you what is inside it.">Bring a week of readings, or one exported file, to a free 30-minute call. I will show you what is inside it.</p>
       <a class="nav-cta" href="/#contact">Book a free call</a>
       <p><a href="/start/?s=fn-data">Or tick what happens on your floor and get a one-page offer →</a></p>
     </div>
@@ -668,31 +678,45 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
 var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 var $ = function(id){return document.getElementById(id);};
 
-/* Print only the checklist */
-$("printList").addEventListener("click",function(){
-  document.body.classList.add("print-checklist");
-  window.print();
-  setTimeout(function(){document.body.classList.remove("print-checklist");},500);
-});
 
 
-/* Side window: progress to the puzzle, then a call to action once solved */
-var side=$("trySide"),pz=$("decode");
+/* Side window: follows the reader through the note.
+   Before and during the puzzle: progress to it. Solved: the result, pointing to the calculator.
+   At the calculator: it is yours to keep. From "What I do with it" on: the one-page offer. */
+var side=$("trySide"),pz=$("decode"),solvedPct=null;
+var SIDE={
+  decoded:function(){return {tag:"Decoded",head:"One shift, read in two minutes",text:"The log said "+solvedPct+"%. Next, put it on a real job: the calculator below already has it.",go:"Put it on a real job ↓",href:"#cycle-time"};},
+  keep:function(){var a=document.querySelector("#cycle-time .tool-own a");return {tag:"Keep it · free tool",head:"This calculator is yours",text:"Bookmark its own page and use it whenever an order lands. Nothing you type leaves the page.",go:"Open the tool page",href:a?a.getAttribute("href"):"/toolkit/cycle-time/"};},
+  offer:function(){return {tag:"Your floor",head:"Put your numbers on it",text:"Tick what happens on your floor and get a one-page offer in about 90 seconds. Your numbers stay yours until you press send.",go:"Get a one-page offer",href:"/start/?s=fn-data-puzzle"};}
+};
+var sideState="";
 function sideUpdate(){
-  if(!side||side.classList.contains("solved"))return;
+  if(!side)return;
   var top=function(el){return el.getBoundingClientRect().top+window.scrollY;};
-  var start=top(document.querySelector(".article-body")),target=top(pz)-window.innerHeight*0.4;
-  var pct=Math.max(0,Math.min(100,Math.round((window.scrollY-start+window.innerHeight*0.2)/(target-start)*100)));
-  $("tsFill").style.width=pct+"%";
-  if(pct>=100){$("tsTag").textContent="You are here";$("tsCap").textContent="Work through the steps on the left";}
-  else{$("tsTag").textContent="Coming up in this note";$("tsCap").textContent=pct+"% of the way there";}
+  var y=window.scrollY+window.innerHeight*0.45,state;
+  if(y>=top($("what-i-build")))state="offer";
+  else if(y>=top($("cycle-time")))state="keep";
+  else if(solvedPct!==null)state="decoded";
+  else state="progress";
+  if(state==="progress"){
+    var start=top(document.querySelector(".article-body")),target=top(pz)-window.innerHeight*0.4;
+    var pct=Math.max(0,Math.min(100,Math.round((window.scrollY-start+window.innerHeight*0.2)/(target-start)*100)));
+    $("tsFill").style.width=pct+"%";
+    if(sideState!=="progress"){side.classList.remove("show-go");$("tsHead").textContent="Decode a raw machine log";
+      $("tsText").textContent="A two-minute puzzle waits halfway down. Crack the codes, write the rules, watch the noise turn into a clear shift. The sections on the way are your clues.";}
+    if(pct>=100){$("tsTag").textContent="You are here";$("tsCap").textContent="Work through the steps on the left";}
+    else{$("tsTag").textContent="Coming up in this note";$("tsCap").textContent=pct+"% of the way there";}
+  } else if(state!==sideState||state==="decoded"){
+    var v=SIDE[state]();
+    $("tsTag").textContent=v.tag;$("tsHead").textContent=v.head;$("tsText").textContent=v.text;
+    $("tsGo").textContent=v.go;$("tsGo").setAttribute("href",v.href);side.classList.add("show-go");
+  }
+  sideState=state;
 }
-window.addEventListener("scroll",sideUpdate,{passive:true});window.addEventListener("resize",sideUpdate);sideUpdate();
-function sideSolved(pct){
-  if(!side)return;side.classList.add("solved");
-  $("tsTag").textContent="Decoded";$("tsHead").textContent="One shift, read in two minutes";
-  $("tsText").textContent="The log said "+pct+"%. Imagine that for every machine, every day. Read on to see how the tool works, or put your own numbers on it.";
-}
+window.addEventListener("scroll",sideUpdate,{passive:true});window.addEventListener("resize",sideUpdate);
+if(document.readyState==="complete")sideUpdate();else window.addEventListener("load",sideUpdate);
+sideUpdate();
+function sideSolved(pct){solvedPct=pct;sideState="";sideUpdate();}
 
 /* ---------- Puzzle data: one invented shift ---------- */
 var DAY="2026-10-06 ";

@@ -197,3 +197,27 @@ footer .wordmark img{height:20px;}
 .crumbs a:hover{color:var(--ink); text-decoration-color:var(--ink);}
 .article-footer .nav-cta + p{margin:18px 0 0; font-size:15px;}
 .article-footer .nav-cta + p a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:4px;}
+
+/* ---------- KEEP IT: a free tool inside a Field Note ----------
+   The tool steps out of the story: an ink rule, a "Keep it · free tool" label and a dashed
+   "Yours to keep" stamp, so it reads as something for the reader, not the next step of the note. */
+.keep{margin:56px 0 34px; padding:14px 0 0; border-top:1.5px solid var(--ink); scroll-margin-top:96px;}
+.keep-head{display:flex; justify-content:space-between; align-items:center; gap:12px; margin:0 0 4px;}
+.keep-k{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--green);}
+.keep-stamp{font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--green); background:var(--green-bg); border:1.5px dashed var(--green); border-radius:2px; padding:5px 8px; transform:rotate(-4deg); white-space:nowrap;}
+.prose .keep h2{margin:14px 0 14px;}
+.prose .keep p.keep-why{font-size:17px; color:var(--ink); margin:0 0 16px;}
+.prose .keep p.keep-use{font-family:'IBM Plex Mono',monospace; font-size:12.5px; line-height:1.6; letter-spacing:.02em; color:var(--ink-soft); margin:0 0 6px;}
+.prose .keep p.keep-use b{font-weight:500; color:var(--ink); text-transform:uppercase; letter-spacing:.1em; font-size:11px; margin-right:6px;}
+.prose .keep p.tool-own{margin:10px 0 0;}
+.prose .keep + .keep{margin-top:40px;}
+/* Toolkit pages: one line under the intro saying the tool is the reader's to keep */
+p.keep-note,.prose p.keep-note,.notes-header p.keep-note{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; line-height:1.6; color:var(--ink-soft); margin:-6px 0 8px;}
+.notes-header p.keep-note{margin:14px 0 0;}
+.keep-note .keep-stamp{font-size:10px; padding:4px 7px;}
+
+/* YOU GET items link to the part of the note that holds them */
+.tb-v a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--ink-faint); text-underline-offset:3px;}
+.tb-v a:hover{text-decoration-color:var(--ink);}
+.tb-v a::after{content:" ↓"; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft);}
+.keep-note a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:4px;}

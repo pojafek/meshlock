@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
+<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||(/^\/toolkit\//.test(location.pathname)&&(function(k){return k&&k.t&&Date.now()-k.at<15552e6?k.t:''})(JSON.parse(localStorage.getItem('ml-keep')||'null')))||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <title>Doing It By Hand for Years, Until Someone Decided Not To | Meshlock Field Notes</title>
@@ -26,6 +26,8 @@
 <link rel="stylesheet" href="/assets/toolkit/worth-automating.css">
 <script src="/assets/site.js" defer></script>
 <script src="/assets/stats.js" defer></script>
+<script src="/assets/qrcode.js" defer></script>
+<script src="/assets/toolkit/print.js" defer></script>
 <script src="/assets/toolkit/step-timer.js" defer></script>
 <script src="/assets/toolkit/worth-automating.js" defer></script>
 </head>
@@ -53,7 +55,7 @@
       <div class="tb-cell tb-type"><span class="tb-k">Type</span><span class="tb-v">Case story</span></div>
       <div class="tb-cell tb-time"><span class="tb-k">Time</span><span class="tb-v">4 min</span></div>
       <div class="tb-cell"><span class="tb-k">You'll learn</span><span class="tb-v">Why a slow manual step survived for years · what it took to remove it</span></div>
-      <div class="tb-cell"><span class="tb-k">You get</span><span class="tb-v">A step timer for your phone · a one-minute 'worth automating?' check</span></div>
+      <div class="tb-cell"><span class="tb-k">You get</span><span class="tb-v"><a href="#step-timer">A step timer for your phone</a> · <a href="#worth-automating">a one-minute 'worth automating?' check</a></span></div>
     </div>
   </div>
 </section>
@@ -109,15 +111,26 @@
 
     <p>Pick one step everyone accepts as slow. Time it on a phone at the workstation, ideally two or three times with different people or shifts. Then answer six questions to see whether it is worth automating, worth standardising first, or best left alone.</p>
 
-    <div data-tool="step-timer" data-offer-tag="fn-hand">
-      <noscript><div class="st-nojs">The step timer needs JavaScript switched on.</div></noscript>
-    </div>
-    <p class="tool-own"><a href="/toolkit/step-timer/">Open it on its own page →</a></p>
+    <section class="keep" id="step-timer">
+      <div class="keep-head"><span class="keep-k">Keep it · free tool</span><span class="keep-stamp">Yours to keep</span></div>
+      <h2>Step timer</h2>
+      <p class="keep-why">Yours to use as often as you like, not only for this story. Bookmark it, or print the paper sheet for the clipboard.</p>
+      <p class="keep-use"><b>Use it when</b>someone says a task takes forever · a new person learns a job · you change how a job is done</p>
+      <div data-tool="step-timer" data-offer-tag="fn-hand">
+        <noscript><div class="st-nojs">The step timer needs JavaScript switched on.</div></noscript>
+      </div>
+      <p class="tool-own"><a href="/toolkit/step-timer/" data-keep>Keep it: open it on its own page and bookmark it →</a></p>
+    </section>
 
-    <div data-tool="worth-automating" data-offer-tag="fn-hand">
-      <noscript><div class="wa-nojs">The worth automating check needs JavaScript switched on.</div></noscript>
-    </div>
-    <p class="tool-own"><a href="/toolkit/worth-automating/">Open it on its own page →</a></p>
+    <section class="keep" id="worth-automating">
+      <div class="keep-head"><span class="keep-k">Keep it · free tool</span><span class="keep-stamp">Yours to keep</span></div>
+      <h2>Worth automating?</h2>
+      <p class="keep-why">Six taps before anyone spends money on a tool. It may well say "leave it", and that is a good answer too.</p>
+      <div data-tool="worth-automating" data-offer-tag="fn-hand">
+        <noscript><div class="wa-nojs">The worth automating check needs JavaScript switched on.</div></noscript>
+      </div>
+      <p class="tool-own"><a href="/toolkit/worth-automating/" data-keep>Keep it: open it on its own page and bookmark it →</a></p>
+    </section>
 
     <div class="article-footer">
       <p>If a step in your own process feels like it's always been done that way, it might be worth a second look.</p>

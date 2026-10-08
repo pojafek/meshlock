@@ -29,9 +29,9 @@ function serve() {
   });
 }
 const PAGES = ['/', '/tools/', '/prices/', '/notes/', '/notes/doing-it-by-hand.html', '/notes/your-machines-already-know.html',
-  '/toolkit/', '/toolkit/cycle-time/', '/toolkit/step-timer/', '/toolkit/worth-automating/', '/toolkit/step-timer/sheet/', '/thanks.html', '/start/'];
+  '/toolkit/', '/toolkit/cycle-time/', '/toolkit/step-timer/', '/toolkit/worth-automating/', '/toolkit/machine-data/', '/toolkit/step-timer/sheet/', '/thanks.html', '/start/'];
 const FOOTER_PAGES = PAGES.filter(p => p !== '/start/');
-const TK = { '/toolkit/': 'tk-index', '/toolkit/cycle-time/': 'tk-cycle', '/toolkit/step-timer/': 'tk-timer', '/toolkit/worth-automating/': 'tk-automating', '/toolkit/step-timer/sheet/': 'tk-timer' };
+const TK = { '/toolkit/': 'tk-index', '/toolkit/cycle-time/': 'tk-cycle', '/toolkit/step-timer/': 'tk-timer', '/toolkit/worth-automating/': 'tk-automating', '/toolkit/machine-data/': 'tk-machine', '/toolkit/step-timer/sheet/': 'tk-timer' };
 let fails = 0, passes = 0;
 const ok = (c, m) => { if (c) passes++; else { fails++; console.log('FAIL', m); } };
 
@@ -67,7 +67,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
       const over = await p.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
       ok(over <= 0, `${path} @${w} scrolls sideways by ${over}px`);
       ok(errs.length === 0, `${path} @${w} errors: ${errs.join(' | ')}`);
-      if (['/toolkit/', '/notes/', '/toolkit/step-timer/sheet/', '/toolkit/cycle-time/'].includes(path))
+      if (['/toolkit/', '/notes/', '/toolkit/step-timer/sheet/', '/toolkit/cycle-time/', '/toolkit/machine-data/'].includes(path))
         await p.screenshot({ path: SHOTS + (path.replace(/\//g, '_') || '_') + w + '.png', fullPage: true });
       await p.close();
     }
@@ -91,13 +91,14 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     }
     const { p } = await open(c, '/toolkit/');
     const cards = p.locator('.tk-card');
-    ok(await cards.count() === 3, 'three cards');
+    ok(await cards.count() === 4, 'four cards');
     const tags = await p.locator('.tk-card .tk-tag').allInnerTexts();
-    ok(tags.join(',') === 'CALCULATOR,TIMER,CHECK', 'card type tags ' + tags);
+    ok(tags.join(',') === 'CALCULATOR,CHECKLIST,TIMER,CHECK', 'card type tags ' + tags);
     ok(!/TOOL \d/.test(await visibleText(p)), 'no tool numbers on the cards');
-    for (let i = 0; i < 3; i++) {
+    ok(await p.locator('.tk-card a.tk-paper[href="/toolkit/step-timer/sheet/"]').count() === 1, 'step timer card links its paper sheet');
+    for (let i = 0; i < 4; i++) {
       const card = cards.nth(i);
-      ok(await card.locator('.tk-q').count() === 1 && await card.locator('.tk-time').count() === 1, `card ${i} question + time`);
+      ok(await card.locator('.tk-q').count() === 1 && await card.locator('.tk-time').count() === 1 && await card.locator('.tk-use').count() === 1, `card ${i} question + time + use it when`);
       ok((await card.locator('.tk-note').innerText()).startsWith('From the note:'), `card ${i} From the note`);
     }
     const hrefs = await p.evaluate(() => [...document.querySelectorAll('main, .tk-index, footer, .crumbs')].flatMap(e => [...e.querySelectorAll('a[href^="/"]')].map(a => a.getAttribute('href'))));
@@ -208,10 +209,14 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok((await p.locator('#stats').innerText()).includes('76%'), 'puzzle result 76%');
     const btn = p.locator('[data-tool="cycle-time"] .cc-mode[data-m="puzzle"]');
     ok(await btn.isVisible() && (await btn.innerText()).includes('76%'), 'calculator offers the puzzle 76%');
-    await p.locator('[data-tool="cycle-time"] [data-k="c"]').fill('43:39');
-    await p.locator('[data-tool="cycle-time"] [data-k="n"]').fill('36');
-    await btn.click();
-    ok(await p.locator('[data-tool="cycle-time"] [data-row="plan"]').isVisible(), 'planned row at 76%');
+    ok(await btn.getAttribute('aria-pressed') === 'true', 'calculator uses the puzzle 76% by itself');
+    ok(/76%/.test(await p.locator('[data-tool="cycle-time"] [data-o="planh"]').innerText()), 'planned row at 76% without a click');
+    ok(await p.locator('#s5 a[href="#cycle-time"]').count() === 1 && await p.locator('#s5 a[href="#what-i-build"]').count() === 0, 'after the puzzle the button leads to the calculator, not past it');
+    // Side window follows the reader: calculator = keep it, What I do with it = the offer
+    await p.locator('#cycle-time').scrollIntoViewIfNeeded(); await p.evaluate(() => window.scrollBy(0, 200)); await p.waitForTimeout(200);
+    ok(/yours/i.test(await p.locator('#tsHead').innerText()) && /\/toolkit\/cycle-time\//.test(await p.locator('#tsGo').getAttribute('href')), 'side window at the calculator: keep it');
+    await p.evaluate(() => document.getElementById('what-i-build').scrollIntoView()); await p.waitForTimeout(200);
+    ok(/\/start\/\?s=fn-data-puzzle/.test(await p.locator('#tsGo').getAttribute('href')), 'side window at What I do with it: the offer with fn-data-puzzle');
     ok(errs.length === 0, 'puzzle errors ' + errs);
     await c.close();
   }
@@ -236,6 +241,90 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(await r.p.locator('.wa-verdict').isVisible(), 'worth automating verdict');
     ok(r.errs.length === 0, 'tools errors ' + r.errs);
     await c.close();
+  }
+
+  // 9. Print: every print button prints only its part, on clean A4 pages (no blank pages from the rest)
+  {
+    const c = await ctx(browser, { reduce: true });
+    const pages = async (p, cls) => {
+      if (cls) await p.evaluate(x => document.body.classList.add(x), cls);
+      await p.emulateMedia({ media: 'print' });
+      const buf = await p.pdf({ format: 'A4', printBackground: true, preferCSSPageSize: true });
+      await p.emulateMedia({ media: 'screen' });
+      return (buf.toString('latin1').match(/\/Type\s*\/Page[^s]/g) || []).length;
+    };
+    const stub = p => p.evaluate(() => { window.print = () => { window.__printed = (window.__printed || 0) + 1; }; });
+    let r = await open(c, '/notes/your-machines-already-know.html'); await stub(r.p);
+    await r.p.click('#cycle-time .cc-print');
+    ok(await r.p.evaluate(() => window.__printed === 1), 'calculator Print result calls print');
+    ok(await pages(r.p, 'ml-printing') === 1, 'calculator result prints on 1 page');
+    ok(/toolkit\/cycle-time\/\?s=fn-data/.test(await r.p.locator('#ml-print .mlp-url').innerText()), 'printout links back to the tool with the tag');
+    ok(await r.p.locator('#ml-print .mlp-qr').count() === 1, 'printout has a QR code');
+    ok(await r.p.locator('#checklist a[href^="/toolkit/machine-data/"]').count() === 1, 'article checklist leads to the printable sheet');
+    r = await open(c, '/toolkit/step-timer/'); await stub(r.p);
+    await r.p.click('.st-start'); await r.p.waitForTimeout(200); await r.p.click('.st-next'); await r.p.waitForTimeout(200); await r.p.click('.st-finish');
+    await r.p.click('.st-print');
+    ok(await pages(r.p, 'ml-printing') === 1, 'step timer result prints on 1 page');
+    r = await open(c, '/toolkit/machine-data/'); await stub(r.p);
+    for (const [i, m] of ['M1', 'M2', 'M3'].entries()) { if (i > 1) await r.p.click('.ms-add'); await r.p.locator('.ms-m').nth(i).fill(m); }
+    await r.p.locator('#ms-org').fill('Line 2');
+    await r.p.click('.ms-tick[data-k="hist|0"]');
+    await r.p.click('.ms-print[data-what="check"]');
+    ok(await pages(r.p, 'ms-printing') === 1, 'machine checklist prints on 1 page');
+    ok(/Line 2/.test(await r.p.locator('#ms-print').innerText()), 'company printed on the sheet');
+    await r.p.click('.ms-print[data-what="log"]');
+    ok(await pages(r.p, 'ms-printing') === 3, 'shift logs print one page per machine');
+    await r.p.click('[data-shifts="3"]'); await r.p.click('[data-days="7"]'); await r.p.click('.ms-print[data-what="log"]');
+    ok(await pages(r.p, 'ms-printing') === 3, 'shift logs with 3 shifts, 7 days still one page per machine');
+    r = await open(c, '/toolkit/machine-data/');
+    ok(await r.p.locator('.ms-m').nth(2).inputValue() === 'M3' && await r.p.locator('.ms-tick[data-k="hist|0"]').getAttribute('aria-pressed') === 'true', 'checklist remembers machines and ticks');
+    r = await open(c, '/toolkit/step-timer/sheet/');
+    await r.p.locator('#spTask').fill('Pack one order'); await r.p.locator('#spSteps').fill('Pick\nPack\nLabel');
+    ok((await r.p.locator('.sheet td.what').first().innerText()) === 'Pick' && /Line 2/.test(await r.p.locator('#shOrg').innerText()), 'paper sheet takes task, steps and company');
+    ok(await pages(r.p) === 1, 'paper sheet prints on 1 page');
+    ok(r.errs.length === 0, 'print errors ' + r.errs);
+    await c.close();
+  }
+
+  // 10. The checklist in the article matches the printable checklist, item for item
+  {
+    const c = await ctx(browser);
+    const a = await open(c, '/notes/your-machines-already-know.html');
+    const art = await a.p.$$eval('#checklist .checklist li', l => l.map(x => x.textContent.trim()));
+    const t = await open(c, '/toolkit/machine-data/');
+    const tool = await t.p.evaluate(() => window.mlMachineItems.flatMap(g => g.items.map(i => i.t)));
+    ok(JSON.stringify(art) === JSON.stringify(tool), 'article checklist = toolkit checklist');
+    const groups = await a.p.$$eval('#checklist .checklist .grp', l => l.map(x => x.textContent.trim()));
+    ok(JSON.stringify(groups) === JSON.stringify(await t.p.evaluate(() => window.mlMachineItems.map(g => g.g))), 'checklist groups match');
+    ok(!/USB|clamp|cabinet|ERP/i.test(art.join(' ')), 'checklist steps need no IT and open nothing');
+    // YOU GET links go to their part of each note
+    for (const path of ['/notes/your-machines-already-know.html', '/notes/doing-it-by-hand.html']) {
+      const { p } = await open(c, path);
+      const ids = await p.$$eval('.title-block .tb-v a[href^="#"]', l => l.map(x => x.getAttribute('href').slice(1)));
+      ok(ids.length >= 2 && (await p.evaluate(ids => ids.every(i => document.getElementById(i)), ids)), `${path} You get links ${ids}`);
+      ok(await p.locator('.keep .keep-stamp').count() >= 1, `${path} tools sit in a Yours to keep frame`);
+    }
+    await c.close();
+  }
+
+  // 11. Kept tools keep Patryk's version: address, keep links, and a reopened tool on the same device
+  {
+    const c = await ctx(browser);
+    let r = await open(c, '/?s=pc-mail-data');
+    r = await open(c, '/toolkit/cycle-time/', r.p);
+    ok(/[?&]s=pc-mail-data/.test(await r.p.evaluate(() => location.search)), 'toolkit page puts the tag in its address for bookmarks');
+    r = await open(c, '/notes/doing-it-by-hand.html', r.p);
+    ok(/\?s=pc-mail-data/.test(await r.p.locator('#step-timer .tool-own a').getAttribute('href')), 'keep link carries the tag');
+    const fresh = await open(c, '/toolkit/step-timer/');   // a new tab: like a home screen icon
+    ok(await fresh.p.evaluate(() => document.documentElement.classList.contains('pc')) && /patryk@/.test(await fresh.p.locator('footer').innerText()), 'reopened tool keeps Patryk version');
+    ok((await startTags(fresh.p)).every(x => x === 'pc-mail-data'), 'reopened tool offer links keep the tag');
+    const home = await open(c, '/');                      // the rest of the site keeps the tab-only rule
+    ok(!(await home.p.evaluate(() => document.documentElement.classList.contains('pc'))), 'new tab outside the toolkit is not Patryk mode');
+    await c.close();
+    const c2 = await ctx(browser);
+    r = await open(c2, '/toolkit/cycle-time/');
+    ok(!/[?&]s=/.test(await r.p.evaluate(() => location.search)), 'no tag: toolkit address unchanged');
+    await c2.close();
   }
 
   // 8. /tests/ is never published: the Netlify rule answers 404 for it

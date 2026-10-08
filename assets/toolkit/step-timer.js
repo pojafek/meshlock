@@ -1,6 +1,7 @@
 /* Step timer · Meshlock toolkit
    Renders into the element with data-tool="step-timer". One file, used by /toolkit/step-timer/
-   and the first Field Note. Styles: assets/toolkit/step-timer.css (also the print layout).
+   and the first Field Note. Styles: assets/toolkit/step-timer.css. Print result uses
+   assets/toolkit/print.js (only the results, one clean page).
    Time one task step by step, up to 3 runs (another person or another shift), mark steps as
    Waiting or Mistake, and see where the time goes.
    Options on the element:
@@ -184,7 +185,6 @@
       var offer = '/start/' + (tag ? '?s=' + encodeURIComponent(tag) : '') + '#f=export' + (r.bucket ? '.' + r.bucket : '');
       var check = checkUrl + (r.freq ? '#freq=' + r.freq : '');
       frame('<div class="st-body st-results st-print-target">' +
-        '<div class="st-print-head">Step timer · meshlock.co.uk/toolkit/step-timer/</div>' +
         '<div class="st-meta"><span>' + (multi ? r.runs + ' runs · averages' : '1 run') + '</span>' + (S.task ? '<span class="st-task">' + esc(S.task) + '</span>' : '') + '</div>' +
         '<div class="st-steps"><div class="st-srow st-shead"><div>Step</div><div>' + (multi ? 'Average · shortest to longest' : 'Time') + '</div></div>' + rows + '</div>' +
         '<div class="st-total"><span class="st-tk">Total' + (multi ? ' (average)' : '') + '</span><span class="st-tv">' + clock(r.total) + '</span></div>' +
@@ -196,10 +196,11 @@
       '</div>' +
       '<div class="st-body st-next-actions">' +
         (r.runs < MAX_RUNS ? '<button type="button" class="st-big st-again">Measure again<span class="st-next-name">Run ' + (r.runs + 1) + ' of ' + MAX_RUNS + ': another person or shift, same steps</span></button>' : '') +
+        '<div class="st-row"><button type="button" class="st-mid st-print">Print result</button><button type="button" class="st-mid st-copy">Copy for an email</button></div>' +
+        '<span class="st-status" role="status"></span>' +
+        '<div class="st-then">Then</div>' +
         '<a class="st-act st-check" href="' + esc(check) + '">Is it worth automating? →</a>' +
         '<a class="st-act st-offer" href="' + esc(offer) + '">Put these hours into the offer →</a>' +
-        '<div class="st-row"><button type="button" class="st-mid st-copy">Copy result</button><button type="button" class="st-mid st-print">Print result</button></div>' +
-        '<span class="st-status" role="status"></span>' +
         '<div class="st-foot"><a class="st-paper" href="' + esc(sheetUrl) + '">Prefer paper? Print a blank sheet →</a><button type="button" class="st-clear">Start over</button></div>' +
       '</div>');
       function week(){
@@ -223,16 +224,17 @@
       $('.st-offer').addEventListener('click', function(){ track('toolkit/step-timer/to-offer'); });
       $('.st-copy').addEventListener('click', function(){
         var t = text(stats()), st = $('.st-status');
-        function done(){ st.textContent = 'Copied'; setTimeout(function(){ st.textContent = ''; }, 2500); }
+        function done(){ st.textContent = 'Copied. Paste it into an email or a message.'; setTimeout(function(){ st.textContent = ''; }, 4000); }
         function fallback(){ var ta = document.createElement('textarea'); ta.value = t; ta.setAttribute('readonly', ''); ta.style.position = 'absolute'; ta.style.left = '-9999px'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch(e){ st.textContent = 'Copy not available here'; } document.body.removeChild(ta); }
         if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, fallback); else fallback();
       });
+      // Print result: only the results, as one clean page (assets/toolkit/print.js)
       $('.st-print').addEventListener('click', function(){
-        document.body.classList.add('print-tool');
-        var off = function(){ document.body.classList.remove('print-tool'); window.removeEventListener('afterprint', off); };
-        window.addEventListener('afterprint', off);
-        window.print();
-        setTimeout(off, 1000);
+        if (!window.mlPrint) return;
+        var node = $('.st-print-target').cloneNode(true), pw = node.querySelector('.st-week-row');
+        if (pw) pw.innerHTML = '<span class="st-hours">' + esc(S.perWeek ? S.perWeek + ' times a week ' + $('.st-hours').textContent : 'Times per week not set') + '</span>';
+        var wrap = document.createElement('div'); wrap.className = 'st st-printed'; wrap.appendChild(node);
+        window.mlPrint({ title: 'Step timer' + (S.task ? ' · ' + S.task : ''), tool: '/toolkit/step-timer/', fallback: tag, node: wrap });
       });
       $('.st-clear').addEventListener('click', function(){
         var b = this;

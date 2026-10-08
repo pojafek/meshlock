@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
+<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||(/^\/toolkit\//.test(location.pathname)&&(function(k){return k&&k.t&&Date.now()-k.at<15552e6?k.t:''})(JSON.parse(localStorage.getItem('ml-keep')||'null')))||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <title>Step Timer Paper Sheet | Meshlock Toolkit</title>
@@ -15,6 +15,8 @@
 <link rel="stylesheet" href="/assets/notes.css">
 <script src="/assets/site.js" defer></script>
 <script src="/assets/stats.js" defer></script>
+<script src="/assets/qrcode.js" defer></script>
+<script src="/assets/toolkit/print.js" defer></script>
 <style>
 .sheet{background:#fff; border:1.5px solid var(--ink); padding:18px; margin:18px 0 0; color:var(--ink);}
 .sheet-top{display:grid; grid-template-columns:2fr 1fr 1fr; gap:10px 16px; margin:0 0 14px;}
@@ -32,13 +34,38 @@
 .prose .sheet-how{font-size:15.5px;}
 .sheet-print{appearance:none; font:400 12.5px/1.2 'IBM Plex Mono',monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--paper); background:var(--ink); border:0; border-radius:3px; padding:12px 16px; cursor:pointer; margin:6px 0 0;}
 .sheet-wrap{overflow-x:auto;}
+.sheet-head{display:flex; justify-content:space-between; align-items:flex-end; gap:14px; border-bottom:1.5px solid var(--ink); padding:0 0 8px; margin:0 0 4px;}
+.sheet-head img{display:block; height:16px; width:auto;}
+.sheet-title{font:700 19px/1.2 'Space Grotesk',sans-serif; margin:6px 0 0;}
+.sheet-org{font:500 13px/1.3 'IBM Plex Sans',sans-serif; text-align:right;}
+.sheet-f .v{display:block; font:500 14px/1.3 'IBM Plex Sans',sans-serif; letter-spacing:0; text-transform:none; color:var(--ink); min-height:1.3em; margin-top:4px;}
+.sheet td.what{font-size:13px; line-height:1.3;}
+.sheet .mlp-foot{display:flex; align-items:center; gap:12px; border-top:1px solid var(--line); margin:14px 0 0; padding:8px 0 0;}
+.sheet .mlp-qr{flex:none; width:56px; height:56px;}
+.sheet .mlp-ft{font:400 9.5px/1.5 'IBM Plex Mono',monospace; color:var(--ink-soft);}
+.sheet .mlp-ft b{font-weight:500; color:var(--ink);}
+.sheet .mlp-url{font-size:10.5px; color:var(--ink);}
+/* Make it yours: filled in before printing, kept on this device */
+.sp-form{background:var(--paper-card); border:1.5px solid var(--ink); border-radius:var(--radius); padding:16px 18px; margin:6px 0 16px; display:grid; gap:14px;}
+.sp-form .sp-k{display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 6px;}
+.sp-form .sp-k i{font-style:normal; text-transform:none; letter-spacing:.02em; color:var(--ink-faint);}
+.sp-form input,.sp-form textarea{display:block; width:100%; padding:10px 12px; font:500 16px/1.35 'IBM Plex Sans',sans-serif; color:var(--ink); background:var(--paper); border:1.5px solid var(--ink); border-radius:3px;}
+.sp-form textarea{min-height:120px; resize:vertical;}
+.sp-form input:focus,.sp-form textarea:focus{outline:2px solid var(--amber); outline-offset:1px;}
+.sp-row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.sp-last{appearance:none; justify-self:start; background:none; border:0; border-bottom:1px solid var(--ink-faint); padding:2px 0; font:400 12px/1.3 'IBM Plex Mono',monospace; letter-spacing:.04em; color:var(--ink); cursor:pointer;}
+.prose .sp-title{font:700 18px/1.3 'Space Grotesk',sans-serif; margin:0;}
+@media (max-width:560px){ .sp-row{grid-template-columns:1fr;} }
 @media (max-width:640px){ .sheet{min-width:600px;} }
 @media print{
   nav,.offer-bar,footer,.article-header,.no-print{display:none!important;}
-  body{background:#fff;}
+  html,body{background:#fff!important;}
   .article-body{padding:0;}
   .article-body .prose{max-width:none;}
-  .sheet{border:1.5px solid #000; margin:0; min-width:0;}
+  .sheet{border:0; padding:0; margin:0; min-width:0; background:#fff;}
+  .sheet-wrap{overflow:visible;}
+  .sheet *{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  @page{size:A4; margin:12mm;}
 }
 </style>
 </head>
@@ -69,12 +96,23 @@
   <div class="wrap prose">
     <div class="no-print">
       <p class="sheet-how">For people who prefer a clipboard. Write one step per line, note the clock time each step ends, and tick Waiting or Mistake where it applies. Three columns for three runs: another person or another shift.</p>
-      <button type="button" class="sheet-print" onclick="window.print()">Print this sheet</button>
+      <p class="keep-note"><span class="keep-stamp">Yours to keep</span> Print it blank, or fill in the task and its steps first and print one for each person or shift.</p>
+      <div class="sp-form" id="spForm" hidden>
+        <p class="sp-title">Make it yours <span class="mono" style="font-size:11.5px;font-weight:400;color:var(--ink-soft)">· optional, kept on this device</span></p>
+        <div class="sp-row">
+          <label><span class="sp-k">Company or department</span><input id="spOrg" type="text" maxlength="60" autocomplete="organization" placeholder="e.g. Finishing, Line 2"></label>
+          <label><span class="sp-k">Task</span><input id="spTask" type="text" maxlength="60" autocomplete="off" placeholder="e.g. Placing artwork for one order"></label>
+        </div>
+        <label><span class="sp-k">Steps <i>(one per line, up to 16)</i></span><textarea id="spSteps" placeholder="Find template&#10;Match the customer file&#10;Check resolution&#10;Export"></textarea></label>
+        <button type="button" class="sp-last" id="spLast" hidden>Use the steps from your last timing on this device</button>
+      </div>
+      <button type="button" class="sheet-print" id="spPrint">Print this sheet</button>
     </div>
     <div class="sheet-wrap">
     <div class="sheet">
+      <div class="sheet-head"><div><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="102" height="16"><div class="sheet-title">Step timer, on paper</div></div><div class="sheet-org" id="shOrg"></div></div>
       <div class="sheet-top">
-        <div class="sheet-f">Task</div><div class="sheet-f">Date</div><div class="sheet-f">Times per week</div>
+        <div class="sheet-f">Task<span class="v" id="shTask"></span></div><div class="sheet-f">Date</div><div class="sheet-f">Times per week</div>
       </div>
       <table>
         <colgroup><col class="c-n"><col class="c-what"><col class="c-run"><col class="c-run"><col class="c-run"><col class="c-flag"><col class="c-flag"></colgroup>
@@ -97,7 +135,8 @@
       <div class="sheet-bottom">
         <div class="sheet-f">Total run 1</div><div class="sheet-f">Total run 2</div><div class="sheet-f">Total run 3</div>
       </div>
-      <div class="sheet-note">Step timer · meshlock.co.uk/toolkit/step-timer/ · Bring the sheet to a free 30-minute call, or time the next run on a phone.</div>
+      <div class="sheet-note">Add up each run. A step that takes much longer for one person than another is worth a look first. Time the next run on a phone, or bring the sheet to a free 30-minute call.</div>
+      <div id="shFoot"></div>
     </div>
     </div>
     <p class="tool-more no-print"><a href="/toolkit/step-timer/">← Back to the step timer</a></p>
@@ -122,5 +161,44 @@
   </ul>
 </footer>
 
+<script>
+/* Make it yours: company or department (shared with every printed sheet, 'ml-org'), task and steps
+   ('ml-timer-sheet'), all kept on this device only. The steps can come from the step timer's last
+   measurement on this device ('ml-step-timer'). Nothing is sent anywhere. */
+(function(){
+  var KEY = 'ml-timer-sheet', MAXS = 16, $ = function(id){ return document.getElementById(id); };
+  function start(){
+    var P = window.mlPrint, S = { task: '', steps: '' };
+    try { S = Object.assign(S, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch(e){}
+    $('spForm').hidden = false;
+    $('spOrg').value = P ? P.org() : ''; $('spTask').value = S.task; $('spSteps').value = S.steps;
+    var last = null;
+    try { var t = JSON.parse(localStorage.getItem('ml-step-timer') || 'null'); if (t && t.steps && t.steps.length) last = t; } catch(e){}
+    if (last) $('spLast').hidden = false;
+    function draw(){
+      var steps = $('spSteps').value.split('\n').map(function(x){ return x.trim(); }).filter(Boolean).slice(0, MAXS);
+      $('shOrg').textContent = P ? P.org() : '';
+      $('shTask').textContent = $('spTask').value.trim();
+      var rows = Math.max(12, steps.length), body = document.querySelector('.sheet tbody'), h = '';
+      for (var i = 0; i < rows; i++) h += '<tr><td class="n">' + (i + 1) + '</td><td class="what"></td><td></td><td></td><td></td><td class="box"></td><td class="box"></td></tr>';
+      body.innerHTML = h;
+      body.querySelectorAll('td.what').forEach(function(td, i){ td.textContent = steps[i] || ''; });
+      if (P) $('shFoot').innerHTML = P.foot('/toolkit/step-timer/', 'tk-timer');
+    }
+    function save(){ try { localStorage.setItem(KEY, JSON.stringify({ task: $('spTask').value.trim(), steps: $('spSteps').value })); } catch(e){} draw(); }
+    $('spOrg').addEventListener('input', function(){ if (P) P.org(this.value); draw(); });
+    $('spTask').addEventListener('input', save);
+    $('spSteps').addEventListener('input', save);
+    $('spLast').addEventListener('click', function(){
+      $('spTask').value = $('spTask').value || last.task || '';
+      $('spSteps').value = last.steps.map(function(s, i){ return s.label || 'Step ' + (i + 1); }).join('\n');
+      save();
+    });
+    draw();
+  }
+  $('spPrint').addEventListener('click', function(){ window.print(); });
+  if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
+})();
+</script>
 </body>
 </html>

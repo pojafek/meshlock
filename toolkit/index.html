@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
+<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||(/^\/toolkit\//.test(location.pathname)&&(function(k){return k&&k.t&&Date.now()-k.at<15552e6?k.t:''})(JSON.parse(localStorage.getItem('ml-keep')||'null')))||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <title>Toolkit: Free Shop Floor Tools | Meshlock</title>
@@ -41,7 +41,12 @@
 .tk-card p{margin:0;}
 .tk-k{display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 4px;}
 .tk-q{font-size:16px; line-height:1.5; color:var(--ink); margin:0 0 14px !important;}
-.tk-time{font-size:15px; color:var(--ink); margin:0 0 20px !important;}
+.tk-time{font-size:15px; color:var(--ink); margin:0 0 14px !important;}
+.tk-use{font-size:15px; line-height:1.5; color:var(--ink); margin:0 0 20px !important;}
+.tk-acts{display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; margin-top:auto;}
+.tk-acts .tk-open{margin-top:0;}
+.tk-paper-k{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft);}
+.tk-paper{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink); text-decoration:underline; text-decoration-color:var(--ink-faint); text-underline-offset:4px;}
 .tk-open{align-self:flex-start; margin-top:auto; font-family:'IBM Plex Mono',monospace; font-size:12.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink); border:1px solid var(--ink); border-radius:var(--radius); padding:9px 14px; text-decoration:none; transition:background .15s ease, color .15s ease;}
 .tk-open:hover{background:var(--ink); color:var(--paper);}
 .tk-note{border-top:1px dashed var(--line); margin-top:18px !important; padding-top:12px; font-size:14px; line-height:1.5; color:var(--ink-soft);}
@@ -72,7 +77,8 @@
   <div class="wrap">
     <p class="eyebrow crumbs"><a href="/">Meshlock</a> / Toolkit</p>
     <h1>Toolkit</h1>
-    <p class="tk-lead">Free tools for the shop floor, each one from a Field Note. Nothing you type leaves your device. Bookmark this page to keep them all in one place.</p>
+    <p class="tk-lead">Free tools for the shop floor, each one from a Field Note. They are yours to keep: use them as often as you like, print the paper versions for the clipboard, and bookmark this page to have them all in one place.</p>
+    <p class="keep-note"><span class="keep-stamp">Yours to keep</span> Nothing you type leaves your device. No sign-up.</p>
   </div>
 </section>
 
@@ -81,9 +87,10 @@
     <!-- Every tool in /toolkit/ is listed here, one <li> line each, in the order shown.
          Next tool: copy one line, then change the tag, name, question, time, link and note. -->
     <ol class="tk-list">
-      <li class="tk-card"><span class="tk-tag">Calculator</span><h2>Cycle time calculator</h2><p class="tk-q"><span class="tk-k">Answers</span>How many parts an hour and a shift, and when will this order be done?</p><p class="tk-time"><span class="tk-k">Takes</span>1 minute</p><a class="tk-open" href="/toolkit/cycle-time/">Open the calculator →</a><p class="tk-note">From the note: <a href="/notes/your-machines-already-know.html">Your machines already know how long they stand still</a></p></li>
-      <li class="tk-card"><span class="tk-tag">Timer</span><h2>Step timer</h2><p class="tk-q"><span class="tk-k">Answers</span>Which step of a task takes the time, and which one nobody does the same way?</p><p class="tk-time"><span class="tk-k">Takes</span>As long as the task, up to three runs</p><a class="tk-open" href="/toolkit/step-timer/">Open the timer →</a><p class="tk-note">From the note: <a href="/notes/doing-it-by-hand.html">Doing it by hand for years, until someone decided not to</a></p></li>
-      <li class="tk-card"><span class="tk-tag">Check</span><h2>Worth automating?</h2><p class="tk-q"><span class="tk-k">Answers</span>Should this repetitive step be automated, standardised first, or left alone?</p><p class="tk-time"><span class="tk-k">Takes</span>1 minute, six taps</p><a class="tk-open" href="/toolkit/worth-automating/">Open the check →</a><p class="tk-note">From the note: <a href="/notes/doing-it-by-hand.html">Doing it by hand for years, until someone decided not to</a></p></li>
+      <li class="tk-card"><span class="tk-tag">Calculator</span><h2>Cycle time calculator</h2><p class="tk-q"><span class="tk-k">Answers</span>How many parts an hour and a shift, and when will this order be done?</p><p class="tk-time"><span class="tk-k">Takes</span>1 minute</p><p class="tk-use"><span class="tk-k">Use it when</span>An order lands and someone asks when it will be done.</p><div class="tk-acts"><a class="tk-open" href="/toolkit/cycle-time/">Open the calculator →</a></div><p class="tk-note">From the note: <a href="/notes/your-machines-already-know.html">Your machines already know how long they stand still</a></p></li>
+      <li class="tk-card"><span class="tk-tag">Checklist</span><h2>Machine data checklist</h2><p class="tk-q"><span class="tk-k">Answers</span>Where does each machine keep its data, and how do you start a record of your own with a pen?</p><p class="tk-time"><span class="tk-k">Takes</span>One walk round the floor, then a minute a shift</p><p class="tk-use"><span class="tk-k">Use it when</span>Nobody can say how long the machines really stand still.</p><div class="tk-acts"><a class="tk-open" href="/toolkit/machine-data/">Open the checklist →</a><span class="tk-paper-k">Prints as a checklist and a shift log</span></div><p class="tk-note">From the note: <a href="/notes/your-machines-already-know.html">Your machines already know how long they stand still</a></p></li>
+      <li class="tk-card"><span class="tk-tag">Timer</span><h2>Step timer</h2><p class="tk-q"><span class="tk-k">Answers</span>Which step of a task takes the time, and which one nobody does the same way?</p><p class="tk-time"><span class="tk-k">Takes</span>As long as the task, up to three runs</p><p class="tk-use"><span class="tk-k">Use it when</span>Someone says a task takes forever, and nobody knows which step.</p><div class="tk-acts"><a class="tk-open" href="/toolkit/step-timer/">Open the timer →</a><a class="tk-paper" href="/toolkit/step-timer/sheet/">Or print the paper sheet</a></div><p class="tk-note">From the note: <a href="/notes/doing-it-by-hand.html">Doing it by hand for years, until someone decided not to</a></p></li>
+      <li class="tk-card"><span class="tk-tag">Check</span><h2>Worth automating?</h2><p class="tk-q"><span class="tk-k">Answers</span>Should this repetitive step be automated, standardised first, or left alone?</p><p class="tk-time"><span class="tk-k">Takes</span>1 minute, six taps</p><p class="tk-use"><span class="tk-k">Use it when</span>Before anyone spends money on a tool for a repetitive step.</p><div class="tk-acts"><a class="tk-open" href="/toolkit/worth-automating/">Open the check →</a></div><p class="tk-note">From the note: <a href="/notes/doing-it-by-hand.html">Doing it by hand for years, until someone decided not to</a></p></li>
     </ol>
 
     <div class="article-footer">

@@ -1,0 +1,98 @@
+/* Machine data checklist · assets/toolkit/machine-sheet.js renders into [data-tool="machine-sheet"].
+   Same look as the other toolkit tools. The sheets (.ms-sheet) look the same on screen and on paper.
+   No <p> or lists inside, so article prose rules never reach it. */
+.ms [hidden]{display:none!important;}
+.ms{background:var(--paper-card); border:1.5px solid var(--ink); border-radius:var(--radius); margin:22px 0 12px; color:var(--ink);}
+.ms-head{background:var(--ink); color:var(--paper); padding:12px 18px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 14px; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase;}
+.ms-tag{color:var(--amber);}
+.ms-sub-head{color:#c9cdc0;}
+.ms-set{display:grid; gap:18px; padding:18px;}
+.ms-label{display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 6px;}
+.ms-label .o{text-transform:none; letter-spacing:.02em; color:var(--ink-faint);}
+.ms-in{display:block; width:100%; min-height:46px; padding:10px 12px; font:500 16px/1.2 'IBM Plex Sans',sans-serif; color:var(--ink); background:var(--paper); border:1.5px solid var(--ink); border-radius:3px; appearance:none;}
+.ms-in::placeholder{color:var(--ink-faint); font-weight:400;}
+.ms-in:focus,.ms button:focus-visible{outline:2px solid var(--amber); outline-offset:2px;}
+.ms-machines{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px;}
+.ms-add,.ms-clear{appearance:none; background:none; border:0; border-bottom:1px solid var(--ink-faint); color:var(--ink); font:400 12px/1.2 'IBM Plex Mono',monospace; letter-spacing:.06em; text-transform:uppercase; padding:4px 0; margin-top:10px; cursor:pointer;}
+.ms-who{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px;}
+.ms-wf span{display:block; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); margin:0 0 4px;}
+.ms-chips{display:flex; flex-wrap:wrap; align-items:center; gap:8px;}
+.ms-cl{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); margin-left:6px;}
+.ms-cl:first-child{margin-left:0;}
+.ms-chip{appearance:none; min-height:40px; min-width:40px; padding:8px 12px; font:500 12.5px/1.2 'IBM Plex Mono',monospace; color:var(--ink); background:var(--paper); border:1.5px solid var(--ink); border-radius:3px; cursor:pointer;}
+.ms-chip[aria-pressed="true"]{background:var(--ink); color:var(--paper);}
+.ms-actions{display:flex; flex-wrap:wrap; gap:10px; padding:0 18px 18px;}
+.ms-print{appearance:none; flex:1 1 220px; display:flex; flex-direction:column; align-items:flex-start; gap:4px; text-align:left; padding:14px 16px; font:500 13.5px/1.2 'IBM Plex Mono',monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--paper); background:var(--ink); border:1.5px solid var(--ink); border-radius:4px; cursor:pointer; transition:transform .12s, box-shadow .12s;}
+.ms-print + .ms-print{background:var(--paper); color:var(--ink);}
+.ms-print span{font:400 11.5px/1.3 'IBM Plex Mono',monospace; letter-spacing:.02em; text-transform:none; opacity:.8;}
+.ms-print:hover{transform:translateY(-1px); box-shadow:3px 4px 0 var(--amber);}
+.ms-pv{border-top:1px solid var(--line); padding:6px 18px 4px;}
+.ms-pvh{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink); margin:14px 0 8px;}
+.ms-pvh span{display:block; text-transform:none; letter-spacing:.02em; color:var(--ink-soft); margin-top:3px;}
+.ms-scroll{overflow-x:auto; border:1px solid var(--line); background:var(--paper);}
+.ms-clear-row{padding:4px 18px 16px;}
+
+/* ---------- the sheets ---------- */
+.ms-sheet{background:#fff; color:#171A1D; padding:16px; min-width:540px; font-family:'IBM Plex Sans',sans-serif;}
+.ms-top{display:flex; justify-content:space-between; align-items:flex-end; gap:14px; border-bottom:1.5px solid #171A1D; padding:0 0 8px; margin:0 0 10px;}
+.ms-top img{display:block; height:16px; width:auto;}
+.ms-title{font:700 19px/1.2 'Space Grotesk',sans-serif; margin:6px 0 0;}
+.ms-meta{font:400 10.5px/1.5 'IBM Plex Mono',monospace; letter-spacing:.05em; text-transform:uppercase; color:#565C58; text-align:right;}
+.ms-meta b{display:block; font:500 12px/1.4 'IBM Plex Sans',sans-serif; text-transform:none; letter-spacing:0; color:#171A1D;}
+.ms-rule{border-left:3px solid #D9A441; background:#F6F7F2; padding:8px 12px; font-size:13px; line-height:1.45; margin:0 0 10px;}
+.ms-rule b{font:500 10px/1.4 'IBM Plex Mono',monospace; letter-spacing:.12em; text-transform:uppercase; color:#5A4419; margin-right:8px;}
+.ms-sheet table{width:100%; border-collapse:collapse; table-layout:fixed;}
+.ms-sheet th{font:500 9.5px/1.3 'IBM Plex Mono',monospace; letter-spacing:.06em; text-transform:uppercase; color:#565C58; text-align:left; padding:6px; border-bottom:1.5px solid #171A1D; vertical-align:bottom;}
+.ms-sheet td{border-bottom:1px solid #C9CDC0; padding:5px 6px; font-size:12.5px; line-height:1.35; vertical-align:middle;}
+.ms-grid .ms-what{width:auto;}
+.ms-grid th.ms-mc{width:76px; text-align:center; color:#171A1D; overflow-wrap:anywhere;}
+.ms-grid tr.ms-g td{font:500 9.5px/1.3 'IBM Plex Mono',monospace; letter-spacing:.12em; text-transform:uppercase; color:#3F6B52; padding-top:10px; border-bottom:1px solid #171A1D;}
+.ms-whois{font:400 11px/1.3 'IBM Plex Mono',monospace; color:#565C58;}
+.ms-cell{text-align:center; border-left:1px solid #C9CDC0;}
+.ms-cell.ms-na{color:#8A9086; font:400 10.5px/1 'IBM Plex Mono',monospace; background:repeating-linear-gradient(45deg,transparent 0 4px,#E3E6DC 4px 5px);}
+.ms-box{display:inline-block; width:14px; height:14px; border:1.5px solid #565C58; border-radius:2px; vertical-align:middle;}
+.ms-box.on{background:#171A1D; border-color:#171A1D; box-shadow:inset 0 0 0 2px #fff;}
+.ms-tick{appearance:none; display:block; margin:0 auto; width:30px; height:30px; border:1.5px solid #565C58; border-radius:3px; background:#fff; cursor:pointer; font:400 10px/1 'IBM Plex Mono',monospace; color:#8A9086;}
+.ms-tick[aria-pressed="true"]{background:#171A1D; border-color:#171A1D; box-shadow:inset 0 0 0 3px #fff;}
+.ms-tick:disabled{border:0; background:none; cursor:default;}
+.ms-nab{appearance:none; display:block; margin:4px auto 0; padding:0; background:none; border:0; border-bottom:1px solid #C9CDC0; font:400 9.5px/1.3 'IBM Plex Mono',monospace; color:#8A9086; cursor:pointer;}
+.ms-tip{font-size:12.5px; color:#565C58; margin:10px 0 0;}
+.ms-how{font-size:12.5px; line-height:1.45; color:#171A1D; margin:0 0 10px;}
+.ms-log td{height:30px;}
+.ms-log th.ms-d,.ms-log td.ms-d{width:46px; font:500 11px/1 'IBM Plex Mono',monospace; color:#171A1D;}
+.ms-log th.ms-s,.ms-log td.ms-s{width:40px; font:400 10.5px/1 'IBM Plex Mono',monospace; color:#565C58;}
+.ms-log th.ms-stops{width:44%;}
+.ms-log td + td{border-left:1px solid #C9CDC0;}
+.ms-log tr.ms-day1 td{border-top:1px solid #8A9086;}
+.ms-sheet .mlp-foot{margin-top:12px;}
+.ms-sheet .mlp-qr{width:58px; height:58px;}
+.ms-sheet .mlp-ft{font:400 9.5px/1.5 'IBM Plex Mono',monospace; color:#565C58;}
+.ms-sheet .mlp-ft b{font-weight:500; color:#171A1D;}
+.ms-sheet .mlp-url{font-size:10.5px; color:#171A1D;}
+.ms-sheet .mlp-foot{display:flex; align-items:center; gap:12px; border-top:1px solid #C9CDC0; padding:8px 0 0;}
+@media (max-width:520px){
+  .ms-set{padding:16px 14px;} .ms-head{padding:12px 14px;} .ms-actions{padding:0 14px 16px;} .ms-pv{padding:6px 14px 4px;}
+  .ms-who{grid-template-columns:1fr;}
+}
+/* Phones: the checklist fits the screen, so the boxes can be ticked without scrolling sideways */
+@media (max-width:600px){
+  .ms-checksheet{min-width:0; padding:10px;}
+  .ms-checksheet .ms-grid th.ms-mc{width:52px;}
+  .ms-checksheet td{font-size:12.5px; padding:5px 4px;}
+  .ms-checksheet .ms-top img{height:13px;}
+  .ms-checksheet .ms-title{font-size:16px;}
+}
+@media (prefers-reduced-motion:reduce){ .ms *{transition:none!important;} }
+
+/* ---------- print: only the chosen sheets, each one A4 page ---------- */
+#ms-print{display:none;}
+@media print{
+  html,body.ms-printing{background:#fff!important;}
+  body.ms-printing > *:not(#ms-print){display:none!important;}
+  body.ms-printing #ms-print{display:block;}
+  #ms-print .ms-page{min-width:0; padding:0; break-after:page;}
+  #ms-print .ms-page:last-child{break-after:auto;}
+  #ms-print *{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  #ms-print .ms-log td{height:var(--rowh,8mm);}
+  @page{size:A4; margin:12mm;}
+}
