@@ -94,6 +94,11 @@ footer .wordmark img{height:20px;}
 .notes-header .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 16px;}
 .notes-header h1{font-size:clamp(30px,4vw,42px); margin:0 0 14px; max-width:16ch;}
 .notes-header p{color:var(--ink-soft); font-size:16.5px; max-width:52ch; margin:0;}
+/* The Field Notes standard (See it · Measure it · Keep it) and the link to the toolkit */
+.notes-header p.notes-standard{color:var(--ink); font-size:17.5px; margin:0 0 12px;}
+.notes-header p.notes-tools{font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:.04em; margin:18px 0 0;}
+.notes-tools a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:4px;}
+.notes-tools a:hover{text-decoration-color:var(--ink);}
 
 .notes-list{padding:20px 0 90px;}
 .note-row{

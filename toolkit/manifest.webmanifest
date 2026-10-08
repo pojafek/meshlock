@@ -1,0 +1,16 @@
+{
+  "name": "Toolkit · Meshlock",
+  "short_name": "Toolkit",
+  "start_url": "/toolkit/",
+  "scope": "/toolkit/",
+  "display": "standalone",
+  "background_color": "#EEF0EA",
+  "theme_color": "#EEF0EA",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
