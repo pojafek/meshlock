@@ -143,6 +143,10 @@ footer .wordmark img{height:20px;}
 .article-body .prose{max-width:66ch; margin:0 auto;}
 .prose p{margin:0 0 22px; font-size:17px; color:var(--ink); line-height:1.7;}
 .prose p:first-of-type{font-size:19px; color:var(--ink-soft);}
+.prose h2{font-size:26px; line-height:1.2; margin:46px 0 16px;}
+/* "Open it on its own page" under a toolkit tool embedded in an article */
+.prose p.tool-own{font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:.04em; color:var(--ink); margin:0 0 8px;}
+.prose p.tool-own a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:4px;}
 
 /* pull-quote, styled as an inspection stamp (extends the hero's stamp motif) */
 .field-note{

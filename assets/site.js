@@ -51,7 +51,20 @@
 
   if (kept) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', retagAll); else retagAll();
-    // Links a page rewrites later (the homepage fix list) are fixed on the way out
+    // Links a page or a toolkit tool adds or rewrites later carry the tag too, as soon as they appear
+    if (window.MutationObserver) {
+      new MutationObserver(function(list){
+        list.forEach(function(m){
+          if (m.type === 'attributes') { if (m.target.tagName === 'A') retag(m.target); return; }
+          m.addedNodes.forEach(function(n){
+            if (n.nodeType !== 1) return;
+            if (n.tagName === 'A' && n.hasAttribute('href')) retag(n);
+            n.querySelectorAll && n.querySelectorAll('a[href]').forEach(retag);
+          });
+        });
+      }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
+    }
+    // And on the way out, in case a link changed in between (the homepage fix list)
     ['click', 'auxclick', 'contextmenu'].forEach(function(t){
       document.addEventListener(t, function(e){ var a = e.target.closest && e.target.closest('a[href]'); if (a) retag(a); }, true);
     });

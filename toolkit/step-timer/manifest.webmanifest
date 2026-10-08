@@ -1,0 +1,16 @@
+{
+  "name": "Step timer \u00b7 Meshlock",
+  "short_name": "Step timer",
+  "start_url": "/toolkit/step-timer/",
+  "scope": "/toolkit/step-timer/",
+  "display": "standalone",
+  "background_color": "#EEF0EA",
+  "theme_color": "#EEF0EA",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
