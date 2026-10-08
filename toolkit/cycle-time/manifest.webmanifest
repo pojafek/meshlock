@@ -1,0 +1,16 @@
+{
+  "name": "Cycle time calculator \u00b7 Meshlock",
+  "short_name": "Cycle time",
+  "start_url": "/toolkit/cycle-time/",
+  "scope": "/toolkit/cycle-time/",
+  "display": "standalone",
+  "background_color": "#EEF0EA",
+  "theme_color": "#EEF0EA",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

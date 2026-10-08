@@ -1,0 +1,39 @@
+/* Cycle time calculator · assets/toolkit/cycle-calc.js renders into [data-tool="cycle-time"].
+   Same look as the Field Notes puzzle. Uses the tokens from notes.css. No <p> or lists inside,
+   so article prose rules never reach it. */
+.cc{background:var(--paper-card); border:1.5px solid var(--ink); border-radius:var(--radius); margin:22px 0 12px; color:var(--ink);}
+.cc-head{background:var(--ink); color:var(--paper); padding:12px 18px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 14px; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase;}
+.cc-head .cc-tag{color:var(--amber);}
+.cc-head .cc-sub-head{color:#c9cdc0;}
+.cc-in{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px 18px; padding:18px;}
+.cc-f{min-width:0;}
+.cc-f label{display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 6px;}
+.cc-f label .o{text-transform:none; letter-spacing:.02em; color:var(--ink-faint);}
+.cc-f input{display:block; width:100%; min-height:46px; padding:10px 12px; font:500 18px/1.2 'IBM Plex Mono',monospace; color:var(--ink); background:var(--paper); border:1.5px solid var(--ink); border-radius:3px; appearance:none;}
+.cc-f input::placeholder{color:var(--ink-faint); font-weight:400;}
+.cc-f input:focus{outline:2px solid var(--amber); outline-offset:1px;}
+.cc-f input[aria-invalid="true"]{border-color:var(--red-flag);}
+.cc-hint{font-family:'IBM Plex Mono',monospace; font-size:11px; line-height:1.45; color:var(--ink-soft); margin:6px 0 0;}
+.cc-err{font-size:13.5px; line-height:1.45; color:var(--red-flag); margin:6px 0 0;}
+.cc-err:empty{display:none;}
+.cc-hint:empty{display:none;}
+.cc-out{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; background:var(--line); border-top:1px solid var(--line); border-bottom:1px solid var(--line); transition:opacity .15s;}
+.cc-out.is-off{opacity:.35;}
+.cc-stat{background:var(--paper-card); padding:14px 18px 16px; min-width:0;}
+.cc-v{font:700 30px/1.05 'Space Grotesk',sans-serif; letter-spacing:-0.01em; min-height:1.05em; overflow-wrap:anywhere;}
+.cc-v.cc-empty{font:400 13px/1.4 'IBM Plex Mono',monospace; color:var(--ink-faint); letter-spacing:0; padding-top:8px;}
+.cc-k{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin-top:6px; line-height:1.4;}
+.cc-x{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); margin-top:4px; min-height:1.4em;}
+.cc-note{padding:14px 18px 0; font-size:14.5px; line-height:1.55; color:var(--ink-soft);}
+.cc-actions{padding:14px 18px 18px; display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px;}
+.cc-copy{appearance:none; border:1.5px solid var(--ink); background:var(--ink); color:var(--paper); font:400 12.5px/1.2 'IBM Plex Mono',monospace; letter-spacing:.08em; text-transform:uppercase; padding:12px 16px; border-radius:3px; cursor:pointer; transition:transform .12s, box-shadow .12s;}
+.cc-copy:hover:not(:disabled){transform:translateY(-1px); box-shadow:3px 4px 0 var(--amber);}
+.cc-copy:disabled{opacity:.4; cursor:not-allowed;}
+.cc-status{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--green);}
+.cc-nojs{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-soft); border:1.5px dashed var(--ink-faint); border-radius:3px; padding:14px 16px; margin:18px 0;}
+@media (max-width:520px){
+  .cc-in{grid-template-columns:1fr; padding:16px;}
+  .cc-stat{padding:12px 14px 14px;}
+  .cc-v{font-size:26px;}
+}
+@media (prefers-reduced-motion:reduce){ .cc *{transition:none!important;} }

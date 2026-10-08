@@ -17,7 +17,7 @@ index.html                    Homepage (all CSS inline in <style>)
 tools/index.html              Tools in action: ERP intro with stats, five full-width live animations (Full screen button), each with a price line and a link to the offer, more case files
 prices/index.html             How a price is set, example prices, how you pay, Always included, FAQ (FAQPage JSON-LD lives here)
 apple-touch-icon.png          180px icon
-sitemap.xml                   Sitemap for /, /tools/, /prices/, /notes/ and each article
+sitemap.xml                   Sitemap for /, /tools/, /prices/, /notes/, each article and each /toolkit/ page
 robots.txt                    Allows all, points to sitemap.xml
 thanks.html                   Contact form landing page (noindex, not in the sitemap)
 start/index.html              One-page offer: tick problems, add rough hours, get an offer with the current cost next to example tool prices (noindex, not in the sitemap)
@@ -40,8 +40,14 @@ assets/
     thumbs/*.webp             960x540 still frames for the tiles
 notes/
   index.html                  Field Notes list
-  doing-it-by-hand.html       First article
-  your-machines-already-know.html  Machine data guide with the Decode the log puzzle, puzzle CSS and JS inline, example data only
+  doing-it-by-hand.html       First article (Case story)
+  your-machines-already-know.html  Machine data guide (Guide) with the Decode the log puzzle (puzzle CSS and JS inline, example data only) and the cycle time calculator embedded
+toolkit/
+  cycle-time/index.html       Cycle time calculator on its own page (indexable, in the sitemap). Keeps its inputs in the link after # so a bookmark or home screen icon reopens the same numbers
+  cycle-time/manifest.webmanifest  Home screen name and icon for that page
+assets/toolkit/
+  cycle-calc.js               The cycle time calculator. Renders into every element with data-tool="cycle-time" (add data-hash to keep inputs in the link). One file for every page that shows it
+  cycle-calc.css              Its styles (same look as the puzzle), linked in <head> next to the script
 ```
 
 ## How changes go live
@@ -150,6 +156,8 @@ Every Field Note is one of two types, and says so in the same places:
 - **Case story** (`Case story`): one fix from the floor, told without names.
 
 Under the title, in place of a date line, every article has a title block styled like the one in the corner of an engineering drawing (`.title-block` in `assets/notes.css`: 1.5px ink border, thin ink cell rules, IBM Plex Mono labels in ink-soft, values in the body font). Cells, in this order: TYPE · TIME · YOU'LL LEARN · YOU GET. Items inside a cell are separated by a middle dot. A small dashed green stamp cell is optional (`has-stamp` on the block, then `<div class="tb-cell tb-stamp"><span>NO IT NEEDED</span></div>` after TIME). Copy the block from an existing article. Keep its text free of first person, so it needs no `data-pc` version.
+
+Every Field Note carries one small practical tool tied to its topic, living in /toolkit/<name>/ and embedded in the article from the same file; built from scratch, no data from any employer. The tool is a component in `assets/toolkit/<name>.js` and `.css` that renders into `data-tool="<name>"`, so the article and the toolkit page never hold copies. Inside the article it sits under its own `h2`, followed by a small "Open it on its own page →" link, and the title block's YOU GET names it. The toolkit page has the head snippet, `site.js`, `stats.js`, breadcrumb "Meshlock / Toolkit", one short intro, the tool, a link back to the article and the usual way forward (Book a free call, one-page offer). With JavaScript off the element shows one `<noscript>` line saying the tool needs JavaScript. Tool copy has no first person and never names a specific machine type (say cutting, printing or moulding, or just "machine").
 
 On /notes/ each row shows, above its title, a type chip (`.note-type`: GUIDE or CASE STORY, dashed green tag) and a short mono line (`.note-len`, e.g. `8 min + puzzle · checklist` or `4 min`). Newest first.
 

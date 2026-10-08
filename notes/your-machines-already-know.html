@@ -22,8 +22,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/notes.css">
+<link rel="stylesheet" href="/assets/toolkit/cycle-calc.css">
 <script src="/assets/site.js" defer></script>
 <script src="/assets/stats.js" defer></script>
+<script src="/assets/toolkit/cycle-calc.js" defer></script>
 <style>
 /* ---------- Article layout with a side callout ---------- */
 .article-body .layout{max-width:66ch;margin:0 auto}
@@ -196,6 +198,10 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
 @media (max-width:520px){.pz .step{padding:20px 16px}.pz-head{padding:18px 16px}}
 @media (prefers-reduced-motion:reduce){.pz *,.try *{animation:none!important;transition:none!important}}
 
+/* Cycle time calculator link under the embedded tool */
+.article-body .prose p.tool-own{font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:.04em; margin:0 0 8px;}
+.prose p.tool-own a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:4px;}
+
 /* Print only the checklist */
 @media print{
   body.print-checklist *{visibility:hidden}
@@ -251,7 +257,7 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
       <div class="tb-cell tb-time"><span class="tb-k">Time</span><span class="tb-v">8 min + 2 min puzzle</span></div>
       <div class="tb-cell tb-stamp"><span>NO IT NEEDED</span></div>
       <div class="tb-cell"><span class="tb-k">You'll learn</span><span class="tb-v">Where machine data hides · who to ask · how to save it before it is written over</span></div>
-      <div class="tb-cell"><span class="tb-k">You get</span><span class="tb-v">A printable checklist · a log to decode yourself</span></div>
+      <div class="tb-cell"><span class="tb-k">You get</span><span class="tb-v">A printable checklist · a log to decode yourself · a cycle time calculator</span></div>
     </div>
   </div>
 </section>
@@ -527,6 +533,15 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
       <p class="pz-foot">Example data, invented for this exercise. Not from any real machine or client.</p>
     </div>
     <!-- =================== END PUZZLE =================== -->
+
+    <h2 id="cycle-time">Turn one job into a number you can plan with</h2>
+
+    <p>One line from the log is enough to start. Take how long a cycle ran and how many parts it made, and see what that means per part, per hour and per shift.</p>
+
+    <div data-tool="cycle-time">
+      <noscript><div class="cc-nojs">The cycle time calculator needs JavaScript switched on.</div></noscript>
+    </div>
+    <p class="tool-own"><a href="/toolkit/cycle-time/">Open it on its own page →</a></p>
 
     <h2 id="what-i-build" data-pc="What we do with it">What I do with it</h2>
 
