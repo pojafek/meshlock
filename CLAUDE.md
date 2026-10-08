@@ -58,6 +58,8 @@ assets/toolkit/
   worth-automating.css        Its styles
   step-timer.js               Step timer: time a task step by step on a phone, mark Waiting and Mistake, up to 3 runs (averages, ranges, unstable steps), work/waiting/rework bar, times per week, at most three feedback lines, Copy and Print result. Renders into data-tool="step-timer". Keeps the measurement in this browser only (localStorage) so a reload or a locked phone loses nothing. "Put these hours into the offer" opens /start/#f=export.<a|b|c|d> (hours a week mapped to the offer's buckets)
   step-timer.css              Its styles, including the print layout (Print result shows only the results)
+tests/site-check/             Browser test for the whole site (site-check.js, README.md says how to run it and what it checks). Never published: _redirects answers 404
+_redirects                    Netlify rules: /tests and /tests/* return 404
 ```
 
 ## How changes go live
@@ -72,6 +74,7 @@ Rules:
 2. Work on a new branch, then open a pull request. Netlify builds a preview link for the PR.
 3. Group related changes into one PR. One merge means one production deploy.
 4. In the PR description, list what changed in plain language, so it can be reviewed on a phone.
+5. Before any PR, run tests/site-check and extend it for anything new.
 
 ## Checklist for every page (new or edited)
 
@@ -180,7 +183,7 @@ Under the title, in place of a date line, every article has a title block styled
 
 Every Field Note carries one small practical tool tied to its topic, living in /toolkit/<name>/ and embedded in the article from the same file; built from scratch, no data from any employer. The tool is a component in `assets/toolkit/<name>.js` and `.css` that renders into `data-tool="<name>"`, so the article and the toolkit page never hold copies. Inside the article it sits under its own `h2`, followed by a small "Open it on its own page →" link, and the title block's YOU GET names it. The toolkit page has the head snippet, `site.js`, `stats.js`, breadcrumb "Meshlock / Toolkit" (Toolkit links to /toolkit/), one short intro, the tool, a link back to the article and the usual way forward (Book a free call, one-page offer with the fallback tag `tk-<name>`, used only when no tag is stored). With JavaScript off the element shows one `<noscript>` line saying the tool needs JavaScript. Tool copy has no first person (visitor-voice buttons like "I measured it" are fine) and never names a specific machine type (say cutting, printing or moulding, or just "machine"). Toolkit tools never send entered data anywhere: no form, no counting of values, nothing in a request. Data reaches Meshlock only when the visitor sends the offer. A tool may hand numbers to the offer through the link after `#` (the existing saved-link format), never through the source tag.
 
-Every new tool gets one card on the /toolkit/ index (`toolkit/index.html`): copy one `<li class="tk-card">` line and change the name, question, time, link and note. The card number comes from the list order. The index also has its own page in the sitemap and is the only toolkit page linked from every footer and from the top of /notes/; it is not in the main nav.
+Every new tool gets one card on the /toolkit/ index (`toolkit/index.html`): copy one `<li class="tk-card">` line and change the tag, name, question, time, link and note. The tag names the kind of tool in the case-file tag style (CALCULATOR, TIMER, CHECK; a new kind gets a new word), never a number, because the tools are not a sequence. The index also has its own page in the sitemap and is the only toolkit page linked from every footer and from the top of /notes/; it is not in the main nav.
 
 On /notes/ each row shows, above its title, a type chip (`.note-type`: GUIDE or CASE STORY, dashed green tag) and a short mono line (`.note-len`, e.g. `8 min + puzzle · checklist · calculator` or `4 min`). Newest first.
 

@@ -29,15 +29,15 @@
 <script src="/assets/stats.js" defer></script>
 <style>
 .notes-header .tk-lead{max-width:56ch;}
-/* One card per tool. The number comes from the list order, so a new tool is one more <li> line. */
-.tk-list{list-style:none; margin:0; padding:0; counter-reset:tk; display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:22px;}
-.tk-card{counter-increment:tk; position:relative; display:flex; flex-direction:column; min-width:0; background:var(--paper-card); border:1px solid var(--line); border-radius:var(--radius); padding:22px 22px 18px;}
+/* One card per tool, one <li> line each. The tag says what kind of tool it is (case-file tag style). */
+.tk-list{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:22px;}
+.tk-card{position:relative; display:flex; flex-direction:column; min-width:0; background:var(--paper-card); border:1px solid var(--line); border-radius:var(--radius); padding:22px 22px 18px;}
 /* corner marks, as on a drawing sheet */
 .tk-card::before,.tk-card::after{content:""; position:absolute; width:10px; height:10px; border-color:var(--ink); border-style:solid;}
 .tk-card::before{top:-1px; left:-1px; border-width:1.5px 0 0 1.5px;}
 .tk-card::after{bottom:-1px; right:-1px; border-width:0 1.5px 1.5px 0;}
-.tk-card h2{font-size:21px; line-height:1.2; margin:0 0 16px;}
-.tk-card h2::before{content:"TOOL " counter(tk, decimal-leading-zero); display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:500; letter-spacing:.12em; color:var(--green); margin:0 0 8px;}
+.tk-card h2{font-size:21px; line-height:1.2; margin:30px 0 16px;}
+.tk-tag{position:absolute; top:18px; right:18px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--green); background:var(--green-bg); border:1px dashed var(--green); border-radius:2px; padding:3px 8px; transform:rotate(3deg);}
 .tk-card p{margin:0;}
 .tk-k{display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 4px;}
 .tk-q{font-size:16px; line-height:1.5; color:var(--ink); margin:0 0 14px !important;}
@@ -79,11 +79,11 @@
 <section class="tk-index">
   <div class="wrap">
     <!-- Every tool in /toolkit/ is listed here, one <li> line each, in the order shown.
-         Next tool: copy one line, then change the name, question, time, link and note. -->
+         Next tool: copy one line, then change the tag, name, question, time, link and note. -->
     <ol class="tk-list">
-      <li class="tk-card"><h2>Cycle time calculator</h2><p class="tk-q"><span class="tk-k">Answers</span>How many parts an hour and a shift, and when will this order be done?</p><p class="tk-time"><span class="tk-k">Takes</span>1 minute</p><a class="tk-open" href="/toolkit/cycle-time/">Open the calculator →</a><p class="tk-note">From the note: <a href="/notes/your-machines-already-know.html">Your machines already know how long they stand still</a></p></li>
-      <li class="tk-card"><h2>Step timer</h2><p class="tk-q"><span class="tk-k">Answers</span>Which step of a task takes the time, and which one nobody does the same way?</p><p class="tk-time"><span class="tk-k">Takes</span>As long as the task, up to three runs</p><a class="tk-open" href="/toolkit/step-timer/">Open the timer →</a><p class="tk-note">From the note: <a href="/notes/doing-it-by-hand.html">Doing it by hand for years, until someone decided not to</a></p></li>
-      <li class="tk-card"><h2>Worth automating?</h2><p class="tk-q"><span class="tk-k">Answers</span>Should this repetitive step be automated, standardised first, or left alone?</p><p class="tk-time"><span class="tk-k">Takes</span>1 minute, six taps</p><a class="tk-open" href="/toolkit/worth-automating/">Open the check →</a><p class="tk-note">From the note: <a href="/notes/doing-it-by-hand.html">Doing it by hand for years, until someone decided not to</a></p></li>
+      <li class="tk-card"><span class="tk-tag">Calculator</span><h2>Cycle time calculator</h2><p class="tk-q"><span class="tk-k">Answers</span>How many parts an hour and a shift, and when will this order be done?</p><p class="tk-time"><span class="tk-k">Takes</span>1 minute</p><a class="tk-open" href="/toolkit/cycle-time/">Open the calculator →</a><p class="tk-note">From the note: <a href="/notes/your-machines-already-know.html">Your machines already know how long they stand still</a></p></li>
+      <li class="tk-card"><span class="tk-tag">Timer</span><h2>Step timer</h2><p class="tk-q"><span class="tk-k">Answers</span>Which step of a task takes the time, and which one nobody does the same way?</p><p class="tk-time"><span class="tk-k">Takes</span>As long as the task, up to three runs</p><a class="tk-open" href="/toolkit/step-timer/">Open the timer →</a><p class="tk-note">From the note: <a href="/notes/doing-it-by-hand.html">Doing it by hand for years, until someone decided not to</a></p></li>
+      <li class="tk-card"><span class="tk-tag">Check</span><h2>Worth automating?</h2><p class="tk-q"><span class="tk-k">Answers</span>Should this repetitive step be automated, standardised first, or left alone?</p><p class="tk-time"><span class="tk-k">Takes</span>1 minute, six taps</p><a class="tk-open" href="/toolkit/worth-automating/">Open the check →</a><p class="tk-note">From the note: <a href="/notes/doing-it-by-hand.html">Doing it by hand for years, until someone decided not to</a></p></li>
     </ol>
 
     <div class="article-footer">
