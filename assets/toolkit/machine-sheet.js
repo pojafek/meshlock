@@ -63,6 +63,7 @@
             '<span class="ms-cl">Shifts a day</span>' + [1, 2, 3].map(function(n){ return '<button type="button" class="ms-chip" data-shifts="' + n + '">' + n + '</button>'; }).join('') +
             '<span class="ms-cl">Days</span><button type="button" class="ms-chip" data-days="5">Mon to Fri</button><button type="button" class="ms-chip" data-days="7">Mon to Sun</button>' +
           '</div></div>' +
+          '<div class="ms-clear-row"><button type="button" class="ms-clear">New sheet: clear machines, names and ticks</button></div>' +
         '</div>' +
         '<div class="ms-actions">' +
           '<button type="button" class="ms-print" data-what="check">Print the checklist<span>1 page</span></button>' +
@@ -74,7 +75,6 @@
           '<div class="ms-pvh">Shift log <span>One page per machine. Fill it in with a pen, every shift for a week.</span></div>' +
           '<div class="ms-scroll"><div class="ms-sheet ms-logsheet"></div></div>' +
         '</div>' +
-        '<div class="ms-clear-row"><button type="button" class="ms-clear">Start over</button></div>' +
       '</div>';
 
     // ---------- the sheets (same markup on screen and on paper)
@@ -161,8 +161,8 @@
     var armed = null;
     $('.ms-clear').addEventListener('click', function(){
       var b = this;
-      if (!armed) { b.textContent = 'Tap again to clear machines, names and ticks'; armed = setTimeout(function(){ armed = null; b.textContent = 'Start over'; }, 3000); return; }
-      clearTimeout(armed); armed = null; b.textContent = 'Start over';
+      if (!armed) { b.textContent = 'Tap again to clear everything'; armed = setTimeout(function(){ armed = null; b.textContent = 'New sheet: clear machines, names and ticks'; }, 3000); return; }
+      clearTimeout(armed); armed = null; b.textContent = 'New sheet: clear machines, names and ticks';
       S = fresh(); save(); WHO.forEach(function(w){ $('[data-who="' + w[0] + '"]').value = ''; }); inputs(); draw();
     });
 

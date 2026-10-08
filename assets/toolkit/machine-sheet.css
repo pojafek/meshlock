@@ -30,7 +30,8 @@
 .ms-pvh{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink); margin:14px 0 8px;}
 .ms-pvh span{display:block; text-transform:none; letter-spacing:.02em; color:var(--ink-soft); margin-top:3px;}
 .ms-scroll{overflow-x:auto; border:1px solid var(--line); background:var(--paper);}
-.ms-clear-row{padding:4px 18px 16px;}
+.ms-clear-row{border-top:1px dashed var(--line); padding-top:4px;}
+.ms-clear{color:var(--ink-soft); margin-top:6px;}
 
 /* ---------- the sheets ---------- */
 .ms-sheet{background:#fff; color:#171A1D; padding:16px; min-width:540px; font-family:'IBM Plex Sans',sans-serif;}
@@ -73,6 +74,14 @@
 @media (max-width:520px){
   .ms-set{padding:16px 14px;} .ms-head{padding:12px 14px;} .ms-actions{padding:0 14px 16px;} .ms-pv{padding:6px 14px 4px;}
   .ms-who{grid-template-columns:1fr;}
+}
+/* Laptops and desktops: the tool steps out of the text column, so the sheets show at full width
+   without a sideways scrollbar, and the form takes two columns */
+@media (min-width:900px){
+  [data-tool="machine-sheet"]{width:min(1000px, 88vw); margin-left:calc((100% - min(1000px, 88vw)) / 2);}
+  .ms-set{grid-template-columns:1fr 1fr; gap:18px 28px;}
+  .ms-clear-row{grid-column:1 / -1;}
+  .ms-sheet{padding:22px 26px;}
 }
 /* Phones: the checklist fits the screen, so the boxes can be ticked without scrolling sideways */
 @media (max-width:600px){
