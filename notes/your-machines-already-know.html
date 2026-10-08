@@ -346,7 +346,7 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
 
     <p>One tip: ask about exports, not changes. "Can we save what is already there?" gets a yes far more often than "Can we connect something to the machine?"</p>
 
-    <h2>Six places the data hides</h2>
+    <h2 id="six-places">Six places the data hides</h2>
 
     <p>Start with the one closest to hand. You only need one source to begin.</p>
 
@@ -536,9 +536,9 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
 
     <h2 id="cycle-time">Turn one job into a number you can plan with</h2>
 
-    <p>One line from the log is enough to start. Take how long a cycle ran and how many parts it made, and see what that means per part, per hour and per shift.</p>
+    <p>One line from the log is enough to start. Take how long a cycle ran and how many parts it made, and see the ceiling: what the machine makes if it never stops. No machine does, so then add its real running %. Measured, guessed, or the number you just decoded in the puzzle.</p>
 
-    <div data-tool="cycle-time">
+    <div data-tool="cycle-time" data-puzzle data-where="#six-places">
       <noscript><div class="cc-nojs">The cycle time calculator needs JavaScript switched on.</div></noscript>
     </div>
     <p class="tool-own"><a href="/toolkit/cycle-time/">Open it on its own page →</a></p>
@@ -915,6 +915,9 @@ function finish(running,faults,faultN){
   cmp.innerHTML='<span class="stamp">DECODED · 1 SHIFT</span><p class="big">'+head+'</p><p>'+body+'</p>';
   cmp.classList.remove("hidden");
   sideSolved(pct);
+  // Tell the cycle time calculator further down (assets/toolkit/cycle-calc.js, data-puzzle)
+  window.mlPuzzlePct = pct;
+  try { document.dispatchEvent(new CustomEvent("ml:puzzle", {detail: {pct: pct}})); } catch(e){}
   complete("s4","s5");
 }
 function stat(v,k){return '<div class="stat"><div class="v">'+v+'</div><div class="k">'+k+'</div></div>';}

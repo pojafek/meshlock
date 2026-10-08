@@ -46,7 +46,7 @@ toolkit/
   cycle-time/index.html       Cycle time calculator on its own page (indexable, in the sitemap). Keeps its inputs in the link after # so a bookmark or home screen icon reopens the same numbers
   cycle-time/manifest.webmanifest  Home screen name and icon for that page
 assets/toolkit/
-  cycle-calc.js               The cycle time calculator. Renders into every element with data-tool="cycle-time" (add data-hash to keep inputs in the link). One file for every page that shows it
+  cycle-calc.js               The cycle time calculator. Renders into every element with data-tool="cycle-time". One file for every page that shows it. Shows the ceiling at 100% and, once the visitor adds a real running % (measured, guessed with a GUESS stamp, or the puzzle's result in the article), the planned numbers. Options on the element: data-hash (keep inputs in the link), data-puzzle (article: offer the puzzle's %, sent by the puzzle as the 'ml:puzzle' event), data-where, data-note, data-offer-tag (see the top of the file). Nothing typed is ever sent
   cycle-calc.css              Its styles (same look as the puzzle), linked in <head> next to the script
 ```
 
