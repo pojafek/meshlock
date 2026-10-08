@@ -30,6 +30,27 @@
     a.setAttribute('href', path + '?' + p.toString() + hash);
   }
   function retagAll(){ document.querySelectorAll('a[href]').forEach(retag); }
+
+  // Tags starting with "pc" are Patryk's: the whole site speaks for him (see CLAUDE.md).
+  // data-pc: text · data-pc-href · data-pc-copy · data-pc-value · data-pc-hide · data-pc-show (starts hidden)
+  // {tag} in a data-pc text becomes the visitor's tag. With JavaScript off, pages show Kamil's version.
+  function pcMode(){
+    var each = function(sel, fn){ document.querySelectorAll(sel).forEach(fn); };
+    each('[data-pc]', function(e){ e.textContent = e.getAttribute('data-pc').replace(/\{tag\}/g, kept); });
+    each('[data-pc-href]', function(e){ e.setAttribute('href', e.getAttribute('data-pc-href')); });
+    each('[data-pc-copy]', function(e){ e.setAttribute('data-copy', e.getAttribute('data-pc-copy')); });
+    each('[data-pc-value]', function(e){ e.value = e.getAttribute('data-pc-value'); });
+    each('[data-pc-hide]', function(e){ e.hidden = true; e.style.setProperty('display', 'none', 'important'); });
+    each('[data-pc-show]', function(e){ e.hidden = false; });
+    // Opened on a hidden section (/#about): go to the section named in data-pc-goto
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    var g = t && t.hasAttribute('data-pc-hide') && document.getElementById(t.getAttribute('data-pc-goto'));
+    if (g) g.scrollIntoView();
+  }
+  if (/^pc/.test(kept)) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pcMode); else pcMode();
+  }
+
   if (kept) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', retagAll); else retagAll();
     // Links a page rewrites later (the homepage fix list) are fixed on the way out

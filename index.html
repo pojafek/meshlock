@@ -467,6 +467,8 @@
   .form-done{margin:0; padding:8px 0; font-family:'Space Grotesk',sans-serif; font-weight:500; font-size:20px; line-height:1.4;}
   .form-done:focus{outline:none;}
   .contact-direct{padding-top:6px;}
+  .pc-only[hidden]{display:none;}
+  .pc-who{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:17px; margin:0 0 12px;}
   .direct-offer{margin-top:28px; padding-top:20px; border-top:1px dashed var(--line);}
   .direct-offer p:not(.label){margin:0 0 12px; font-size:15px; color:var(--ink-soft); max-width:30ch;}
   .inline-link{color:var(--ink); text-decoration:underline; text-decoration-color:var(--amber); text-decoration-thickness:2px; text-underline-offset:4px;}
@@ -503,7 +505,7 @@
   <div class="nav-links">
     <a class="nav-link" href="/tools/"><span class="nl-long">Tools in action</span><span class="nl-short">Tools</span></a>
     <a class="nav-link" href="/prices/">Prices</a>
-    <a class="nav-link" href="/#about">About</a>
+    <a class="nav-link" href="/#about" data-pc-href="/#promise">About</a>
     <a class="nav-link" href="/notes/"><span class="nl-long">Field notes</span><span class="nl-short">Notes</span></a>
   </div>
   <a class="nav-cta" href="#contact">Book a call</a>
@@ -514,8 +516,8 @@
   <div class="hero-inner">
     <div>
       <p class="eyebrow"><span class="led"></span><span class="eb-long">Automation & Continuous Improvement · Manufacturing</span><span class="eb-short">Automation & CI · For Manufacturers</span></p>
-      <h1>Your ERP stays. I build what it can't do.</h1>
-      <p class="lede">I find where the time goes on your floor, then build the tool that fixes it, around the ERP you already have.</p>
+      <h1 data-pc="Your ERP stays. We build what it can't do.">Your ERP stays. I build what it can't do.</h1>
+      <p class="lede" data-pc="Meshlock finds where the time goes on your floor, then builds the tool that fixes it, around the ERP you already have.">I find where the time goes on your floor, then build the tool that fixes it, around the ERP you already have.</p>
       <div class="hero-ctas">
         <a class="btn-primary" href="#contact">Book a free call</a>
         <a class="btn-ghost" href="#tools">Watch four fixes run ↓</a>
@@ -542,7 +544,7 @@
   </div>
 </section>
 
-<div class="dim-divider fam-divider"><div class="tick"></div><div class="rule"></div><span><a href="#familiar">What I fix ↓</a></span><div class="rule"></div><div class="tick"></div></div>
+<div class="dim-divider fam-divider"><div class="tick"></div><div class="rule"></div><span><a href="#familiar" data-pc="What we fix ↓">What I fix ↓</a></span><div class="rule"></div><div class="tick"></div></div>
 
 <section class="familiar" id="familiar">
   <div class="wrap">
@@ -567,7 +569,7 @@
         </div>
         <div class="callout">
           <p class="label">Most problems don't look like problems</p>
-          <p>Most of what I've fixed wasn't on anyone's list. It had been done the same way for years, so nobody saw it as a problem any more. If nothing above jumps out, that's normal. Spotting it is my job.</p>
+          <p data-pc="Most of what we've fixed wasn't on anyone's list. It had been done the same way for years, so nobody saw it as a problem any more. If nothing above jumps out, that's normal. Spotting it is our job.">Most of what I've fixed wasn't on anyone's list. It had been done the same way for years, so nobody saw it as a problem any more. If nothing above jumps out, that's normal. Spotting it is my job.</p>
           <a class="text-link" href="/notes/doing-it-by-hand.html">Read the story behind this →</a>
         </div>
       </div>
@@ -651,7 +653,7 @@
   </div>
 </section>
 
-<section class="about" id="about">
+<section class="about" id="about" data-pc-hide data-pc-goto="promise">
   <div class="wrap">
     <div class="sec-head">
       <p class="label">Who's behind this</p>
@@ -740,11 +742,11 @@
 <section class="contact" id="contact">
   <div class="wrap">
     <h2>Let's look at your process</h2>
-    <p>A free 30-minute call. No pitch deck, no sales team. Just a conversation about what's actually slowing you down.</p>
+    <p data-pc="A free 30-minute call. No pitch deck. Just a conversation about what's actually slowing you down.">A free 30-minute call. No pitch deck, no sales team. Just a conversation about what's actually slowing you down.</p>
     <div class="next-steps">
       <p class="label">What happens next</p>
       <ol>
-        <li><span class="n">01</span><span>Send a line about what's slowing you down, or <a class="inline-link" href="/start/">tick it in the one-page offer instead</a>. I reply within one working day.</span></li>
+        <li><span class="n">01</span><span>Send a line about what's slowing you down, or <a class="inline-link" href="/start/">tick it in the one-page offer instead</a>. <span data-pc="Patryk replies within one working day.">I reply within one working day.</span></span></li>
         <li><span class="n">02</span><span>A 30-minute call, remote, no preparation needed.</span></li>
         <li><span class="n">03</span><span>A written proposal with a fixed price, or an honest "you don't need a tool for this".</span></li>
       </ol>
@@ -752,7 +754,7 @@
     <div class="contact-grid">
       <div class="form-box">
         <form class="contact-form" name="contact" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field">
-          <input type="hidden" name="form-name" value="contact">
+          <input type="hidden" name="form-name" value="contact" data-pc-value="contact-pc">
           <input type="hidden" name="source" id="c-source" value="site">
           <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
           <div class="field-row">
@@ -761,14 +763,16 @@
           </div>
           <p class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></p>
           <p class="field"><label for="f-message">What's slowing you down?</label><textarea id="f-message" name="message" rows="3" required></textarea></p>
-          <p class="form-error" role="alert" hidden>That didn't send. Please try again, or email hello@meshlock.co.uk.</p>
+          <p class="form-error" role="alert" hidden data-pc="That didn't send. Please try again, or email patryk@meshlock.co.uk.">That didn't send. Please try again, or email hello@meshlock.co.uk.</p>
           <button class="btn-primary" type="submit">Send message</button>
         </form>
       </div>
       <aside class="contact-direct" aria-label="Other ways to get in touch">
         <p class="label">Or directly</p>
-        <p class="email-row"><a class="email" href="mailto:hello@meshlock.co.uk">hello@meshlock.co.uk</a><button type="button" class="copy-btn" data-copy="hello@meshlock.co.uk">Copy</button><span class="copy-status" aria-live="polite"></span></p>
-        <a class="text-link" href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn →</a>
+        <p class="pc-who pc-only" hidden data-pc-show>Patryk Chojnacki · Business Development Lead</p>
+        <p class="email-row"><a class="email" href="mailto:hello@meshlock.co.uk" data-pc-href="mailto:patryk@meshlock.co.uk" data-pc="patryk@meshlock.co.uk">hello@meshlock.co.uk</a><button type="button" class="copy-btn" data-copy="hello@meshlock.co.uk" data-pc-copy="patryk@meshlock.co.uk">Copy</button><span class="copy-status" aria-live="polite"></span></p>
+        <p class="email-row pc-only" hidden data-pc-show><a class="email" href="tel:+447501839466">07501 839466</a></p>
+        <a class="text-link" href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener" data-pc-hide>LinkedIn →</a>
         <div class="direct-offer">
           <p class="label">Don't want to write?</p>
           <p>Tick what slows you down. A one-page offer in about 90 seconds.</p>
@@ -776,6 +780,9 @@
         </div>
       </aside>
     </div>
+    <form name="contact-pc" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true">
+      <input type="hidden" name="form-name" value="contact-pc"><input name="source"><input name="bot-field"><input name="name"><input name="company"><input name="email"><textarea name="message"></textarea>
+    </form>
     <p class="contact-meta">Remote-first across the UK · On-site available within the M4 corridor</p>
   </div>
 </section>
@@ -790,8 +797,8 @@
     <li><a href="/prices/">Prices</a></li>
     <li><a href="/start/">One-page offer</a></li>
     <li><a href="/notes/">Field notes</a></li>
-    <li><a href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn</a></li>
-    <li><a href="mailto:hello@meshlock.co.uk">hello@meshlock.co.uk</a></li>
+    <li data-pc-hide><a href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn</a></li>
+    <li><a href="mailto:hello@meshlock.co.uk" data-pc-href="mailto:patryk@meshlock.co.uk" data-pc="patryk@meshlock.co.uk">hello@meshlock.co.uk</a></li>
     <li><a href="#top">Back to top ↑</a></li>
     <li class="copy">© 2026 Meshlock</li>
   </ul>
@@ -881,7 +888,9 @@
   (function(){
     var form = document.querySelector('.contact-form');
     // Where the visitor came from: a printed QR code tag kept for this tab (see /start/), else 'site'.
-    try { var src = new URLSearchParams(location.search).get('s') || sessionStorage.getItem('ml-src'); if (src) { src = src.toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20); sessionStorage.setItem('ml-src', src); if (form) form.querySelector('#c-source').value = src; } } catch(e){}
+    var src = '';
+    try { src = new URLSearchParams(location.search).get('s') || sessionStorage.getItem('ml-src') || ''; if (src) { src = src.toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20); sessionStorage.setItem('ml-src', src); if (form) form.querySelector('#c-source').value = src; } } catch(e){}
+    // Patryk's visitors (tags starting with "pc"): the form posts as "contact-pc" (data-pc-value, assets/stats.js)
     if (!form || !window.fetch || !window.FormData) return;
     var err = form.querySelector('.form-error');
     var btn = form.querySelector('button[type="submit"]');
@@ -896,7 +905,7 @@
         if (!res.ok) throw new Error(res.status);
         var done = document.createElement('p');
         done.className = 'form-done'; done.setAttribute('role', 'status'); done.tabIndex = -1;
-        done.textContent = "Thanks. I'll reply within one working day.";
+        done.textContent = /^pc/.test(src) ? 'Thanks. Patryk replies within one working day.' : "Thanks. I'll reply within one working day.";
         form.parentNode.replaceChild(done, form);
         done.focus();
       }).catch(function(){

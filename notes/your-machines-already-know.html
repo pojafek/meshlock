@@ -233,7 +233,7 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
   <div class="nav-links">
     <a class="nav-link" href="/tools/"><span class="nl-long">Tools in action</span><span class="nl-short">Tools</span></a>
     <a class="nav-link" href="/prices/">Prices</a>
-    <a class="nav-link" href="/#about">About</a>
+    <a class="nav-link" href="/#about" data-pc-href="/#promise">About</a>
     <a class="nav-link" href="/notes/"><span class="nl-long">Field notes</span><span class="nl-short">Notes</span></a>
   </div>
   <a class="nav-cta" href="/#contact">Book a call</a>
@@ -296,7 +296,7 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
       <figcaption>Same morning, same data. Left as the controller writes it, right as a production manager needs it. Illustrative data.</figcaption>
     </figure>
 
-    <p>I saw this first-hand in a UK factory running six machines. Everyone had a feel for how busy the machines were. "Pretty much flat out" was the usual answer. Nobody had a number, because nobody believed the data existed.</p>
+    <p><span data-pc="We saw this first-hand in a UK factory running six machines.">I saw this first-hand in a UK factory running six machines.</span> Everyone had a feel for how busy the machines were. "Pretty much flat out" was the usual answer. Nobody had a number, because nobody believed the data existed.</p>
 
     <p>It did. Every machine kept its own job history. It just looked like noise: codes, timestamps, file paths, no totals. Once those files were turned into one readable view, the first measured day showed the machines running about 80% of planned time. A good chunk of every shift had gone missing between jobs, and no one had noticed.</p>
 
@@ -306,7 +306,7 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
       <svg class="gears" viewBox="0 0 46 30" aria-hidden="true"><g class="g1"><circle cx="14" cy="15" r="6.5" fill="none" stroke="#D9A441" stroke-width="3"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(0 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(45 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(90 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(135 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(180 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(225 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(270 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(315 14 15)"/></g><g class="g2"><circle cx="34.5" cy="17" r="3.8" fill="none" stroke="#EEF0EA" stroke-width="2"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(0 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(45 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(90 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(135 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(180 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(225 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(270 34.5 17)"/><rect x="33.3" y="10.559999999999999" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(315 34.5 17)"/></g></svg>
       <span class="t-tag">Coming up in this note</span>
       <h3>You will decode a raw machine log yourself</h3>
-      <p>Halfway down there is a two-minute puzzle: one real-looking log, one shift. Crack the codes, write the rules and watch the noise turn into a clear picture of the shift. It is oddly satisfying, and it shows exactly what my tools do and how.</p>
+      <p data-pc="Halfway down there is a two-minute puzzle: one real-looking log, one shift. Crack the codes, write the rules and watch the noise turn into a clear picture of the shift. It is oddly satisfying, and it shows exactly what Meshlock's tools do and how.">Halfway down there is a two-minute puzzle: one real-looking log, one shift. Crack the codes, write the rules and watch the noise turn into a clear picture of the shift. It is oddly satisfying, and it shows exactly what my tools do and how.</p>
       <p class="clues">The next sections are your clues. Read on.</p>
     </aside>
 
@@ -455,7 +455,7 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
       <div class="pz-head">
         <span class="t-tag">Try it yourself · about 2 minutes</span>
         <h2>Decode a raw machine log</h2>
-        <p>One machine, one 8-hour shift, exactly as the controller saved it. No software skills needed. You will do by hand what my tools do every night.</p>
+        <p data-pc="One machine, one 8-hour shift, exactly as the controller saved it. No software skills needed. You will do by hand what Meshlock's tools do every night.">One machine, one 8-hour shift, exactly as the controller saved it. No software skills needed. You will do by hand what my tools do every night.</p>
       </div>
 
       <section class="step" id="s1">
@@ -517,7 +517,7 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
         <div class="step-head"><span class="disc">5</span><div><h3>Now picture your whole floor</h3></div></div>
         <p class="lock-note">Run the decoder first.</p>
         <div class="body end">
-          <p>You decoded one machine for one shift. A real floor has several machines, each writing its own format, and the files get written over every few weeks. That is the part I build, and it is what the rest of this note is about.</p>
+          <p data-pc="You decoded one machine for one shift. A real floor has several machines, each writing its own format, and the files get written over every few weeks. That is the part Meshlock builds, and it is what the rest of this note is about.">You decoded one machine for one shift. A real floor has several machines, each writing its own format, and the files get written over every few weeks. That is the part I build, and it is what the rest of this note is about.</p>
           <p style="margin:0"><a class="btn" style="text-decoration:none;display:inline-block" href="#what-i-build">See what the tool does ↓</a> <button class="btn-ghost" id="again" style="margin-left:14px">Try again</button></p>
         </div>
       </section>
@@ -526,9 +526,9 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
     </div>
     <!-- =================== END PUZZLE =================== -->
 
-    <h2 id="what-i-build">What I do with it</h2>
+    <h2 id="what-i-build" data-pc="What we do with it">What I do with it</h2>
 
-    <p>This is the part I build. You bring the files you saved. I turn them into something you can run the floor on.</p>
+    <p data-pc="This is the part we build. You bring the files you saved. We turn them into something you can run the floor on.">This is the part I build. You bring the files you saved. I turn them into something you can run the floor on.</p>
 
     <figure class="fig">
       <div class="fig-card">
@@ -570,7 +570,7 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
 
     <ul class="plain">
       <li><b>Readable.</b> Each raw log becomes a plain picture of the shift: running, stopped, changing over. Per machine, per day, with the hours added up.</li>
-      <li><b>Standardised.</b> Every machine writes its files differently. I make them all speak the same language, so every new export joins the ones before it in one continuous record.</li>
+      <li><b>Standardised.</b> <span data-pc="Every machine writes its files differently. We make them all speak the same language, so every new export joins the ones before it in one continuous record.">Every machine writes its files differently. I make them all speak the same language, so every new export joins the ones before it in one continuous record.</span></li>
       <li><b>Kept.</b> Your history stops being written over. Pick any week or month you have exports for and compare it with any other.</li>
     </ul>
 
@@ -606,12 +606,12 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
         <li>Repeat every week so nothing gets written over</li>
       </ul>
       <p class="foot"><b>Can't read it? That's normal.</b> Bring one file to a free 30-minute call.</p>
-      <p class="print-only mono" style="font-size:12px;margin:8px 0 0">meshlock.co.uk/start/?s=fn-data-pdf · hello@meshlock.co.uk</p>
+      <p class="print-only mono" style="font-size:12px;margin:8px 0 0" data-pc="meshlock.co.uk/start/?s={tag} · patryk@meshlock.co.uk">meshlock.co.uk/start/?s=fn-data-pdf · hello@meshlock.co.uk</p>
       <button class="print" type="button" id="printList">Print this checklist</button>
     </div>
 
     <div class="article-footer">
-      <p>Bring one exported file to a free 30-minute call. I will show you what is inside it.</p>
+      <p data-pc="Bring one exported file to a free 30-minute call. We will show you what is inside it.">Bring one exported file to a free 30-minute call. I will show you what is inside it.</p>
       <a class="nav-cta" href="/#contact">Book a free call</a>
       <p><a href="/start/?s=fn-data">Or tick what happens on your floor and get a one-page offer →</a></p>
     </div>
@@ -641,8 +641,8 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
     <li><a href="/prices/">Prices</a></li>
     <li><a href="/start/">One-page offer</a></li>
     <li><a href="/notes/">Field notes</a></li>
-    <li><a href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn</a></li>
-    <li><a href="mailto:hello@meshlock.co.uk">hello@meshlock.co.uk</a></li>
+    <li data-pc-hide><a href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn</a></li>
+    <li><a href="mailto:hello@meshlock.co.uk" data-pc-href="mailto:patryk@meshlock.co.uk" data-pc="patryk@meshlock.co.uk">hello@meshlock.co.uk</a></li>
     <li><a href="#top">Back to top ↑</a></li>
     <li class="copy">© 2026 Meshlock</li>
   </ul>
