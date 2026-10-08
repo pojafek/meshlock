@@ -119,6 +119,26 @@ footer .wordmark img{height:20px;}
 .article-meta{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint); display:flex; align-items:center; gap:10px;}
 .article-meta .tick{width:1px; height:11px; background:var(--ink-faint);}
 
+/* Title block under every Field Notes title, like the one in the corner of an engineering drawing.
+   The ink background shows through the 1px gaps as thin cell rules. */
+.title-block{display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:1px; background:var(--ink); border:1.5px solid var(--ink); max-width:720px; margin:6px 0 0;}
+.tb-cell{grid-column:span 6; background:var(--paper); padding:10px 14px 12px; min-width:0;}
+.tb-cell.tb-type,.tb-cell.tb-time{grid-column:span 3;}
+.title-block.has-stamp .tb-type,.title-block.has-stamp .tb-time,.title-block.has-stamp .tb-stamp{grid-column:span 2;}
+.tb-k{display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 4px;}
+.tb-v{display:block; font-size:15px; line-height:1.45; color:var(--ink);}
+.tb-stamp{display:flex; align-items:center; justify-content:center;}
+.tb-stamp span{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:500; letter-spacing:.12em; color:var(--green); background:var(--green-bg); border:1.5px dashed var(--green); border-radius:2px; padding:6px 9px; transform:rotate(-4deg); white-space:nowrap;}
+@media (max-width:560px){
+  .title-block.has-stamp .tb-type,.title-block.has-stamp .tb-time{grid-column:span 3;}
+  .title-block.has-stamp .tb-stamp{grid-column:span 6; justify-content:flex-start; padding:12px 14px;}
+}
+
+/* Field Notes list: note type and length above each title */
+.note-meta{display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; margin:0 0 8px;}
+.note-type{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--green); background:var(--green-bg); border:1px dashed var(--green); border-radius:2px; padding:3px 7px;}
+.note-len{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft);}
+
 .article-body{padding:10px 0 70px;}
 .article-body .prose{max-width:66ch; margin:0 auto;}
 .prose p{margin:0 0 22px; font-size:17px; color:var(--ink); line-height:1.7;}
