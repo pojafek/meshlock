@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/stats.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <title>Your Machines Already Know How Long They Stand Still | Meshlock Field Notes</title>
@@ -634,7 +635,7 @@ pre.rawlog{background:var(--paper-card);border:1px solid var(--line);border-radi
 <footer>
   <div class="foot-brand">
     <a class="wordmark" href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="127" height="20"></a>
-    <p class="foot-tag">Lean, software and ERP. One person.</p>
+    <p class="foot-tag" data-pc="Automation &amp; continuous improvement for manufacturers.">Lean, software and ERP. One person.</p>
   </div>
   <ul class="foot-links">
     <li><a href="/tools/">Tools in action</a></li>

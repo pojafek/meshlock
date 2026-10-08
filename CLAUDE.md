@@ -59,6 +59,10 @@ Rules:
 ## Checklist for every page (new or edited)
 
 - `<meta name="color-scheme" content="light">` in `<head>`.
+- Right after `<meta charset="UTF-8">`, the Patryk snippet below (same on every page that loads `stats.js`). For `pc` visitors it hides every `data-pc` line and every `data-pc-hide` element before first paint, and `stats.js` reveals them once swapped (fallback: on window load). Without it, Kamil's lines flash before the swap. All swap logic stays in `stats.js`.
+  ```html
+  <script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/stats.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
+  ```
 - CSS sets `html{background:var(--paper);}` on `html`, not only on `body`. Without it, iOS Safari in dark mode shows a black background.
 - Field Notes pages link `/assets/notes.css`. If that file or the `assets/` folder is missing, those pages lose all styling.
 - Nav and footer use the wordmark image, not typed text:
@@ -85,6 +89,7 @@ Logo palette: ink `#171A1D`, paper `#EEF0EA`, bronze `#B98A3A` (used for the mag
 Fonts (Google Fonts): Space Grotesk for headings, IBM Plex Sans for body, IBM Plex Mono for small labels.
 
 Main line: "Lean, software and ERP. One person." Used under the wordmark in the hero lockup, in the footer and in link previews.
+The main line is Kamil's only. For Patryk's visitors (`pc` tags) the hero lockup and every footer show "Automation & continuous improvement for manufacturers." instead (`data-pc`).
 Longer line, used as the About heading where there is room to explain the name: "Software engineer, Lean consultant or ERP specialist? You don't have to choose. I mesh all three." Short form: `SOFTWARE · LEAN · ERP`.
 
 Three layers, kept apart:

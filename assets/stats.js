@@ -47,9 +47,12 @@
     var g = t && t.hasAttribute('data-pc-hide') && document.getElementById(t.getAttribute('data-pc-goto'));
     if (g) g.scrollIntoView();
   }
+  // The snippet at the top of each page's <head> hides data-pc lines (class pc-wait) until they are swapped
+  function reveal(){ document.documentElement.classList.remove('pc-wait'); }
   if (/^pc/.test(kept)) {
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pcMode); else pcMode();
-  }
+    document.documentElement.classList.add('pc');
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ pcMode(); reveal(); }); else { pcMode(); reveal(); }
+  } else reveal();
 
   if (kept) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', retagAll); else retagAll();
