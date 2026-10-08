@@ -1,0 +1,38 @@
+/* "Worth automating?" check · assets/toolkit/worth-automating.js renders into [data-tool="worth-automating"].
+   Same look as the cycle time calculator. Uses the tokens from notes.css. No <p> or lists inside. */
+.wa [hidden]{display:none!important;}
+.wa{background:var(--paper-card); border:1.5px solid var(--ink); border-radius:var(--radius); margin:22px 0 12px; color:var(--ink);}
+.wa-head{background:var(--ink); color:var(--paper); padding:12px 18px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 14px; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase;}
+.wa-tag{color:var(--amber);}
+.wa-sub-head{color:#c9cdc0;}
+.wa-q{padding:14px 18px; border-bottom:1px solid var(--line);}
+.wa-qt{display:flex; gap:10px; align-items:flex-start; font-size:15.5px; line-height:1.4; margin:0 0 10px;}
+.wa-n{flex:none; width:24px; height:24px; border-radius:50%; border:1.5px solid var(--ink); font:500 11.5px/21px 'IBM Plex Mono',monospace; text-align:center;}
+.wa-opts{display:flex; flex-wrap:wrap; gap:8px; padding-left:34px;}
+.wa-opt{appearance:none; font:500 13px/1.25 'IBM Plex Mono',monospace; color:var(--ink); background:var(--paper); border:1.5px solid var(--ink); border-radius:3px; padding:10px 14px; min-height:44px; cursor:pointer; text-align:left;}
+.wa-opt[aria-checked="true"]{background:var(--ink); color:var(--paper);}
+.wa-opt:focus-visible{outline:2px solid var(--amber); outline-offset:2px;}
+.wa-pre{padding:8px 0 0 34px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--green);}
+.wa-out{padding:16px 18px 4px;}
+.wa-progress{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft);}
+.wa-verdict{border:1.5px solid var(--ink); border-radius:3px; background:var(--paper); padding:18px 16px 16px; position:relative; margin-top:10px;}
+.wa-stamp{position:absolute; top:-13px; right:12px; font:500 11px/1 'IBM Plex Mono',monospace; letter-spacing:.12em; padding:6px 8px; border-radius:2px; border:1.5px dashed; background:var(--paper); transform:rotate(-4deg);}
+.wa-automate .wa-stamp{color:var(--green); border-color:var(--green);}
+.wa-standardise .wa-stamp{color:var(--amber-ink); border-color:var(--amber);}
+.wa-leave .wa-stamp{color:var(--red-flag); border-color:var(--red-flag);}
+.wa-vh{font:700 21px/1.25 'Space Grotesk',sans-serif; margin:2px 0 6px;}
+.wa-vs{font-size:15px; line-height:1.5; color:var(--ink-soft); margin:0 0 12px;}
+.wa-why{border-top:1px dashed var(--line); padding-top:10px;}
+.wa-w{position:relative; padding:4px 0 4px 18px; font-size:14.5px; line-height:1.5;}
+.wa-w::before{content:"→"; position:absolute; left:0; font-family:'IBM Plex Mono',monospace; color:var(--ink-soft);}
+.wa-go{display:inline-block; margin-top:14px; font:400 12.5px/1.2 'IBM Plex Mono',monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--paper); background:var(--ink); padding:12px 16px; border-radius:3px; text-decoration:none;}
+.wa-go:hover{box-shadow:3px 4px 0 var(--amber);}
+.wa-actions{padding:12px 18px 16px;}
+.wa-reset{appearance:none; background:none; border:0; border-bottom:1px solid var(--ink-faint); color:var(--ink); font:400 12.5px/1.2 'IBM Plex Mono',monospace; letter-spacing:.08em; text-transform:uppercase; padding:4px 0; cursor:pointer;}
+@media (max-width:520px){
+  .wa-q{padding:14px 14px;}
+  .wa-opts{padding-left:0;}
+  .wa-pre{padding-left:0;}
+  .wa-out{padding:16px 14px 4px;}
+}
+.wa-nojs{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-soft); border:1.5px dashed var(--ink-faint); border-radius:3px; padding:14px 16px; margin:18px 0;}

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Step Timer Paper Sheet | Meshlock Toolkit</title>
+<meta name="description" content="A blank sheet to time one task step by step on paper, up to three runs, with waiting and mistakes marked.">
+<meta name="robots" content="noindex">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/notes.css">
+<script src="/assets/site.js" defer></script>
+<script src="/assets/stats.js" defer></script>
+<style>
+.sheet{background:#fff; border:1.5px solid var(--ink); padding:18px; margin:18px 0 0; color:var(--ink);}
+.sheet-top{display:grid; grid-template-columns:2fr 1fr 1fr; gap:10px 16px; margin:0 0 14px;}
+.sheet-f{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); border-bottom:1px solid var(--ink); padding:18px 0 4px;}
+.sheet table{width:100%; border-collapse:collapse; table-layout:fixed;}
+.sheet th{font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); text-align:left; padding:6px 6px; border-bottom:1.5px solid var(--ink);}
+.sheet td{height:34px; border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:0 6px;}
+.sheet td:last-child{border-right:0;}
+.sheet td.n{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft);}
+.sheet td.box{text-align:center;}
+.sheet td.box::after{content:""; display:inline-block; width:14px; height:14px; border:1.5px solid var(--ink-faint); border-radius:2px; vertical-align:middle;}
+.sheet .c-n{width:7%;} .sheet .c-what{width:33%;} .sheet .c-run{width:12%;} .sheet .c-flag{width:12%;}
+.sheet-bottom{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px 16px; margin:14px 0 0;}
+.sheet-note{font-size:13px; line-height:1.5; color:var(--ink-soft); margin:14px 0 0;}
+.prose .sheet-how{font-size:15.5px;}
+.sheet-print{appearance:none; font:400 12.5px/1.2 'IBM Plex Mono',monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--paper); background:var(--ink); border:0; border-radius:3px; padding:12px 16px; cursor:pointer; margin:6px 0 0;}
+.sheet-wrap{overflow-x:auto;}
+@media (max-width:640px){ .sheet{min-width:600px;} }
+@media print{
+  nav,.offer-bar,footer,.article-header,.no-print{display:none!important;}
+  body{background:#fff;}
+  .article-body{padding:0;}
+  .article-body .prose{max-width:none;}
+  .sheet{border:1.5px solid #000; margin:0; min-width:0;}
+}
+</style>
+</head>
+<body id="top">
+
+<nav>
+  <div class="brand">
+    <a class="wordmark" href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="178" height="28"></a>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="/tools/"><span class="nl-long">Tools in action</span><span class="nl-short">Tools</span></a>
+    <a class="nav-link" href="/prices/">Prices</a>
+    <a class="nav-link" href="/#about" data-pc-href="/#promise">About</a>
+    <a class="nav-link" href="/notes/"><span class="nl-long">Field notes</span><span class="nl-short">Notes</span></a>
+  </div>
+  <a class="nav-cta" href="/#contact">Book a call</a>
+</nav>
+<div class="offer-bar"><p><span class="ob-long">Here for the long run. So your first tool is paid for only when it works as agreed.</span><span class="ob-short">First tool: pay only when it works.</span> <a href="/#how">How it works →</a></p></div>
+
+<section class="article-header">
+  <div class="wrap">
+    <p class="eyebrow crumbs"><a href="/">Meshlock</a> / <a href="/toolkit/step-timer/">Step timer</a> / Paper sheet</p>
+    <h1>Step timer, on paper</h1>
+  </div>
+</section>
+
+<section class="article-body">
+  <div class="wrap prose">
+    <div class="no-print">
+      <p class="sheet-how">For people who prefer a clipboard. Write one step per line, note the clock time each step ends, and tick Waiting or Mistake where it applies. Three columns for three runs: another person or another shift.</p>
+      <button type="button" class="sheet-print" onclick="window.print()">Print this sheet</button>
+    </div>
+    <div class="sheet-wrap">
+    <div class="sheet">
+      <div class="sheet-top">
+        <div class="sheet-f">Task</div><div class="sheet-f">Date</div><div class="sheet-f">Times per week</div>
+      </div>
+      <table>
+        <colgroup><col class="c-n"><col class="c-what"><col class="c-run"><col class="c-run"><col class="c-run"><col class="c-flag"><col class="c-flag"></colgroup>
+        <thead><tr><th>Step</th><th>What happens</th><th>Run 1</th><th>Run 2</th><th>Run 3</th><th>Waiting</th><th>Mistake</th></tr></thead>
+        <tbody>
+        <tr><td class="n">1</td><td></td><td></td><td></td><td></td><td class="box"></td><td class="box"></td></tr>
+        <tr><td class="n">2</td><td></td><td></td><td></td><td></td><td class="box"></td><td class="box"></td></tr>
+        <tr><td class="n">3</td><td></td><td></td><td></td><td></td><td class="box"></td><td class="box"></td></tr>
+        <tr><td class="n">4</td><td></td><td></td><td></td><td></td><td class="box"></td><td class="box"></td></tr>
+        <tr><td class="n">5</td><td></td><td></td><td></td><td></td><td class="box"></td><td class="box"></td></tr>
+        <tr><td class="n">6</td><td></td><td></td><td></td><td></td><td class="box"></td><td class="box"></td></tr>
+        <tr><td class="n">7</td><td></td><td></td><td></td><td></td><td class="box"></td><td class="box"></td></tr>
+        <tr><td class="n">8</td><td></td><td></td><td></td><td></td><td class="box"></td><td class="box"></td></tr>
+        <tr><td class="n">9</td><td></td><td></td><td></td><td></td><td class="box"></td><td class="box"></td></tr>
+        <tr><td class="n">10</td><td></td><td></td><td></td><td></td><td class="box"></td><td class="box"></td></tr>
+        <tr><td class="n">11</td><td></td><td></td><td></td><td></td><td class="box"></td><td class="box"></td></tr>
+        <tr><td class="n">12</td><td></td><td></td><td></td><td></td><td class="box"></td><td class="box"></td></tr>
+        </tbody>
+      </table>
+      <div class="sheet-bottom">
+        <div class="sheet-f">Total run 1</div><div class="sheet-f">Total run 2</div><div class="sheet-f">Total run 3</div>
+      </div>
+      <div class="sheet-note">Step timer · meshlock.co.uk/toolkit/step-timer/ · Bring the sheet to a free 30-minute call, or time the next run on a phone.</div>
+    </div>
+    </div>
+    <p class="tool-more no-print"><a href="/toolkit/step-timer/">← Back to the step timer</a></p>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-brand">
+    <a class="wordmark" href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="127" height="20"></a>
+    <p class="foot-tag" data-pc="Automation &amp; continuous improvement for manufacturers.">Lean, software and ERP. One person.</p>
+  </div>
+  <ul class="foot-links">
+    <li><a href="/tools/">Tools in action</a></li>
+    <li><a href="/prices/">Prices</a></li>
+    <li><a href="/start/?s=tk-timer">One-page offer</a></li>
+    <li><a href="/notes/">Field notes</a></li>
+    <li data-pc-hide><a href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn</a></li>
+    <li><a href="mailto:hello@meshlock.co.uk" data-pc-href="mailto:patryk@meshlock.co.uk" data-pc="patryk@meshlock.co.uk">hello@meshlock.co.uk</a></li>
+    <li><a href="#top">Back to top ↑</a></li>
+    <li class="copy">© 2026 Meshlock</li>
+  </ul>
+</footer>
+
+</body>
+</html>
