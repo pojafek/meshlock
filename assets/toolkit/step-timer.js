@@ -126,7 +126,7 @@
       if (S.runs.length) return results();
       setup();
     }
-    function frame(inner){ root.innerHTML = '<div class="st"><div class="st-head"><span class="st-tag">Step timer</span><span class="st-sub-head">Nothing leaves this browser</span></div>' + inner + '</div>'; }
+    function frame(inner){ root.innerHTML = '<div class="st"><div class="st-head"><span class="st-tag">Step timer</span><span class="st-sub-head">Nothing leaves this browser · Saved on this device only, until you start over.</span></div>' + inner + '</div>'; }
     function $(s){ return root.querySelector(s); }
 
     function setup(){
