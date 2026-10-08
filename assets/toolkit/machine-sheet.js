@@ -63,7 +63,7 @@
             '<span class="ms-cl">Shifts a day</span>' + [1, 2, 3].map(function(n){ return '<button type="button" class="ms-chip" data-shifts="' + n + '">' + n + '</button>'; }).join('') +
             '<span class="ms-cl">Days</span><button type="button" class="ms-chip" data-days="5">Mon to Fri</button><button type="button" class="ms-chip" data-days="7">Mon to Sun</button>' +
           '</div></div>' +
-          '<div class="ms-clear-row"><button type="button" class="ms-clear">New sheet: clear machines, names and ticks</button></div>' +
+          '<div class="ms-clear-row"><button type="button" class="ms-clear">Start a new sheet</button><span>Clears the company, machines, names and ticks on this device.</span></div>' +
         '</div>' +
         '<div class="ms-actions">' +
           '<button type="button" class="ms-print" data-what="check">Print the checklist<span>1 page</span></button>' +
@@ -161,9 +161,9 @@
     var armed = null;
     $('.ms-clear').addEventListener('click', function(){
       var b = this;
-      if (!armed) { b.textContent = 'Tap again to clear everything'; armed = setTimeout(function(){ armed = null; b.textContent = 'New sheet: clear machines, names and ticks'; }, 3000); return; }
-      clearTimeout(armed); armed = null; b.textContent = 'New sheet: clear machines, names and ticks';
-      S = fresh(); save(); WHO.forEach(function(w){ $('[data-who="' + w[0] + '"]').value = ''; }); inputs(); draw();
+      if (!armed) { b.textContent = 'Tap again to clear everything'; b.classList.add('armed'); armed = setTimeout(function(){ armed = null; b.textContent = 'Start a new sheet'; b.classList.remove('armed'); }, 3000); return; }
+      clearTimeout(armed); armed = null; b.textContent = 'Start a new sheet'; b.classList.remove('armed');
+      S = fresh(); save(); if (P) P.org(''); $('#ms-org').value = ''; WHO.forEach(function(w){ $('[data-who="' + w[0] + '"]').value = ''; }); inputs(); draw();
     });
 
     // ---------- print: only the chosen sheets, each on its own page

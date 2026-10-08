@@ -30,8 +30,12 @@
 .ms-pvh{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink); margin:14px 0 8px;}
 .ms-pvh span{display:block; text-transform:none; letter-spacing:.02em; color:var(--ink-soft); margin-top:3px;}
 .ms-scroll{overflow-x:auto; border:1px solid var(--line); background:var(--paper);}
-.ms-clear-row{border-top:1px dashed var(--line); padding-top:4px;}
-.ms-clear{color:var(--ink-soft); margin-top:6px;}
+.ms-clear-row{display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; border-top:1px dashed var(--line); padding-top:14px;}
+.ms-clear-row span{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft);}
+.ms-add{margin-top:10px;}
+button.ms-clear{border:1.5px solid var(--ink); border-radius:3px; padding:10px 14px; margin:0; background:var(--paper); font-size:12px;}
+button.ms-clear:hover{box-shadow:3px 4px 0 var(--amber);}
+button.ms-clear.armed{background:var(--red-flag); border-color:var(--red-flag); color:var(--paper);}
 
 /* ---------- the sheets ---------- */
 .ms-sheet{background:#fff; color:#171A1D; padding:16px; min-width:540px; font-family:'IBM Plex Sans',sans-serif;}
@@ -78,7 +82,8 @@
 /* Laptops and desktops: the tool steps out of the text column, so the sheets show at full width
    without a sideways scrollbar, and the form takes two columns */
 @media (min-width:900px){
-  [data-tool="machine-sheet"]{width:min(1000px, 88vw); margin-left:calc((100% - min(1000px, 88vw)) / 2);}
+  /* the same width as the content on /tools/ (.wrap: 1080px less its 6vw sides) */
+  [data-tool="machine-sheet"]{--msw:calc(min(1080px, 100vw) - 12vw); width:var(--msw); margin-left:calc((100% - var(--msw)) / 2);}
   .ms-set{grid-template-columns:1fr 1fr; gap:18px 28px;}
   .ms-clear-row{grid-column:1 / -1;}
   .ms-sheet{padding:22px 26px;}
