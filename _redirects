@@ -1,0 +1,3 @@
+# Netlify rules. The test suite lives in the repo but is never published: answer 404 for it.
+/tests     /404.html  404!
+/tests/*   /404.html  404!
