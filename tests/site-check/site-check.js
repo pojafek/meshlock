@@ -484,6 +484,30 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     await c2.close();
   }
 
+  // 18. Tools in action, calmer: three short lines per case, the full story behind a tap, the price note once
+  {
+    const c = await ctx(browser, { w: 390 });
+    const { p, errs } = await open(c, '/tools/');
+    const cases = p.locator('.tool-case');
+    ok(await cases.count() === 5, 'five case files');
+    for (let i = 0; i < 5; i++) {
+      const k = cases.nth(i);
+      const labels = (await k.locator('.tc-fields .field b').allInnerTexts()).map(x => x.trim().toUpperCase()).join(',');
+      ok(labels === 'BEFORE,THE TOOL,RESULT', `case ${i} labels ${labels}`);
+      ok(await k.locator('details.tc-more').count() === 1 && !(await k.locator('details.tc-more').evaluate(d => d.open)), `case ${i} full story starts closed`);
+      ok(/A tool like this: about £[\d,]+\.?$/.test((await k.locator('.tc-price').innerText()).trim()), `case ${i} price line is short`);
+    }
+    const t = await visibleText(p);
+    ok((t.match(/Every quote is built around your own workflow/g) || []).length === 1, 'price note shown once');
+    ok(!/DMAIC|Significant|impractical/.test(t), 'more case files in plain words');
+    ok(!/—|–| - /.test(t), '/tools/ no dashes');
+    ok(t.split(/\s+/).length <= 750, '/tools/ words ' + t.split(/\s+/).length);
+    await cases.nth(0).locator('.tc-more > summary').click();
+    ok(await cases.nth(0).locator('.tc-more p').first().isVisible(), 'the full story opens');
+    ok(errs.length === 0, '/tools/ errors ' + errs);
+    await c.close();
+  }
+
   // 8. /tests/ is never published: the Netlify rule answers 404 for it
   {
     const rules = fs.readFileSync(path.join(ROOT, '_redirects'), 'utf8').split('\n').map(l => l.trim().split(/\s+/));

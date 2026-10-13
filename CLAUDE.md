@@ -14,7 +14,7 @@ Plain static HTML and CSS. No framework, no build step, no package.json. Keep it
 
 ```
 index.html                    Homepage (all CSS inline in <style>)
-tools/index.html              Tools in action: ERP intro with stats, five full-width live animations (Full screen button), each with a price line and a link to the offer, more case files
+tools/index.html              Tools in action: short intro with the one price note ("Every quote is built around your own workflow"), ERP band with three stats, five full-width live animations (Full screen button), each with three one-sentence lines (Before · The tool · Result), the longer story in a closed <details> ("The full story"), a short price line and a link to the offer, then more case files as three plain one-line items
 prices/index.html             How a price is set, example prices, how you pay, Always included, FAQ (FAQPage JSON-LD lives here)
 apple-touch-icon.png          180px icon
 sitemap.xml                   Sitemap for /, /tools/, /prices/, /notes/, each article, /toolkit/ and each tool page under it
