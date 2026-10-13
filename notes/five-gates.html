@@ -67,6 +67,11 @@
 .gate-rows .gr-stop{background:#F3E4DF;border-left:3px solid var(--red-flag)}
 .gate-rows b{font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-right:8px}
 .gr-pass b{color:var(--green)} .gr-stop b{color:var(--red-flag)}
+.to-check{border:1.5px solid var(--ink);border-radius:var(--radius);background:var(--ink);color:var(--paper);padding:18px 20px;margin:36px 0 0}
+.tc-k{display:block;font:500 11px/1.4 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+.article-body .prose .to-check p{color:#dfe2da;font-size:16px;line-height:1.55;margin:0 0 8px}
+.article-body .prose .to-check p.tc-tip{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--amber);margin:0}
+.prose .lead a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
 .cost{display:grid;grid-template-columns:minmax(0,1fr);gap:0;border:1.5px solid var(--ink);border-radius:var(--radius);margin:6px 0 26px;overflow:hidden}
 .cost div{display:grid;grid-template-columns:minmax(110px,.6fr) minmax(0,1.4fr);gap:12px;padding:11px 14px;border-top:1px solid var(--line);font-size:15.5px;line-height:1.4;background:var(--paper-card)}
 .cost div:first-child{border-top:0}
@@ -112,7 +117,7 @@
 <section class="article-body">
   <div class="wrap prose">
 
-    <p class="lead">Someone says a task is slow, and the next sentence is "can we automate it?". Often the answer is yes. Sometimes the slow step is only where the problem shows, not where it starts. Five quick questions tell the two apart.</p>
+    <p class="lead">Someone says a task is slow, and the next sentence is "can we automate it?". Often the answer is yes. Sometimes the slow step is only where the problem shows, not where it starts. Five quick questions tell the two apart. Read how they work, then <a href="#worth-automating">run your own task through them</a> at the end.</p>
 
     <figure class="gates-fig" id="gates">
       <div class="gates-card">
@@ -207,10 +212,16 @@
 
     <p>When a task passes, it goes straight to a tool. When it stops, the fix comes first, and the tool that follows has something solid to stand on.</p>
 
+    <div class="to-check">
+      <span class="tc-k">Your turn</span>
+      <p>That is the theory. The check below runs one of your own tasks through the same five gates, so you don't have to work it out from the page. You get the gate it stops at, what to do first, and a result you can copy into an email or send to whoever decides.</p>
+      <p class="tc-tip">Not sure which task to try? Take the last one someone asked to automate.</p>
+    </div>
+
     <section class="keep" id="worth-automating">
       <div class="keep-head"><span class="keep-k">Keep it · free tool</span><span class="keep-stamp">Yours to keep</span></div>
       <h2>Run your own task through the gates</h2>
-      <p class="keep-why">Name one task and answer nine quick questions. The check shows which gate it stops at, what that means and what to do first. Use it on every task someone wants automated.</p>
+      <p class="keep-why">Name one task, nine quick taps. Use it again on every task someone wants automated.</p>
       <p class="keep-use"><b>Use it when</b>someone asks "can we automate this?" · before a supplier quotes for a tool · a task feels slow and nobody knows why</p>
       <div data-tool="worth-automating" data-offer-tag="fn-gates">
         <noscript><div class="wa-nojs">The worth automating check needs JavaScript switched on.</div></noscript>
@@ -218,11 +229,11 @@
       <p class="tool-own"><a href="/toolkit/worth-automating/" data-keep>Keep it: open it on its own page and bookmark it →</a></p>
     </section>
 
-    <h2 id="what-i-do" data-pc="What we do with it">What I do with it</h2>
+    <h2 id="what-we-do">What we do with it</h2>
 
-    <p data-pc="Meshlock works at every gate, not only the last one. Gates 2 to 4 are floor work: tracing data back, getting it on screen, agreeing one way. That is what the one-day process review is for. It costs £600, credited in full against any build.">I work at every gate, not only the last one. Gates 2 to 4 are floor work: tracing data back, getting it on screen, agreeing one way. That is what the one-day process review is for. It costs £600, credited in full against any build.</p>
+    <p>We work at every gate, not only the last one. Gates 2 to 4 are floor work: tracing data back, getting it on screen, agreeing one way. That is what the one-day process review is for. It costs £600, credited in full against any build.</p>
 
-    <p data-pc="When a task passes the first four gates, we build the tool for a fixed price agreed in writing. Your first tool is paid for only when it works as agreed.">When a task passes the first four gates, I build the tool for a fixed price agreed in writing. Your first tool is paid for only when it works as agreed.</p>
+    <p>When a task passes the first four gates, we build the tool for a fixed price agreed in writing. Your first tool is paid for only when it works as agreed.</p>
 
     <div class="article-footer">
       <p>Got a task that stops at a gate, or one that passes them all?</p>

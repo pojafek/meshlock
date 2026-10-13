@@ -416,6 +416,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(/AUTOMATE/.test(await r.p.locator('#gStamp').innerText()), 'reduced motion shows the end frame');
     const tp = await visibleText(r.p);
     ok(!/\b(I|I'm|I've|me|my)\b/.test(tp.replace(/Back to top/, '')) && /What we do with it/.test(tp), 'pc: gates guide has no first person');
+    ok(await r.p.locator('.to-check').count() === 1, 'a bridge leads from the gates to the check');
     await c2.close();
   }
 
