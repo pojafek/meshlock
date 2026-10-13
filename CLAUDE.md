@@ -182,6 +182,8 @@ The template for every new Field Note. /notes/ says it under the heading: "Every
 
 The title block and the two note types below are part of the template: every note still has both.
 
+Field Notes are shared as marketing by everyone at Meshlock, so every note is written in the Meshlock voice (we, us, Meshlock) for every visitor, never I or my, and needs no data-pc lines. Only the footer keeps its data-pc lines. The rest of the site keeps first person until the brand change.
+
 Every Field Note is one of two types, and says so in the same places:
 - **Guide** (`Practical guide`): how to do something yourself, with a takeaway (checklist, puzzle, template).
 - **Case story** (`Case story`): one fix from the floor, told without names.

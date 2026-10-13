@@ -124,7 +124,11 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     const n = await open(c, '/notes/');
     ok((await n.p.locator('.notes-standard').innerText()) === 'Every note: a problem worth seeing, a way to measure it yourself, and a free tool to keep.', 'notes standard line');
     ok(await n.p.locator('.notes-header a[href="/toolkit/"]', { hasText: 'Free tools from these notes' }).count() === 1, 'notes toolkit link');
-    ok((await visibleText(n.p)).includes('taught me'), 'notes no tag shows Kamil voice');
+    ok((await visibleText(n.p)).includes('taught us'), 'notes speak in the Meshlock voice for everyone');
+    for (const path of ['/notes/doing-it-by-hand.html', '/notes/your-machines-already-know.html', '/notes/five-gates.html']) {
+      const q = await open(c, path); const tx = (await q.p.locator('.article-body, .article-header').allInnerTexts()).join(' ');
+      ok(!/\b(I|I'm|I've|my)\b/.test(tx.replace(/"[^"]*"|“[^”]*”/g, '').replace(/I measured it/g, '')), `${path} has no first person for any visitor (reader quotes and buttons aside)`); await q.p.close();
+    }
     await c.close();
   }
 
