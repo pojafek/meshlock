@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||(/^\/toolkit\//.test(location.pathname)&&(function(k){return k&&k.t&&Date.now()-k.at<15552e6?k.t:''})(JSON.parse(localStorage.getItem('ml-keep')||'null')))||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Your Export Says More Than You Think | Meshlock Field Notes</title>
+<meta name="description" content="What to anonymise before an export leaves the building, what to leave alone so it stays useful, a two-minute swap-or-keep game and a free file anonymiser that runs in your browser.">
+<link rel="canonical" href="https://meshlock.co.uk/notes/your-export-says-more.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Meshlock">
+<meta property="og:title" content="Your export says more than you think">
+<meta property="og:description" content="What to swap before a file leaves the building, what to keep so it stays useful, and a free anonymiser that never uploads a thing.">
+<meta property="og:url" content="https://meshlock.co.uk/notes/your-export-says-more.html">
+<meta property="og:image" content="https://meshlock.co.uk/assets/og-image.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/notes.css">
+<link rel="stylesheet" href="/assets/toolkit/anonymise.css">
+<script src="/assets/site.js" defer></script>
+<script src="/assets/stats.js" defer></script>
+<script src="/assets/vendor/exceljs.min.js" defer></script>
+<script src="/assets/toolkit/anonymise.js" defer></script>
+<style>
+.prose h2{font-size:26px;line-height:1.2;margin:46px 0 16px}
+.prose h3{font-size:19px;line-height:1.3;margin:0 0 6px}
+.prose ol{margin:0 0 22px;padding-left:22px}
+.prose ol li{margin:0 0 10px;font-size:17px;line-height:1.6}
+.prose ol li::marker{font-family:'IBM Plex Mono',monospace;color:var(--green);font-size:14px}
+.prose ul.plain{margin:0 0 22px;padding-left:20px}
+.prose ul.plain li{margin:0 0 10px;font-size:17px;line-height:1.6}
+.prose b,.prose strong{font-weight:600}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* notes.css enlarges the first <p> in every block; keep that only for the lead */
+.article-body .prose p:first-of-type{font-size:17px;color:var(--ink)}
+.article-body .prose p.lead{font-size:19px;color:var(--ink-soft)}
+
+/* Hero figure: the same rows, before and after */
+figure.fig{margin:34px 0 38px}
+figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.04em;color:var(--ink-soft);margin-top:10px;line-height:1.5}
+.ba{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.ba > div{min-width:0}
+.ba .lab{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;display:inline-block;padding:3px 8px;border-radius:2px;margin-bottom:8px}
+.lab.bad{color:var(--red-flag);background:#F3E4DF;border:1px dashed var(--red-flag)}
+.lab.good{color:var(--green);background:var(--green-bg);border:1px dashed var(--green)}
+.ba .tw{overflow-x:auto;background:var(--paper-card);border:1px solid var(--line);border-radius:var(--radius)}
+.ba table{border-collapse:collapse;font:400 11.5px/1.4 'IBM Plex Mono',monospace;min-width:100%}
+.ba th,.ba td{text-align:left;padding:6px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+.ba th{background:var(--paper-dim);font-weight:500;color:var(--ink)}
+.ba td{color:var(--ink-soft)}
+.ba .hot{color:var(--red-flag);font-weight:500}
+.ba .sw{color:var(--green);background:var(--green-bg)}
+.ba .arrow{font-family:'IBM Plex Mono',monospace;color:var(--ink-faint);text-align:center;font-size:20px;line-height:1}
+
+/* Coming up box */
+.try{background:var(--ink);color:var(--paper);border-radius:var(--radius);padding:22px 22px 20px;position:relative;margin:30px 0 34px}
+.try .t-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin:0 0 12px;display:block}
+.try h3{font-family:'Space Grotesk',sans-serif;font-size:21px;line-height:1.25;margin:0 0 10px;color:var(--paper);padding-right:56px}
+.article-body .prose .try p{font-size:15px;line-height:1.55;color:#dfe2da;margin:0 0 14px}
+.article-body .prose .try p.clues{font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.04em;color:var(--amber);margin:0}
+.try .gears{position:absolute;top:16px;right:16px;width:46px;height:30px;opacity:.9}
+@media (prefers-reduced-motion:no-preference){
+  .try .g1{animation:spin 6s linear infinite;transform-origin:14px 15px}
+  .try .g2{animation:spin 4s linear infinite reverse;transform-origin:34.5px 17px}
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Cards */
+.cards{display:grid;gap:12px;margin:8px 0 26px}
+@media (min-width:640px){.cards.two{grid-template-columns:1fr 1fr}}
+.card{background:var(--paper-card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
+.card .who{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;margin:0 0 4px}
+.article-body .prose .card p{font-size:15px;line-height:1.55;color:var(--ink);margin:0 0 8px}
+.article-body .prose .card p.eg{font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:var(--ink-soft);margin:0;padding-left:12px;border-left:2px solid var(--red-flag)}
+.card.keepc p.eg{border-left-color:var(--green)!important}
+.card .kind{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;display:inline-block;padding:2px 7px;border-radius:2px;margin-bottom:8px;color:var(--red-flag);border:1px dashed var(--red-flag)}
+.card.keepc .kind{color:var(--green);border-color:var(--green)}
+
+/* Game: swap or keep (scoped under .gm) */
+.gm{margin:40px 0 44px;border:1.5px solid var(--ink);border-radius:var(--radius);background:var(--paper);scroll-margin-top:90px}
+.gm-head{background:var(--ink);color:var(--paper);padding:20px 22px}
+.gm-head .t-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);display:block;margin-bottom:8px}
+.gm-head h2{color:var(--paper);margin:0 0 6px;font-size:24px}
+.article-body .prose .gm-head p{color:#dfe2da;margin:0;font-size:15px;line-height:1.55}
+.gm-meters{position:sticky;top:64px;z-index:2;background:var(--paper);border-bottom:1px solid var(--line);padding:12px 22px;display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}
+.gm-m .k{display:flex;justify-content:space-between;font:400 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
+.gm-m .k b{font-weight:500;color:var(--ink)}
+.gm-bar{height:8px;background:var(--paper-dim);border:1px solid var(--line);border-radius:1px;overflow:hidden}
+.gm-bar span{display:block;height:100%;width:100%;transition:width .25s ease,background .25s ease}
+.gm-rows{padding:4px 0}
+.gm-row{padding:14px 22px;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;align-items:center}
+.gm-col{font-weight:600;font-size:15.5px}
+.gm-val{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);margin-top:2px;overflow-wrap:anywhere}
+.gm-opts{display:flex;gap:6px}
+.gm-opt{appearance:none;font:500 12px/1.2 'IBM Plex Mono',monospace;letter-spacing:.04em;color:var(--ink);background:var(--paper-card);border:1.5px solid var(--ink);border-radius:3px;padding:9px 11px;min-height:40px;cursor:pointer}
+.gm-opt[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.gm-opt:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.gm-why{grid-column:1 / -1;font-size:14.5px;line-height:1.5;padding:8px 12px;border-left:3px solid var(--green);background:var(--paper-card)}
+.gm-why b{font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-right:8px;color:var(--green)}
+.gm-why.fine{border-left-color:var(--amber)}.gm-why.fine b{color:var(--amber-ink)}
+.gm-why.miss{border-left-color:var(--red-flag)}.gm-why.miss b{color:var(--red-flag)}
+.gm-out{padding:16px 22px 6px}
+.gm-lab{font:400 11px/1.4 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.gm-sees{overflow-x:auto;background:var(--paper-card);border:1px solid var(--line);border-radius:3px}
+.gm-sees table{border-collapse:collapse;font:400 11.5px/1.4 'IBM Plex Mono',monospace;min-width:100%}
+.gm-sees th,.gm-sees td{text-align:left;padding:6px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+.gm-sees th{background:var(--paper-dim);font-weight:500}
+.gm-sees td.leak{color:var(--red-flag);font-weight:500}
+.gm-sees td.sw{color:var(--green);background:var(--green-bg)}
+.gm-sees td.gone{color:var(--ink-faint)}
+.gm-act{padding:16px 22px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
+.gm-btn{appearance:none;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);font:400 12.5px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;padding:12px 16px;border-radius:3px;cursor:pointer;min-height:44px}
+.gm-btn:hover:not(:disabled){box-shadow:3px 4px 0 var(--amber)}
+.gm-btn:disabled{opacity:.4;cursor:not-allowed}
+.gm-ghost{appearance:none;background:none;border:0;border-bottom:1px solid var(--ink-faint);color:var(--ink);font:400 12.5px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;padding:4px 0;cursor:pointer}
+.gm-left{font:400 12px/1.4 'IBM Plex Mono',monospace;color:var(--ink-soft)}
+.gm-res{margin:0 22px 22px;padding:18px 16px 16px;border:1.5px solid var(--ink);border-radius:3px;position:relative;background:var(--paper-card)}
+.gm-res .big{font:700 20px/1.3 'Space Grotesk',sans-serif;margin:0 0 6px}
+.article-body .prose .gm-res p{margin:0 0 10px;font-size:16px;line-height:1.55}
+.gm-stamp{position:absolute;top:-14px;right:12px;font:500 10.5px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;background:var(--paper);border:1.5px dashed;padding:6px 8px;border-radius:2px;transform:rotate(-5deg)}
+.gm-stamp.ok{color:var(--green);border-color:var(--green)}
+.gm-stamp.no{color:var(--red-flag);border-color:var(--red-flag)}
+.gm-res a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
+.gm-foot{font:400 11px/1.5 'IBM Plex Mono',monospace;color:var(--ink-soft);padding:12px 22px;border-top:1px solid var(--line)}
+.gm [hidden]{display:none!important}
+.article-body .prose p.gm-lab{font:400 11px/1.4 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.article-body .prose p.gm-foot{font:400 11px/1.5 'IBM Plex Mono',monospace;color:var(--ink-soft);margin:0}
+@media (max-width:560px){
+  .gm-head,.gm-out,.gm-act,.gm-foot{padding-left:16px;padding-right:16px}
+  .gm-meters{padding:10px 16px;top:56px}
+  .gm-row{grid-template-columns:minmax(0,1fr);padding:14px 16px}
+  .gm-res{margin:0 16px 18px}
+}
+@media (prefers-reduced-motion:reduce){.gm *,.try *{animation:none!important;transition:none!important}}
+
+.grades{display:grid;gap:10px;margin:8px 0 22px}
+.gr{position:relative;background:var(--paper-card);border:1px solid var(--line);border-left:5px solid;border-radius:var(--radius);padding:14px 16px 12px}
+.gr.g1{border-left-color:var(--red-flag)}.gr.g2{border-left-color:var(--amber)}.gr.g3{border-left-color:var(--green)}
+.gr-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin-bottom:6px}
+.gr-n{font:700 18px/1.2 'Space Grotesk',sans-serif}
+.gr-l{font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+.g1 .gr-l{color:var(--red-flag)}.g2 .gr-l{color:var(--amber-ink)}.g3 .gr-l{color:var(--green)}
+.article-body .prose .gr p{font-size:15px;line-height:1.55;margin:0 0 6px;color:var(--ink)}
+.article-body .prose .gr p.gr-do{font-size:14.5px;margin:0;color:var(--ink)}
+.gr-do b{font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-right:8px}
+.field-note.gold{border-color:var(--red-flag)}
+.field-note.gold .tag{color:var(--red-flag)}
+.legal{border-left:3px solid var(--amber);background:var(--paper-card);padding:14px 18px;margin:0 0 22px}
+.legal .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--amber-ink);display:block;margin-bottom:4px}
+.article-body .prose .legal p{margin:0;font-size:15.5px;line-height:1.6}
+.flow-step.gate{border-color:var(--green);color:var(--green)}
+.article-body .prose .article-footer p{font-size:15.5px;color:var(--ink-soft)}
+.smp{position:relative;background:var(--paper-card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 16px;margin:0 0 22px}
+.smp::before,.smp::after{content:"";position:absolute;width:10px;height:10px;border-color:var(--ink);border-style:solid}
+.smp::before{top:-1px;left:-1px;border-width:1.5px 0 0 1.5px}
+.smp::after{bottom:-1px;right:-1px;border-width:0 1.5px 1.5px 0}
+.smp-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px 12px;margin-bottom:10px}
+.smp-tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--green);background:var(--green-bg);border:1px dashed var(--green);border-radius:2px;padding:3px 8px}
+.smp-price{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--amber-ink)}
+.prose .smp h3{font-size:19px;margin:0 0 4px}
+.article-body .prose .smp p{font-size:15px;line-height:1.55;margin:0 0 12px;color:var(--ink)}
+.article-body .prose .smp p.smp-sub{color:var(--ink-soft)}
+.smp-tw{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:3px;margin:0 0 14px}
+.smp table{border-collapse:collapse;font:400 11.5px/1.4 'IBM Plex Mono',monospace;min-width:100%}
+.smp th,.smp td{text-align:left;padding:6px 9px;border-bottom:1px solid var(--line);white-space:nowrap;color:var(--ink-soft)}
+.smp th{background:var(--paper-dim);font-weight:500;color:var(--ink)}
+.smp tr.calls td{padding:5px 9px;background:var(--paper-dim)}
+.smp .call{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:2px;border:1px dashed}
+.smp .call.c-keep{color:var(--green);border-color:var(--green);background:var(--green-bg)}
+.smp .call.c-swap{color:var(--red-flag);border-color:var(--red-flag);background:#F3E4DF}
+.smp .call.c-empty{color:var(--ink-soft);border-color:var(--ink-faint)}
+.article-body .prose .smp p.smp-lab{font:400 11px/1.4 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.prose .smp ol.smp-do{margin:0 0 12px;padding-left:22px}
+.prose .smp ol.smp-do li{font-size:15px;line-height:1.55;margin:0 0 6px}
+.smp .cn{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--green-bg);color:var(--green);padding:0 4px;border-radius:2px;white-space:nowrap}
+.article-body .prose .smp p.smp-why{font-size:14.5px;color:var(--ink-soft);border-left:3px solid var(--amber);padding:2px 0 2px 12px}
+.article-body .prose .smp p.smp-go{font-family:'IBM Plex Mono',monospace;font-size:12.5px;margin:0}
+.smp-go a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
+.article-body .prose p.smp-note{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);margin:-8px 0 22px}
+</style>
+</head>
+<body id="top">
+
+<nav>
+  <div class="brand">
+    <a class="wordmark" href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="178" height="28"></a>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="/tools/"><span class="nl-long">Tools in action</span><span class="nl-short">Tools</span></a>
+    <a class="nav-link" href="/prices/">Prices</a>
+    <a class="nav-link" href="/#about" data-pc-href="/#promise">About</a>
+    <a class="nav-link" href="/notes/"><span class="nl-long">Field notes</span><span class="nl-short">Notes</span></a>
+  </div>
+  <a class="nav-cta" href="/#contact">Book a call</a>
+</nav>
+<div class="offer-bar"><p><span class="ob-long">Here for the long run. So your first tool is paid for only when it works as agreed.</span><span class="ob-short">First tool: pay only when it works.</span> <a href="/#how">How it works →</a></p></div>
+
+<section class="article-header">
+  <div class="wrap">
+    <p class="eyebrow crumbs"><a href="/">Meshlock</a> / <a href="/notes/">Field notes</a></p>
+    <h1>Your export says more than you think</h1>
+    <div class="title-block has-stamp">
+      <div class="tb-cell tb-type"><span class="tb-k">Type</span><span class="tb-v">Practical guide</span></div>
+      <div class="tb-cell tb-time"><span class="tb-k">Time</span><span class="tb-v">8 min + 2 min game</span></div>
+      <div class="tb-cell tb-stamp"><span>NO IT NEEDED</span></div>
+      <div class="tb-cell"><span class="tb-k">You'll learn</span><span class="tb-v">Three grades of sensitive data · what in an export gives you away · what to leave alone so it stays useful · when to bother</span></div>
+      <div class="tb-cell"><span class="tb-k">You get</span><span class="tb-v"><a href="#swap-or-keep">A swap-or-keep game</a> · <a href="#five-minute-check">a five-minute export check</a> · <a href="#anonymise">a file anonymiser that never uploads a thing</a></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="article-body">
+  <div class="wrap prose">
+
+    <p class="lead">Somebody outside the company asks for "a sample of your data". A supplier quoting for a tool, a consultant, an AI chat that will write the formula for you. You export last month's orders and press send. That file carries more than anyone needed.</p>
+
+    <figure class="fig">
+      <div class="ba">
+        <div>
+          <span class="lab bad">What usually gets sent</span>
+          <div class="tw"><table aria-label="Three order lines as exported">
+            <tr><th>Order</th><th>Customer</th><th>Contact</th><th>Part</th><th>Qty</th><th>Price</th><th>Notes</th></tr>
+            <tr><td>SO-48213</td><td class="hot">Acme Joinery Ltd</td><td class="hot">dave@acmejoinery.example</td><td>PZ-500-01</td><td>36</td><td class="hot">£12.40</td><td class="hot">Ring Dave, side gate</td></tr>
+            <tr><td>SO-48214</td><td class="hot">Brook &amp; Sons</td><td class="hot">orders@brookandsons.example</td><td>PZ-1000-04</td><td>12</td><td class="hot">£18.95</td><td></td></tr>
+            <tr><td>SO-48215</td><td class="hot">Acme Joinery Ltd</td><td class="hot">dave@acmejoinery.example</td><td>PZ-250-02</td><td>80</td><td class="hot">£7.10</td><td></td></tr>
+          </table></div>
+        </div>
+        <div class="arrow" aria-hidden="true">↓</div>
+        <div>
+          <span class="lab good">What they actually need</span>
+          <div class="tw"><table aria-label="The same lines anonymised">
+            <tr><th>Order</th><th>Customer</th><th>Contact</th><th>Part</th><th>Qty</th><th>Price</th><th>Notes</th></tr>
+            <tr><td class="sw">KT-71530</td><td class="sw">Customer 001</td><td class="sw">contact001@example.com</td><td>PZ-500-01</td><td>36</td><td class="sw">£15.13</td><td></td></tr>
+            <tr><td class="sw">RW-20968</td><td class="sw">Customer 002</td><td class="sw">contact002@example.com</td><td>PZ-1000-04</td><td>12</td><td class="sw">£23.12</td><td></td></tr>
+            <tr><td class="sw">BD-63842</td><td class="sw">Customer 001</td><td class="sw">contact001@example.com</td><td>PZ-250-02</td><td>80</td><td class="sw">£8.66</td><td></td></tr>
+          </table></div>
+        </div>
+      </div>
+      <figcaption>Same three lines. Customer 001 is still the same customer on two orders, prices are still in the same order, quantities and parts untouched. Illustrative data.</figcaption>
+    </figure>
+
+    <p>The second table is just as good for building a report, a sorting tool or a quote. Whoever reads it can see how your orders flow. They can't see who you sell to, what you charge or who rings whom about the side gate.</p>
+
+    <p>The trick is knowing what to swap and what to leave alone. Swap too little and your customer list walks out of the door. Swap too much and the file turns into noise nobody can build anything on.</p>
+
+    <aside class="try" aria-label="Coming up: a game">
+      <svg class="gears" viewBox="0 0 46 30" aria-hidden="true"><g class="g1"><circle cx="14" cy="15" r="6.5" fill="none" stroke="#D9A441" stroke-width="3"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(0 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(45 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(90 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(135 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(180 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(225 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(270 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(315 14 15)"/></g><g class="g2"><circle cx="34.5" cy="17" r="3.8" fill="none" stroke="#EEF0EA" stroke-width="2"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(0 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(45 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(90 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(135 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(180 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(225 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(270 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(315 34.5 17)"/></g></svg>
+      <span class="t-tag">Coming up in this note</span>
+      <h3>Swap or keep? Ten columns, two meters</h3>
+      <p>Halfway down, one real-looking export waits for your call on every column. One meter shows how safe the file is, the other how useful it still is. Getting both to the top is harder than it looks.</p>
+      <p class="clues">The next sections are your clues. Read on.</p>
+    </aside>
+
+    <h2 id="where-it-goes">Where an export ends up</h2>
+
+    <p>Data leaving the building used to mean a lost laptop. Now it is mostly ordinary work. These are the usual moments:</p>
+
+    <div class="cards two">
+      <div class="card"><p class="who">An AI chat</p><p>Paste in an export and ask for a formula, a summary or a chart. Depending on the service, its plan and its settings, what you paste can be kept and even used to train it.</p></div>
+      <div class="card"><p class="who">A supplier or consultant</p><p>Anyone quoting for software, a report or a new system wants real-looking data first. The file then sits in their inbox and on their laptop for good.</p></div>
+      <div class="card"><p class="who">A trial of a new system</p><p>ERP and planning vendors love a demo "on your own data". Their demo server is not your server.</p></div>
+      <div class="card"><p class="who">A forum or a friend who knows Excel</p><p>The quickest way to get help with a spreadsheet is to share it. The file is then forwarded, saved and forgotten somewhere you can't see.</p></div>
+    </div>
+
+    <p>None of these is wrong. In each case the other side needs the shape of your data: which columns, what kind of values, how many rows, how they link. Almost never the real names.</p>
+
+    <div class="legal">
+      <span class="tag">Worth knowing</span>
+      <p>Names, emails and phone numbers of people are personal data under UK GDPR, even when the person works for a customer. Your customer list and your prices are not personal data, but they are often the most valuable thing in the file. This is not legal advice. It is the reason the habit is worth having.</p>
+    </div>
+
+    <h2 id="grades">How sensitive is it? Three grades</h2>
+
+    <p>Not every column carries the same risk. Grade each one before anything leaves the building. The grade decides the call.</p>
+
+    <div class="grades" role="list">
+      <div class="gr g1" role="listitem">
+        <div class="gr-h"><span class="gr-n">Grade 1</span><span class="gr-l">High · personal</span></div>
+        <p class="gr-what">Anything about a real person: names, personal emails and phone numbers, home or delivery addresses of people, logins and initials of colleagues, signatures.</p>
+        <p class="gr-do"><b>Call</b>Swap or empty. Every time.</p>
+      </div>
+      <div class="gr g2" role="listitem">
+        <div class="gr-h"><span class="gr-n">Grade 2</span><span class="gr-l">Medium · commercial</span></div>
+        <p class="gr-what">What a competitor would like to see: customer and supplier names, business addresses, account numbers, prices, costs, margins, volumes per customer.</p>
+        <p class="gr-do"><b>Call</b>Swap, or scale the money, so the file keeps its shape.</p>
+      </div>
+      <div class="gr g3" role="listitem">
+        <div class="gr-h"><span class="gr-n">Grade 3</span><span class="gr-l">Low · how the work flows</span></div>
+        <p class="gr-what">Quantities, your own part codes, bin locations, machines, statuses, dates, couriers.</p>
+        <p class="gr-do"><b>Call</b>Keep. This is what makes the sample useful.</p>
+      </div>
+    </div>
+
+    <div class="field-note gold">
+      <span class="tag">The golden rule</span>
+      <p>Grade 1 data never goes into a sample. Not to a supplier, not into an AI chat, not into a vendor's demo. If a tool really needs it, it gets it later, on your own PC.</p>
+    </div>
+
+    <p>A shared mailbox like orders@ is a business contact, grade 2. A named one like dave@ belongs to a person, grade 1. When in doubt, grade it up.</p>
+
+    <h2 id="what-to-swap">What gives you away</h2>
+
+    <p>Five kinds of column carry almost all the risk. If a column tells someone <b>who</b> or <b>how much</b>, swap it.</p>
+
+    <div class="cards two">
+      <div class="card"><span class="kind">Swap · grade 1</span><p class="who">People</p><p>Contact names, emails, phone numbers, and the columns nobody thinks of: entered by, approved by, operator, driver, sales rep.</p><p class="eg">Contact · Email · EntryPerson · Rep</p></div>
+      <div class="card"><span class="kind">Swap · grade 2</span><p class="who">Customers and suppliers</p><p>Company names, delivery addresses, account numbers. Together they are your customer list, the thing a competitor would most like to see.</p><p class="eg">Customer · ShipToAddress · Account No</p></div>
+      <div class="card"><span class="kind">Scale · grade 2</span><p class="who">Money</p><p>Prices, costs, margins, discounts, wages. Scale them by one hidden factor instead of deleting them, so cheap stays cheap and dear stays dear.</p><p class="eg">Unit Price · Order Total · Cost</p></div>
+      <div class="card"><span class="kind">Empty · hides grade 1</span><p class="who">Free text</p><p>Notes, comments and delivery instructions. Names and phone numbers hide here, and a stand-in can't fix a sentence. Empty them unless the tool must read them.</p><p class="eg">Notes · Comments · Instructions</p></div>
+      <div class="card"><span class="kind">Check</span><p class="who">Things you can't see in the grid</p><p>The file's author and company in its properties, cell comments, hidden sheets and columns, sheet names, and the file name itself. "Acme orders October.xlsx" says it all.</p><p class="eg">File › Info · hidden sheets · file name</p></div>
+    </div>
+
+    <h2 id="what-to-keep">What to leave alone</h2>
+
+    <p>Everything that tells someone <b>what</b> and <b>when</b> usually stays as it is. That is the part a tool actually works with.</p>
+
+    <div class="cards two">
+      <div class="card keepc"><span class="kind">Keep · grade 3</span><p class="who">Quantities and counts</p><p>Rows, units, pieces, weights, run times. They say nothing about who you are and everything about how the work flows.</p><p class="eg">Qty · Pieces · Weight · Minutes</p></div>
+      <div class="card keepc"><span class="kind">Keep · grade 3</span><p class="who">Your own codes</p><p>Part numbers, machine names, routes, statuses and courier names. Sorting rules and reports often depend on them. Swap them only if a code contains a customer's name.</p><p class="eg">Part · Machine · Status · Ship Via</p></div>
+      <div class="card keepc"><span class="kind">Keep or shift</span><p class="who">Dates and times</p><p>Dates drive almost every sort, report and plan. Keep them, or move them all back by the same whole number of weeks, so a Monday stays a Monday.</p><p class="eg">Order Date · Due · Start · End</p></div>
+      <div class="card keepc"><span class="kind">Keep the link</span><p class="who">The same thing, the same stand-in</p><p>If Acme becomes Customer 001 in one row and Customer 017 in the next, totals per customer vanish. Every swap must give the same value the same stand-in, in every file.</p><p class="eg">Acme → Customer 001, everywhere</p></div>
+    </div>
+
+    <div class="field-note">
+      <span class="tag">The rule of thumb</span>
+      <p>Swap who and how much. Keep what and when. And never break the link between rows.</p>
+    </div>
+
+    <section class="gm" id="swap-or-keep" aria-labelledby="gm-title">
+      <div class="gm-head">
+        <span class="t-tag">Two-minute game</span>
+        <h2 id="gm-title">Swap or keep?</h2>
+        <p>An order export is about to go to a supplier who will build a sorting tool from it. Make the call on every column. Swap means a stand-in with the same shape: names become Customer 001, prices move by one hidden factor, dates by whole weeks.</p>
+      </div>
+      <div class="gm-meters" aria-live="polite">
+        <div class="gm-m"><div class="k"><span>Safe</span><b id="gmSafe">0%</b></div><div class="gm-bar"><span id="gmSafeBar"></span></div></div>
+        <div class="gm-m"><div class="k"><span>Still useful</span><b id="gmUse">100%</b></div><div class="gm-bar"><span id="gmUseBar"></span></div></div>
+      </div>
+      <div class="gm-rows" id="gmRows"><noscript><p class="gm-foot">The game needs JavaScript switched on. The answers: swap the order number, customer, email, price and who entered it; keep the part, quantity, due date and courier; empty the notes.</p></noscript></div>
+      <div class="gm-out">
+        <p class="gm-lab">What the supplier will see</p>
+        <div class="gm-sees" id="gmSees"></div>
+      </div>
+      <div class="gm-act">
+        <button type="button" class="gm-btn" id="gmCheck" disabled>Check my answers</button>
+        <span class="gm-left" id="gmLeft">10 columns to go</span>
+        <button type="button" class="gm-ghost" id="gmReset" hidden>Try again</button>
+      </div>
+      <div class="gm-res" id="gmRes" hidden></div>
+      <p class="gm-foot">Fictional data. Nothing you tap leaves this page.</p>
+    </section>
+
+    <h2 id="five-minute-check">Check your own export in five minutes</h2>
+
+    <p>Take the last file you sent outside the company, or the next one you are about to. No IT needed, just Excel and a pen.</p>
+
+    <ol>
+      <li><b>Mark the who and how much columns.</b> Go along the header row and tick every column that names a person, a customer, a supplier or an amount of money. Most exports have more than people expect.</li>
+      <li><b>Read ten notes.</b> Filter the notes or comments column to non-blanks and read ten of them. Count the names and phone numbers.</li>
+      <li><b>Look behind the grid.</b> In Excel, File › Info shows the author and company. Right-click a sheet tab and choose Unhide to see hidden sheets. Hidden columns show as a jump in the letters along the top.</li>
+      <li><b>Read the file name and sheet names</b> as a stranger would.</li>
+      <li><b>Ask what the other side needs.</b> If they are building a tool or a report, they need the columns it reads, real-looking values and enough rows. That is the list of what to keep. Everything else can be swapped, emptied or removed.</li>
+    </ol>
+
+    <section class="keep" id="anonymise">
+      <div class="keep-head"><span class="keep-k">Keep it · free tool</span><span class="keep-stamp">Yours to keep</span></div>
+      <h2>File anonymiser</h2>
+      <p class="keep-why">Yours to use every time a file leaves the building. It runs in this browser: your files are never uploaded and nothing is saved.</p>
+      <p class="keep-use"><b>Use it when</b>a supplier asks for a sample · before pasting an export into an AI chat · a vendor wants a demo on your data</p>
+      <div data-tool="anonymise" data-offer-tag="fn-anon">
+        <noscript><div class="an-nojs">The file anonymiser needs JavaScript switched on.</div></noscript>
+      </div>
+      <p class="tool-own"><a href="/toolkit/anonymise/" data-keep>Keep it: open it on its own page and bookmark it →</a></p>
+    </section>
+
+    <h2 id="what-i-build" data-pc="What we do with it">What I do with it</h2>
+
+    <p data-pc="Most enquiries about a new tool stall on the same worry: &quot;we'd have to send Meshlock our data&quot;. You don't. To scope a tool and agree a fixed price, an anonymised sample is enough.">Most enquiries about a new tool stall on the same worry: "we'd have to send you our data". You don't. To scope a tool and agree a fixed price, an anonymised sample is enough.</p>
+
+    <div class="flow-diagram">
+      <div class="flow-track before">
+        <span class="track-tag">Usual way</span>
+        <div class="flow-steps">
+          <span class="flow-step">Full export</span><span class="flow-arrow">→</span>
+          <span class="flow-step flag">Real names by email</span><span class="flow-arrow">→</span>
+          <span class="flow-step flag">Someone else's laptop</span>
+        </div>
+      </div>
+      <div class="flow-track after">
+        <span class="track-tag">With a sample</span>
+        <div class="flow-steps">
+          <span class="flow-step">Full export</span><span class="flow-arrow">→</span>
+          <span class="flow-step gate">Anonymised on your PC</span><span class="flow-arrow">→</span>
+          <span class="flow-step">Sample with your enquiry</span><span class="flow-arrow">→</span>
+          <span class="flow-step gate">Tool runs on your PC, on real files</span>
+        </div>
+      </div>
+    </div>
+
+    <p>The stand-ins keep everything a tool is built on: which columns, what kind of values, how rows link, how much there is. The key that turns them back into names never leaves you. The finished tool runs on your own PC, offline, on your real files, and you own it.</p>
+
+    <h2 id="two-samples">Two samples, column by column</h2>
+
+    <p>This is what a good sample looks like for two tools that often start this way. Each column carries its call. The list under each sample shows why the tool needs what was kept.</p>
+
+    <div class="smp">
+      <div class="smp-head"><span class="smp-tag">Job orders</span><span class="smp-price">A tool like this: about £1,000</span></div>
+      <h3>Job orders sorted, split and stamped</h3>
+      <p class="smp-sub">The ERP prints every job order as one mixed pile. Someone sorts it by hand every day.</p>
+      <div class="smp-tw"><table aria-label="Job order sample with the call for each column"><tr><th>Job No</th><th>Customer</th><th>Part</th><th>Qty</th><th>Sheets</th><th>Ship Via</th><th>Due</th><th>Notes</th><th>Entered by</th></tr><tr class="calls"><td><span class="call c-swap">Swap</span></td><td><span class="call c-swap">Swap</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-empty">Empty</span></td><td><span class="call c-swap">Swap</span></td></tr><tr><td>J-20417</td><td>Acme Joinery Ltd</td><td>PZ-500-01</td><td>36</td><td>2</td><td>DPD</td><td>14/10</td><td>Ring Dave first</td><td>jsmith</td></tr><tr><td>J-20418</td><td>Brook &amp; Sons</td><td>PZ-1000-04</td><td>12</td><td>1</td><td>Royal Mail</td><td>15/10</td><td></td><td>akowal</td></tr><tr><td>J-20419</td><td>Acme Joinery Ltd</td><td>PZ-250-02</td><td>80</td><td>3</td><td>DPD</td><td>14/10</td><td>Side gate</td><td>jsmith</td></tr></table></div>
+      <p class="smp-lab">What the tool does with the sample</p>
+      <ol class="smp-do">
+        <li>Groups the sheets of one job using <span class="cn">Job No</span>. Any stand-in with the same pattern works.</li>
+        <li>Adds a separator with the sheet count from <span class="cn">Sheets</span>, so multi-page orders stay together.</li>
+        <li>Stamps the courier from <span class="cn">Ship Via</span> and prints a preview of each <span class="cn">Part</span>.</li>
+        <li>Sorts the day by <span class="cn">Due</span> and drafts a short priority note for the shift.</li>
+      </ol>
+      <p class="smp-why">Customer and Entered by are never read, so they are swapped. Customer 001 still shows which jobs belong together. Notes go: the tool doesn't read them.</p>
+      <p class="smp-go"><a href="/tools/#job-travellers">Watch it run</a> · <a href="/start/?s=fn-anon#f=sort">Put your numbers on it →</a></p>
+    </div>
+
+    <div class="smp">
+      <div class="smp-head"><span class="smp-tag">Picking routes</span><span class="smp-price">A tool like this: about £2,250</span></div>
+      <h3>Picking slips in route order</h3>
+      <p class="smp-sub">The ERP prints picking slips in print order, and pickers walk the warehouse back and forth.</p>
+      <div class="smp-tw"><table aria-label="Picking slip sample with the call for each column"><tr><th>Order No</th><th>Customer</th><th>Postcode</th><th>Part</th><th>Bin</th><th>Qty</th><th>Value</th><th>Priority</th><th>Ship Via</th></tr><tr class="calls"><td><span class="call c-swap">Swap</span></td><td><span class="call c-swap">Swap</span></td><td><span class="call c-swap">Swap</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-swap">Swap</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td></tr><tr><td>SO-48213</td><td>Acme Joinery Ltd</td><td>SN1 4AB</td><td>PZ-500-01</td><td>C-04-2</td><td>36</td><td>£446.40</td><td>1</td><td>DPD</td></tr><tr><td>SO-48214</td><td>Brook &amp; Sons</td><td>OX2 6GG</td><td>PZ-1000-04</td><td>A-11-1</td><td>12</td><td>£227.40</td><td>2</td><td>Royal Mail</td></tr><tr><td>SO-48215</td><td>Hill Crafts</td><td>GL5 3QT</td><td>PZ-250-02</td><td>C-02-4</td><td>80</td><td>£568.00</td><td>1</td><td>DPD</td></tr></table></div>
+      <p class="smp-lab">What the tool does with the sample</p>
+      <ol class="smp-do">
+        <li>Sorts the pile the way you choose: by <span class="cn">Priority</span>, by <span class="cn">Value</span> or by size from <span class="cn">Qty</span>.</li>
+        <li>Maps every line to its <span class="cn">Bin</span> location. Never swap a location: the route is built from it.</li>
+        <li>Puts the slips in route order, one loop round the warehouse instead of back and forth.</li>
+        <li>Prints them in that order, so nobody filters and reprints by hand any more.</li>
+      </ol>
+      <p class="smp-why">Value is scaled by one hidden factor, so sorting by value still gives the same order. Postcode is swapped, keeping the first characters only if the tool sorts by area.</p>
+      <p class="smp-go"><a href="/tools/#picking-route">Watch it run</a> · <a href="/start/?s=fn-anon#f=pick">Put your numbers on it →</a></p>
+    </div>
+
+    <p class="smp-note">Fictional data. A real sample needs a few hundred rows from an ordinary week, not three.</p>
+
+    <p>A dashboard from your production exports starts the same way, at about £1,700.</p>
+
+    <p>Each is a fixed price agreed in writing, and your first tool is paid for only when it works as agreed.</p>
+
+    <div class="article-footer">
+      <p>Got an export that should sort, check or report on itself? Anonymise a sample, then tick the problem and get a one-page offer.</p>
+      <a class="nav-cta" href="/#contact">Book a free call</a>
+      <p><a href="/start/?s=fn-anon">Or tick what happens on your floor and get a one-page offer →</a></p>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="foot-brand">
+    <a class="wordmark" href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="127" height="20"></a>
+    <p class="foot-tag" data-pc="Automation &amp; continuous improvement for manufacturers.">Lean, software and ERP. One person.</p>
+  </div>
+  <ul class="foot-links">
+    <li><a href="/tools/">Tools in action</a></li>
+    <li><a href="/prices/">Prices</a></li>
+    <li><a href="/start/?s=fn-anon">One-page offer</a></li>
+    <li><a href="/notes/">Field notes</a></li>
+    <li><a href="/toolkit/">Toolkit</a></li>
+    <li data-pc-hide><a href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn</a></li>
+    <li><a href="mailto:hello@meshlock.co.uk" data-pc-href="mailto:patryk@meshlock.co.uk" data-pc="patryk@meshlock.co.uk">hello@meshlock.co.uk</a></li>
+    <li><a href="#top">Back to top ↑</a></li>
+    <li class="copy">© 2026 Meshlock</li>
+  </ul>
+</footer>
+
+<script>
+/* Swap or keep? game. Fictional data, nothing leaves the page.
+   Each column: the call that keeps the file safe and useful (best), calls that are also fine (ok),
+   how much a kept value gives away (risk) and how much the tool needs it as it is (need). */
+(function(){
+  'use strict';
+  var COLS = [
+    { c: 'Order No', v: 'SO-48213', s: 'KT-71530', best: 'swap', ok: ['swap', 'keep'], risk: 1, need: 2, needShape: true,
+      why: { swap: 'It links the lines of one order. The tool needs the pattern, not your real numbers.', keep: 'Low risk on its own, so keeping it is fine. A stand-in with the same pattern is just as useful.', empty: 'Lines of one order can no longer be joined up. The tool needs this column.' } },
+    { c: 'Customer', v: 'Acme Joinery Ltd', s: 'Customer 001', best: 'swap', ok: ['swap'], risk: 3, need: 2, needShape: true,
+      why: { swap: 'Your customer list is the most valuable thing in the file. Customer 001 still groups the orders.', keep: 'This is your customer list, walking out of the door.', empty: 'Safe, but now nobody can group orders by customer.' } },
+    { c: 'Contact email', v: 'dave@acmejoinery.example', s: 'contact001@example.com', best: 'swap', ok: ['swap', 'empty'], risk: 3, need: 0,
+      why: { swap: 'A real person. A stand-in keeps the column if a tool expects it.', empty: 'A real person, and a sorting tool doesn\'t need it. Emptying is fine.', keep: 'Personal data about a real person. It has no business in a sample.' } },
+    { c: 'Part', v: 'PZ-500-01', s: 'QM-381-07', best: 'keep', ok: ['keep', 'swap'], risk: 0, need: 3, needReal: true,
+      why: { keep: 'Your own code. Sorting rules often read it, like "PZ goes to line 2".', swap: 'Not harmful, but a rule that reads the code may stop working. Keep it unless it names a customer.', empty: 'The tool can no longer tell one product from another.' } },
+    { c: 'Qty', v: '36', s: '36', best: 'keep', ok: ['keep'], risk: 0, need: 3, needReal: true,
+      why: { keep: 'A quantity says nothing about who you are and everything about the work.', swap: 'Changed quantities break every total and every batch rule.', empty: 'Without quantities there is nothing to sort or count.' } },
+    { c: 'Unit price', v: '£12.40', s: '£15.13', best: 'swap', ok: ['swap'], risk: 2, need: 1, needShape: true,
+      why: { swap: 'Scaled by one hidden factor: cheap stays cheap, dear stays dear, your real prices stay home.', keep: 'Your prices tell a competitor exactly how to undercut you.', empty: 'Safe, but a report on value or margin now has nothing to work with.' } },
+    { c: 'Due date', v: '14/10/2026', s: '28/01/2026', best: 'keep', ok: ['keep', 'swap'], risk: 0, need: 3, needShape: true,
+      why: { keep: 'Dates drive the sort. On their own they give little away.', swap: 'Fine: shifted by whole weeks, a Monday stays a Monday and the order stays the same.', empty: 'A sorting tool without due dates can\'t sort.' } },
+    { c: 'Ship via', v: 'DPD', s: 'Courier 001', best: 'keep', ok: ['keep'], risk: 0, need: 2, needReal: true,
+      why: { keep: 'A courier is public knowledge, and routing rules depend on it.', swap: 'Routing rules like "DPD before 2pm" stop working on Courier 001.', empty: 'Routing by courier is gone.' } },
+    { c: 'Notes', v: 'Ring Dave before 9, side gate', s: 'Notes 001', best: 'empty', ok: ['empty'], risk: 2, need: 0,
+      why: { empty: 'Names and phone numbers hide in notes, and a sorting tool doesn\'t read them.', keep: 'Dave\'s name and your customer\'s side gate, sent to a stranger.', swap: 'Safe, but Notes 001 is noise. Empty it instead.' } },
+    { c: 'Entered by', v: 'jsmith', s: 'Entered by 001', best: 'swap', ok: ['swap', 'empty'], risk: 2, need: 0,
+      why: { swap: 'A colleague\'s login. The tool may need to know someone entered it, never who.', empty: 'A colleague\'s login, and the tool doesn\'t need it. Emptying is fine.', keep: 'A colleague\'s name, sent outside without them knowing.' } }
+  ];
+  var pick = {}, checked = false;
+  var rows = document.getElementById('gmRows');
+  if (!rows) return;
+  var totalRisk = COLS.reduce(function(a, x){ return a + x.risk; }, 0), totalNeed = COLS.reduce(function(a, x){ return a + x.need; }, 0);
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  rows.innerHTML = COLS.map(function(x, i){
+    return '<div class="gm-row" data-i="' + i + '"><div><div class="gm-col">' + esc(x.c) + '</div><div class="gm-val">' + esc(x.v) + '</div></div>' +
+      '<div class="gm-opts" role="group" aria-label="' + esc(x.c) + '">' + ['keep', 'swap', 'empty'].map(function(o){
+        return '<button type="button" class="gm-opt" data-o="' + o + '" aria-pressed="false">' + o.charAt(0).toUpperCase() + o.slice(1) + '</button>';
+      }).join('') + '</div><div class="gm-why" hidden></div></div>';
+  }).join('');
+
+  function lostOf(x, o){
+    if (o === 'empty') return x.need;
+    if (o === 'swap' && x.needReal) return x.need;
+    return 0;
+  }
+  function meters(){
+    var leak = 0, lost = 0;
+    COLS.forEach(function(x, i){ var o = pick[i]; if (!o || o === 'keep') leak += x.risk; if (o) lost += lostOf(x, o); });
+    var safe = Math.round(100 * (1 - leak / totalRisk)), use = Math.round(100 * (1 - lost / totalNeed));
+    document.getElementById('gmSafe').textContent = safe + '%';
+    document.getElementById('gmUse').textContent = use + '%';
+    var sb = document.getElementById('gmSafeBar'), ub = document.getElementById('gmUseBar');
+    sb.style.width = safe + '%'; ub.style.width = use + '%';
+    sb.style.background = safe >= 100 ? 'var(--green)' : safe >= 60 ? 'var(--amber)' : 'var(--red-flag)';
+    ub.style.background = use >= 100 ? 'var(--green)' : use >= 70 ? 'var(--amber)' : 'var(--red-flag)';
+    return { safe: safe, use: use };
+  }
+  function sees(){
+    document.getElementById('gmSees').innerHTML = '<table><tr>' + COLS.map(function(x){ return '<th>' + esc(x.c) + '</th>'; }).join('') + '</tr><tr>' +
+      COLS.map(function(x, i){
+        var o = pick[i];
+        if (o === 'swap') return '<td class="sw">' + esc(x.s) + '</td>';
+        if (o === 'empty') return '<td class="gone">·</td>';
+        return '<td' + (x.risk ? ' class="leak"' : '') + '>' + esc(x.v) + '</td>';
+      }).join('') + '</tr></table>';
+  }
+  function update(){
+    var n = Object.keys(pick).length, left = COLS.length - n;
+    document.getElementById('gmLeft').textContent = left ? left + (left === 1 ? ' column to go' : ' columns to go') : 'All set';
+    document.getElementById('gmCheck').disabled = left > 0 || checked;
+    meters(); sees();
+  }
+  rows.addEventListener('click', function(e){
+    var b = e.target.closest('.gm-opt');
+    if (!b || checked) return;
+    var row = b.closest('.gm-row'), i = +row.getAttribute('data-i');
+    pick[i] = b.getAttribute('data-o');
+    row.querySelectorAll('.gm-opt').forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    update();
+  });
+  document.getElementById('gmCheck').addEventListener('click', function(){
+    checked = true;
+    var good = 0;
+    COLS.forEach(function(x, i){
+      var o = pick[i], w = document.querySelector('.gm-row[data-i="' + i + '"] .gm-why');
+      var cls = o === x.best ? '' : x.ok.indexOf(o) > -1 ? 'fine' : 'miss';
+      if (cls !== 'miss') good++;
+      w.className = 'gm-why' + (cls ? ' ' + cls : '');
+      w.innerHTML = '<b>' + (cls === '' ? 'Spot on' : cls === 'fine' ? 'Also fine' : 'Rethink') + '</b>' + esc(x.why[o]) + (cls === 'miss' ? ' Best call: ' + x.best + '.' : '');
+      w.hidden = false;
+    });
+    var m = meters(), win = m.safe === 100 && m.use === 100;
+    var res = document.getElementById('gmRes');
+    res.innerHTML = '<span class="gm-stamp ' + (win ? 'ok' : 'no') + '">' + (win ? 'SAFE AND USEFUL' : good + ' OF 10') + '</span>' +
+      '<p class="big">' + (win ? 'Both meters full. That file is ready to send.' : good + ' of 10 calls hold up. Safe ' + m.safe + '%, still useful ' + m.use + '%.') + '</p>' +
+      '<p>' + (win ? 'Five swaps, one empty column, four left alone. Most real exports split about the same way.' : 'The notes under each column say why. Most real exports split about the same way: swap who and how much, keep what and when.') + '</p>' +
+      '<p><a href="#anonymise">Do the same to a real file with the anonymiser below →</a></p>';
+    res.hidden = false;
+    document.getElementById('gmCheck').disabled = true;
+    document.getElementById('gmReset').hidden = false;
+    res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+  document.getElementById('gmReset').addEventListener('click', function(){
+    pick = {}; checked = false;
+    document.querySelectorAll('#gmRows .gm-opt').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
+    document.querySelectorAll('#gmRows .gm-why').forEach(function(x){ x.hidden = true; });
+    document.getElementById('gmRes').hidden = true; document.getElementById('gmReset').hidden = true;
+    update();
+  });
+  update();
+})();
+</script>
+</body>
+</html>

@@ -17,7 +17,7 @@ It prints one `FAIL` line per problem and ends with `N passed, N failed`. It exi
 ## What it checks
 
 1. **Layout**: every page at 390 px and 1280 px opens, nothing scrolls sideways, no script errors.
-2. **No tag**: every footer links Toolkit (not in the main nav), toolkit breadcrumbs link /toolkit/, every offer link carries the page's fallback tag (`tk-index`, `tk-cycle`, `tk-timer`, `tk-automating`). The /toolkit/ cards have their type tag, question, time and note, every link on the page opens, note titles match, no first person, no dashes, manifest, OG tags and sitemap. /notes/ shows the standard line and the toolkit link.
+2. **No tag**: every footer links Toolkit (not in the main nav), toolkit breadcrumbs link /toolkit/, every offer link carries the page's fallback tag (`tk-index`, `tk-cycle`, `tk-timer`, `tk-automating`, `tk-machine`, `tk-anonymise`). The /toolkit/ cards have their type tag, question, time and note (From the note, or the anonymiser's privacy line), every link on the page opens, note titles match, no first person, no dashes, manifest, OG tags and sitemap. /notes/ shows the standard line and the toolkit link.
 3. **pc tag**: after opening `/?s=pc`, every page in the same tab speaks for Patryk. No "Kamil", no hello@, his email in the footer, LinkedIn hidden, every offer link carries `pc`.
 4. **Slow load**: with `site.js` held back, Kamil's lines stay hidden for a `pc` visitor until the swap, and a visitor with no tag sees the page at once.
 5. **stats.js blocked**: tags still carry over and Patryk's version still works.
@@ -27,6 +27,10 @@ It prints one `FAIL` line per problem and ends with `N passed, N failed`. It exi
 9. **Print**: every print button prints only its part, on the expected number of A4 pages (calculator and step timer result 1, machine checklist 1, shift logs one per machine, paper sheet 1), with the tag and a QR code in the footer; the checklist and paper sheet keep what was typed.
 10. **Checklist text**: the checklist in the machine data note matches the printable checklist item for item, and no step needs IT or opening anything. YOU GET links point to parts of the note, and tools sit in a Yours to keep frame.
 11. **Kept tools**: toolkit pages put the tag in their address, keep links carry it, a tool reopened in a new tab (like a home screen icon) still speaks for Patryk, the rest of the site does not.
+
+12. **File anonymiser**: with a CSV and an Excel file added together, the suggestions are right, no request leaves the page, the same customer gets the same stand-in in both files, codes, postcodes and phones keep their pattern, dates move by whole weeks, prices by one factor, a real name left in a kept column is found and swapped, removed columns and title rows are gone, the Excel author and cell notes are cleared, the note for the recipient holds no real values, and adding the key to a later run gives the same stand-ins again.
+
+13. **Anonymising note**: the Swap or keep? game starts unsafe, both meters fill only with the right calls, what the supplier sees follows every tap, the check gives a why line per column and marks a kept customer, try again resets it, the anonymiser runs inside the note, offer links carry `fn-anon`, and with a `pc` tag the note has no first person.
 
 ## Extending it
 

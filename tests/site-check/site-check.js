@@ -28,10 +28,10 @@ function serve() {
     s.listen(0, '127.0.0.1', () => { BASE = 'http://127.0.0.1:' + s.address().port; res(s); });
   });
 }
-const PAGES = ['/', '/tools/', '/prices/', '/notes/', '/notes/doing-it-by-hand.html', '/notes/your-machines-already-know.html',
-  '/toolkit/', '/toolkit/cycle-time/', '/toolkit/step-timer/', '/toolkit/worth-automating/', '/toolkit/machine-data/', '/toolkit/step-timer/sheet/', '/thanks.html', '/start/'];
+const PAGES = ['/', '/tools/', '/prices/', '/notes/', '/notes/doing-it-by-hand.html', '/notes/your-machines-already-know.html', '/notes/your-export-says-more.html',
+  '/toolkit/', '/toolkit/cycle-time/', '/toolkit/step-timer/', '/toolkit/worth-automating/', '/toolkit/machine-data/', '/toolkit/anonymise/', '/toolkit/step-timer/sheet/', '/thanks.html', '/start/'];
 const FOOTER_PAGES = PAGES.filter(p => p !== '/start/');
-const TK = { '/toolkit/': 'tk-index', '/toolkit/cycle-time/': 'tk-cycle', '/toolkit/step-timer/': 'tk-timer', '/toolkit/worth-automating/': 'tk-automating', '/toolkit/machine-data/': 'tk-machine', '/toolkit/step-timer/sheet/': 'tk-timer' };
+const TK = { '/toolkit/': 'tk-index', '/toolkit/cycle-time/': 'tk-cycle', '/toolkit/step-timer/': 'tk-timer', '/toolkit/worth-automating/': 'tk-automating', '/toolkit/machine-data/': 'tk-machine', '/toolkit/anonymise/': 'tk-anonymise', '/toolkit/step-timer/sheet/': 'tk-timer' };
 let fails = 0, passes = 0;
 const ok = (c, m) => { if (c) passes++; else { fails++; console.log('FAIL', m); } };
 
@@ -51,6 +51,7 @@ async function open(c, path, tab) {
   await p.waitForTimeout(150);
   return { p, errs, status: r.status() };
 }
+const window_parse = l => { const r = []; let f = '', q = false; for (let i = 0; i < l.length; i++) { const ch = l[i]; if (q) { if (ch === '"') { if (l[i + 1] === '"') { f += '"'; i++; } else q = false; } else f += ch; } else if (ch === '"') q = true; else if (ch === ',') { r.push(f); f = ''; } else f += ch; } r.push(f); return r; };
 const visibleText = p => p.evaluate(() => document.body.innerText);
 const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')].map(a => a.getAttribute('href')).filter(h => /\/start\//.test(h)).map(h => { const u = new URL(h, location.href); return u.searchParams.get('s'); }));
 
@@ -91,15 +92,16 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     }
     const { p } = await open(c, '/toolkit/');
     const cards = p.locator('.tk-card');
-    ok(await cards.count() === 4, 'four cards');
+    ok(await cards.count() === 5, 'five cards');
     const tags = await p.locator('.tk-card .tk-tag').allInnerTexts();
-    ok(tags.join(',') === 'CALCULATOR,CHECKLIST,TIMER,CHECK', 'card type tags ' + tags);
+    ok(tags.join(',') === 'CALCULATOR,CHECKLIST,TIMER,CHECK,ANONYMISER', 'card type tags ' + tags);
     ok(!/TOOL \d/.test(await visibleText(p)), 'no tool numbers on the cards');
     ok(await p.locator('.tk-card a.tk-paper[href="/toolkit/step-timer/sheet/"]').count() === 1, 'step timer card links its paper sheet');
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
       const card = cards.nth(i);
       ok(await card.locator('.tk-q').count() === 1 && await card.locator('.tk-time').count() === 1 && await card.locator('.tk-use').count() === 1, `card ${i} question + time + use it when`);
-      ok((await card.locator('.tk-note').innerText()).startsWith('From the note:'), `card ${i} From the note`);
+      const note = await card.locator('.tk-note').innerText();
+      ok(note.startsWith('From the note:'), `card ${i} From the note: ${note}`);
     }
     const hrefs = await p.evaluate(() => [...document.querySelectorAll('main, .tk-index, footer, .crumbs')].flatMap(e => [...e.querySelectorAll('a[href^="/"]')].map(a => a.getAttribute('href'))));
     for (const h of new Set(hrefs.map(h => h.split('#')[0].split('?')[0]))) {
@@ -298,7 +300,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(JSON.stringify(groups) === JSON.stringify(await t.p.evaluate(() => window.mlMachineItems.map(g => g.g))), 'checklist groups match');
     ok(!/USB|clamp|cabinet|ERP/i.test(art.join(' ')), 'checklist steps need no IT and open nothing');
     // YOU GET links go to their part of each note
-    for (const path of ['/notes/your-machines-already-know.html', '/notes/doing-it-by-hand.html']) {
+    for (const path of ['/notes/your-machines-already-know.html', '/notes/doing-it-by-hand.html', '/notes/your-export-says-more.html']) {
       const { p } = await open(c, path);
       const ids = await p.$$eval('.title-block .tb-v a[href^="#"]', l => l.map(x => x.getAttribute('href').slice(1)));
       ok(ids.length >= 2 && (await p.evaluate(ids => ids.every(i => document.getElementById(i)), ids)), `${path} You get links ${ids}`);
@@ -324,6 +326,122 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     const c2 = await ctx(browser);
     r = await open(c2, '/toolkit/cycle-time/');
     ok(!/[?&]s=/.test(await r.p.evaluate(() => location.search)), 'no tag: toolkit address unchanged');
+    await c2.close();
+  }
+
+
+  // 12. File anonymiser: nothing leaves the browser, same stand-ins across files, leak check, Excel kept, key reused
+  {
+    const c = await ctx(browser);
+    const { p, errs } = await open(c, '/toolkit/anonymise/');
+    const xlsx = Buffer.from(await p.evaluate(async () => {
+      const wb = new ExcelJS.Workbook(); wb.creator = 'Jane Boss';
+      const ws = wb.addWorksheet('Customers');
+      ws.addRow(['Customer list']); ws.addRow(['Customer', 'Postcode', 'Phone', 'Joined']);
+      ws.addRow(['Acme Ltd', 'SN1 4AB', '07700 900123', new Date(Date.UTC(2026, 9, 12))]);
+      ws.addRow(['Bolt & Co', 'OX2 6GG', '07700 900456', new Date(Date.UTC(2026, 8, 1))]);
+      ws.getCell('A3').note = 'Ask John';
+      let s = ''; new Uint8Array(await wb.xlsx.writeBuffer()).forEach(x => s += String.fromCharCode(x)); return btoa(s);
+    }), 'base64');
+    const csv = '﻿Order No,Customer,Email,Order Date,Unit Price,Qty,Notes,Rep\r\n' +
+      'SO-48213,Acme Ltd,buyer@acme.co.uk,12/10/2026,"£1,250.00",3,Call Acme Ltd first,Tom\r\n' +
+      'SO-48214,Bolt & Co,ann@bolt.com,13/10/2026,£80.50,10,,Tom\r\n' +
+      'SO-48215,Acme Ltd,buyer@acme.co.uk,14/10/2026,£100.00,1,ok,Ann\r\n';
+    // Suggestions for typical ERP export headers (camelCase, quantities, descriptions with numbers in them)
+    const sug = await p.evaluate(() => [['PartDescription', 'Puzzle 12 pieces'], ['OrderQty', '3'], ['ShipToAddress', '12 High St'], ['Postcode', 'SN1 4AB'], ['Phone', '07700 900123'], ['Comments', 'Ring first']]
+      .map(([h, v]) => { const k = window.mlAnon.kindOf(v, 'dmy'); return window.mlAnon.suggest(h, { top: k, share: 1, distinct: 9, avgLen: 9 })[0]; }).join(','));
+    ok(sug === 'name,keep,name,code,code,clear', 'suggestions for ERP headers ' + sug);
+    ok(await p.evaluate(() => window.mlAnon.labelFrom('ShipToAddress')) === 'Ship to address', 'stand-in label from a camelCase header');
+    let reqs = 0; p.on('request', () => reqs++);
+    await p.setInputFiles('.an-file', [{ name: 'orders.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) }, { name: 'customers.xlsx', mimeType: 'application/octet-stream', buffer: xlsx }]);
+    await p.waitForSelector('.an-tb');
+    const acts = await p.$$eval('.an-sel[data-act^="0|"]', l => l.map(s => s.value));
+    ok(acts.join(',') === 'code,name,email,keep,scale,keep,clear,name', 'anonymiser suggestions ' + acts);
+    await p.locator('input[data-hdr="1"]').fill('2'); await p.locator('input[data-hdr="1"]').dispatchEvent('change');
+    const xacts = await p.$$eval('.an-sel[data-act^="1|"]', l => l.map(s => s.value));
+    ok(xacts.join(',') === 'name,code,code,keep', 'anonymiser Excel suggestions after header row 2 ' + xacts);
+    await p.selectOption('.an-sel[data-act="0|6"]', 'keep');     // keep the notes, so the check has something to find
+    await p.selectOption('.an-sel[data-act="0|3"]', 'date');
+    await p.selectOption('.an-sel[data-act="0|7"]', 'remove');
+    await p.click('.an-run'); await p.waitForSelector('.an-check');
+    ok(await p.locator('.an-check-bad').count() === 1 && /Call Acme Ltd first/.test(await p.locator('.an-hits').innerText()), 'leak check finds a real name in a kept column');
+    await p.click('.an-fix');
+    ok(await p.locator('.an-check-ok').count() === 1, 'leak check clear after swapping there too');
+    const dl = async sel => { const [d] = await Promise.all([p.waitForEvent('download'), p.click(sel)]); return { name: d.suggestedFilename(), buf: fs.readFileSync(await d.path()) }; };
+    const a = await dl('[data-save="0"]'), x = await dl('[data-save="1"]'), k = await dl('.an-keybtn'), n = await dl('.an-note');
+    const out = a.buf.toString('utf8'), lines = out.replace(/^﻿/, '').trim().split('\r\n');
+    ok(a.name === 'orders-anon.csv' && out.charCodeAt(0) === 0xfeff, 'CSV saved with its BOM and -anon name');
+    ok(!/Acme|Bolt|acme\.co|bolt\.com|SO-482|Tom|Ann\b/.test(out), 'CSV holds no real values');
+    ok(lines[0] === 'Order No,Customer,Email,Order Date,Unit Price,Qty,Notes', 'CSV header kept, removed column gone: ' + lines[0]);
+    const rows = lines.slice(1).map(l => window_parse(l));
+    ok(rows[0][1] === rows[2][1] && rows[0][1] !== rows[1][1] && /^Customer \d{3}$/.test(rows[0][1]), 'same customer, same stand-in');
+    ok(rows[2][6] === 'ok' && rows[0][6] === 'Call ' + rows[0][1] + ' first', 'name swapped inside the kept note');
+    ok(/^[A-Z]{2}-\d{5}$/.test(rows[0][0]) && rows[0][0] !== 'SO-48213', 'code keeps its pattern');
+    const dd = s => { const [d, m, y] = s.split('/').map(Number); return new Date(Date.UTC(y, m - 1, d)); };
+    const shift = (dd('12/10/2026') - dd(rows[0][3])) / 864e5;
+    ok(shift > 0 && shift % 7 === 0 && (dd('13/10/2026') - dd(rows[1][3])) / 864e5 === shift, 'dates move by whole weeks ' + shift);
+    const f1 = Number(rows[0][4].replace(/[£,]/g, '')) / 1250, f3 = Number(rows[2][4].replace(/[£,]/g, '')) / 100;
+    ok(Math.abs(f1 - f3) < 0.001 && Math.abs(f1 - 1) > 0.1 && rows[2][5] === '1', 'prices scaled by one factor, qty kept');
+    const xr = await p.evaluate(async b64 => {
+      const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+      const wb = new ExcelJS.Workbook(); await wb.xlsx.load(u.buffer); const ws = wb.worksheets[0];
+      return { creator: wb.creator, a1: ws.getCell('A1').value, a2: ws.getCell('A2').value, b2: ws.getCell('B2').value, c2: ws.getCell('C2').value, d2: ws.getCell('D2').value instanceof Date, note: ws.getCell('A2').note || '' };
+    }, x.buf.toString('base64'));
+    ok(xr.a1 === 'Customer' && xr.a2 === rows[0][1], 'Excel: title row gone, same stand-in as the CSV');
+    ok(/^[A-Z]{2}\d \d[A-Z]{2}$/.test(xr.b2) && xr.b2 !== 'SN1 4AB' && /^0[1-9]\d{3} \d{6}$/.test(xr.c2) && xr.c2 !== '07700 900123', 'Excel: postcode and phone keep their pattern ' + xr.b2 + ' ' + xr.c2);
+    ok(xr.d2 && !/Jane/.test(xr.creator || '') && !xr.note, 'Excel: dates stay dates, author and notes cleared');
+    const key = k.buf.toString('utf8');
+    ok(/^﻿meshlock-anonymiser-key/.test(key) && /Acme Ltd,Customer \d{3}/.test(key) && /date-shift-weeks/.test(key), 'key lists real values and settings');
+    ok(!/Acme|Bolt|Tom/.test(n.buf.toString()) && /Rep: removed/.test(n.buf.toString()), 'note for the recipient has no real values');
+    ok(reqs === 0, 'anonymiser made no requests after the page loaded: ' + reqs);
+    ok(errs.length === 0, 'anonymiser errors ' + errs);
+    // A later run with the key: the same customer gets the same stand-in again
+    await p.click('.an-reset');
+    await p.setInputFiles('.an-file', [{ name: 'anonymiser-key-keep-private.csv', mimeType: 'text/csv', buffer: k.buf }, { name: 'more.csv', mimeType: 'text/csv', buffer: Buffer.from('Customer,Qty\nBolt & Co,4\nNew Firm,2\n') }]);
+    await p.waitForSelector('.an-tb'); await p.click('.an-run'); await p.waitForSelector('.an-check');
+    const m = (await dl('[data-save="0"]')).buf.toString('utf8').trim().split('\n');
+    ok(m[1].split(',')[0] === rows[1][1] && m[2].split(',')[0] !== rows[1][1] && /^Customer \d{3}$/.test(m[2].split(',')[0]), 'key reused: same stand-in next time, new value gets a new one');
+    await c.close();
+  }
+
+  // 13. Anonymising note: the Swap or keep? game, its meters and the tool in the article
+  {
+    const c = await ctx(browser, { w: 390, reduce: true });
+    const { p, errs } = await open(c, '/notes/your-export-says-more.html');
+    ok((await startTags(p)).every(t => t === 'fn-anon'), 'anonymising note offer links carry fn-anon');
+    ok(await p.locator('#gmSafe').innerText() === '0%' && await p.locator('#gmUse').innerText() === '100%', 'game starts unsafe and fully useful');
+    const best = ['swap', 'swap', 'swap', 'keep', 'keep', 'swap', 'keep', 'keep', 'empty', 'swap'];
+    for (let i = 0; i < 10; i++) {
+      if (i === 9) ok(await p.locator('#gmCheck').isDisabled(), 'check waits for every column');
+      await p.click(`.gm-row[data-i="${i}"] .gm-opt[data-o="${i === 4 ? 'empty' : best[i]}"]`);
+    }
+    ok(await p.locator('#gmUse').innerText() !== '100%', 'emptying the quantity costs usefulness');
+    ok(/·/.test(await p.locator('#gmSees td').nth(4).innerText()), 'what the supplier sees follows the calls');
+    await p.click('.gm-row[data-i="4"] .gm-opt[data-o="keep"]');
+    ok(await p.locator('#gmSafe').innerText() === '100%' && await p.locator('#gmUse').innerText() === '100%', 'best calls fill both meters');
+    ok(!/Acme|dave@/.test(await p.locator('#gmSees').innerText()), 'with the best calls the supplier sees no real names');
+    await p.click('#gmCheck');
+    ok(/SAFE AND USEFUL/.test(await p.locator('#gmRes').innerText()) && await p.locator('.gm-why:not([hidden])').count() === 10, 'game result and a why line per column');
+    await p.click('#gmReset');
+    ok(await p.locator('#gmSafe').innerText() === '0%' && await p.locator('#gmRes').isHidden(), 'try again resets the game');
+    await p.click('.gm-row[data-i="1"] .gm-opt[data-o="keep"]');
+    for (let i = 0; i < 10; i++) if (i !== 1) await p.click(`.gm-row[data-i="${i}"] .gm-opt[data-o="${best[i]}"]`);
+    await p.click('#gmCheck');
+    ok(/9 OF 10/.test(await p.locator('#gmRes').innerText()) && await p.locator('.gm-row[data-i="1"] .gm-why.miss').count() === 1, 'keeping the customer is marked to rethink');
+    ok(await p.locator('#anonymise [data-tool="anonymise"] .an').count() === 1, 'anonymiser runs inside the note');
+    ok(await p.locator('.smp').count() === 2 && await p.locator('.smp a[href$="#f=sort"]').count() === 1 && await p.locator('.smp a[href$="#f=pick"]').count() === 1, 'two worked samples, each leading to its offer problem');
+    const smpText = await p.locator('.smp .smp-price').allInnerTexts();
+    ok(/£1,000/.test(smpText[0]) && /£2,250/.test(smpText[1]), 'worked sample prices match /prices/ ' + smpText);
+    ok(await p.locator('#anonymise .tool-own a[href="/toolkit/anonymise/"]').count() === 1, 'note links the tool page');
+    const t = await visibleText(p);
+    ok(!/—|–| - /.test(t), 'anonymising note has no dashes');
+    ok(errs.length === 0, 'anonymising note errors ' + errs);
+    await c.close();
+    const c2 = await ctx(browser);
+    const r = await open(c2, '/notes/your-export-says-more.html?s=pc');
+    const tp = await visibleText(r.p);
+    ok(!/\b(I|I'm|I've|me|my)\b/.test(tp.replace(/Back to top/, '')), 'pc: anonymising note has no first person');
+    ok(/send Meshlock our data/.test(tp), 'pc: bridge speaks for Meshlock');
     await c2.close();
   }
 

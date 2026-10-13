@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||(/^\/toolkit\//.test(location.pathname)&&(function(k){return k&&k.t&&Date.now()-k.at<15552e6?k.t:''})(JSON.parse(localStorage.getItem('ml-keep')||'null')))||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>File Anonymiser | Meshlock Toolkit</title>
+<meta name="description" content="Swap names, emails, codes and prices in a CSV or Excel export for stand-ins that keep the shape of the data, before you send it to anyone. Runs in your browser. Your file is never uploaded.">
+<link rel="canonical" href="https://meshlock.co.uk/toolkit/anonymise/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Meshlock">
+<meta property="og:title" content="File anonymiser | Meshlock Toolkit">
+<meta property="og:description" content="Swap names, emails, codes and prices in a CSV or Excel export for stand-ins that keep the shape of the data, before you send it to anyone. Runs in your browser. Your file is never uploaded.">
+<meta property="og:url" content="https://meshlock.co.uk/toolkit/anonymise/">
+<meta property="og:image" content="https://meshlock.co.uk/assets/og-image.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/toolkit/anonymise/manifest.webmanifest">
+<meta name="theme-color" content="#EEF0EA">
+<meta name="apple-mobile-web-app-title" content="Anonymiser">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/notes.css">
+<link rel="stylesheet" href="/assets/toolkit/anonymise.css">
+<script src="/assets/site.js" defer></script>
+<script src="/assets/stats.js" defer></script>
+<script src="/assets/vendor/exceljs.min.js" defer></script>
+<script src="/assets/toolkit/anonymise.js" defer></script>
+<style>
+.prose .tool-more{font-size:15.5px; color:var(--ink-soft); margin:26px 0 0;}
+.tool-page .article-footer{margin-top:44px;}
+.prose .an-proof{font-size:15.5px; color:var(--ink-soft);}
+.prose ul.an-list{margin:0 0 22px; padding:0; list-style:none;}
+.prose ul.an-list li{position:relative; padding:0 0 10px 22px; font-size:17px; line-height:1.6;}
+.prose ul.an-list li::before{content:"→"; position:absolute; left:0; font-family:'IBM Plex Mono',monospace; color:var(--ink-soft);}
+</style>
+</head>
+<body id="top">
+<nav>
+  <div class="brand">
+    <a class="wordmark" href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="178" height="28"></a>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="/tools/"><span class="nl-long">Tools in action</span><span class="nl-short">Tools</span></a>
+    <a class="nav-link" href="/prices/">Prices</a>
+    <a class="nav-link" href="/#about" data-pc-href="/#promise">About</a>
+    <a class="nav-link" href="/notes/"><span class="nl-long">Field notes</span><span class="nl-short">Notes</span></a>
+  </div>
+  <a class="nav-cta" href="/#contact">Book a call</a>
+</nav>
+<div class="offer-bar"><p><span class="ob-long">Here for the long run. So your first tool is paid for only when it works as agreed.</span><span class="ob-short">First tool: pay only when it works.</span> <a href="/#how">How it works →</a></p></div>
+
+<section class="article-header">
+  <div class="wrap">
+    <p class="eyebrow crumbs"><a href="/">Meshlock</a> / <a href="/toolkit/">Toolkit</a></p>
+    <h1>File anonymiser</h1>
+  </div>
+</section>
+
+<section class="article-body tool-page">
+  <div class="wrap prose">
+    <p>Someone outside the company needs a real export to work with: a supplier, a consultant, Meshlock too. Run the file through here first. Names, emails, codes and prices are swapped for stand-ins that keep the shape of the data, so whatever gets built on it still works on the real thing.</p>
+    <p class="keep-note"><span class="keep-stamp">Yours to keep</span> Runs in this browser. Your files are never uploaded and nothing is saved. Close the tab and it's gone.</p>
+    <p class="an-proof">Want proof? Open this page, switch off Wi-Fi, then add your file. It still works.</p>
+
+    <div data-tool="anonymise" data-offer-tag="tk-anonymise">
+      <noscript><div class="an-nojs">The file anonymiser needs JavaScript switched on.</div></noscript>
+    </div>
+
+    <p class="tool-more">What to swap, what to keep, and why? <a href="/notes/your-export-says-more.html">Read: Your export says more than you think →</a></p>
+
+    <h2>What stays the same</h2>
+    <ul class="an-list">
+      <li>The same customer gets the same stand-in everywhere: in every column and in every file you add together.</li>
+      <li>Codes keep their length and pattern. Letters stay letters, digits stay digits, dashes stay where they were.</li>
+      <li>Dates move by whole weeks, so a Monday stays a Monday and the gaps between dates don't change.</li>
+      <li>Prices are multiplied by one hidden factor, so a dearer item stays dearer and line totals stay in proportion.</li>
+      <li>Excel files keep their sheets, columns and formatting. Links become plain text, cell notes and author details are cleared, and rows above the header row are left out.</li>
+    </ul>
+
+    <h2>Keep the key</h2>
+    <p>The key lists every stand-in next to its real value. It stays with you. When an answer comes back full of stand-ins, the key tells you who Customer 014 is. Add it next time and the same customer gets the same stand-in again.</p>
+
+    <h2>Check by eye before you send</h2>
+    <p>The check finds real values from swapped columns wherever else they turn up. It can't know about a name that never sits in a swapped column. So look over:</p>
+    <ul class="an-list">
+      <li>Free text, like notes and comments. Empty them unless they are needed.</li>
+      <li>File names and sheet names.</li>
+      <li>Pictures and logos inside a spreadsheet.</li>
+      <li>PDFs, scans and photos. This tool doesn't read them, so make up two or three examples instead.</li>
+    </ul>
+
+    <div class="article-footer">
+      <p>Got an export that should sort, check or report on itself?</p>
+      <a class="nav-cta" href="/#contact">Book a free call</a>
+      <p><a href="/start/?s=tk-anonymise">Or tick what happens on your floor and get a one-page offer →</a></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-brand">
+    <a class="wordmark" href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="127" height="20"></a>
+    <p class="foot-tag" data-pc="Automation &amp; continuous improvement for manufacturers.">Lean, software and ERP. One person.</p>
+  </div>
+  <ul class="foot-links">
+    <li><a href="/tools/">Tools in action</a></li>
+    <li><a href="/prices/">Prices</a></li>
+    <li><a href="/start/?s=tk-anonymise">One-page offer</a></li>
+    <li><a href="/notes/">Field notes</a></li>
+    <li><a href="/toolkit/">Toolkit</a></li>
+    <li data-pc-hide><a href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn</a></li>
+    <li><a href="mailto:hello@meshlock.co.uk" data-pc-href="mailto:patryk@meshlock.co.uk" data-pc="patryk@meshlock.co.uk">hello@meshlock.co.uk</a></li>
+    <li><a href="#top">Back to top ↑</a></li>
+    <li class="copy">© 2026 Meshlock</li>
+  </ul>
+</footer>
+
+</body>
+</html>
