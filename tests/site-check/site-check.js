@@ -370,7 +370,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     const dl = async sel => { const [d] = await Promise.all([p.waitForEvent('download'), p.click(sel)]); return { name: d.suggestedFilename(), buf: fs.readFileSync(await d.path()) }; };
     const a = await dl('[data-save="0"]'), x = await dl('[data-save="1"]'), k = await dl('.an-keybtn'), n = await dl('.an-note');
     const out = a.buf.toString('utf8'), lines = out.replace(/^﻿/, '').trim().split('\r\n');
-    ok(a.name === 'orders-anon.csv' && out.charCodeAt(0) === 0xfeff, 'CSV saved with its BOM and -anon name');
+    ok(a.name === 'sample-1-anon.csv' && x.name === 'sample-2-anon.xlsx' && out.charCodeAt(0) === 0xfeff, 'CSV saved with its BOM and a neutral sample name');
     ok(!/Acme|Bolt|acme\.co|bolt\.com|SO-482|Tom|Ann\b/.test(out), 'CSV holds no real values');
     ok(lines[0] === 'Order No,Customer,Email,Order Date,Unit Price,Qty,Notes', 'CSV header kept, removed column gone: ' + lines[0]);
     const rows = lines.slice(1).map(l => window_parse(l));
@@ -441,7 +441,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     const r = await open(c2, '/notes/your-export-says-more.html?s=pc');
     const tp = await visibleText(r.p);
     ok(!/\b(I|I'm|I've|me|my)\b/.test(tp.replace(/Back to top/, '')), 'pc: anonymising note has no first person');
-    ok(/send Meshlock our data/.test(tp), 'pc: bridge speaks for Meshlock');
+    ok(/What we do with it/.test(tp), 'pc: bridge speaks for Meshlock');
     await c2.close();
   }
 

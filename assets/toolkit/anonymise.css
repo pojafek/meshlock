@@ -97,3 +97,4 @@
   .an-col{grid-template-columns:minmax(0,1fr);}
 }
 .an-nojs{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-soft); border:1.5px dashed var(--ink-faint); border-radius:3px; padding:14px 16px; margin:18px 0;}
+.an-asis{font-size:13.5px; line-height:1.5; color:var(--ink-soft); margin:0 0 12px;}

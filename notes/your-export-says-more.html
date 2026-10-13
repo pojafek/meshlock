@@ -5,7 +5,7 @@
 <script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||(/^\/toolkit\//.test(location.pathname)&&(function(k){return k&&k.t&&Date.now()-k.at<15552e6?k.t:''})(JSON.parse(localStorage.getItem('ml-keep')||'null')))||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="light">
-<title>Your Export Says More Than You Think | Meshlock Field Notes</title>
+<title>Your Export Says More Than You Think: Anonymise It Before You Send It | Meshlock Field Notes</title>
 <meta name="description" content="What to anonymise before an export leaves the building, what to leave alone so it stays useful, a two-minute swap-or-keep game and a free file anonymiser that runs in your browser.">
 <link rel="canonical" href="https://meshlock.co.uk/notes/your-export-says-more.html">
 <meta property="og:type" content="article">
@@ -151,6 +151,7 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
 .article-body .prose .gr p.gr-do{font-size:14.5px;margin:0;color:var(--ink)}
 .gr-do b{font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-right:8px}
 .field-note.gold{border-color:var(--red-flag)}
+.prose h3.next-h{font-size:19px;margin:30px 0 10px}
 .field-note.gold .tag{color:var(--red-flag)}
 .legal{border-left:3px solid var(--amber);background:var(--paper-card);padding:14px 18px;margin:0 0 22px}
 .legal .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--amber-ink);display:block;margin-bottom:4px}
@@ -210,7 +211,7 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
       <div class="tb-cell tb-type"><span class="tb-k">Type</span><span class="tb-v">Practical guide</span></div>
       <div class="tb-cell tb-time"><span class="tb-k">Time</span><span class="tb-v">8 min + 2 min game</span></div>
       <div class="tb-cell tb-stamp"><span>NO IT NEEDED</span></div>
-      <div class="tb-cell"><span class="tb-k">You'll learn</span><span class="tb-v">Three grades of sensitive data · what in an export gives you away · what to leave alone so it stays useful · when to bother</span></div>
+      <div class="tb-cell"><span class="tb-k">You'll learn</span><span class="tb-v">Where exports end up · three grades of sensitive data · what to swap and what to keep so the file stays useful</span></div>
       <div class="tb-cell"><span class="tb-k">You get</span><span class="tb-v"><a href="#swap-or-keep">A swap-or-keep game</a> · <a href="#five-minute-check">a five-minute export check</a> · <a href="#anonymise">a file anonymiser that never uploads a thing</a></span></div>
     </div>
   </div>
@@ -243,27 +244,27 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
           </table></div>
         </div>
       </div>
-      <figcaption>Same three lines. Customer 001 is still the same customer on two orders, prices are still in the same order, quantities and parts untouched. Illustrative data.</figcaption>
+      <figcaption>Same three lines. Customer 001 is still the same customer on two orders, prices all moved by the same hidden factor, so dear stays dear. Quantities and parts are untouched. Illustrative data.</figcaption>
     </figure>
 
-    <p>The second table is just as good for building a report, a sorting tool or a quote. Whoever reads it can see how your orders flow. They can't see who you sell to, what you charge or who rings whom about the side gate.</p>
+    <p>The second table still works for building a report or a sorting tool. Whoever reads it can see how your orders flow. They can't see who you sell to, what you charge or who rings whom about the side gate.</p>
 
-    <p>The trick is knowing what to swap and what to leave alone. Swap too little and your customer list walks out of the door. Swap too much and the file turns into noise nobody can build anything on.</p>
+    <p>The hard part is deciding what to swap and what to keep. Swap too little and your customer list walks out of the door. Swap too much and the file turns into noise nobody can build anything on.</p>
 
     <aside class="try" aria-label="Coming up: a game">
       <svg class="gears" viewBox="0 0 46 30" aria-hidden="true"><g class="g1"><circle cx="14" cy="15" r="6.5" fill="none" stroke="#D9A441" stroke-width="3"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(0 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(45 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(90 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(135 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(180 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(225 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(270 14 15)"/><rect x="12.3" y="4.76" width="3.4" height="4.42" rx="1.19" fill="#D9A441" transform="rotate(315 14 15)"/></g><g class="g2"><circle cx="34.5" cy="17" r="3.8" fill="none" stroke="#EEF0EA" stroke-width="2"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(0 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(45 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(90 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(135 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(180 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(225 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(270 34.5 17)"/><rect x="33.3" y="10.56" width="2.4" height="3.12" rx="0.84" fill="#EEF0EA" transform="rotate(315 34.5 17)"/></g></svg>
       <span class="t-tag">Coming up in this note</span>
       <h3>Swap or keep? Ten columns, two meters</h3>
-      <p>Halfway down, one real-looking export waits for your call on every column. One meter shows how safe the file is, the other how useful it still is. Getting both to the top is harder than it looks.</p>
+      <p>Halfway down, one real-looking export waits for your call on every column. One meter shows how safe the file is, the other how useful it still is. Getting both meters full takes more care than you would think.</p>
       <p class="clues">The next sections are your clues. Read on.</p>
     </aside>
 
     <h2 id="where-it-goes">Where an export ends up</h2>
 
-    <p>Data leaving the building used to mean a lost laptop. Now it is mostly ordinary work. These are the usual moments:</p>
+    <p>A lost laptop used to be the worry. Now files leave the building as part of everyday work. These are the usual moments:</p>
 
     <div class="cards two">
-      <div class="card"><p class="who">An AI chat</p><p>Paste in an export and ask for a formula, a summary or a chart. Depending on the service, its plan and its settings, what you paste can be kept and even used to train it.</p></div>
+      <div class="card"><p class="who">An AI chat</p><p>Paste in an export and ask for a formula, a summary or a chart. Depending on the service, its plan and its settings, what you paste can be kept and even used to train it. Check the plan's training settings and your company's AI policy. If in doubt, treat a paste as public.</p></div>
       <div class="card"><p class="who">A supplier or consultant</p><p>Anyone quoting for software, a report or a new system wants real-looking data first. The file then sits in their inbox and on their laptop for good.</p></div>
       <div class="card"><p class="who">A trial of a new system</p><p>ERP and planning vendors love a demo "on your own data". Their demo server is not your server.</p></div>
       <div class="card"><p class="who">A forum or a friend who knows Excel</p><p>The quickest way to get help with a spreadsheet is to share it. The file is then forwarded, saved and forgotten somewhere you can't see.</p></div>
@@ -273,7 +274,7 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
 
     <div class="legal">
       <span class="tag">Worth knowing</span>
-      <p>Names, emails and phone numbers of people are personal data under UK GDPR, even when the person works for a customer. Your customer list and your prices are not personal data, but they are often the most valuable thing in the file. This is not legal advice. It is the reason the habit is worth having.</p>
+      <p>Names, emails and phone numbers of people are personal data under UK GDPR, even when the person works for a customer. Your customer list and your prices are usually not personal data, but they are often the most valuable thing in the file. The exception is a customer who is a sole trader or a small partnership: then their name and address are personal data too. Strictly, while you keep the key, swapped data is pseudonymised rather than anonymised. For you it is still personal data. The person you send it to sees only stand-ins. This is not legal advice. It is why the habit is worth having.</p>
     </div>
 
     <h2 id="grades">How sensitive is it? Three grades</h2>
@@ -300,22 +301,24 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
 
     <div class="field-note gold">
       <span class="tag">The golden rule</span>
-      <p>Grade 1 data never goes into a sample. Not to a supplier, not into an AI chat, not into a vendor's demo. If a tool really needs it, it gets it later, on your own PC.</p>
+      <p>Real grade 1 values never go into a sample. Not to a supplier, not into an AI chat, not into a vendor's demo. If a tool really needs it, it gets it later, on your own PC.</p>
     </div>
 
-    <p>A shared mailbox like orders@ is a business contact, grade 2. A named one like dave@ belongs to a person, grade 1. When in doubt, grade it up.</p>
+    <p>A shared mailbox like orders@ is usually a business contact, grade 2, unless one person reads it. A named one like dave@ belongs to a person, grade 1. With a small team, Operator 003 next to run times may still be someone you can name. When in doubt, grade it up.</p>
 
     <h2 id="what-to-swap">What gives you away</h2>
 
-    <p>Five kinds of column carry almost all the risk. If a column tells someone <b>who</b> or <b>how much</b>, swap it.</p>
+    <p>Risk hides in five places. If a column tells someone <b>who</b> or <b>how much</b>, swap it or scale it.</p>
 
     <div class="cards two">
       <div class="card"><span class="kind">Swap · grade 1</span><p class="who">People</p><p>Contact names, emails, phone numbers, and the columns nobody thinks of: entered by, approved by, operator, driver, sales rep.</p><p class="eg">Contact · Email · EntryPerson · Rep</p></div>
       <div class="card"><span class="kind">Swap · grade 2</span><p class="who">Customers and suppliers</p><p>Company names, delivery addresses, account numbers. Together they are your customer list, the thing a competitor would most like to see.</p><p class="eg">Customer · ShipToAddress · Account No</p></div>
-      <div class="card"><span class="kind">Scale · grade 2</span><p class="who">Money</p><p>Prices, costs, margins, discounts, wages. Scale them by one hidden factor instead of deleting them, so cheap stays cheap and dear stays dear.</p><p class="eg">Unit Price · Order Total · Cost</p></div>
+      <div class="card"><span class="kind">Scale · grade 2</span><p class="who">Money</p><p>Prices, costs, margins, discounts, wages. Scale them by one hidden factor instead of deleting them, so cheap stays cheap and dear stays dear. Anyone who knows one real price can work out the factor, so empty prices if that matters.</p><p class="eg">Unit Price · Order Total · Cost</p></div>
       <div class="card"><span class="kind">Empty · hides grade 1</span><p class="who">Free text</p><p>Notes, comments and delivery instructions. Names and phone numbers hide here, and a stand-in can't fix a sentence. Empty them unless the tool must read them.</p><p class="eg">Notes · Comments · Instructions</p></div>
       <div class="card"><span class="kind">Check</span><p class="who">Things you can't see in the grid</p><p>The file's author and company in its properties, cell comments, hidden sheets and columns, sheet names, and the file name itself. "Acme orders October.xlsx" says it all.</p><p class="eg">File › Info · hidden sheets · file name</p></div>
     </div>
+
+    <p>Rare values give you away too: the only customer in one postcode area, a part only one customer buys, a tiny export of ten rows. Send a few hundred rows from an ordinary week, and keep postcodes to the area only if the tool needs it. If a consistent Customer 001 next to quantities shows how much one customer buys, and that matters, remove the customer column.</p>
 
     <h2 id="what-to-keep">What to leave alone</h2>
 
@@ -323,7 +326,7 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
 
     <div class="cards two">
       <div class="card keepc"><span class="kind">Keep · grade 3</span><p class="who">Quantities and counts</p><p>Rows, units, pieces, weights, run times. They say nothing about who you are and everything about how the work flows.</p><p class="eg">Qty · Pieces · Weight · Minutes</p></div>
-      <div class="card keepc"><span class="kind">Keep · grade 3</span><p class="who">Your own codes</p><p>Part numbers, machine names, routes, statuses and courier names. Sorting rules and reports often depend on them. Swap them only if a code contains a customer's name.</p><p class="eg">Part · Machine · Status · Ship Via</p></div>
+      <div class="card keepc"><span class="kind">Keep · grade 3</span><p class="who">Your own codes</p><p>Part numbers, machine names, routes, statuses and courier names. Sorting rules and reports often depend on them. Swap them only if a code contains a customer's name. Order and job numbers are the exception: a running number shows how many orders you take, so swap them.</p><p class="eg">Part · Machine · Status · Ship Via</p></div>
       <div class="card keepc"><span class="kind">Keep or shift</span><p class="who">Dates and times</p><p>Dates drive almost every sort, report and plan. Keep them, or move them all back by the same whole number of weeks, so a Monday stays a Monday.</p><p class="eg">Order Date · Due · Start · End</p></div>
       <div class="card keepc"><span class="kind">Keep the link</span><p class="who">The same thing, the same stand-in</p><p>If Acme becomes Customer 001 in one row and Customer 017 in the next, totals per customer vanish. Every swap must give the same value the same stand-in, in every file.</p><p class="eg">Acme → Customer 001, everywhere</p></div>
     </div>
@@ -366,13 +369,13 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
       <li><b>Read ten notes.</b> Filter the notes or comments column to non-blanks and read ten of them. Count the names and phone numbers.</li>
       <li><b>Look behind the grid.</b> In Excel, File › Info shows the author and company. Right-click a sheet tab and choose Unhide to see hidden sheets. Hidden columns show as a jump in the letters along the top.</li>
       <li><b>Read the file name and sheet names</b> as a stranger would.</li>
-      <li><b>Ask what the other side needs.</b> If they are building a tool or a report, they need the columns it reads, real-looking values and enough rows. That is the list of what to keep. Everything else can be swapped, emptied or removed.</li>
+      <li><b>Ask what the other side needs.</b> If they are building a tool or a report, they need the columns it reads, real-looking values and enough rows. That is the list of what to keep. Everything else can be swapped, emptied or removed. Only have a printed report or a PDF? Type two or three made-up rows in the same layout. That is often enough to start.</li>
     </ol>
 
     <section class="keep" id="anonymise">
       <div class="keep-head"><span class="keep-k">Keep it · free tool</span><span class="keep-stamp">Yours to keep</span></div>
       <h2>File anonymiser</h2>
-      <p class="keep-why">Yours to use every time a file leaves the building. It runs in this browser: your files are never uploaded and nothing is saved.</p>
+      <p class="keep-why">Yours to use every time a file leaves the building. It runs in this browser: your files are never uploaded or kept on this site. Want proof? Switch off Wi-Fi once the page is open. It still works.</p>
       <p class="keep-use"><b>Use it when</b>a supplier asks for a sample · before pasting an export into an AI chat · a vendor wants a demo on your data</p>
       <div data-tool="anonymise" data-offer-tag="fn-anon">
         <noscript><div class="an-nojs">The file anonymiser needs JavaScript switched on.</div></noscript>
@@ -382,7 +385,7 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
 
     <h2 id="what-i-build" data-pc="What we do with it">What I do with it</h2>
 
-    <p data-pc="Most enquiries about a new tool stall on the same worry: &quot;we'd have to send Meshlock our data&quot;. You don't. To scope a tool and agree a fixed price, an anonymised sample is enough.">Most enquiries about a new tool stall on the same worry: "we'd have to send you our data". You don't. To scope a tool and agree a fixed price, an anonymised sample is enough.</p>
+    <p>The usual worry about a new tool is having to send your data first. In most cases you don't. To scope a tool and agree a fixed price, an anonymised sample is enough.</p>
 
     <div class="flow-diagram">
       <div class="flow-track before">
@@ -404,17 +407,17 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
       </div>
     </div>
 
-    <p>The stand-ins keep everything a tool is built on: which columns, what kind of values, how rows link, how much there is. The key that turns them back into names never leaves you. The finished tool runs on your own PC, offline, on your real files, and you own it.</p>
+    <p>The stand-ins keep everything a tool is built on: which columns, what kind of values, how rows link, how much there is. The key that turns them back into names never leaves you. The finished tool usually runs on your own PC, often fully offline, on your real files, and you own it.</p>
 
     <h2 id="two-samples">Two samples, column by column</h2>
 
-    <p>This is what a good sample looks like for two tools that often start this way. Each column carries its call. The list under each sample shows why the tool needs what was kept.</p>
+    <p>Here are two raw exports, as an ERP prints them, for two tools that often start this way. Each column carries its call before the file is swapped. The list under each one shows why the tool needs what is kept.</p>
 
     <div class="smp">
       <div class="smp-head"><span class="smp-tag">Job orders</span><span class="smp-price">A tool like this: about £1,000</span></div>
       <h3>Job orders sorted, split and stamped</h3>
       <p class="smp-sub">The ERP prints every job order as one mixed pile. Someone sorts it by hand every day.</p>
-      <div class="smp-tw"><table aria-label="Job order sample with the call for each column"><tr><th>Job No</th><th>Customer</th><th>Part</th><th>Qty</th><th>Sheets</th><th>Ship Via</th><th>Due</th><th>Notes</th><th>Entered by</th></tr><tr class="calls"><td><span class="call c-swap">Swap</span></td><td><span class="call c-swap">Swap</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-empty">Empty</span></td><td><span class="call c-swap">Swap</span></td></tr><tr><td>J-20417</td><td>Acme Joinery Ltd</td><td>PZ-500-01</td><td>36</td><td>2</td><td>DPD</td><td>14/10</td><td>Ring Dave first</td><td>jsmith</td></tr><tr><td>J-20418</td><td>Brook &amp; Sons</td><td>PZ-1000-04</td><td>12</td><td>1</td><td>Royal Mail</td><td>15/10</td><td></td><td>akowal</td></tr><tr><td>J-20419</td><td>Acme Joinery Ltd</td><td>PZ-250-02</td><td>80</td><td>3</td><td>DPD</td><td>14/10</td><td>Side gate</td><td>jsmith</td></tr></table></div>
+      <div class="smp-tw"><table aria-label="Job order sample with the call for each column"><tr><th>Job No</th><th>Customer</th><th>Part</th><th>Qty</th><th>Sheets</th><th>Ship Via</th><th>Due</th><th>Notes</th><th>Entered by</th></tr><tr class="calls"><td><span class="call c-swap">Swap</span></td><td><span class="call c-swap">Swap</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-empty">Empty</span></td><td><span class="call c-swap">Swap</span></td></tr><tr><td>J-20417</td><td>Acme Joinery Ltd</td><td>PZ-500-01</td><td>36</td><td>2</td><td>DPD</td><td>14/10</td><td>Ring Dave first</td><td>jsmith</td></tr><tr><td>J-20418</td><td>Brook &amp; Sons</td><td>PZ-1000-04</td><td>12</td><td>1</td><td>Royal Mail</td><td>15/10</td><td></td><td>tclark</td></tr><tr><td>J-20419</td><td>Acme Joinery Ltd</td><td>PZ-250-02</td><td>80</td><td>3</td><td>DPD</td><td>14/10</td><td>Side gate</td><td>jsmith</td></tr></table></div>
       <p class="smp-lab">What the tool does with the sample</p>
       <ol class="smp-do">
         <li>Groups the sheets of one job using <span class="cn">Job No</span>. Any stand-in with the same pattern works.</li>
@@ -438,18 +441,27 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
         <li>Puts the slips in route order, one loop round the warehouse instead of back and forth.</li>
         <li>Prints them in that order, so nobody filters and reprints by hand any more.</li>
       </ol>
-      <p class="smp-why">Value is scaled by one hidden factor, so sorting by value still gives the same order. Postcode is swapped, keeping the first characters only if the tool sorts by area.</p>
+      <p class="smp-why">Value is scaled by one hidden factor, so sorting by value still gives the same order. Postcode is swapped for a stand-in with the same pattern, keeping the area only if the tool sorts by area.</p>
       <p class="smp-go"><a href="/tools/#picking-route">Watch it run</a> · <a href="/start/?s=fn-anon#f=pick">Put your numbers on it →</a></p>
     </div>
 
     <p class="smp-note">Fictional data. A real sample needs a few hundred rows from an ordinary week, not three.</p>
 
-    <p>A dashboard from your production exports starts the same way, at about £1,700.</p>
+    <p>A live dashboard from your production data starts the same way, at about £1,700.</p>
 
-    <p>Each is a fixed price agreed in writing, and your first tool is paid for only when it works as agreed.</p>
+    <h3 class="next-h">What happens when you send a sample</h3>
+    <ol>
+      <li>Tick your problem in the one-page offer, or book a free call.</li>
+      <li>You get a reply within one working day, with an address to send the sample to.</li>
+      <li>You get one fixed price in writing, before any work starts.</li>
+      <li>Samples are deleted once the job is done. The key never leaves you.</li>
+    </ol>
+
+
+    <p>Your first tool is paid for only when it works as agreed.</p>
 
     <div class="article-footer">
-      <p>Got an export that should sort, check or report on itself? Anonymise a sample, then tick the problem and get a one-page offer.</p>
+      <p>Got an export that should sort, check or report on itself? Anonymise a sample, then tick the problem and get a one-page offer. Not your call? Send this page to whoever looks after customer data.</p>
       <a class="nav-cta" href="/#contact">Book a free call</a>
       <p><a href="/start/?s=fn-anon">Or tick what happens on your floor and get a one-page offer →</a></p>
     </div>
@@ -488,12 +500,12 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
       why: { swap: 'Your customer list is the most valuable thing in the file. Customer 001 still groups the orders.', keep: 'This is your customer list, walking out of the door.', empty: 'Safe, but now nobody can group orders by customer.' } },
     { c: 'Contact email', v: 'dave@acmejoinery.example', s: 'contact001@example.com', best: 'swap', ok: ['swap', 'empty'], risk: 3, need: 0,
       why: { swap: 'A real person. A stand-in keeps the column if a tool expects it.', empty: 'A real person, and a sorting tool doesn\'t need it. Emptying is fine.', keep: 'Personal data about a real person. It has no business in a sample.' } },
-    { c: 'Part', v: 'PZ-500-01', s: 'QM-381-07', best: 'keep', ok: ['keep', 'swap'], risk: 0, need: 3, needReal: true,
-      why: { keep: 'Your own code. Sorting rules often read it, like "PZ goes to line 2".', swap: 'Not harmful, but a rule that reads the code may stop working. Keep it unless it names a customer.', empty: 'The tool can no longer tell one product from another.' } },
-    { c: 'Qty', v: '36', s: '36', best: 'keep', ok: ['keep'], risk: 0, need: 3, needReal: true,
+    { c: 'Part', v: 'PZ-500-01', s: 'QM-381-07', best: 'keep', ok: ['keep'], risk: 0, need: 3, needReal: true,
+      why: { keep: 'Your own code. Sorting rules often read it, like "PZ goes to line 2".', swap: 'Not harmful, but a rule that reads the code stops working. Keep it unless it names a customer.', empty: 'The tool can no longer tell one product from another.' } },
+    { c: 'Qty', v: '36', s: '41', best: 'keep', ok: ['keep'], risk: 0, need: 3, needReal: true,
       why: { keep: 'A quantity says nothing about who you are and everything about the work.', swap: 'Changed quantities break every total and every batch rule.', empty: 'Without quantities there is nothing to sort or count.' } },
     { c: 'Unit price', v: '£12.40', s: '£15.13', best: 'swap', ok: ['swap'], risk: 2, need: 1, needShape: true,
-      why: { swap: 'Scaled by one hidden factor: cheap stays cheap, dear stays dear, your real prices stay home.', keep: 'Your prices tell a competitor exactly how to undercut you.', empty: 'Safe, but a report on value or margin now has nothing to work with.' } },
+      why: { swap: 'Scaled by one hidden factor: cheap stays cheap, dear stays dear. Anyone who knows one real price could work out the rest, so empty it if that matters.', keep: 'Your prices tell a competitor exactly how to undercut you.', empty: 'Safe, but a report on value or margin now has nothing to work with.' } },
     { c: 'Due date', v: '14/10/2026', s: '28/01/2026', best: 'keep', ok: ['keep', 'swap'], risk: 0, need: 3, needShape: true,
       why: { keep: 'Dates drive the sort. On their own they give little away.', swap: 'Fine: shifted by whole weeks, a Monday stays a Monday and the order stays the same.', empty: 'A sorting tool without due dates can\'t sort.' } },
     { c: 'Ship via', v: 'DPD', s: 'Courier 001', best: 'keep', ok: ['keep'], risk: 0, need: 2, needReal: true,
@@ -571,7 +583,7 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
     var res = document.getElementById('gmRes');
     res.innerHTML = '<span class="gm-stamp ' + (win ? 'ok' : 'no') + '">' + (win ? 'SAFE AND USEFUL' : good + ' OF 10') + '</span>' +
       '<p class="big">' + (win ? 'Both meters full. That file is ready to send.' : good + ' of 10 calls hold up. Safe ' + m.safe + '%, still useful ' + m.use + '%.') + '</p>' +
-      '<p>' + (win ? 'Five swaps, one empty column, four left alone. Most real exports split about the same way.' : 'The notes under each column say why. Most real exports split about the same way: swap who and how much, keep what and when.') + '</p>' +
+      '<p>' + (win ? 'Most real exports split about like this: swap who and how much, keep what and when.' : 'The notes under each column say why. Most real exports split about the same way: swap who and how much, keep what and when.') + '</p>' +
       '<p><a href="#anonymise">Do the same to a real file with the anonymiser below →</a></p>';
     res.hidden = false;
     document.getElementById('gmCheck').disabled = true;

@@ -360,8 +360,8 @@
       });
       t.fixed.forEach(function(k){ var p = k.split('|'); ws.getCell(t.hdr + +p[0], +p[1] + 1).value = out[+p[0]][+p[1]]; });
       // Links and cell notes can carry names: links become plain text, notes go
-      ws.eachRow({ includeEmpty: false }, function(row){
-        row.eachCell({ includeEmpty: false }, function(cell){
+      ws.eachRow({ includeEmpty: true }, function(row){
+        row.eachCell({ includeEmpty: true }, function(cell){
           if (cell._comment) cell._comment = undefined;
           var v = cell.value;
           if (v && typeof v === 'object' && !isDate(v) && v.hyperlink !== undefined) cell.value = cellVal(cell);
@@ -466,7 +466,7 @@
 
     function msg(s, bad){ var m = $('.an-msg'); m.textContent = s || ''; m.classList.toggle('an-bad', !!bad); }
     function stale(){ if (done) { $('.an-stale').hidden = false; $('.an-res-step').classList.add('an-dim'); $('.an-dl-step').hidden = true; } }
-    function outName(name, ext){ var b = name.replace(/\.[^.]+$/, ''); return b + '-anon.' + ext; }
+    function outName(name, ext){ return 'sample-' + (files.length + 1) + '-anon.' + ext; }   // neutral: the original name may hold a customer's name
 
     async function addFiles(list){
       msg('');
@@ -574,16 +574,16 @@
       lastScan = leakScan(run, files);
       var hits = lastScan.hits;
       var html = '<div class="an-sum">' + files.length + (files.length === 1 ? ' file · ' : ' files · ') + fmtInt(rows) + ' rows · ' + fmtInt(swaps) + ' different values swapped</div>';
-      html += '<div class="an-check ' + (hits.length ? 'an-check-bad' : 'an-check-ok') + '"><span class="an-stamp">' + (hits.length ? 'CHECK THESE' : 'NO REAL VALUES FOUND') + '</span>';
+      html += '<div class="an-check ' + (hits.length ? 'an-check-bad' : 'an-check-ok') + '"><span class="an-stamp">' + (hits.length ? 'CHECK THESE' : 'NO EXACT MATCHES FOUND') + '</span>';
       if (hits.length) {
         html += '<div class="an-ch">' + hits.length + (hits.length === 1 ? ' place still holds' : ' places still hold') + ' a real value from a swapped column</div><ul class="an-hits">' +
           hits.slice(0, 8).map(function(h){ return '<li><span class="an-hw">' + esc(files[h.f].name + ' · ' + h.where) + '</span>' + esc(cut(h.what, 70)) + ' <span class="an-hm">' + esc(h.m) + '</span></li>'; }).join('') +
           (hits.length > 8 ? '<li class="an-more">and ' + (hits.length - 8) + ' more</li>' : '') + '</ul>' +
           '<button type="button" class="an-btn an-fix">Swap them there too</button>';
       } else {
-        html += '<div class="an-ch">No real value from a swapped column turns up anywhere else: not in kept columns, headers, sheet names or file names.</div>';
+        html += '<div class="an-ch">No whole value from a swapped column turns up anywhere else: not in kept columns, headers, sheet names or file names.</div>';
       }
-      html += '<div class="an-eye">The check only knows values from swapped columns. Look over free text, pictures and anything else it cannot see before sending.</div></div>';
+      html += '<div class="an-eye">The check looks for whole values from swapped columns. It misses parts of them, like a first name in a note, and anything it cannot read: pictures, charts, drop-down lists. Look over the file before you send it.</div></div>';
       html += '<div class="an-pv-pick">' + (tables.length > 1 ? '<label class="an-opt">Preview <select class="an-sel an-pv-sel">' + tables.map(function(t, i){ return '<option value="' + i + '">' + esc(t.file.name + (t.sheet ? ' · ' + t.sheet : '')) + '</option>'; }).join('') + '</select></label>' : '') + '</div>';
       html += '<div class="an-pv-box">' + (tables.length ? preview(tables[0]) : '') + '</div>';
       $('.an-res').innerHTML = html;
@@ -601,6 +601,7 @@
       html += '<div class="an-key"><span class="an-stamp">KEEP IT · DON\'T SEND IT</span><div class="an-ch">The key</div>' +
         '<div class="an-dl-t">Every stand-in next to its real value. It turns an answer full of stand-ins back into your own names. Keep it with you, and add it next time so the same customer gets the same stand-in.</div>' +
         '<button type="button" class="an-btn an-btn-2 an-keybtn">Download the key (.csv)</button></div>';
+      html += '<div class="an-asis">Free, as is. Check the files before you send them. What you send is your call.</div>';
       html += '<div class="an-next">Need a tool built around files like these? <a href="/start/' + (tag ? '?s=' + encodeURIComponent(tag) : '') + '#f=export">Tick it and get a one-page offer →</a></div>';
       $('.an-dl').innerHTML = html;
     }
