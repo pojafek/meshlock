@@ -347,6 +347,11 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
       'SO-48213,Acme Ltd,buyer@acme.co.uk,12/10/2026,"£1,250.00",3,Call Acme Ltd first,Tom\r\n' +
       'SO-48214,Bolt & Co,ann@bolt.com,13/10/2026,£80.50,10,,Tom\r\n' +
       'SO-48215,Acme Ltd,buyer@acme.co.uk,14/10/2026,£100.00,1,ok,Ann\r\n';
+    // Suggestions for typical ERP export headers (camelCase, quantities, descriptions with numbers in them)
+    const sug = await p.evaluate(() => [['PartDescription', 'Puzzle 12 pieces'], ['OrderQty', '3'], ['ShipToAddress', '12 High St'], ['Postcode', 'SN1 4AB'], ['Phone', '07700 900123'], ['Comments', 'Ring first']]
+      .map(([h, v]) => { const k = window.mlAnon.kindOf(v, 'dmy'); return window.mlAnon.suggest(h, { top: k, share: 1, distinct: 9, avgLen: 9 })[0]; }).join(','));
+    ok(sug === 'name,keep,name,code,code,clear', 'suggestions for ERP headers ' + sug);
+    ok(await p.evaluate(() => window.mlAnon.labelFrom('ShipToAddress')) === 'Ship to address', 'stand-in label from a camelCase header');
     let reqs = 0; p.on('request', () => reqs++);
     await p.setInputFiles('.an-file', [{ name: 'orders.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) }, { name: 'customers.xlsx', mimeType: 'application/octet-stream', buffer: xlsx }]);
     await p.waitForSelector('.an-tb');

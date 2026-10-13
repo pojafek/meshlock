@@ -106,7 +106,7 @@
     dmy: /^(\d{1,2})([-\/.])(\d{1,2})\2(\d{4}|\d{2})((?: .*)?)$/,
     mon: /^(\d{1,2})([- ])([A-Za-z]{3,9})\2(\d{4}|\d{2})((?: .*)?)$/,
     num: /^(-?)([£$€]?)(-?)(\d{1,3}(?:,\d{3})+|\d+)(\.\d+)?(%?)$/,
-    code: /^(?=.*\d)[A-Za-z0-9][A-Za-z0-9\-\/._ ]{1,29}$/
+    code: /^(?=.*\d)(?!(?:\S+ ){2})[A-Za-z0-9][A-Za-z0-9\-\/._ ]{1,29}$/   // at most one space: postcodes and phones yes, sentences no
   };
   function monIndex(s){ var i = MON.indexOf(s.slice(0, 3).toLowerCase()); return (i > -1 && (s.length === 3 || MONTHS[i].toLowerCase() === s.toLowerCase() || (s.length === 4 && s.toLowerCase() === 'sept'))) ? i : -1; }
   function parseDate(s, order){
@@ -145,7 +145,9 @@
     money: /(price|cost|value|amount|total|net\b|gross|tax|margin|discount|\brate\b|£|gbp|revenue|sales\b|charge|fee|salary|wage|\bpay\b|spend|budget|turnover)/i,
     code: /(order|\bpo\b|p\.o\.|purchase|\bref|invoice|\binv\b|\bjob|works ?order|\bwo\b|account|\bacc\b|\bacct\b|\bid\b|number|\bno\b\.?|\bnum\b|code|sku|\bpart|item|batch|\blot\b|serial|tracking|consignment|\bvat\b|\breg\b|phone|\btel\b|telephone|mobile|\bfax\b|post ?code|postal|\bzip\b)/i,
     name: /(customer|client|\bcust\b|consignee|recipient|contact|company|account|supplier|vendor|haulier|carrier|courier|name|surname|forename|address|\baddr|street|road|town|city|county|ship ?to|bill ?to|deliver|sold ?to|attention|\battn|operator|employee|staff|\buser|driver|picker|packer|created ?by|entered ?by|modified ?by|approved ?by|person|signed|\brep\b|sales ?rep|agent|manager|buyer|description|product|project|site\b|branch|store|shop\b|title)/i,
-    email: /e-?mail/i
+    email: /e-?mail/i,
+    qty: /(qty|quantity|\bcount\b|pcs|pieces|weight|\bkg\b|hours|\bhrs\b|mins|minutes|\bline\b|\bseq|sequence|\blevel\b)/i,
+    desc: /(description|\bdesc\b|product|title)/i
   };
   function suggest(header, kinds){
     var h = String(header || ''), k = kinds.top, share = kinds.share;
@@ -154,13 +156,15 @@
     if (k === 'date' && share >= 0.6) return ['keep', 'Dates. Shift them if they say too much'];
     if (H.note.test(h)) return ['clear', 'Free text: names hide in notes'];
     if (H.money.test(h) && k === 'num' && share >= 0.6) return ['scale', 'Header looks like a price or amount'];
+    if (H.qty.test(h) && k === 'num') return ['keep', ''];
+    if (H.desc.test(h) && (k === 'text' || k === 'code')) return ['name', 'Header looks like a description'];
     if (H.code.test(h) && (k === 'code' || k === 'num') && share >= 0.5) return ['code', 'Header looks like a code, number or reference'];
     if (H.name.test(h) && (k === 'text' || k === 'code')) return ['name', 'Header looks like a name, place or description'];
     if (k === 'text' && share >= 0.6 && kinds.distinct > 5 && kinds.avgLen > 5) return ['keep', 'Text. Swap it if it names anyone'];
     return ['keep', ''];
   }
   function labelFrom(header){
-    var s = String(header || '').replace(/[_]+/g, ' ').replace(/\b(name|full|the|of|no\.?|number|code|id)\b/gi, ' ').replace(/[^A-Za-z0-9 &]/g, ' ').replace(/\s+/g, ' ').trim();
+    var s = String(header || '').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[_]+/g, ' ').replace(/\b(name|full|the|of|no\.?|number|code|id)\b/gi, ' ').replace(/[^A-Za-z0-9 &]/g, ' ').replace(/\s+/g, ' ').trim();
     if (!s) s = 'Value';
     s = s.split(' ').slice(0, 3).join(' ');
     s = s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
