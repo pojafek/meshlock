@@ -348,6 +348,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(/Stock in the system/.test(await r.p.locator('.wa-cases').innerText()) && await r.p.locator('.wa-first .wa-w').count() === 3, 'data result has cases and first steps');
     ok(await r.p.locator('.wa-next a[href="/#contact"]').count() === 1 && await r.p.locator('.wa-go').count() === 0, 'data result leads to a call, not straight to a price');
     ok(/Only one person/.test(await r.p.locator('.wa-also').innerText()), 'also worth knowing lists the one-person risk');
+    ok(/Already in place: worth the time/.test(await r.p.locator('.wa-also').innerText()), 'a fix-first result also says what is already in place');
     ok(/Task: Sorting job sheets/.test(await r.p.locator('.wa-task').innerText()), 'task name on the result');
     const h = await r.p.evaluate(() => location.hash);
     ok(/wa=pick\.daily\.b\.yes\.rules\.yes\.no\.often\.yes/.test(h) && /t=Sorting/.test(h), 'answers kept in the link ' + h);
@@ -381,10 +382,16 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     const c = await ctx(browser, { w: 390 });
     const { p, errs } = await open(c, '/notes/five-gates.html');
     ok((await startTags(p)).every(t => t === 'fn-gates'), 'gates guide offer links carry fn-gates');
-    const state = t => p.evaluate(t => { window.mlGatesRender(t); return { stamp: document.getElementById('gStamp').textContent, marks: [...document.querySelectorAll('#gGates g')].map(g => g.querySelector('text').textContent).join('') }; }, t);
-    let s1 = await state(3); ok(s1.stamp === 'LEAVE IT' && s1.marks === '!', 'animation: the small task stops at gate 1 ' + JSON.stringify(s1));
-    s1 = await state(8); ok(s1.stamp === 'DATA WRONG' && s1.marks === '✓!', 'animation: picking stops at gate 2 ' + JSON.stringify(s1));
-    s1 = await state(13.5); ok(s1.stamp === 'AUTOMATE' && s1.marks === '✓✓✓✓✓', 'animation: after the data fix it passes all five ' + JSON.stringify(s1));
+    // Each step: render near its end, when the task has arrived and the caption is showing
+    const step = i => p.evaluate(i => { const T = window.mlGatesSteps; window.mlGatesRender((T[i + 1] || T[i] + 5) - 0.05); return { stamp: document.getElementById('gStamp').textContent, marks: [...document.querySelectorAll('#gGates g')].map(g => g.querySelector('text').textContent).join(''), cap: document.getElementById('gTxt').textContent }; }, i);
+    let s1 = await step(0); ok(s1.marks === '✓' && /Passes/.test(s1.cap), 'animation: job sheets pass gate 1 ' + JSON.stringify(s1));
+    s1 = await step(4); ok(s1.stamp === 'AUTOMATE' && s1.marks === '✓✓✓✓✓', 'animation: job sheets pass every gate ' + JSON.stringify(s1));
+    s1 = await step(6); ok(s1.stamp === 'LEAVE IT' && s1.marks === '!', 'animation: the small task stops at gate 1 ' + JSON.stringify(s1));
+    s1 = await step(9); ok(s1.stamp === 'DATA WRONG' && s1.marks === '✓!', 'animation: picking stops at gate 2 ' + JSON.stringify(s1));
+    s1 = await step(12); ok(s1.stamp === 'AUTOMATE' && s1.marks === '✓✓✓✓✓', 'animation: after the data fix picking passes every gate ' + JSON.stringify(s1));
+    const gaps = await p.evaluate(() => window.mlGatesSteps.slice(1).map((t, i) => t - window.mlGatesSteps[i]));
+    ok(gaps.filter(g => g > 2).every(g => g >= 3.99), 'every caption stays at least 4 seconds ' + gaps);
+    ok(await p.locator('.gate .gr-pass').count() === 4 && await p.locator('.gate .gr-stop').count() === 4, 'each of the first four gates says when it passes and when it stops');
     ok(await p.locator('.gate').count() === 5 && await p.locator('#worth-automating [data-tool="worth-automating"] .wa').count() === 1, 'five gate cards and the check inside the note');
     ok(await p.locator('.gate a[href="/tools/#job-travellers"]').count() === 1, 'the real case links its case file');
     const t = await visibleText(p);

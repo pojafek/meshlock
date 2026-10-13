@@ -120,6 +120,9 @@
     else if (a.same === 'no' || (a.same === 'mostly' && a.rules === 'partly')) r = { v: 'steps' };
     else r = { v: 'automate' };
     var also = [];
+    // Balance: say what is already in place before what to fix
+    var PASSED = { data: ['worth the time'], paper: ['worth the time', 'data you can trust'], steps: ['worth the time', 'data you can trust', 'on screen'] }[r.v];
+    if (PASSED) also.push('Already in place: ' + PASSED.join(', ') + '. That part is ready for a tool.');
     if (r.v !== 'leave' && r.v !== 'data' && a.trust === 'mostly') also.push(ALSO.trustMostly);
     if (r.v === 'leave' && a.trust === 'no') also.push(ALSO.trustNo);
     if (r.v !== 'paper' && a.digital === 'partly') also.push(ALSO.paperPartly);
