@@ -118,7 +118,7 @@ Logo palette: ink `#171A1D`, paper `#EEF0EA`, bronze `#B98A3A` (used for the mag
 Fonts (Google Fonts): Space Grotesk for headings, IBM Plex Sans for body, IBM Plex Mono for small labels.
 
 Main line: "Lean, software and ERP. One person." Used under the wordmark in the hero lockup, in the footer and in link previews.
-The main line is Kamil's only. For Patryk's visitors (`pc` tags) the hero lockup and every footer show "Automation & continuous improvement for manufacturers." instead (`data-pc`).
+The main line is Kamil's only. For Patryk's visitors (`pc` tags) the hero lockup and every footer show "Automation & continuous improvement for manufacturers." instead (`data-pc`). The hero eyebrow ("Automation & CI · For manufacturers") is hidden for them (`data-pc-hide`), so the hero says it once.
 Longer line, used as the About heading (inside "More about Kamil") where there is room to explain the name: "Software engineer, Lean consultant or ERP specialist? You don't have to choose. I mesh all three." Short form: `SOFTWARE · LEAN · ERP`.
 
 Three layers, kept apart:

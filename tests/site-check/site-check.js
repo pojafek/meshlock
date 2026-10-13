@@ -481,6 +481,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     const c2 = await ctx(browser, { w: 390 });
     const r = await open(c2, '/?s=pc');
     ok(!(await r.p.locator('#about').isVisible()) && /our job/.test(await r.p.locator('.fam-calm').innerText()), 'pc: About hidden, calm line in the Meshlock voice');
+    ok(!(await r.p.locator('.hero .eyebrow').isVisible()) && /Automation &/.test(await r.p.locator('.lock-line').innerText()), 'pc: the hero says Automation & continuous improvement once, not twice');
     await c2.close();
   }
 
