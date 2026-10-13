@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||(/^\/toolkit\//.test(location.pathname)&&(function(k){return k&&k.t&&Date.now()-k.at<15552e6?k.t:''})(JSON.parse(localStorage.getItem('ml-keep')||'null')))||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Five Gates Before Any Tool: Is This Task Worth Automating? | Meshlock Field Notes</title>
+<meta name="description" content="Most slow steps don't need a tool first. Five gates, in the order they matter: is it worth it, is the data right, is it on screen, is there one way. Then automate. With a free two-minute check.">
+<link rel="canonical" href="https://meshlock.co.uk/notes/five-gates.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Meshlock">
+<meta property="og:title" content="Five gates before any tool">
+<meta property="og:description" content="Is it worth it, is the data right, is it on screen, is there one way. Then automate. Run your own task through the gates in two minutes.">
+<meta property="og:url" content="https://meshlock.co.uk/notes/five-gates.html">
+<meta property="og:image" content="https://meshlock.co.uk/assets/og-image.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/notes.css">
+<link rel="stylesheet" href="/assets/toolkit/worth-automating.css">
+<script src="/assets/site.js" defer></script>
+<script src="/assets/stats.js" defer></script>
+<script src="/assets/toolkit/worth-automating.js" defer></script>
+<style>
+.prose h2{font-size:26px;line-height:1.2;margin:46px 0 16px}
+.prose b,.prose strong{font-weight:600}
+.article-body .prose p:first-of-type{font-size:17px;color:var(--ink)}
+.article-body .prose p.lead{font-size:19px;color:var(--ink-soft)}
+
+/* The gates, animated */
+.gates-fig{margin:30px 0 36px}
+.gates-card{position:relative;background:var(--paper-card);border:1.5px solid var(--ink);border-radius:var(--radius);padding:16px 14px 14px}
+.gates-card svg{display:block;width:100%;height:auto}
+.gates-cap{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;min-height:58px;border-top:1px dashed var(--line);margin-top:10px;padding-top:12px}
+.gates-stamp{font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;padding:6px 8px;border:1.5px dashed;border-radius:2px;transform:rotate(-3deg);white-space:nowrap}
+.gates-stamp.s-leave{color:var(--red-flag);border-color:var(--red-flag)}
+.gates-stamp.s-fix{color:var(--amber-ink);border-color:var(--amber)}
+.gates-stamp.s-go{color:var(--green);border-color:var(--green)}
+.gates-stamp:empty{display:none}
+.gates-txt{font-size:15px;line-height:1.45;color:var(--ink);flex:1 1 200px;min-height:2.9em}
+.gates-replay{appearance:none;position:absolute;top:10px;right:10px;font:400 11px/1 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:var(--paper);border:1px solid var(--ink-faint);border-radius:3px;padding:7px 9px;cursor:pointer}
+.gates-fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.04em;color:var(--ink-soft);margin-top:10px;line-height:1.5}
+
+/* One card per gate */
+.gate{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 14px;background:var(--paper-card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 16px;margin:0 0 14px}
+.gate-n{grid-row:1 / span 6;width:38px;height:38px;border-radius:50%;border:2px solid var(--ink);font:500 15px/34px 'IBM Plex Mono',monospace;text-align:center}
+.gate.g-go .gate-n{background:var(--green);border-color:var(--green);color:var(--paper)}
+.gate h3{font-size:20px;line-height:1.25;margin:4px 0 2px}
+.gate .gate-res{font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin:0 0 8px}
+.gate.g-leave .gate-res{color:var(--red-flag)} .gate.g-fix .gate-res{color:var(--amber-ink)} .gate.g-go .gate-res{color:var(--green)}
+.article-body .prose .gate p{font-size:16px;line-height:1.6;margin:0 0 10px;color:var(--ink)}
+.article-body .prose .gate p.gate-eg{font-size:15px;color:var(--ink-soft);border-left:3px solid var(--line);padding-left:12px}
+.article-body .prose .gate p.gate-do{font-size:15px;margin:0}
+.gate-do b{font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-right:8px}
+@media (max-width:520px){.gate{grid-template-columns:minmax(0,1fr)}.gate-n{grid-row:auto}}
+
+.gate-q{font-size:16px;line-height:1.5;color:var(--ink-soft)}
+.article-body .prose .gate p.gate-q{color:var(--ink-soft);margin:0 0 10px}
+.gate-rows{display:grid;gap:6px;margin:0 0 10px}
+.article-body .prose .gate .gate-rows p{font-size:15px;line-height:1.5;margin:0;padding:7px 10px;border-radius:2px}
+.gate-rows .gr-pass{background:var(--green-bg);border-left:3px solid var(--green)}
+.gate-rows .gr-stop{background:#F3E4DF;border-left:3px solid var(--red-flag)}
+.gate-rows b{font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-right:8px}
+.gr-pass b{color:var(--green)} .gr-stop b{color:var(--red-flag)}
+.to-check{border:1.5px solid var(--ink);border-radius:var(--radius);background:var(--ink);color:var(--paper);padding:18px 20px;margin:36px 0 0}
+.tc-k{display:block;font:500 11px/1.4 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+.article-body .prose .to-check p{color:#dfe2da;font-size:16px;line-height:1.55;margin:0 0 8px}
+.article-body .prose .to-check p.tc-tip{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--amber);margin:0}
+.prose .lead a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
+.cost{display:grid;grid-template-columns:minmax(0,1fr);gap:0;border:1.5px solid var(--ink);border-radius:var(--radius);margin:6px 0 26px;overflow:hidden}
+.cost div{display:grid;grid-template-columns:minmax(110px,.6fr) minmax(0,1.4fr);gap:12px;padding:11px 14px;border-top:1px solid var(--line);font-size:15.5px;line-height:1.4;background:var(--paper-card)}
+.cost div:first-child{border-top:0}
+.cost span:first-child{font-weight:600}
+.cost span:last-child{font-size:14.5px;line-height:1.45;color:var(--ink-soft)}
+.cost div.cost-h{background:var(--paper-dim)}
+.cost .cost-h span{font:500 10.5px/1.4 'IBM Plex Mono',monospace!important;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+@media (max-width:420px){.cost div{grid-template-columns:minmax(0,1fr);gap:4px}.cost div.cost-h{display:none}}
+.article-body .prose .article-footer p{font-size:15.5px;color:var(--ink-soft)}
+@media (prefers-reduced-motion:reduce){.gates-card *{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body id="top">
+
+<nav>
+  <div class="brand">
+    <a class="wordmark" href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="178" height="28"></a>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="/tools/"><span class="nl-long">Tools in action</span><span class="nl-short">Tools</span></a>
+    <a class="nav-link" href="/prices/">Prices</a>
+    <a class="nav-link" href="/#about" data-pc-href="/#promise">About</a>
+    <a class="nav-link" href="/notes/"><span class="nl-long">Field notes</span><span class="nl-short">Notes</span></a>
+  </div>
+  <a class="nav-cta" href="/#contact">Book a call</a>
+</nav>
+<div class="offer-bar"><p><span class="ob-long">Here for the long run. So your first tool is paid for only when it works as agreed.</span><span class="ob-short">First tool: pay only when it works.</span> <a href="/#how">How it works →</a></p></div>
+
+<section class="article-header">
+  <div class="wrap">
+    <p class="eyebrow crumbs"><a href="/">Meshlock</a> / <a href="/notes/">Field notes</a></p>
+    <h1>Five gates before any tool</h1>
+    <div class="title-block has-stamp">
+      <div class="tb-cell tb-type"><span class="tb-k">Type</span><span class="tb-v">Practical guide</span></div>
+      <div class="tb-cell tb-time"><span class="tb-k">Time</span><span class="tb-v">6 min + 2 min check</span></div>
+      <div class="tb-cell tb-stamp"><span>NO IT NEEDED</span></div>
+      <div class="tb-cell"><span class="tb-k">You'll learn</span><span class="tb-v">What a task needs before a tool pays · the order to check things in · what passes, and what to fix when it doesn't</span></div>
+      <div class="tb-cell"><span class="tb-k">You get</span><span class="tb-v"><a href="#gates">The five gates, step by step</a> · <a href="#worth-automating">a two-minute check for your own task</a></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="article-body">
+  <div class="wrap prose">
+
+    <p class="lead">Someone says a task is slow, and the next sentence is "can we automate it?". Often the answer is yes. Sometimes the slow step is only where the problem shows, not where it starts. Five quick questions tell the two apart. Read how they work, then <a href="#worth-automating">run your own task through them</a> at the end.</p>
+
+    <figure class="gates-fig" id="gates">
+      <div class="gates-card">
+        <button type="button" class="gates-replay" id="gatesReplay" hidden>Replay</button>
+        <svg id="gatesSvg" viewBox="0 0 360 132" role="img" aria-label="Three tasks run through five gates. Job sheets pass every gate to Automate. A 15-minute task stops at Worth it? and is left alone. Picking stops at Data right?, the data is fixed at the source, and it passes every gate to Automate.">
+          <line x1="12" y1="78" x2="348" y2="78" stroke="#C9CDC0" stroke-width="2"/>
+          <line id="gProg" x1="12" y1="78" x2="12" y2="78" stroke="#3F6B52" stroke-width="2.5"/>
+          <g id="gGates" font-family="IBM Plex Mono, monospace" font-size="8.6" letter-spacing=".3" text-anchor="middle"></g>
+          <g id="gTok">
+            <rect id="gTokBox" x="-46" y="30" width="92" height="24" rx="3" fill="#171A1D"/>
+            <text id="gTokTxt" x="0" y="46" fill="#EEF0EA" font-family="IBM Plex Mono, monospace" font-size="9.5" text-anchor="middle"></text>
+            <path d="M-5 54 L0 60 L5 54 Z" fill="#171A1D"/>
+          </g>
+        </svg>
+        <div class="gates-cap" aria-live="off"><span class="gates-stamp" id="gStamp"></span><span class="gates-txt" id="gTxt">Five gates, checked in order. The first one a task fails is the first thing to fix.</span></div>
+      </div>
+      <figcaption>Three typical tasks. One passes every gate. One is too small to bother with. One needs its data fixed first, then passes.</figcaption>
+    </figure>
+
+    <p>A tool copies the way a task is done today, with the data it is given. If the task is too small, the data is wrong, the information lives on paper or nobody does it the same way twice, the tool copies that too. It just does it faster.</p>
+
+    <p>So before anyone prices a tool, a task goes through five gates, in order. Each one only makes sense once the one before it has passed.</p>
+
+    <h2>The five gates</h2>
+
+    <p>Each gate asks one question. A task either passes and moves on, or stops and shows what to fix first. Many tasks pass straight through.</p>
+
+    <div class="gate">
+      <span class="gate-n">1</span>
+      <h3>Worth it?</h3>
+      <p class="gate-q">Does it take enough time to matter, and can it be done by rules?</p>
+      <div class="gate-rows">
+        <p class="gr-pass"><b>Passes</b>It takes hours every week and follows the same logic, like sorting job sheets by due date and courier.</p>
+        <p class="gr-stop"><b>Stops</b>It takes minutes a week, or needs a judgement call every time, like deciding which late order goes first.</p>
+      </div>
+      <p class="gate-do"><b>If it stops</b>Leave it. A saved filter, a template or a checklist will do. Come back if the hours grow.</p>
+    </div>
+
+    <div class="gate">
+      <span class="gate-n">2</span>
+      <h3>Data right?</h3>
+      <p class="gate-q">Can you trust the information the task starts from?</p>
+      <div class="gate-rows">
+        <p class="gr-pass"><b>Passes</b>The ERP or the export is right most of the time. A tool can work from it as it is.</p>
+        <p class="gr-stop"><b>Stops</b>Stock isn't where the system says, counts never match, or jobs are set up wrong. A tool would give wrong answers faster.</p>
+      </div>
+      <p class="gate-do"><b>If it stops</b>Fix the process that feeds the data, not the spreadsheet. Trace one wrong value back to where it went wrong.</p>
+    </div>
+
+    <div class="gate">
+      <span class="gate-n">3</span>
+      <h3>On screen?</h3>
+      <p class="gate-q">Does the information start on a screen, or on paper?</p>
+      <div class="gate-rows">
+        <p class="gr-pass"><b>Passes</b>It comes from the ERP, a file or an email. Nothing has to be typed in twice.</p>
+        <p class="gr-stop"><b>Stops</b>It is written on a sheet and typed in later, if at all. Nothing on paper can be automated.</p>
+      </div>
+      <p class="gate-do"><b>If it stops</b>Digitalise at the source: the same form, filled in on a tablet or PC where the work happens. That is often the first small tool.</p>
+    </div>
+
+    <div class="gate">
+      <span class="gate-n">4</span>
+      <h3>One way?</h3>
+      <p class="gate-q">Is the task done the same way, by everyone?</p>
+      <div class="gate-rows">
+        <p class="gr-pass"><b>Passes</b>The steps could be written as a list anyone could follow. Exceptions are known and rare. One expert is fine: the tool keeps their rules.</p>
+        <p class="gr-stop"><b>Stops</b>Every shift does it differently, so a tool would copy the confusion.</p>
+      </div>
+      <p class="gate-do"><b>If it stops</b>Watch two people do it, agree one way and write it as a short checklist.</p>
+    </div>
+
+    <div class="gate g-go">
+      <span class="gate-n">5</span>
+      <h3>Automate</h3>
+      <p class="gate-q">Passed the first four gates: the task is worth a tool.</p>
+      <p>The tool does the task the agreed way, from the data you already have, every time. People get the hours back and the mistakes stop travelling.</p>
+      <p class="gate-eg">A real one: about 80 job sheets a day, sorted by hand for an hour. The rules were clear and the data came from the ERP. Now it takes about a minute. <a href="/tools/#job-travellers">Watch it run →</a></p>
+    </div>
+
+    <h2>Why this order</h2>
+
+    <p>Each gate only makes sense once the one before it has passed. Check them out of order and you fix something that was never going to pay, or build on a problem that is still there.</p>
+
+    <div class="cost" aria-label="Why each gate comes where it does">
+      <div class="cost-h"><span>Gate</span><span>Why it comes here</span></div>
+      <div><span>1 · Worth it?</span><span>Free to check, and it saves all the work after it on tasks too small to matter.</span></div>
+      <div><span>2 · Data right?</span><span>Wrong data spoils every step after it, on screen or not, done one way or not.</span></div>
+      <div><span>3 · On screen?</span><span>A tool can only read what is digital. Paper has to go before anything can be automated.</span></div>
+      <div><span>4 · One way?</span><span>A tool copies one way of working. That way has to exist before it is copied.</span></div>
+      <div><span>5 · Automate</span><span>Last, because now the tool has the right data, on screen, done one way.</span></div>
+    </div>
+
+    <p>When a task passes, it goes straight to a tool. When it stops, the fix comes first, and the tool that follows has something solid to stand on.</p>
+
+    <div class="to-check">
+      <span class="tc-k">Your turn</span>
+      <p>That is the theory. The check below runs one of your own tasks through the same five gates, so you don't have to work it out from the page. You get the gate it stops at, what to do first, and a result you can copy into an email or send to whoever decides.</p>
+      <p class="tc-tip">Not sure which task to try? Take the last one someone asked to automate.</p>
+    </div>
+
+    <section class="keep" id="worth-automating">
+      <div class="keep-head"><span class="keep-k">Keep it · free tool</span><span class="keep-stamp">Yours to keep</span></div>
+      <h2>Run your own task through the gates</h2>
+      <p class="keep-why">Name one task, nine quick taps. Use it again on every task someone wants automated.</p>
+      <p class="keep-use"><b>Use it when</b>someone asks "can we automate this?" · before a supplier quotes for a tool · a task feels slow and nobody knows why</p>
+      <div data-tool="worth-automating" data-offer-tag="fn-gates">
+        <noscript><div class="wa-nojs">The worth automating check needs JavaScript switched on.</div></noscript>
+      </div>
+      <p class="tool-own"><a href="/toolkit/worth-automating/" data-keep>Keep it: open it on its own page and bookmark it →</a></p>
+    </section>
+
+    <h2 id="what-we-do">What we do with it</h2>
+
+    <p>We work at every gate, not only the last one. Gates 2 to 4 are floor work: tracing data back, getting it on screen, agreeing one way. That is what the one-day process review is for. It costs £600, credited in full against any build.</p>
+
+    <p>When a task passes the first four gates, we build the tool for a fixed price agreed in writing. Your first tool is paid for only when it works as agreed.</p>
+
+    <div class="article-footer">
+      <p>Got a task that stops at a gate, or one that passes them all?</p>
+      <a class="nav-cta" href="/#contact">Book a free call</a>
+      <p><a href="/start/?s=fn-gates">Or tick what happens on your floor and get a one-page offer →</a></p>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="foot-brand">
+    <a class="wordmark" href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="127" height="20"></a>
+    <p class="foot-tag" data-pc="Automation &amp; continuous improvement for manufacturers.">Lean, software and ERP. One person.</p>
+  </div>
+  <ul class="foot-links">
+    <li><a href="/tools/">Tools in action</a></li>
+    <li><a href="/prices/">Prices</a></li>
+    <li><a href="/start/?s=fn-gates">One-page offer</a></li>
+    <li><a href="/notes/">Field notes</a></li>
+    <li><a href="/toolkit/">Toolkit</a></li>
+    <li data-pc-hide><a href="https://www.linkedin.com/in/kamil-pojawa-106265305/" target="_blank" rel="noopener">LinkedIn</a></li>
+    <li><a href="mailto:hello@meshlock.co.uk" data-pc-href="mailto:patryk@meshlock.co.uk" data-pc="patryk@meshlock.co.uk">hello@meshlock.co.uk</a></li>
+    <li><a href="#top">Back to top ↑</a></li>
+    <li class="copy">© 2026 Meshlock</li>
+  </ul>
+</footer>
+
+<script>
+/* The five gates, animated. All motion comes from render(t). Three typical tasks, one after another:
+   job sheets pass every gate, a 15-minute task is left alone, picking stops at Data right?, is fixed
+   at the source and then passes. Every caption stays on screen long enough to read (4 to 6 s).
+   With reduced motion: one still frame of the end. Plays once in view, then on Replay. */
+(function(){
+  'use strict';
+  var svg = document.getElementById('gatesSvg'); if (!svg) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var X = [36, 108, 180, 252, 324], Y = 78, OFF = -60;
+  var LABEL = [['WORTH', 'IT?'], ['DATA', 'RIGHT?'], ['ON', 'SCREEN?'], ['ONE', 'WAY?'], ['AUTOMATE', '']];
+  var C = { line: '#C9CDC0', faint: '#8A9086', green: '#3F6B52', greenBg: '#E4EBE3', red: '#B5482E', amber: '#D9A441', amberInk: '#5A4419', paper: '#F6F7F2' };
+  // One step per caption. at: gate the task moves to (-1 off stage, fades out). g: gate states once it arrives.
+  // p = passed, s = stopped, f = being fixed, go = automate, '' = not reached.
+  var STEPS = [
+    { task: 'JOB SHEETS', at: 0, g: 'p----', d: 4.2, cap: 'Job sheets, sorted by hand. Worth it? Two hours a day, same logic every time. Passes.' },
+    { at: 1, g: 'pp---', d: 4.2, cap: 'Data right? It comes straight from the ERP. Passes.' },
+    { at: 2, g: 'ppp--', d: 4.0, cap: 'On screen? Already. Nothing is typed in twice. Passes.' },
+    { at: 3, g: 'pppp-', d: 4.0, cap: 'One way? Same rules on every shift. Passes.' },
+    { at: 4, g: 'ppppG', d: 5.0, st: 's-go', stamp: 'AUTOMATE', cap: 'Every gate passed. A tool is worth building.' },
+    { at: 5, g: '-----', d: 1.0, cap: '' },
+    { task: '15 MIN A WEEK', at: 0, g: 's----', d: 5.5, st: 's-leave', stamp: 'LEAVE IT', cap: 'A small weekly task. About twelve hours a year: a tool would cost more than it saves.' },
+    { at: 5, g: '-----', d: 1.0, cap: '' },
+    { task: 'PICKING ORDERS', at: 0, g: 'p----', d: 4.2, cap: 'Picking feels slow, and it takes hours. Worth it? Passes.' },
+    { at: 1, g: 'ps---', d: 6.0, st: 's-leave', stamp: 'DATA WRONG', cap: 'Stock is not where the system says. A faster route to the wrong shelf saves nothing.' },
+    { at: 1, g: 'pf---', d: 5.5, st: 's-fix', stamp: 'FIX THE DATA FIRST', cap: 'Fixed at the source: how stock is booked in, moved and booked out.' },
+    { at: 1, g: 'pp---', d: 4.0, cap: 'Data right? Now the stock is where the system says. Passes.' },
+    { at: 2, g: 'ppp--', d: 4.0, cap: 'On screen? Picking lists come from the ERP. Passes.' },
+    { at: 3, g: 'pppp-', d: 4.0, cap: 'One way? Same picking rules for everyone. Passes.' },
+    { at: 4, g: 'ppppG', d: 5.5, st: 's-go', stamp: 'AUTOMATE', cap: 'Every gate passed. Now a tool is worth building.' }
+  ];
+  var t0 = 0, task = '';
+  STEPS.forEach(function(s){ s.t0 = t0; t0 += s.d; if (s.task) task = s.task; s.task = task; });
+  var END = t0;
+  var gG = document.getElementById('gGates'), gates = [];
+  X.forEach(function(x, i){
+    var g = document.createElementNS(NS, 'g');
+    g.innerHTML = '<circle cx="' + x + '" cy="' + Y + '" r="12" stroke-width="2"/><text x="' + x + '" y="' + (Y + 4) + '" font-size="12" font-weight="700"></text>' +
+      '<text x="' + x + '" y="' + (Y + 28) + '">' + LABEL[i][0] + '</text><text x="' + x + '" y="' + (Y + 39) + '">' + LABEL[i][1] + '</text>';
+    gG.appendChild(g);
+    gates.push({ c: g.querySelector('circle'), mark: g.querySelectorAll('text')[0], l1: g.querySelectorAll('text')[1], l2: g.querySelectorAll('text')[2] });
+  });
+  var tok = document.getElementById('gTok'), tokTxt = document.getElementById('gTokTxt'), box = document.getElementById('gTokBox'), prog = document.getElementById('gProg');
+  var stamp = document.getElementById('gStamp'), txt = document.getElementById('gTxt'), replay = document.getElementById('gatesReplay');
+
+  function gate(i, ch){
+    var s = { p: 'pass', s: 'stop', f: 'fix', G: 'go' }[ch] || '', g = gates[i];
+    g.c.setAttribute('stroke', s === 'pass' || s === 'go' ? C.green : s === 'stop' ? C.red : s === 'fix' ? C.amber : C.line);
+    g.c.setAttribute('fill', s === 'go' ? C.green : s === 'pass' ? C.greenBg : C.paper);
+    g.c.setAttribute('stroke-dasharray', s ? '' : '3 3');
+    g.mark.textContent = s === 'pass' || s === 'go' ? '✓' : (s === 'stop' || s === 'fix') ? '!' : '';
+    g.mark.setAttribute('fill', s === 'go' ? C.paper : s === 'pass' ? C.green : s === 'fix' ? C.amberInk : C.red);
+    var lc = s ? (s === 'stop' ? C.red : s === 'fix' ? C.amberInk : C.green) : C.faint;
+    g.l1.setAttribute('fill', lc); g.l2.setAttribute('fill', lc);
+  }
+  var ease = function(a){ return a <= 0 ? 0 : a >= 1 ? 1 : a * a * (3 - 2 * a); };
+  function posOf(k){ return k < 0 || k > 4 ? null : X[k]; }
+  function render(t){
+    t = Math.max(0, Math.min(t, END - 0.001));
+    var i = 0; while (i < STEPS.length - 1 && t >= STEPS[i + 1].t0) i++;
+    var S = STEPS[i], P = STEPS[i - 1], local = t - S.t0;
+    var newTask = !P || P.task !== S.task || P.at > 4;
+    var from = newTask ? OFF : posOf(P.at), to = posOf(S.at), x, op = 1;
+    var mv = S.at > 4 ? 0 : newTask ? 1.0 : Math.max(0, Math.abs(to - from) / 72) * 0.9;   // 0.9 s per gate, 0 when it stays
+    var arrived = local >= mv;
+    if (S.at > 4) { x = posOf(P.at); op = Math.max(0, 1 - local / 0.8); }
+    else { x = mv > 0 ? from + (to - from) * ease(local / mv) : to; if (newTask) op = Math.min(1, local / 0.4); }
+    var g = arrived || S.at > 4 ? S.g : (P && !newTask ? P.g : '-----');
+    for (var k = 0; k < 5; k++) gate(k, g.charAt(k));
+    var reach = -1; for (k = 0; k < 5; k++) if (g.charAt(k) !== '-') reach = k;
+    prog.setAttribute('x2', reach < 0 ? 12 : Math.max(12, Math.min(x, X[4])));
+    if (S.at > 4) prog.setAttribute('x2', 12);
+    var label = S.task;
+    if (tokTxt.textContent !== label) tokTxt.textContent = label;
+    tok.setAttribute('transform', 'translate(' + x.toFixed(1) + ' 0)');
+    tok.setAttribute('opacity', op.toFixed(2));
+    var w = 92; try { w = Math.max(60, tokTxt.getComputedTextLength() + 18); } catch(e){}
+    var shift = Math.min(Math.max(x - w / 2, 2), 358 - w) - (x - w / 2);
+    box.setAttribute('width', w.toFixed(1)); box.setAttribute('x', (-w / 2 + shift).toFixed(1)); tokTxt.setAttribute('x', shift.toFixed(1));
+    // Caption and stamp change only when the task reaches its gate, so the words always match the picture
+    var C2 = arrived ? S : (newTask ? null : P);
+    var st = C2 && C2.stamp ? C2.stamp : '', cls = C2 && C2.st ? C2.st : '';
+    if (S.at > 4) { st = ''; cls = ''; }
+    if (stamp.textContent !== st) { stamp.textContent = st; stamp.className = 'gates-stamp' + (cls ? ' ' + cls : ''); }
+    var cap = S.at > 4 ? '' : C2 ? C2.cap : '';
+    if (txt.textContent !== cap) txt.textContent = cap;
+  }
+
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var start = null, running = false, played = false;
+  function frame(now){
+    if (start === null) start = now;
+    var t = (now - start) / 1000;
+    if (t >= END) { render(END); running = false; replay.hidden = false; return; }
+    render(t); requestAnimationFrame(frame);
+  }
+  function play(){ if (running) return; running = true; start = null; replay.hidden = true; requestAnimationFrame(frame); }
+  window.mlGatesRender = render;   // for the site check
+  window.mlGatesSteps = STEPS.map(function(s){ return s.t0; });
+  if (reduce) { render(END); return; }
+  render(0);
+  replay.addEventListener('click', play);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(es, o){ es.forEach(function(e){ if (e.isIntersecting && !played) { played = true; o.disconnect(); play(); } }); }, { threshold: 0.5 }).observe(svg);
+  } else play();
+})();
+</script>
+</body>
+</html>

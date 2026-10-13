@@ -28,7 +28,7 @@ function serve() {
     s.listen(0, '127.0.0.1', () => { BASE = 'http://127.0.0.1:' + s.address().port; res(s); });
   });
 }
-const PAGES = ['/', '/tools/', '/prices/', '/notes/', '/notes/doing-it-by-hand.html', '/notes/your-machines-already-know.html',
+const PAGES = ['/', '/tools/', '/prices/', '/notes/', '/notes/doing-it-by-hand.html', '/notes/your-machines-already-know.html', '/notes/five-gates.html',
   '/toolkit/', '/toolkit/cycle-time/', '/toolkit/step-timer/', '/toolkit/worth-automating/', '/toolkit/machine-data/', '/toolkit/step-timer/sheet/', '/thanks.html', '/start/'];
 const FOOTER_PAGES = PAGES.filter(p => p !== '/start/');
 const TK = { '/toolkit/': 'tk-index', '/toolkit/cycle-time/': 'tk-cycle', '/toolkit/step-timer/': 'tk-timer', '/toolkit/worth-automating/': 'tk-automating', '/toolkit/machine-data/': 'tk-machine', '/toolkit/step-timer/sheet/': 'tk-timer' };
@@ -124,7 +124,11 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     const n = await open(c, '/notes/');
     ok((await n.p.locator('.notes-standard').innerText()) === 'Every note: a problem worth seeing, a way to measure it yourself, and a free tool to keep.', 'notes standard line');
     ok(await n.p.locator('.notes-header a[href="/toolkit/"]', { hasText: 'Free tools from these notes' }).count() === 1, 'notes toolkit link');
-    ok((await visibleText(n.p)).includes('taught me'), 'notes no tag shows Kamil voice');
+    ok((await visibleText(n.p)).includes('taught us'), 'notes speak in the Meshlock voice for everyone');
+    for (const path of ['/notes/doing-it-by-hand.html', '/notes/your-machines-already-know.html', '/notes/five-gates.html']) {
+      const q = await open(c, path); const tx = (await q.p.locator('.article-body, .article-header').allInnerTexts()).join(' ');
+      ok(!/\b(I|I'm|I've|my)\b/.test(tx.replace(/"[^"]*"|“[^”]*”/g, '').replace(/I measured it/g, '')), `${path} has no first person for any visitor (reader quotes and buttons aside)`); await q.p.close();
+    }
     await c.close();
   }
 
@@ -237,7 +241,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(/\/start\/\?s=tk-timer#f=export/.test(await r.p.locator('.st-offer').getAttribute('href')), 'step timer offer link');
     ok(await r.p.locator('.st-results').isVisible(), 'step timer results');
     r = await open(c, '/toolkit/worth-automating/');
-    for (const q of await r.p.locator('.wa-q').all()) await q.locator('.wa-opt').first().click();
+    for (const q of await r.p.locator('.wa-q[data-q]').all()) await q.locator('.wa-opt').first().click();
     ok(await r.p.locator('.wa-verdict').isVisible(), 'worth automating verdict');
     ok(r.errs.length === 0, 'tools errors ' + r.errs);
     await c.close();
@@ -298,7 +302,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(JSON.stringify(groups) === JSON.stringify(await t.p.evaluate(() => window.mlMachineItems.map(g => g.g))), 'checklist groups match');
     ok(!/USB|clamp|cabinet|ERP/i.test(art.join(' ')), 'checklist steps need no IT and open nothing');
     // YOU GET links go to their part of each note
-    for (const path of ['/notes/your-machines-already-know.html', '/notes/doing-it-by-hand.html']) {
+    for (const path of ['/notes/your-machines-already-know.html', '/notes/doing-it-by-hand.html', '/notes/five-gates.html']) {
       const { p } = await open(c, path);
       const ids = await p.$$eval('.title-block .tb-v a[href^="#"]', l => l.map(x => x.getAttribute('href').slice(1)));
       ok(ids.length >= 2 && (await p.evaluate(ids => ids.every(i => document.getElementById(i)), ids)), `${path} You get links ${ids}`);
@@ -324,6 +328,99 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     const c2 = await ctx(browser);
     r = await open(c2, '/toolkit/cycle-time/');
     ok(!/[?&]s=/.test(await r.p.evaluate(() => location.search)), 'no tag: toolkit address unchanged');
+    await c2.close();
+  }
+
+  // 14. Worth automating? v2: five results in the right order, gates, next steps, saved link, step timer hand-off, entry points
+  {
+    const c = await ctx(browser, { w: 390, reduce: true });
+    let r = await open(c, '/toolkit/worth-automating/');
+    const V = a => r.p.evaluate(a => window.mlWorthVerdict(a).v, a);
+    const base = { kind: 'sort', freq: 'daily', hrs: 'c', same: 'mostly', rules: 'partly', digital: 'yes', trust: 'yes', errors: 'sometimes', person: 'yes' };
+    ok(await V({ ...base, same: 'yes', rules: 'rules' }) === 'automate', 'two hours a day, one expert: automate (one person never blocks a tool)');
+    ok(await V({ ...base, kind: 'export', freq: 'weekly', hrs: 'a0', same: 'yes', rules: 'rules', errors: 'rarely', person: 'no' }) === 'leave', '15 minutes a week: leave it');
+    ok(await V({ ...base, kind: 'pick', freq: 'daily', hrs: 'b', trust: 'no' }) === 'data', 'stock in the wrong place: fix the data first');
+    ok(await V({ ...base, kind: 'wrong', digital: 'paper', same: 'yes', rules: 'rules', errors: 'often' }) === 'paper', 'inspection on paper: get it off paper first');
+    ok(await V({ ...base, same: 'no' }) === 'steps', 'everyone does it differently: write the steps down first');
+    ok(await V({ ...base, rules: 'judgement' }) === 'leave', 'judgement each time: leave it');
+    ok(await V({ ...base, hrs: 'a0', errors: 'often', same: 'yes', rules: 'rules' }) === 'automate', 'small but mistakes reach the customer: stays in the check');
+    const pick = async (k, v) => r.p.click(`.wa-q[data-q="${k}"] .wa-opt[data-v="${v}"]`);
+    await r.p.fill('.wa-in', 'Sorting job sheets');
+    for (const [k, v] of Object.entries({ kind: 'pick', freq: 'daily', hrs: 'b', same: 'yes', rules: 'rules', digital: 'yes', trust: 'no', errors: 'often', person: 'yes' })) await pick(k, v);
+    ok(/FIX THE DATA FIRST/.test(await r.p.locator('.wa-stamp').innerText()), 'data result shows its stamp');
+    ok(await r.p.locator('.wa-g.pass').count() === 1 && await r.p.locator('.wa-g.stop[data-g="data"]').count() === 1 && await r.p.locator('.wa-g.off').count() === 3, 'gates: passed, stopped at data, rest not reached');
+    ok(/Stock in the system/.test(await r.p.locator('.wa-cases').innerText()) && await r.p.locator('.wa-first .wa-w').count() === 3, 'data result has cases and first steps');
+    ok(await r.p.locator('.wa-next a[href="/#contact"]').count() === 1 && await r.p.locator('.wa-go').count() === 0, 'data result leads to a call, not straight to a price');
+    ok(/Only one person/.test(await r.p.locator('.wa-also').innerText()), 'also worth knowing lists the one-person risk');
+    ok(/Already in place: worth the time/.test(await r.p.locator('.wa-also').innerText()), 'a fix-first result also says what is already in place');
+    ok(/Task: Sorting job sheets/.test(await r.p.locator('.wa-task').innerText()), 'task name on the result');
+    const h = await r.p.evaluate(() => location.hash);
+    ok(/wa=pick\.daily\.b\.yes\.rules\.yes\.no\.often\.yes/.test(h) && /t=Sorting/.test(h), 'answers kept in the link ' + h);
+    const again = await open(c, '/toolkit/worth-automating/' + h);
+    ok(/FIX THE DATA FIRST/.test(await again.p.locator('.wa-stamp').innerText()) && await again.p.inputValue('.wa-in') === 'Sorting job sheets', 'saved link reopens the same result');
+    await pick('trust', 'yes');
+    ok(/^AUTOMATE$/.test(await r.p.locator('.wa-stamp').innerText()) && /\/start\/\?s=tk-automating#f=pick\.b$/.test(await r.p.locator('.wa-go').getAttribute('href')), 'automate leads to the offer with the right problem and hours');
+    ok(await r.p.locator('.wa-g.go').count() === 1 && await r.p.locator('.wa-g.pass').count() === 4, 'automate passes all four gates');
+    await pick('digital', 'paper');
+    ok(/\/start\/.*#f=pick\.b$/.test(await r.p.locator('.wa-go').getAttribute('href')) && await r.p.locator('.wa-next a[href="/#contact"]').count() === 1, 'paper result offers to price the first step and a call');
+    await pick('hrs', 'a0'); await pick('errors', 'rarely');
+    ok(/LEAVE IT/.test(await r.p.locator('.wa-stamp').innerText()) && /under 25 hours a year/.test(await r.p.locator('.wa-hours').innerText()) && await r.p.locator('.wa-go').count() === 0, 'leave it shows the hours a year and no offer');
+    await r.p.click('.wa-reset');
+    ok(await r.p.locator('.wa-verdict').isHidden() && await r.p.inputValue('.wa-in') === '', 'check another task clears everything');
+    const t = await visibleText(r.p);
+    ok(!/—|–| - /.test(t) && !/\b(I|I'm|me|my)\b/.test(t.replace(/Back to top/, '')), 'check page: no dashes, no first person');
+    ok(r.errs.length === 0 && again.errs.length === 0, 'check errors ' + r.errs + again.errs);
+    // From the step timer: frequency and hours arrive pre-answered
+    const st = await open(c, '/toolkit/worth-automating/#freq=daily&hrs=c');
+    ok(await st.p.locator('.wa-q[data-q="freq"] .wa-opt[data-v="daily"]').getAttribute('aria-checked') === 'true' && await st.p.locator('.wa-q[data-q="hrs"] .wa-opt[data-v="c"]').getAttribute('aria-checked') === 'true', 'step timer link pre-answers frequency and hours');
+    // Entry points
+    const home = await open(c, '/');
+    ok(await home.p.locator('#familiar .fam-check a[href="/toolkit/worth-automating/"]').count() === 1, 'homepage Sound familiar? links the check');
+    const off = await open(c, '/start/');
+    ok(await off.p.locator('#s1 .wa-hint a[href="/toolkit/worth-automating/"]').count() === 1, 'offer step 1 links the check');
+    await c.close();
+  }
+
+  // 15. Gates guide: animation states, the check inside, fn-gates tags, Patryk version
+  {
+    const c = await ctx(browser, { w: 390 });
+    const { p, errs } = await open(c, '/notes/five-gates.html');
+    ok((await startTags(p)).every(t => t === 'fn-gates'), 'gates guide offer links carry fn-gates');
+    // Each step: render near its end, when the task has arrived and the caption is showing
+    const step = i => p.evaluate(i => { const T = window.mlGatesSteps; window.mlGatesRender((T[i + 1] || T[i] + 5) - 0.05); return { stamp: document.getElementById('gStamp').textContent, marks: [...document.querySelectorAll('#gGates g')].map(g => g.querySelector('text').textContent).join(''), cap: document.getElementById('gTxt').textContent }; }, i);
+    let s1 = await step(0); ok(s1.marks === '✓' && /Passes/.test(s1.cap), 'animation: job sheets pass gate 1 ' + JSON.stringify(s1));
+    s1 = await step(4); ok(s1.stamp === 'AUTOMATE' && s1.marks === '✓✓✓✓✓', 'animation: job sheets pass every gate ' + JSON.stringify(s1));
+    s1 = await step(6); ok(s1.stamp === 'LEAVE IT' && s1.marks === '!', 'animation: the small task stops at gate 1 ' + JSON.stringify(s1));
+    s1 = await step(9); ok(s1.stamp === 'DATA WRONG' && s1.marks === '✓!', 'animation: picking stops at gate 2 ' + JSON.stringify(s1));
+    s1 = await step(14); ok(s1.stamp === 'AUTOMATE' && s1.marks === '✓✓✓✓✓', 'animation: after the data fix picking passes every gate ' + JSON.stringify(s1));
+    // Words match the picture: every caption is shown with one gate state only, and the task never skips a gate
+    const sync = await p.evaluate(() => {
+      const seen = {}, bad = [], T = window.mlGatesSteps, end = T[T.length - 1] + 5;
+      for (let t = 0; t < end; t += 0.05) {
+        window.mlGatesRender(t);
+        const cap = document.getElementById('gTxt').textContent, marks = [...document.querySelectorAll('#gGates g')].map(g => g.querySelector('text').textContent).join('');
+        if (!cap) continue;
+        if (seen[cap] === undefined) seen[cap] = marks; else if (seen[cap] !== marks) bad.push(cap.slice(0, 30) + ' ' + seen[cap] + '/' + marks);
+      }
+      return { bad: [...new Set(bad)], states: Object.values(seen) };
+    });
+    ok(sync.bad.length === 0, 'animation: caption changes with the gates, never before ' + sync.bad);
+    ok(['✓', '✓!', '✓✓', '✓✓✓', '✓✓✓✓', '✓✓✓✓✓'].every(m => sync.states.includes(m)), 'animation: picking passes On screen? and One way? one at a time ' + sync.states);
+    const gaps = await p.evaluate(() => window.mlGatesSteps.slice(1).map((t, i) => t - window.mlGatesSteps[i]));
+    ok(gaps.filter(g => g > 2).every(g => g >= 3.99), 'every caption stays at least 4 seconds ' + gaps);
+    ok(await p.locator('.gate .gr-pass').count() === 4 && await p.locator('.gate .gr-stop').count() === 4, 'each of the first four gates says when it passes and when it stops');
+    ok(await p.locator('.gate').count() === 5 && await p.locator('#worth-automating [data-tool="worth-automating"] .wa').count() === 1, 'five gate cards and the check inside the note');
+    ok(await p.locator('.gate a[href="/tools/#job-travellers"]').count() === 1, 'the real case links its case file');
+    const t = await visibleText(p);
+    ok(!/—|–| - /.test(t), 'gates guide has no dashes');
+    ok(errs.length === 0, 'gates guide errors ' + errs);
+    await c.close();
+    const c2 = await ctx(browser, { reduce: true });
+    const r = await open(c2, '/notes/five-gates.html?s=pc');
+    ok(/AUTOMATE/.test(await r.p.locator('#gStamp').innerText()), 'reduced motion shows the end frame');
+    const tp = await visibleText(r.p);
+    ok(!/\b(I|I'm|I've|me|my)\b/.test(tp.replace(/Back to top/, '')) && /What we do with it/.test(tp), 'pc: gates guide has no first person');
+    ok(await r.p.locator('.to-check').count() === 1, 'a bridge leads from the gates to the check');
     await c2.close();
   }
 

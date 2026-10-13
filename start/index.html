@@ -48,6 +48,8 @@
   .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 16px;display:flex;align-items:center;gap:8px;}
   .led{width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 0 3px var(--green-bg);flex:none;}
   .intro h1{font-size:clamp(32px,8.4vw,44px);line-height:1.08;font-weight:700;max-width:16ch;text-wrap:balance;}
+  .wa-hint{font-size:14.5px;line-height:1.5;color:var(--ink-soft);margin:14px 0 0;}
+  .wa-hint a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px;}
   .lede{font-size:18px;color:var(--ink-soft);margin-top:16px;max-width:46ch;}
 
   .noscript{padding:20px;border:1.5px dashed var(--ink-faint);margin:26px 0 60px;}
@@ -262,7 +264,7 @@
   </section>
 
   <div class="noscript">
-    <p>This page needs JavaScript. The full price list is on the <a href="/#prices">main page</a>, or send a line to <a href="mailto:hello@meshlock.co.uk">hello@meshlock.co.uk</a> and I'll reply within one working day.</p>
+    <p>This page needs JavaScript. Example prices are on the <a href="/prices/">prices page</a>, or send a line to <a href="mailto:hello@meshlock.co.uk">hello@meshlock.co.uk</a> and I'll reply within one working day.</p>
   </div>
 
   <nav class="progress" aria-label="Progress" id="progress">
@@ -288,6 +290,7 @@
       <button type="button" class="sym unsure" aria-pressed="false" data-k="unsure"><span class="box" aria-hidden="true"></span><span class="st"><b>Something else</b><span class="ex">It just feels slower than it should.</span></span></button>
     </div>
     <p class="cap-note" id="capnote" role="status"></p>
+    <p class="wa-hint">Not sure it is worth fixing at all? <a href="/toolkit/worth-automating/">Run the two-minute check first →</a></p>
   </section>
 
   <!-- Step 2 -->

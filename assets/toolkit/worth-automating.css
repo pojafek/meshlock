@@ -16,7 +16,7 @@
 .wa-out{padding:16px 18px 4px;}
 .wa-progress{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft);}
 .wa-verdict{border:1.5px solid var(--ink); border-radius:3px; background:var(--paper); padding:18px 16px 16px; position:relative; margin-top:10px;}
-.wa-stamp{position:absolute; top:-13px; right:12px; font:500 11px/1 'IBM Plex Mono',monospace; letter-spacing:.12em; padding:6px 8px; border-radius:2px; border:1.5px dashed; background:var(--paper); transform:rotate(-4deg);}
+.wa-stamp{position:absolute; top:-13px; right:12px; max-width:calc(100% - 24px); font:500 11px/1 'IBM Plex Mono',monospace; letter-spacing:.12em; padding:6px 8px; border-radius:2px; border:1.5px dashed; background:var(--paper); transform:rotate(-4deg);}
 .wa-automate .wa-stamp{color:var(--green); border-color:var(--green);}
 .wa-standardise .wa-stamp{color:var(--amber-ink); border-color:var(--amber);}
 .wa-leave .wa-stamp{color:var(--red-flag); border-color:var(--red-flag);}
@@ -25,11 +25,49 @@
 .wa-why{border-top:1px dashed var(--line); padding-top:10px;}
 .wa-w{position:relative; padding:4px 0 4px 18px; font-size:14.5px; line-height:1.5;}
 .wa-w::before{content:"→"; position:absolute; left:0; font-family:'IBM Plex Mono',monospace; color:var(--ink-soft);}
-.wa-go{display:inline-block; margin-top:14px; font:400 12.5px/1.2 'IBM Plex Mono',monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--paper); background:var(--ink); padding:12px 16px; border-radius:3px; text-decoration:none;}
+.wa-go{display:inline-block; margin:14px 12px 0 0; font:400 12.5px/1.2 'IBM Plex Mono',monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--paper); background:var(--ink); padding:12px 16px; border-radius:3px; text-decoration:none;}
 .wa-go:hover{box-shadow:3px 4px 0 var(--amber);}
 .wa-actions{padding:12px 18px 16px;}
 .wa-reset{appearance:none; background:none; border:0; border-bottom:1px solid var(--ink-faint); color:var(--ink); font:400 12.5px/1.2 'IBM Plex Mono',monospace; letter-spacing:.08em; text-transform:uppercase; padding:4px 0; cursor:pointer;}
+/* The five gates: passed, stopped here, not reached. Drawn like an inspection route. */
+.wa-path{list-style:none; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:0; margin:6px 0 16px; padding:0; counter-reset:g;}
+.wa-g{position:relative; display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; font:500 10.5px/1.25 'IBM Plex Mono',monospace; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-faint);}
+.wa-g::before{content:""; position:absolute; top:12px; left:-50%; width:100%; height:2px; background:var(--line); z-index:0;}
+.wa-g:first-child::before{display:none;}
+.wa-gd{position:relative; z-index:1; width:26px; height:26px; border-radius:50%; border:2px solid var(--line); background:var(--paper); display:flex; align-items:center; justify-content:center; font-size:13px; line-height:1;}
+.wa-g.pass{color:var(--green);} .wa-g.pass .wa-gd{border-color:var(--green); background:var(--green-bg);} .wa-g.pass .wa-gd::after{content:"✓"; color:var(--green);}
+.wa-g.pass::before,.wa-g.stop::before,.wa-g.go::before{background:var(--green);}
+.wa-g.stop{color:var(--ink);} .wa-g.stop .wa-gd{border-color:var(--red-flag); background:var(--paper); border-width:2.5px;} .wa-g.stop .wa-gd::after{content:"!"; color:var(--red-flag); font-weight:700;}
+.wa-leave .wa-g.stop .wa-gd{border-color:var(--red-flag);} .wa-standardise .wa-g.stop .wa-gd{border-color:var(--amber);} .wa-standardise .wa-g.stop .wa-gd::after{color:var(--amber-ink);}
+.wa-g.go{color:var(--green);} .wa-g.go .wa-gd{border-color:var(--green); background:var(--green);} .wa-g.go .wa-gd::after{content:"✓"; color:var(--paper);}
+.wa-g.off .wa-gd{border-style:dashed;}
+@media (prefers-reduced-motion:no-preference){
+  .wa-path.run .wa-g{animation:wa-in .35s ease both; animation-delay:calc(var(--i) * .14s);}
+  .wa-path.run .wa-g.off{animation-name:wa-in-off;}
+}
+@keyframes wa-in{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+@keyframes wa-in-off{from{opacity:0;} to{opacity:1;}}
+/* version 2: task name, result blocks, next steps, sharing */
+.wa-in{flex:1 1 260px; min-width:0; font:400 15px/1.3 'IBM Plex Sans',sans-serif; color:var(--ink); background:var(--paper); border:1.5px solid var(--ink); border-radius:3px; padding:10px 12px; min-height:44px;}
+.wa-in:focus-visible{outline:2px solid var(--amber); outline-offset:2px;}
+.wa-task{font:500 11.5px/1.4 'IBM Plex Mono',monospace; letter-spacing:.06em; color:var(--ink-soft); margin:0 0 4px; padding-right:120px; overflow-wrap:anywhere;}
+.wa-task:empty{display:none;}
+.wa-data .wa-stamp{color:var(--amber-ink); border-color:var(--amber);}
+.wa-why:empty{display:none;}
+.wa-why{margin-bottom:12px;}
+.wa-block{border-top:1px dashed var(--line); padding-top:10px; margin-top:10px;}
+.wa-bh{font:500 10.5px/1.4 'IBM Plex Mono',monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:2px;}
+.wa-hours{font:400 12.5px/1.5 'IBM Plex Mono',monospace; color:var(--ink-soft); border-top:1px dashed var(--line); padding-top:10px; margin-top:10px;}
+.wa-next{margin-top:6px;}
+.wa-next-t{font-size:14.5px; line-height:1.5; color:var(--ink); margin:12px 0 6px;}
+.wa-sec{display:inline-block; font:400 12.5px/1.2 'IBM Plex Mono',monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); border-bottom:1px solid var(--ink-faint); text-decoration:none; padding:6px 0; margin:4px 14px 0 0;}
+.wa-share{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; border-top:1px dashed var(--line); padding-top:12px; margin-top:14px;}
+.wa-mid{appearance:none; font:400 12px/1.2 'IBM Plex Mono',monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); background:var(--paper-card); border:1.5px solid var(--ink); border-radius:3px; padding:10px 12px; min-height:40px; cursor:pointer;}
+.wa-mid:focus-visible{outline:2px solid var(--amber); outline-offset:2px;}
+.wa-copied{font:400 12px/1.4 'IBM Plex Mono',monospace; color:var(--green);}
 @media (max-width:520px){
+  .wa-task{padding-right:0; margin-top:14px;}
+  .wa-g{font-size:9.5px; letter-spacing:0; padding:0 2px;}
   .wa-q{padding:14px 14px;}
   .wa-opts{padding-left:0;}
   .wa-pre{padding-left:0;}
