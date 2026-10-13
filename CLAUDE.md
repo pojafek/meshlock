@@ -14,7 +14,7 @@ Plain static HTML and CSS. No framework, no build step, no package.json. Keep it
 
 ```
 index.html                    Homepage (all CSS inline in <style>)
-tools/index.html              Tools in action: ERP intro with stats, five full-width live animations (Full screen button), each with a price line and a link to the offer, more case files
+tools/index.html              Tools in action: short intro with the one price note ("Every quote is built around your own workflow"), ERP band with three stats, five full-width live animations (Full screen button), each with three one-sentence lines (Before · The tool · Result), the longer story in a closed <details> ("The full story"), a short price line and a link to the offer, then more case files as three plain one-line items
 prices/index.html             How a price is set, example prices, how you pay, Always included, FAQ (FAQPage JSON-LD lives here)
 apple-touch-icon.png          180px icon
 sitemap.xml                   Sitemap for /, /tools/, /prices/, /notes/, each article, /toolkit/ and each tool page under it
@@ -48,7 +48,7 @@ toolkit/
   manifest.webmanifest        Home screen name and icon for the toolkit index
   cycle-time/index.html       Cycle time calculator on its own page (indexable, in the sitemap). Keeps its inputs in the link after # so a bookmark or home screen icon reopens the same numbers
   cycle-time/manifest.webmanifest  Home screen name and icon for that page
-  worth-automating/index.html "Worth automating?" check on its own page (indexable, in the sitemap). Keeps the answers in the link after # (#wa=...&t=task), so a copied link reopens the same result. Opens with frequency and hours answered when the link carries #freq=daily|weekly|rare&hrs=a|b|c|d (from the step timer). Linked from the homepage Sound familiar? and from step 1 of the offer
+  worth-automating/index.html "Worth automating?" check on its own page (indexable, in the sitemap). Keeps the answers in the link after # (#wa=...&t=task), so a copied link reopens the same result. Opens with frequency and hours answered when the link carries #freq=daily|weekly|rare&hrs=a|b|c|d (from the step timer). Linked from the homepage Start here and from step 1 of the offer
   step-timer/index.html       Step timer on its own page (indexable, in the sitemap, phone-first)
   step-timer/manifest.webmanifest  Home screen name and icon for the step timer
   step-timer/sheet/index.html Printable step timer sheet for people who prefer paper (noindex, not in the sitemap). Blank, or with company or department, task and steps filled in first (kept on this device, steps can come from the timer's last measurement)
@@ -118,8 +118,8 @@ Logo palette: ink `#171A1D`, paper `#EEF0EA`, bronze `#B98A3A` (used for the mag
 Fonts (Google Fonts): Space Grotesk for headings, IBM Plex Sans for body, IBM Plex Mono for small labels.
 
 Main line: "Lean, software and ERP. One person." Used under the wordmark in the hero lockup, in the footer and in link previews.
-The main line is Kamil's only. For Patryk's visitors (`pc` tags) the hero lockup and every footer show "Automation & continuous improvement for manufacturers." instead (`data-pc`).
-Longer line, used as the About heading where there is room to explain the name: "Software engineer, Lean consultant or ERP specialist? You don't have to choose. I mesh all three." Short form: `SOFTWARE · LEAN · ERP`.
+The main line is Kamil's only. For Patryk's visitors (`pc` tags) the hero lockup and every footer show "Automation & continuous improvement for manufacturers." instead (`data-pc`). The hero eyebrow ("Automation & CI · For manufacturers") is hidden for them (`data-pc-hide`), so the hero says it once.
+Longer line, used as the About heading (inside "More about Kamil") where there is room to explain the name: "Software engineer, Lean consultant or ERP specialist? You don't have to choose. I mesh all three." Short form: `SOFTWARE · LEAN · ERP`.
 
 Three layers, kept apart:
 - Values: how we think and decide. Internal only, never on the site or print: respect what isn't ours, fit the work not a template, say the price and keep it, leave clients stronger not dependent, look closer, here for the long run.
@@ -153,7 +153,7 @@ Visual identity: engineering drawing and inspection language. Grid paper, dimens
 - Answers live only in the link after `#` (`#f=key.hours,...&rate=..&erp=..&own=..&d=YYYYMMDD&p=price.price...`). Nothing is stored on the site until the visitor presses Send, which posts the Netlify Form `name="offer"` (or `offer-pc` for Patryk's tags, see below).
 - A saved offer never changes. When step 3 first shows, the page stamps the date (`d`) and freezes the tool prices of that day (`p`, one per key in `f`, same order). A link or PDF with `d` and `p` always shows the same answers, cost and prices, even after /prices/ changes, with a "Your saved offer from …" note above the sheet. Changing any answer (ticks, hours, rate, system) makes a new offer with today's prices. Never remove this, and if the cost maths (`HRS`, `WEEKS`, `CAP`) ever changes, keep the old values for links dated before the change.
 - Copy link, the form's `link` field and the PDF always carry the source tag (`?s=`). The printed PDF ends with "Open this offer again": a QR code (`assets/qrcode.js`, MIT, vendored) and a clickable link with `pdf=1` added (without it, print to PDF turns a link to the same page into an internal link).
-- Step 1 and the homepage Sound familiar? show the same nine problem families, a short title plus one grey line of examples, never a description of a finished tool. The offer then shows what was done before as proof.
+- Step 1 and the homepage Start here (What slows you down?) show the same nine problem families, a short title plus one grey line of examples, never a description of a finished tool. The offer then shows what was done before as proof.
 - Family keys: `sort`, `pick`, `wrong`, `reports`, `machines`, `export`, `custom`, `guess`, `unsure`. They must match the homepage `data-fix` keys and must never be renamed, or old links break. Older keys still work through `ALIAS`: `courier` opens `sort`, `personal` and `setup` open `export`.
 - Step 2 asks each family its own question (`q` in `FIX`). Time problems ask hours a week; reports also allow "None. We just don't have them". Machines are a visibility problem: the question is how many machines, and they never add to the red cost. The offer lists them as "not in hours".
 - Tool prices come from the examples on /prices/. Keep them in line. Problems without an example show "priced after the call".
@@ -209,7 +209,7 @@ On /notes/ each row shows, above its title, a type chip (`.note-type`: GUIDE or 
 | Offer | one-page offer · link "Get your one-page offer →", after a case file "Get a one-page offer for it →" | Put your numbers on it, Don't want to write? |
 | Check | Worth automating?, the two-minute check | one-minute check, automation check |
 | Gates | the five gates: Worth it? · Data right? · On screen? · One way? · Automate; a task "passes the first four gates" | passes all five |
-| Problems | the nine problem titles of the offer, the same in Sound familiar?, the offer and the check | other labels |
+| Problems | the nine problem titles of the offer, the same in the homepage Start here, the offer and the check | other labels |
 | Verb | tick | pick, select |
 | Offer bar | "Your first tool is paid for only when it works as agreed." Short: "First tool: pay only when it works." | Here for the long run (an internal value) |
 
@@ -224,25 +224,25 @@ Calls to action: one main action per block. Nothing on the homepage is pre-ticke
 
 ## Homepage structure
 
-Keep the homepage short. Detail lives on its own page.
+Keep the homepage short. Detail lives on its own page. The tone is calm and listening: the page asks what slows the visitor down, it never pushes. One heading per section, one main action per block, no counters or prompts before the visitor does anything. On a phone the page stays around seven screens (the site check measures it); anything longer goes behind a click or onto its own page.
 
-Page order in `index.html`:
+Page order in `index.html`, each section answering one question the visitor has:
 
 1. Nav
-2. Hero: H1 "Your ERP stays. I build what it can't do.", one benefit sentence, Book a free call + Watch four fixes run; on the right the full lockup (gears, wordmark, main line). On phones the lockup comes first
-3. Sound familiar? (`id="familiar"`): symptom toggles and the live fix list
-4. Tools in action strip (`id="tools"`): four tiles that open the animation viewer, link to /tools/
-5. How an engagement runs
-6. Who's behind this (`id="about"`)
+2. Hero ("Am I in the right place?"): H1 "Your ERP stays. I build what it can't do.", one benefit sentence, Book a free call + a quiet "Start here ↓" link to `#familiar`; on the right the full lockup (gears, wordmark, main line). On phones the words come first and a smaller lockup sits under the buttons
+3. Tools in action strip (`id="tools"`, "Have they done this before?"): four tiles that open the animation viewer, link to /tools/
+4. How an engagement runs ("What does it look like?"): Diagnose · Build · Embed, one or two sentences each
+5. Who's behind this (`id="about"`, "Who will do it?"): photo, name and one line always visible; the rest (About heading, the gear rig, bio, credentials, LinkedIn) inside `<details id="about-more">`, "More about Kamil". A link to `#about` opens it. Hidden for pc tags as before
+6. Start here (`id="familiar"`, "What about my problem?"): H2 "What slows you down?", the nine tiles and the live fix list (hidden on phones until something is ticked), one calm line ("If nothing fits, that's normal…"), then two quiet ways: the two-minute check and "Send a line" to the contact form
 7. Our promise (`id="promise"`): dark band, the four promises with icons
-8. Contact (`id="contact"`)
+8. Contact (`id="contact"`): what happens next, the form, the email. Nothing repeated from above
 9. Footer
 
 Nav on every page: Tools in action · Prices · About (/#about) · Field notes, plus Book a call. Under 640px the links show short labels (`.nl-short`): Tools · Prices · About · Notes.
 
 Subpages open with a breadcrumb label (`.crumbs`: "Meshlock / Page") whose first part links home. Every subpage ends with a way forward: Book a free call and the one-page offer (/start/). The footer on every page links the offer, Field notes and Toolkit (/toolkit/).
 
-Pricing works by method, not a price list: each quote is based on the work involved and how complex it is, as one fixed price in writing. The site never shows a day rate or hourly rate. The example prices on /prices/ are the reference. Change them only when asked. Each case file on /tools/ shows the matching example price ("A tool like this: about £…"), so keep the two in line. The Sound familiar? fix list shows no prices, only one line under the list linking to /prices/.
+Pricing works by method, not a price list: each quote is based on the work involved and how complex it is, as one fixed price in writing. The site never shows a day rate or hourly rate. The example prices on /prices/ are the reference. Change them only when asked. Each case file on /tools/ shows the matching example price ("A tool like this: about £…"), so keep the two in line. The Start here fix list shows no prices, only one line under the list linking to /prices/.
 
 The contact form is a Netlify Form (`name="contact"`, honeypot `bot-field`; `contact-pc` for Patryk's visitors, see One-page offer). Without JavaScript it posts to `/thanks.html`; with JavaScript it posts with fetch and shows a thank-you line in place. "Book a call" buttons link to `#contact`, not `mailto:`.
 

@@ -375,7 +375,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(await st.p.locator('.wa-q[data-q="freq"] .wa-opt[data-v="daily"]').getAttribute('aria-checked') === 'true' && await st.p.locator('.wa-q[data-q="hrs"] .wa-opt[data-v="c"]').getAttribute('aria-checked') === 'true', 'step timer link pre-answers frequency and hours');
     // Entry points
     const home = await open(c, '/');
-    ok(await home.p.locator('#familiar .fam-check a[href="/toolkit/worth-automating/"]').count() === 1, 'homepage Sound familiar? links the check');
+    ok(await home.p.locator('#familiar .fam-check a[href="/toolkit/worth-automating/"]').count() === 1, 'homepage Start here links the check');
     const off = await open(c, '/start/');
     ok(await off.p.locator('#s1 .wa-hint a[href="/toolkit/worth-automating/"]').count() === 1, 'offer step 1 links the check');
     await c.close();
@@ -443,6 +443,69 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     await p.click('#familiar .sym[data-fix="sort"]');
     ok(/\/start\/.*#f=sort$/.test(await p.locator('#fix-offer').getAttribute('href')) && /Get your one-page offer/i.test(await p.locator('#fix-offer').innerText()), 'ticking a tile leads to the offer with it ticked');
     ok(offerLinks <= 2, 'the homepage shows the offer link at most twice before ticking (' + offerLinks + ')');
+    await c.close();
+  }
+
+  // 17. Calm homepage: one question per section, Who's behind this opens on request, short on a phone
+  {
+    const c = await ctx(browser, { w: 390 });
+    const { p, errs } = await open(c, '/');
+    const order = await p.evaluate(() => [...document.querySelectorAll('body > section')].map(s => s.id || s.className));
+    ok(order.join(',') === 'hero,tools,how,about,familiar,promise,contact', 'homepage order ' + order);
+    ok(await p.locator('.hero .btn-primary').count() === 1 && await p.locator('.hero a.btn-ghost[href="#familiar"]').count() === 1, 'hero: one main action and a quiet Start here link');
+    ok(await p.locator('.hero-note, .callout, .dim-divider').count() === 0, 'no repeated lines, dividers or callout boxes');
+    const hb = await p.evaluate(() => [document.querySelector('.hero h1').getBoundingClientRect().top, document.querySelector('.hero-lockup').getBoundingClientRect().top]);
+    ok(hb[0] < hb[1] && hb[0] < 844 / 2, 'phone: the words come before the lockup ' + hb);
+    ok((await p.locator('#familiar h2').innerText()).trim() === 'What slows you down?' && await p.locator('#familiar h2').count() === 1, 'Start here asks one question');
+    ok(await p.locator('#familiar .fam-ways a[href="#contact"]').count() === 1, 'Start here offers a line in your own words');
+    ok(/A free 30-minute call/.test(await p.locator('.next-steps').innerText()), 'what happens next says the call is free');
+    ok(/ticks are already in/.test(await p.locator('.fix-offer').textContent()), 'the offer link says the ticks carry over');
+    ok(!(await p.locator('#fix-list').isVisible()), 'phone: the empty fix list stays out of the way');
+    ok(!/on the left/.test(await p.locator('.fix-empty').textContent()), 'fix list hint has no left or right');
+    // Who's behind this: face, name and one line on top, the rest closed
+    ok(await p.locator('#about .who .person-photo').isVisible() && /Kamil Pojawa/.test(await p.locator('#about .who-name').innerText()), 'About shows the face and the name');
+    ok(!(await p.locator('#about-more').evaluate(d => d.open)) && !(await p.locator('#about .gears-wrap').isVisible()), 'About details start closed');
+    await p.click('#about-more > summary');
+    ok(await p.locator('#about .gears-wrap').isVisible() && await p.locator('#about .creds').isVisible(), 'More about Kamil opens the rig and the bio');
+    await p.click('#about-more > summary');
+    const H = await p.evaluate(() => document.documentElement.scrollHeight);
+    ok(H <= 6400, 'phone: homepage is about seven screens (' + H + 'px)');
+    const words = (await visibleText(p)).split(/\s+/).length;
+    ok(words <= 650, 'homepage words ' + words);
+    await p.click('nav a[href="/#about"]'); await p.waitForTimeout(200);
+    ok(await p.locator('#about-more').evaluate(d => d.open), 'nav About opens the details');
+    const q = await c.newPage(); await q.goto(BASE + '/tools/'); await q.goto(BASE + '/#about');
+    ok(await q.locator('#about-more').evaluate(d => d.open), '/#about from another page opens the details');
+    ok(errs.length === 0, 'homepage errors ' + errs);
+    await c.close();
+    const c2 = await ctx(browser, { w: 390 });
+    const r = await open(c2, '/?s=pc');
+    ok(!(await r.p.locator('#about').isVisible()) && /our job/.test(await r.p.locator('.fam-calm').innerText()), 'pc: About hidden, calm line in the Meshlock voice');
+    ok(!(await r.p.locator('.hero .eyebrow').isVisible()) && /Automation &/.test(await r.p.locator('.lock-line').innerText()), 'pc: the hero says Automation & continuous improvement once, not twice');
+    await c2.close();
+  }
+
+  // 18. Tools in action, calmer: three short lines per case, the full story behind a tap, the price note once
+  {
+    const c = await ctx(browser, { w: 390 });
+    const { p, errs } = await open(c, '/tools/');
+    const cases = p.locator('.tool-case');
+    ok(await cases.count() === 5, 'five case files');
+    for (let i = 0; i < 5; i++) {
+      const k = cases.nth(i);
+      const labels = (await k.locator('.tc-fields .field b').allInnerTexts()).map(x => x.trim().toUpperCase()).join(',');
+      ok(labels === 'BEFORE,THE TOOL,RESULT', `case ${i} labels ${labels}`);
+      ok(await k.locator('details.tc-more').count() === 1 && !(await k.locator('details.tc-more').evaluate(d => d.open)), `case ${i} full story starts closed`);
+      ok(/A tool like this: about £[\d,]+\.?$/.test((await k.locator('.tc-price').innerText()).trim()), `case ${i} price line is short`);
+    }
+    const t = await visibleText(p);
+    ok((t.match(/Every quote is built around your own workflow/g) || []).length === 1, 'price note shown once');
+    ok(!/DMAIC|Significant|impractical/.test(t), 'more case files in plain words');
+    ok(!/—|–| - /.test(t), '/tools/ no dashes');
+    ok(t.split(/\s+/).length <= 750, '/tools/ words ' + t.split(/\s+/).length);
+    await cases.nth(0).locator('.tc-more > summary').click();
+    ok(await cases.nth(0).locator('.tc-more p').first().isVisible(), 'the full story opens');
+    ok(errs.length === 0, '/tools/ errors ' + errs);
     await c.close();
   }
 
