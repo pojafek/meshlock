@@ -28,6 +28,8 @@ It prints one `FAIL` line per problem and ends with `N passed, N failed`. It exi
 10. **Checklist text**: the checklist in the machine data note matches the printable checklist item for item, and no step needs IT or opening anything. YOU GET links point to parts of the note, and tools sit in a Yours to keep frame.
 11. **Kept tools**: toolkit pages put the tag in their address, keep links carry it, a tool reopened in a new tab (like a home screen icon) still speaks for Patryk, the rest of the site does not.
 
+14. **Worth automating?**: five results in the right order (leave it, fix the data, get it off paper, write the steps down, automate) for typical cases, the five gates on the result, cases and first steps, a call for the fix-first results and the offer with the right problem and hours for automate, the answers kept in the link and reopened, the step timer's frequency and hours pre-answered, and the links from the homepage and the offer.
+
 ## Extending it
 
 Add a page to `PAGES` (and to `TK` if it is a toolkit page with its own tag). Add a numbered block for any new behaviour. Keep each check one `ok(condition, message)` line, so a failure says exactly what broke.

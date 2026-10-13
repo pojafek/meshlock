@@ -183,7 +183,7 @@
           '<div class="st-stime">' + clock(x.avg) + (multi ? ' <span class="st-range">' + clock(x.min) + ' to ' + clock(x.max) + '</span>' : '') + '</div></div>';
       }).join('');
       var offer = '/start/' + (tag ? '?s=' + encodeURIComponent(tag) : '') + '#f=export' + (r.bucket ? '.' + r.bucket : '');
-      var check = checkUrl + (r.freq ? '#freq=' + r.freq : '');
+      var check = checkUrl + (r.freq ? '#freq=' + r.freq + (r.bucket ? '&hrs=' + r.bucket : '') : '');
       frame('<div class="st-body st-results st-print-target">' +
         '<div class="st-meta"><span>' + (multi ? r.runs + ' runs · averages' : '1 run') + '</span>' + (S.task ? '<span class="st-task">' + esc(S.task) + '</span>' : '') + '</div>' +
         '<div class="st-steps"><div class="st-srow st-shead"><div>Step</div><div>' + (multi ? 'Average · shortest to longest' : 'Time') + '</div></div>' + rows + '</div>' +
@@ -208,17 +208,17 @@
         $('.st-hours').textContent = x.hours !== null ? '= ' + one(x.hours) + ' hours a week' : 'Add it to see hours a week';
         var fb = $('.st-fb'); fb.innerHTML = '';
         x.feedback.forEach(function(f){ var d = document.createElement('div'); d.className = 'st-fbl'; d.textContent = f; fb.appendChild(d); });
-        $('.st-check').setAttribute('href', checkUrl + (x.freq ? '#freq=' + x.freq : ''));
+        $('.st-check').setAttribute('href', checkUrl + (x.freq ? '#freq=' + x.freq + (x.bucket ? '&hrs=' + x.bucket : '') : ''));
         $('.st-offer').setAttribute('href', '/start/' + (tag ? '?s=' + encodeURIComponent(tag) : '') + '#f=export' + (x.bucket ? '.' + x.bucket : ''));
       }
       $('#st-pw').addEventListener('input', function(e){ S.perWeek = e.target.value.trim(); save(); week(); });
       week();
       if ($('.st-again')) $('.st-again').addEventListener('click', function(){ track('toolkit/step-timer/again'); begin(); });
       $('.st-check').addEventListener('click', function(e){
-        var f = stats().freq, here = document.querySelector('[data-tool="worth-automating"]');
+        var sx = stats(), f = sx.freq, here = document.querySelector('[data-tool="worth-automating"]');
         if (!here) return;   // no check on this page: follow the link
         e.preventDefault();
-        try { if (f) document.dispatchEvent(new CustomEvent('ml:freq', { detail: { freq: f } })); } catch(err){}
+        try { if (f) document.dispatchEvent(new CustomEvent('ml:freq', { detail: { freq: f, bucket: sx.bucket } })); } catch(err){}
         here.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
       $('.st-offer').addEventListener('click', function(){ track('toolkit/step-timer/to-offer'); });

@@ -237,7 +237,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(/\/start\/\?s=tk-timer#f=export/.test(await r.p.locator('.st-offer').getAttribute('href')), 'step timer offer link');
     ok(await r.p.locator('.st-results').isVisible(), 'step timer results');
     r = await open(c, '/toolkit/worth-automating/');
-    for (const q of await r.p.locator('.wa-q').all()) await q.locator('.wa-opt').first().click();
+    for (const q of await r.p.locator('.wa-q[data-q]').all()) await q.locator('.wa-opt').first().click();
     ok(await r.p.locator('.wa-verdict').isVisible(), 'worth automating verdict');
     ok(r.errs.length === 0, 'tools errors ' + r.errs);
     await c.close();
@@ -325,6 +325,55 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     r = await open(c2, '/toolkit/cycle-time/');
     ok(!/[?&]s=/.test(await r.p.evaluate(() => location.search)), 'no tag: toolkit address unchanged');
     await c2.close();
+  }
+
+  // 14. Worth automating? v2: five results in the right order, gates, next steps, saved link, step timer hand-off, entry points
+  {
+    const c = await ctx(browser, { w: 390, reduce: true });
+    let r = await open(c, '/toolkit/worth-automating/');
+    const V = a => r.p.evaluate(a => window.mlWorthVerdict(a).v, a);
+    const base = { kind: 'sort', freq: 'daily', hrs: 'c', same: 'mostly', rules: 'partly', digital: 'yes', trust: 'yes', errors: 'sometimes', person: 'yes' };
+    ok(await V({ ...base, same: 'yes', rules: 'rules' }) === 'automate', 'two hours a day, one expert: automate (one person never blocks a tool)');
+    ok(await V({ ...base, kind: 'export', freq: 'weekly', hrs: 'a0', same: 'yes', rules: 'rules', errors: 'rarely', person: 'no' }) === 'leave', '15 minutes a week: leave it');
+    ok(await V({ ...base, kind: 'pick', freq: 'daily', hrs: 'b', trust: 'no' }) === 'data', 'stock in the wrong place: fix the data first');
+    ok(await V({ ...base, kind: 'wrong', digital: 'paper', same: 'yes', rules: 'rules', errors: 'often' }) === 'paper', 'inspection on paper: get it off paper first');
+    ok(await V({ ...base, same: 'no' }) === 'steps', 'everyone does it differently: write the steps down first');
+    ok(await V({ ...base, rules: 'judgement' }) === 'leave', 'judgement each time: leave it');
+    ok(await V({ ...base, hrs: 'a0', errors: 'often', same: 'yes', rules: 'rules' }) === 'automate', 'small but mistakes reach the customer: stays in the check');
+    const pick = async (k, v) => r.p.click(`.wa-q[data-q="${k}"] .wa-opt[data-v="${v}"]`);
+    await r.p.fill('.wa-in', 'Sorting job sheets');
+    for (const [k, v] of Object.entries({ kind: 'pick', freq: 'daily', hrs: 'b', same: 'yes', rules: 'rules', digital: 'yes', trust: 'no', errors: 'often', person: 'yes' })) await pick(k, v);
+    ok(/FIX THE DATA FIRST/.test(await r.p.locator('.wa-stamp').innerText()), 'data result shows its stamp');
+    ok(await r.p.locator('.wa-g.pass').count() === 1 && await r.p.locator('.wa-g.stop[data-g="data"]').count() === 1 && await r.p.locator('.wa-g.off').count() === 3, 'gates: passed, stopped at data, rest not reached');
+    ok(/Stock in the system/.test(await r.p.locator('.wa-cases').innerText()) && await r.p.locator('.wa-first .wa-w').count() === 3, 'data result has cases and first steps');
+    ok(await r.p.locator('.wa-next a[href="/#contact"]').count() === 1 && await r.p.locator('.wa-go').count() === 0, 'data result leads to a call, not straight to a price');
+    ok(/Only one person/.test(await r.p.locator('.wa-also').innerText()), 'also worth knowing lists the one-person risk');
+    ok(/Task: Sorting job sheets/.test(await r.p.locator('.wa-task').innerText()), 'task name on the result');
+    const h = await r.p.evaluate(() => location.hash);
+    ok(/wa=pick\.daily\.b\.yes\.rules\.yes\.no\.often\.yes/.test(h) && /t=Sorting/.test(h), 'answers kept in the link ' + h);
+    const again = await open(c, '/toolkit/worth-automating/' + h);
+    ok(/FIX THE DATA FIRST/.test(await again.p.locator('.wa-stamp').innerText()) && await again.p.inputValue('.wa-in') === 'Sorting job sheets', 'saved link reopens the same result');
+    await pick('trust', 'yes');
+    ok(/^AUTOMATE$/.test(await r.p.locator('.wa-stamp').innerText()) && /\/start\/\?s=tk-automating#f=pick\.b$/.test(await r.p.locator('.wa-go').getAttribute('href')), 'automate leads to the offer with the right problem and hours');
+    ok(await r.p.locator('.wa-g.go').count() === 1 && await r.p.locator('.wa-g.pass').count() === 4, 'automate passes all four gates');
+    await pick('digital', 'paper');
+    ok(/\/start\/.*#f=pick\.b$/.test(await r.p.locator('.wa-go').getAttribute('href')) && await r.p.locator('.wa-next a[href="/#contact"]').count() === 1, 'paper result offers to price the first step and a call');
+    await pick('hrs', 'a0'); await pick('errors', 'rarely');
+    ok(/LEAVE IT/.test(await r.p.locator('.wa-stamp').innerText()) && /under 25 hours a year/.test(await r.p.locator('.wa-hours').innerText()) && await r.p.locator('.wa-go').count() === 0, 'leave it shows the hours a year and no offer');
+    await r.p.click('.wa-reset');
+    ok(await r.p.locator('.wa-verdict').isHidden() && await r.p.inputValue('.wa-in') === '', 'check another task clears everything');
+    const t = await visibleText(r.p);
+    ok(!/—|–| - /.test(t) && !/\b(I|I'm|me|my)\b/.test(t.replace(/Back to top/, '')), 'check page: no dashes, no first person');
+    ok(r.errs.length === 0 && again.errs.length === 0, 'check errors ' + r.errs + again.errs);
+    // From the step timer: frequency and hours arrive pre-answered
+    const st = await open(c, '/toolkit/worth-automating/#freq=daily&hrs=c');
+    ok(await st.p.locator('.wa-q[data-q="freq"] .wa-opt[data-v="daily"]').getAttribute('aria-checked') === 'true' && await st.p.locator('.wa-q[data-q="hrs"] .wa-opt[data-v="c"]').getAttribute('aria-checked') === 'true', 'step timer link pre-answers frequency and hours');
+    // Entry points
+    const home = await open(c, '/');
+    ok(await home.p.locator('#familiar .fam-check a[href="/toolkit/worth-automating/"]').count() === 1, 'homepage Sound familiar? links the check');
+    const off = await open(c, '/start/');
+    ok(await off.p.locator('#s1 .wa-hint a[href="/toolkit/worth-automating/"]').count() === 1, 'offer step 1 links the check');
+    await c.close();
   }
 
   // 8. /tests/ is never published: the Netlify rule answers 404 for it
