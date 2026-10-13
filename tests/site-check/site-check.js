@@ -375,7 +375,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(await st.p.locator('.wa-q[data-q="freq"] .wa-opt[data-v="daily"]').getAttribute('aria-checked') === 'true' && await st.p.locator('.wa-q[data-q="hrs"] .wa-opt[data-v="c"]').getAttribute('aria-checked') === 'true', 'step timer link pre-answers frequency and hours');
     // Entry points
     const home = await open(c, '/');
-    ok(await home.p.locator('#familiar .fam-check a[href="/toolkit/worth-automating/"]').count() === 1, 'homepage Sound familiar? links the check');
+    ok(await home.p.locator('#familiar .fam-check a[href="/toolkit/worth-automating/"]').count() === 1, 'homepage Start here links the check');
     const off = await open(c, '/start/');
     ok(await off.p.locator('#s1 .wa-hint a[href="/toolkit/worth-automating/"]').count() === 1, 'offer step 1 links the check');
     await c.close();
@@ -444,6 +444,42 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(/\/start\/.*#f=sort$/.test(await p.locator('#fix-offer').getAttribute('href')) && /Get your one-page offer/i.test(await p.locator('#fix-offer').innerText()), 'ticking a tile leads to the offer with it ticked');
     ok(offerLinks <= 2, 'the homepage shows the offer link at most twice before ticking (' + offerLinks + ')');
     await c.close();
+  }
+
+  // 17. Calm homepage: one question per section, Who's behind this opens on request, short on a phone
+  {
+    const c = await ctx(browser, { w: 390 });
+    const { p, errs } = await open(c, '/');
+    const order = await p.evaluate(() => [...document.querySelectorAll('body > section')].map(s => s.id || s.className));
+    ok(order.join(',') === 'hero,tools,how,about,familiar,promise,contact', 'homepage order ' + order);
+    ok(await p.locator('.hero .btn-primary').count() === 1 && await p.locator('.hero a.btn-ghost[href="#familiar"]').count() === 1, 'hero: one main action and a quiet Start here link');
+    ok(await p.locator('.hero-note, .callout, .dim-divider').count() === 0, 'no repeated lines, dividers or callout boxes');
+    const hb = await p.evaluate(() => [document.querySelector('.hero h1').getBoundingClientRect().top, document.querySelector('.hero-lockup').getBoundingClientRect().top]);
+    ok(hb[0] < hb[1] && hb[0] < 844 / 2, 'phone: the words come before the lockup ' + hb);
+    ok((await p.locator('#familiar h2').innerText()).trim() === 'What slows you down?' && await p.locator('#familiar h2').count() === 1, 'Start here asks one question');
+    ok(await p.locator('#familiar .fam-ways a[href="#contact"]').count() === 1, 'Start here offers a line in your own words');
+    ok(!(await p.locator('#fix-list').isVisible()), 'phone: the empty fix list stays out of the way');
+    ok(!/on the left/.test(await p.locator('.fix-empty').textContent()), 'fix list hint has no left or right');
+    // Who's behind this: face, name and one line on top, the rest closed
+    ok(await p.locator('#about .who .person-photo').isVisible() && /Kamil Pojawa/.test(await p.locator('#about .who-name').innerText()), 'About shows the face and the name');
+    ok(!(await p.locator('#about-more').evaluate(d => d.open)) && !(await p.locator('#about .gears-wrap').isVisible()), 'About details start closed');
+    await p.click('#about-more > summary');
+    ok(await p.locator('#about .gears-wrap').isVisible() && await p.locator('#about .creds').isVisible(), 'More about Kamil opens the rig and the bio');
+    await p.click('#about-more > summary');
+    const H = await p.evaluate(() => document.documentElement.scrollHeight);
+    ok(H <= 6400, 'phone: homepage is about seven screens (' + H + 'px)');
+    const words = (await visibleText(p)).split(/\s+/).length;
+    ok(words <= 650, 'homepage words ' + words);
+    await p.click('nav a[href="/#about"]'); await p.waitForTimeout(200);
+    ok(await p.locator('#about-more').evaluate(d => d.open), 'nav About opens the details');
+    const q = await c.newPage(); await q.goto(BASE + '/tools/'); await q.goto(BASE + '/#about');
+    ok(await q.locator('#about-more').evaluate(d => d.open), '/#about from another page opens the details');
+    ok(errs.length === 0, 'homepage errors ' + errs);
+    await c.close();
+    const c2 = await ctx(browser, { w: 390 });
+    const r = await open(c2, '/?s=pc');
+    ok(!(await r.p.locator('#about').isVisible()) && /our job/.test(await r.p.locator('.fam-calm').innerText()), 'pc: About hidden, calm line in the Meshlock voice');
+    await c2.close();
   }
 
   // 8. /tests/ is never published: the Netlify rule answers 404 for it
