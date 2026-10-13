@@ -212,7 +212,7 @@
       $('.wa-hours').textContent = 'Time on it now: ' + YEAR[ans.hrs] + '.';
       var next = '';
       if (r.v === 'automate' || r.v === 'paper')
-        next += '<a class="wa-go" href="' + offerHref(ans.kind, ans.hrs) + '">' + (r.v === 'paper' ? 'Price the first step: get it on screen →' : 'Put your numbers on it →') + '</a>';
+        next += '<a class="wa-go" href="' + offerHref(ans.kind, ans.hrs) + '">' + (r.v === 'paper' ? 'Price the first step: get it on screen →' : 'Get your one-page offer →') + '</a>';
       if (r.v === 'data' || r.v === 'paper' || r.v === 'steps')
         next += '<div class="wa-next-t">Not sure where to start? A free 30-minute call helps sort it out. A one-day process review is £600, credited in full against any build.</div><a class="wa-sec" href="/#contact">Book a free call →</a>';
       if (r.v === 'steps') next += ' <a class="wa-sec" href="/toolkit/step-timer/">Time how differently it is done →</a>';
