@@ -24,7 +24,8 @@
 (function(){
   'use strict';
   var Q = [
-    { k: 'kind', q: 'What kind of task is it?', o: [['sort', 'Sorting paperwork'], ['pick', 'Picking'], ['wrong', 'Checking for mistakes'], ['reports', 'Reports and numbers'], ['export', 'Files and exports'], ['custom', 'Chasing details'], ['unsure', 'Something else']] },
+    // The offer's problem titles and keys, so a result hands straight over to the offer
+    { k: 'kind', q: 'Which problem is it closest to?', o: [['sort', 'Sorting paperwork by hand'], ['pick', 'Picking the long way round'], ['wrong', 'Mistakes found too late'], ['reports', 'Reports you can\u2019t run the floor on'], ['machines', 'Machines nobody measures'], ['export', 'Files done one at a time'], ['custom', 'Chasing missing details'], ['guess', 'Guessing times and quotes'], ['unsure', 'Something else']] },
     { k: 'freq', q: 'How often is it done?', o: [['daily', 'Every day'], ['weekly', 'Every week'], ['rare', 'Less often']] },
     { k: 'hrs', q: 'How much time does it take in total, in a typical week? All people together.', o: [['a0', 'Under 30 minutes'], ['a', '30 minutes to 1 hour'], ['b', '1 to 5 hours'], ['c', '5 to 15 hours'], ['d', '15 hours or more']] },
     { k: 'same', q: 'Is it done the same way every time, by everyone?', o: [['yes', 'Yes'], ['mostly', 'Mostly, with exceptions'], ['no', 'No, everyone does it differently']] },
@@ -37,7 +38,7 @@
   var KEYS = Q.map(function(q){ return q.k; });
   // Hours a week behind each answer, and what that is over 48 working weeks
   var YEAR = { a0: 'under 25 hours a year', a: 'about 25 to 50 hours a year', b: 'about 50 to 240 hours a year', c: 'about 240 to 720 hours a year', d: 'over 720 hours a year' };
-  var OFFER_KIND = { sort: 'sort', pick: 'pick', wrong: 'wrong', reports: 'reports', export: 'export', custom: 'custom', unsure: 'unsure' };
+  var OFFER_KIND = { sort: 'sort', pick: 'pick', wrong: 'wrong', reports: 'reports', machines: 'machines', export: 'export', custom: 'custom', guess: 'guess', unsure: 'unsure' };
 
   var V = {
     leave: { stamp: 'LEAVE IT', tone: 'leave',
@@ -178,7 +179,7 @@
     }
     function offerHref(kind, hrs){
       var tag = curTag(fallbackTag), k = OFFER_KIND[kind] || 'unsure';
-      var h = k === 'unsure' ? 'unsure' : k + (hrs ? '.' + (hrs === 'a0' ? 'a' : hrs) : '');
+      var h = k === 'unsure' || k === 'machines' ? k : k + (hrs ? '.' + (hrs === 'a0' ? 'a' : hrs) : '');   // machines are counted in machines, not hours
       return '/start/' + (tag ? '?s=' + encodeURIComponent(tag) : '') + '#f=' + h;
     }
     function list(el, items){ el.innerHTML = items.map(function(t){ return '<div class="wa-w">' + esc(t) + '</div>'; }).join(''); }
