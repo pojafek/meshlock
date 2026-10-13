@@ -429,6 +429,9 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     await p.click('#gmCheck');
     ok(/9 OF 10/.test(await p.locator('#gmRes').innerText()) && await p.locator('.gm-row[data-i="1"] .gm-why.miss').count() === 1, 'keeping the customer is marked to rethink');
     ok(await p.locator('#anonymise [data-tool="anonymise"] .an').count() === 1, 'anonymiser runs inside the note');
+    ok(await p.locator('.smp').count() === 2 && await p.locator('.smp a[href$="#f=sort"]').count() === 1 && await p.locator('.smp a[href$="#f=pick"]').count() === 1, 'two worked samples, each leading to its offer problem');
+    const smpText = await p.locator('.smp .smp-price').allInnerTexts();
+    ok(/£1,000/.test(smpText[0]) && /£2,250/.test(smpText[1]), 'worked sample prices match /prices/ ' + smpText);
     ok(await p.locator('#anonymise .tool-own a[href="/toolkit/anonymise/"]').count() === 1, 'note links the tool page');
     const t = await visibleText(p);
     ok(!/—|–| - /.test(t), 'anonymising note has no dashes');

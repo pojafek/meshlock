@@ -145,10 +145,33 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
 .article-body .prose .legal p{margin:0;font-size:15.5px;line-height:1.6}
 .flow-step.gate{border-color:var(--green);color:var(--green)}
 .article-body .prose .article-footer p{font-size:15.5px;color:var(--ink-soft)}
-.prose ul.tools-eg{list-style:none;margin:0 0 22px;padding:0;border-top:1px solid var(--line)}
-.prose ul.tools-eg li{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);font-size:16px;line-height:1.45}
-.prose ul.tools-eg a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
-.prose ul.tools-eg .p{font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--amber-ink);white-space:nowrap}
+.smp{position:relative;background:var(--paper-card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 16px;margin:0 0 22px}
+.smp::before,.smp::after{content:"";position:absolute;width:10px;height:10px;border-color:var(--ink);border-style:solid}
+.smp::before{top:-1px;left:-1px;border-width:1.5px 0 0 1.5px}
+.smp::after{bottom:-1px;right:-1px;border-width:0 1.5px 1.5px 0}
+.smp-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px 12px;margin-bottom:10px}
+.smp-tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--green);background:var(--green-bg);border:1px dashed var(--green);border-radius:2px;padding:3px 8px}
+.smp-price{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--amber-ink)}
+.prose .smp h3{font-size:19px;margin:0 0 4px}
+.article-body .prose .smp p{font-size:15px;line-height:1.55;margin:0 0 12px;color:var(--ink)}
+.article-body .prose .smp p.smp-sub{color:var(--ink-soft)}
+.smp-tw{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:3px;margin:0 0 14px}
+.smp table{border-collapse:collapse;font:400 11.5px/1.4 'IBM Plex Mono',monospace;min-width:100%}
+.smp th,.smp td{text-align:left;padding:6px 9px;border-bottom:1px solid var(--line);white-space:nowrap;color:var(--ink-soft)}
+.smp th{background:var(--paper-dim);font-weight:500;color:var(--ink)}
+.smp tr.calls td{padding:5px 9px;background:var(--paper-dim)}
+.smp .call{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:2px;border:1px dashed}
+.smp .call.c-keep{color:var(--green);border-color:var(--green);background:var(--green-bg)}
+.smp .call.c-swap{color:var(--red-flag);border-color:var(--red-flag);background:#F3E4DF}
+.smp .call.c-empty{color:var(--ink-soft);border-color:var(--ink-faint)}
+.article-body .prose .smp p.smp-lab{font:400 11px/1.4 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.prose .smp ol.smp-do{margin:0 0 12px;padding-left:22px}
+.prose .smp ol.smp-do li{font-size:15px;line-height:1.55;margin:0 0 6px}
+.smp .cn{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--green-bg);color:var(--green);padding:0 4px;border-radius:2px;white-space:nowrap}
+.article-body .prose .smp p.smp-why{font-size:14.5px;color:var(--ink-soft);border-left:3px solid var(--amber);padding:2px 0 2px 12px}
+.article-body .prose .smp p.smp-go{font-family:'IBM Plex Mono',monospace;font-size:12.5px;margin:0}
+.smp-go a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
+.article-body .prose p.smp-note{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);margin:-8px 0 22px}
 </style>
 </head>
 <body id="top">
@@ -173,7 +196,7 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
     <h1>Your export says more than you think</h1>
     <div class="title-block has-stamp">
       <div class="tb-cell tb-type"><span class="tb-k">Type</span><span class="tb-v">Practical guide</span></div>
-      <div class="tb-cell tb-time"><span class="tb-k">Time</span><span class="tb-v">7 min + 2 min game</span></div>
+      <div class="tb-cell tb-time"><span class="tb-k">Time</span><span class="tb-v">8 min + 2 min game</span></div>
       <div class="tb-cell tb-stamp"><span>NO IT NEEDED</span></div>
       <div class="tb-cell"><span class="tb-k">You'll learn</span><span class="tb-v">What in an export gives you away · what to leave alone so it stays useful · when to bother</span></div>
       <div class="tb-cell"><span class="tb-k">You get</span><span class="tb-v"><a href="#swap-or-keep">A swap-or-keep game</a> · <a href="#five-minute-check">a five-minute export check</a> · <a href="#anonymise">a file anonymiser that never uploads a thing</a></span></div>
@@ -342,12 +365,45 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
 
     <p>The stand-ins keep everything a tool is built on: which columns, what kind of values, how rows link, how much there is. The key that turns them back into names never leaves you. The finished tool runs on your own PC, offline, on your real files, and you own it.</p>
 
-    <p>Two tools that usually start exactly this way:</p>
+    <h2 id="two-samples">Two samples, column by column</h2>
 
-    <ul class="tools-eg">
-      <li><a href="/tools/#machine-data">A live dashboard from your production exports</a><span class="p">about £1,700</span></li>
-      <li><a href="/tools/#job-travellers">Job orders sorted, split and stamped</a><span class="p">about £1,000</span></li>
-    </ul>
+    <p>This is what a good sample looks like for two tools that often start this way. Each column carries its call. The list under each sample shows why the tool needs what was kept.</p>
+
+    <div class="smp">
+      <div class="smp-head"><span class="smp-tag">Job orders</span><span class="smp-price">A tool like this: about £1,000</span></div>
+      <h3>Job orders sorted, split and stamped</h3>
+      <p class="smp-sub">The ERP prints every job order as one mixed pile. Someone sorts it by hand every day.</p>
+      <div class="smp-tw"><table aria-label="Job order sample with the call for each column"><tr><th>Job No</th><th>Customer</th><th>Part</th><th>Qty</th><th>Sheets</th><th>Ship Via</th><th>Due</th><th>Notes</th><th>Entered by</th></tr><tr class="calls"><td><span class="call c-swap">Swap</span></td><td><span class="call c-swap">Swap</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-empty">Empty</span></td><td><span class="call c-swap">Swap</span></td></tr><tr><td>J-20417</td><td>Acme Joinery Ltd</td><td>PZ-500-01</td><td>36</td><td>2</td><td>DPD</td><td>14/10</td><td>Ring Dave first</td><td>jsmith</td></tr><tr><td>J-20418</td><td>Brook &amp; Sons</td><td>PZ-1000-04</td><td>12</td><td>1</td><td>Royal Mail</td><td>15/10</td><td></td><td>akowal</td></tr><tr><td>J-20419</td><td>Acme Joinery Ltd</td><td>PZ-250-02</td><td>80</td><td>3</td><td>DPD</td><td>14/10</td><td>Side gate</td><td>jsmith</td></tr></table></div>
+      <p class="smp-lab">What the tool does with the sample</p>
+      <ol class="smp-do">
+        <li>Groups the sheets of one job using <span class="cn">Job No</span>. Any stand-in with the same pattern works.</li>
+        <li>Adds a separator with the sheet count from <span class="cn">Sheets</span>, so multi-page orders stay together.</li>
+        <li>Stamps the courier from <span class="cn">Ship Via</span> and prints a preview of each <span class="cn">Part</span>.</li>
+        <li>Sorts the day by <span class="cn">Due</span> and drafts a short priority note for the shift.</li>
+      </ol>
+      <p class="smp-why">Customer and Entered by are never read, so they are swapped. Customer 001 still shows which jobs belong together. Notes go: the tool doesn't read them.</p>
+      <p class="smp-go"><a href="/tools/#job-travellers">Watch it run</a> · <a href="/start/?s=fn-anon#f=sort">Put your numbers on it →</a></p>
+    </div>
+
+    <div class="smp">
+      <div class="smp-head"><span class="smp-tag">Picking routes</span><span class="smp-price">A tool like this: about £2,250</span></div>
+      <h3>Picking slips in route order</h3>
+      <p class="smp-sub">The ERP prints picking slips in print order, and pickers walk the warehouse back and forth.</p>
+      <div class="smp-tw"><table aria-label="Picking slip sample with the call for each column"><tr><th>Order No</th><th>Customer</th><th>Postcode</th><th>Part</th><th>Bin</th><th>Qty</th><th>Value</th><th>Priority</th><th>Ship Via</th></tr><tr class="calls"><td><span class="call c-swap">Swap</span></td><td><span class="call c-swap">Swap</span></td><td><span class="call c-swap">Swap</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-swap">Swap</span></td><td><span class="call c-keep">Keep</span></td><td><span class="call c-keep">Keep</span></td></tr><tr><td>SO-48213</td><td>Acme Joinery Ltd</td><td>SN1 4AB</td><td>PZ-500-01</td><td>C-04-2</td><td>36</td><td>£446.40</td><td>1</td><td>DPD</td></tr><tr><td>SO-48214</td><td>Brook &amp; Sons</td><td>OX2 6GG</td><td>PZ-1000-04</td><td>A-11-1</td><td>12</td><td>£227.40</td><td>2</td><td>Royal Mail</td></tr><tr><td>SO-48215</td><td>Hill Crafts</td><td>GL5 3QT</td><td>PZ-250-02</td><td>C-02-4</td><td>80</td><td>£568.00</td><td>1</td><td>DPD</td></tr></table></div>
+      <p class="smp-lab">What the tool does with the sample</p>
+      <ol class="smp-do">
+        <li>Sorts the pile the way you choose: by <span class="cn">Priority</span>, by <span class="cn">Value</span> or by size from <span class="cn">Qty</span>.</li>
+        <li>Maps every line to its <span class="cn">Bin</span> location. Never swap a location: the route is built from it.</li>
+        <li>Puts the slips in route order, one loop round the warehouse instead of back and forth.</li>
+        <li>Prints them in that order, so nobody filters and reprints by hand any more.</li>
+      </ol>
+      <p class="smp-why">Value is scaled by one hidden factor, so sorting by value still gives the same order. Postcode is swapped, keeping the first characters only if the tool sorts by area.</p>
+      <p class="smp-go"><a href="/tools/#picking-route">Watch it run</a> · <a href="/start/?s=fn-anon#f=pick">Put your numbers on it →</a></p>
+    </div>
+
+    <p class="smp-note">Fictional data. A real sample needs a few hundred rows from an ordinary week, not three.</p>
+
+    <p>A dashboard from your production exports starts the same way, at about £1,700.</p>
 
     <p>Each is a fixed price agreed in writing, and your first tool is paid for only when it works as agreed.</p>
 

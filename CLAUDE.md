@@ -42,7 +42,7 @@ notes/
   index.html                  Field Notes list
   doing-it-by-hand.html       First article (Case story) with the step timer and the worth automating check embedded
   your-machines-already-know.html  Machine data guide (Guide) with the Decode the log puzzle (puzzle CSS and JS inline, example data only) and the cycle time calculator embedded
-  your-export-says-more.html  Anonymising guide (Guide): where exports end up, what to swap (who and how much) and what to keep (what and when), the Swap or keep? game (two meters: safe and still useful; CSS and JS inline, fictional data), a five-minute export check and the file anonymiser embedded. Bridge: an anonymised sample is enough to scope a tool and agree a price
+  your-export-says-more.html  Anonymising guide (Guide): where exports end up, what to swap (who and how much) and what to keep (what and when), the Swap or keep? game (two meters: safe and still useful; CSS and JS inline, fictional data), a five-minute export check and the file anonymiser embedded. Bridge: an anonymised sample is enough to scope a tool and agree a price, then two worked samples (job orders £1,000, picking routes £2,250) with the call on every column and what the tool does with what was kept. Keep them in line with the /tools/ case files and /prices/
 toolkit/
   index.html                  Toolkit index: one card per tool (question it answers, time it takes, link, "From the note"), one <li> line each (indexable, in the sitemap). Every tool in /toolkit/ is listed here, each with "From the note:" and its article
   manifest.webmanifest        Home screen name and icon for the toolkit index
