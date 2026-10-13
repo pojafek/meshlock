@@ -140,6 +140,18 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
 }
 @media (prefers-reduced-motion:reduce){.gm *,.try *{animation:none!important;transition:none!important}}
 
+.grades{display:grid;gap:10px;margin:8px 0 22px}
+.gr{position:relative;background:var(--paper-card);border:1px solid var(--line);border-left:5px solid;border-radius:var(--radius);padding:14px 16px 12px}
+.gr.g1{border-left-color:var(--red-flag)}.gr.g2{border-left-color:var(--amber)}.gr.g3{border-left-color:var(--green)}
+.gr-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin-bottom:6px}
+.gr-n{font:700 18px/1.2 'Space Grotesk',sans-serif}
+.gr-l{font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+.g1 .gr-l{color:var(--red-flag)}.g2 .gr-l{color:var(--amber-ink)}.g3 .gr-l{color:var(--green)}
+.article-body .prose .gr p{font-size:15px;line-height:1.55;margin:0 0 6px;color:var(--ink)}
+.article-body .prose .gr p.gr-do{font-size:14.5px;margin:0;color:var(--ink)}
+.gr-do b{font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-right:8px}
+.field-note.gold{border-color:var(--red-flag)}
+.field-note.gold .tag{color:var(--red-flag)}
 .legal{border-left:3px solid var(--amber);background:var(--paper-card);padding:14px 18px;margin:0 0 22px}
 .legal .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--amber-ink);display:block;margin-bottom:4px}
 .article-body .prose .legal p{margin:0;font-size:15.5px;line-height:1.6}
@@ -198,7 +210,7 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
       <div class="tb-cell tb-type"><span class="tb-k">Type</span><span class="tb-v">Practical guide</span></div>
       <div class="tb-cell tb-time"><span class="tb-k">Time</span><span class="tb-v">8 min + 2 min game</span></div>
       <div class="tb-cell tb-stamp"><span>NO IT NEEDED</span></div>
-      <div class="tb-cell"><span class="tb-k">You'll learn</span><span class="tb-v">What in an export gives you away · what to leave alone so it stays useful · when to bother</span></div>
+      <div class="tb-cell"><span class="tb-k">You'll learn</span><span class="tb-v">Three grades of sensitive data · what in an export gives you away · what to leave alone so it stays useful · when to bother</span></div>
       <div class="tb-cell"><span class="tb-k">You get</span><span class="tb-v"><a href="#swap-or-keep">A swap-or-keep game</a> · <a href="#five-minute-check">a five-minute export check</a> · <a href="#anonymise">a file anonymiser that never uploads a thing</a></span></div>
     </div>
   </div>
@@ -264,15 +276,44 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
       <p>Names, emails and phone numbers of people are personal data under UK GDPR, even when the person works for a customer. Your customer list and your prices are not personal data, but they are often the most valuable thing in the file. This is not legal advice. It is the reason the habit is worth having.</p>
     </div>
 
+    <h2 id="grades">How sensitive is it? Three grades</h2>
+
+    <p>Not every column carries the same risk. Grade each one before anything leaves the building. The grade decides the call.</p>
+
+    <div class="grades" role="list">
+      <div class="gr g1" role="listitem">
+        <div class="gr-h"><span class="gr-n">Grade 1</span><span class="gr-l">High · personal</span></div>
+        <p class="gr-what">Anything about a real person: names, personal emails and phone numbers, home or delivery addresses of people, logins and initials of colleagues, signatures.</p>
+        <p class="gr-do"><b>Call</b>Swap or empty. Every time.</p>
+      </div>
+      <div class="gr g2" role="listitem">
+        <div class="gr-h"><span class="gr-n">Grade 2</span><span class="gr-l">Medium · commercial</span></div>
+        <p class="gr-what">What a competitor would like to see: customer and supplier names, business addresses, account numbers, prices, costs, margins, volumes per customer.</p>
+        <p class="gr-do"><b>Call</b>Swap, or scale the money, so the file keeps its shape.</p>
+      </div>
+      <div class="gr g3" role="listitem">
+        <div class="gr-h"><span class="gr-n">Grade 3</span><span class="gr-l">Low · how the work flows</span></div>
+        <p class="gr-what">Quantities, your own part codes, bin locations, machines, statuses, dates, couriers.</p>
+        <p class="gr-do"><b>Call</b>Keep. This is what makes the sample useful.</p>
+      </div>
+    </div>
+
+    <div class="field-note gold">
+      <span class="tag">The golden rule</span>
+      <p>Grade 1 data never goes into a sample. Not to a supplier, not into an AI chat, not into a vendor's demo. If a tool really needs it, it gets it later, on your own PC.</p>
+    </div>
+
+    <p>A shared mailbox like orders@ is a business contact, grade 2. A named one like dave@ belongs to a person, grade 1. When in doubt, grade it up.</p>
+
     <h2 id="what-to-swap">What gives you away</h2>
 
     <p>Five kinds of column carry almost all the risk. If a column tells someone <b>who</b> or <b>how much</b>, swap it.</p>
 
     <div class="cards two">
-      <div class="card"><span class="kind">Swap</span><p class="who">People</p><p>Contact names, emails, phone numbers, and the columns nobody thinks of: entered by, approved by, operator, driver, sales rep.</p><p class="eg">Contact · Email · EntryPerson · Rep</p></div>
-      <div class="card"><span class="kind">Swap</span><p class="who">Customers and suppliers</p><p>Company names, delivery addresses, account numbers. Together they are your customer list, the thing a competitor would most like to see.</p><p class="eg">Customer · ShipToAddress · Account No</p></div>
-      <div class="card"><span class="kind">Swap</span><p class="who">Money</p><p>Prices, costs, margins, discounts, wages. Scale them by one hidden factor instead of deleting them, so cheap stays cheap and dear stays dear.</p><p class="eg">Unit Price · Order Total · Cost</p></div>
-      <div class="card"><span class="kind">Empty</span><p class="who">Free text</p><p>Notes, comments and delivery instructions. Names and phone numbers hide here, and a stand-in can't fix a sentence. Empty them unless the tool must read them.</p><p class="eg">Notes · Comments · Instructions</p></div>
+      <div class="card"><span class="kind">Swap · grade 1</span><p class="who">People</p><p>Contact names, emails, phone numbers, and the columns nobody thinks of: entered by, approved by, operator, driver, sales rep.</p><p class="eg">Contact · Email · EntryPerson · Rep</p></div>
+      <div class="card"><span class="kind">Swap · grade 2</span><p class="who">Customers and suppliers</p><p>Company names, delivery addresses, account numbers. Together they are your customer list, the thing a competitor would most like to see.</p><p class="eg">Customer · ShipToAddress · Account No</p></div>
+      <div class="card"><span class="kind">Scale · grade 2</span><p class="who">Money</p><p>Prices, costs, margins, discounts, wages. Scale them by one hidden factor instead of deleting them, so cheap stays cheap and dear stays dear.</p><p class="eg">Unit Price · Order Total · Cost</p></div>
+      <div class="card"><span class="kind">Empty · hides grade 1</span><p class="who">Free text</p><p>Notes, comments and delivery instructions. Names and phone numbers hide here, and a stand-in can't fix a sentence. Empty them unless the tool must read them.</p><p class="eg">Notes · Comments · Instructions</p></div>
       <div class="card"><span class="kind">Check</span><p class="who">Things you can't see in the grid</p><p>The file's author and company in its properties, cell comments, hidden sheets and columns, sheet names, and the file name itself. "Acme orders October.xlsx" says it all.</p><p class="eg">File › Info · hidden sheets · file name</p></div>
     </div>
 
@@ -281,8 +322,8 @@ figure.fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;let
     <p>Everything that tells someone <b>what</b> and <b>when</b> usually stays as it is. That is the part a tool actually works with.</p>
 
     <div class="cards two">
-      <div class="card keepc"><span class="kind">Keep</span><p class="who">Quantities and counts</p><p>Rows, units, pieces, weights, run times. They say nothing about who you are and everything about how the work flows.</p><p class="eg">Qty · Pieces · Weight · Minutes</p></div>
-      <div class="card keepc"><span class="kind">Keep</span><p class="who">Your own codes</p><p>Part numbers, machine names, routes, statuses and courier names. Sorting rules and reports often depend on them. Swap them only if a code contains a customer's name.</p><p class="eg">Part · Machine · Status · Ship Via</p></div>
+      <div class="card keepc"><span class="kind">Keep · grade 3</span><p class="who">Quantities and counts</p><p>Rows, units, pieces, weights, run times. They say nothing about who you are and everything about how the work flows.</p><p class="eg">Qty · Pieces · Weight · Minutes</p></div>
+      <div class="card keepc"><span class="kind">Keep · grade 3</span><p class="who">Your own codes</p><p>Part numbers, machine names, routes, statuses and courier names. Sorting rules and reports often depend on them. Swap them only if a code contains a customer's name.</p><p class="eg">Part · Machine · Status · Ship Via</p></div>
       <div class="card keepc"><span class="kind">Keep or shift</span><p class="who">Dates and times</p><p>Dates drive almost every sort, report and plan. Keep them, or move them all back by the same whole number of weeks, so a Monday stays a Monday.</p><p class="eg">Order Date · Due · Start · End</p></div>
       <div class="card keepc"><span class="kind">Keep the link</span><p class="who">The same thing, the same stand-in</p><p>If Acme becomes Customer 001 in one row and Customer 017 in the next, totals per customer vanish. Every swap must give the same value the same stand-in, in every file.</p><p class="eg">Acme → Customer 001, everywhere</p></div>
     </div>
