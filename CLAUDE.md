@@ -200,6 +200,21 @@ Every new tool gets one card on the /toolkit/ index (`toolkit/index.html`): copy
 
 On /notes/ each row shows, above its title, a type chip (`.note-type`: GUIDE or CASE STORY, dashed green tag) and a short mono line (`.note-len`, e.g. `8 min + puzzle · checklist · calculator` or `4 min`). Newest first.
 
+## Names (one name per thing, everywhere)
+
+| Thing | Always | Never |
+|---|---|---|
+| Call | free 30-minute call · button "Book a free call" (nav too) | Book a call, Talk it through |
+| Review | one-day process review, £600, credited in full against any build | one-day review |
+| Offer | one-page offer · link "Get your one-page offer →", after a case file "Get a one-page offer for it →" | Put your numbers on it, Don't want to write? |
+| Check | Worth automating?, the two-minute check | one-minute check, automation check |
+| Gates | the five gates: Worth it? · Data right? · On screen? · One way? · Automate; a task "passes the first four gates" | passes all five |
+| Problems | the nine problem titles of the offer, the same in Sound familiar?, the offer and the check | other labels |
+| Verb | tick | pick, select |
+| Offer bar | "Your first tool is paid for only when it works as agreed." Short: "First tool: pay only when it works." | Here for the long run (an internal value) |
+
+Calls to action: one main action per block. Nothing on the homepage is pre-ticked. The homepage carries the one-page offer link once (in the fix list) and the free call in the hero, the nav and the contact section.
+
 ## Writing rules
 
 - No em dashes or spaced dashes in any copy. Use a full stop, comma, colon or a middle dot instead.

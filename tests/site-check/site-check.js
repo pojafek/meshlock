@@ -424,6 +424,28 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     await c2.close();
   }
 
+  // 16. One name per thing, and a calmer homepage
+  {
+    const c = await ctx(browser, { w: 390 });
+    const NEVER = /Book a call\b|Put your numbers on it|one-day review|Here for the long run|Talk it through|Don't want to write|one-minute check/i;
+    for (const path of PAGES) {
+      const { p } = await open(c, path);
+      const t = await visibleText(p);
+      const m = t.match(NEVER);
+      ok(!m, `${path} uses an old name: ${m && m[0]}`);
+      if (await p.locator('nav .nav-cta').count()) ok((await p.locator('nav .nav-cta').innerText()).trim().toUpperCase() === 'BOOK A FREE CALL', `${path} nav says Book a free call`);
+      await p.close();
+    }
+    const { p } = await open(c, '/');
+    ok(await p.locator('#familiar .sym[aria-pressed="true"]').count() === 0, 'nothing is pre-ticked on the homepage');
+    ok(await p.locator('#fix-list').evaluate(e => e.classList.contains('empty')), 'fix list starts empty');
+    const offerLinks = await p.evaluate(() => [...document.querySelectorAll('main a[href^="/start/"], section a[href^="/start/"], .hero a[href^="/start/"]')].filter(a => !a.closest('footer') && a.offsetParent !== null).length);
+    await p.click('#familiar .sym[data-fix="sort"]');
+    ok(/\/start\/.*#f=sort$/.test(await p.locator('#fix-offer').getAttribute('href')) && /Get your one-page offer/i.test(await p.locator('#fix-offer').innerText()), 'ticking a tile leads to the offer with it ticked');
+    ok(offerLinks <= 2, 'the homepage shows the offer link at most twice before ticking (' + offerLinks + ')');
+    await c.close();
+  }
+
   // 8. /tests/ is never published: the Netlify rule answers 404 for it
   {
     const rules = fs.readFileSync(path.join(ROOT, '_redirects'), 'utf8').split('\n').map(l => l.trim().split(/\s+/));
