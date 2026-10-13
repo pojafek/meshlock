@@ -28,7 +28,7 @@ function serve() {
     s.listen(0, '127.0.0.1', () => { BASE = 'http://127.0.0.1:' + s.address().port; res(s); });
   });
 }
-const PAGES = ['/', '/tools/', '/prices/', '/notes/', '/notes/doing-it-by-hand.html', '/notes/your-machines-already-know.html',
+const PAGES = ['/', '/tools/', '/prices/', '/notes/', '/notes/doing-it-by-hand.html', '/notes/your-machines-already-know.html', '/notes/five-gates.html',
   '/toolkit/', '/toolkit/cycle-time/', '/toolkit/step-timer/', '/toolkit/worth-automating/', '/toolkit/machine-data/', '/toolkit/step-timer/sheet/', '/thanks.html', '/start/'];
 const FOOTER_PAGES = PAGES.filter(p => p !== '/start/');
 const TK = { '/toolkit/': 'tk-index', '/toolkit/cycle-time/': 'tk-cycle', '/toolkit/step-timer/': 'tk-timer', '/toolkit/worth-automating/': 'tk-automating', '/toolkit/machine-data/': 'tk-machine', '/toolkit/step-timer/sheet/': 'tk-timer' };
@@ -298,7 +298,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(JSON.stringify(groups) === JSON.stringify(await t.p.evaluate(() => window.mlMachineItems.map(g => g.g))), 'checklist groups match');
     ok(!/USB|clamp|cabinet|ERP/i.test(art.join(' ')), 'checklist steps need no IT and open nothing');
     // YOU GET links go to their part of each note
-    for (const path of ['/notes/your-machines-already-know.html', '/notes/doing-it-by-hand.html']) {
+    for (const path of ['/notes/your-machines-already-know.html', '/notes/doing-it-by-hand.html', '/notes/five-gates.html']) {
       const { p } = await open(c, path);
       const ids = await p.$$eval('.title-block .tb-v a[href^="#"]', l => l.map(x => x.getAttribute('href').slice(1)));
       ok(ids.length >= 2 && (await p.evaluate(ids => ids.every(i => document.getElementById(i)), ids)), `${path} You get links ${ids}`);
@@ -374,6 +374,29 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     const off = await open(c, '/start/');
     ok(await off.p.locator('#s1 .wa-hint a[href="/toolkit/worth-automating/"]').count() === 1, 'offer step 1 links the check');
     await c.close();
+  }
+
+  // 15. Gates guide: animation states, the check inside, fn-gates tags, Patryk version
+  {
+    const c = await ctx(browser, { w: 390 });
+    const { p, errs } = await open(c, '/notes/five-gates.html');
+    ok((await startTags(p)).every(t => t === 'fn-gates'), 'gates guide offer links carry fn-gates');
+    const state = t => p.evaluate(t => { window.mlGatesRender(t); return { stamp: document.getElementById('gStamp').textContent, marks: [...document.querySelectorAll('#gGates g')].map(g => g.querySelector('text').textContent).join('') }; }, t);
+    let s1 = await state(3); ok(s1.stamp === 'LEAVE IT' && s1.marks === '!', 'animation: the small task stops at gate 1 ' + JSON.stringify(s1));
+    s1 = await state(8); ok(s1.stamp === 'DATA WRONG' && s1.marks === '✓!', 'animation: picking stops at gate 2 ' + JSON.stringify(s1));
+    s1 = await state(13.5); ok(s1.stamp === 'AUTOMATE' && s1.marks === '✓✓✓✓✓', 'animation: after the data fix it passes all five ' + JSON.stringify(s1));
+    ok(await p.locator('.gate').count() === 5 && await p.locator('#worth-automating [data-tool="worth-automating"] .wa').count() === 1, 'five gate cards and the check inside the note');
+    ok(await p.locator('.gate a[href="/tools/#job-travellers"]').count() === 1, 'the real case links its case file');
+    const t = await visibleText(p);
+    ok(!/—|–| - /.test(t), 'gates guide has no dashes');
+    ok(errs.length === 0, 'gates guide errors ' + errs);
+    await c.close();
+    const c2 = await ctx(browser, { reduce: true });
+    const r = await open(c2, '/notes/five-gates.html?s=pc');
+    ok(/AUTOMATE/.test(await r.p.locator('#gStamp').innerText()), 'reduced motion shows the end frame');
+    const tp = await visibleText(r.p);
+    ok(!/\b(I|I'm|I've|me|my)\b/.test(tp.replace(/Back to top/, '')) && /What we do with it/.test(tp), 'pc: gates guide has no first person');
+    await c2.close();
   }
 
   // 8. /tests/ is never published: the Netlify rule answers 404 for it
