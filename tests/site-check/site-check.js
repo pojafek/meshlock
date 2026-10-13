@@ -388,7 +388,20 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     s1 = await step(4); ok(s1.stamp === 'AUTOMATE' && s1.marks === '✓✓✓✓✓', 'animation: job sheets pass every gate ' + JSON.stringify(s1));
     s1 = await step(6); ok(s1.stamp === 'LEAVE IT' && s1.marks === '!', 'animation: the small task stops at gate 1 ' + JSON.stringify(s1));
     s1 = await step(9); ok(s1.stamp === 'DATA WRONG' && s1.marks === '✓!', 'animation: picking stops at gate 2 ' + JSON.stringify(s1));
-    s1 = await step(12); ok(s1.stamp === 'AUTOMATE' && s1.marks === '✓✓✓✓✓', 'animation: after the data fix picking passes every gate ' + JSON.stringify(s1));
+    s1 = await step(14); ok(s1.stamp === 'AUTOMATE' && s1.marks === '✓✓✓✓✓', 'animation: after the data fix picking passes every gate ' + JSON.stringify(s1));
+    // Words match the picture: every caption is shown with one gate state only, and the task never skips a gate
+    const sync = await p.evaluate(() => {
+      const seen = {}, bad = [], T = window.mlGatesSteps, end = T[T.length - 1] + 5;
+      for (let t = 0; t < end; t += 0.05) {
+        window.mlGatesRender(t);
+        const cap = document.getElementById('gTxt').textContent, marks = [...document.querySelectorAll('#gGates g')].map(g => g.querySelector('text').textContent).join('');
+        if (!cap) continue;
+        if (seen[cap] === undefined) seen[cap] = marks; else if (seen[cap] !== marks) bad.push(cap.slice(0, 30) + ' ' + seen[cap] + '/' + marks);
+      }
+      return { bad: [...new Set(bad)], states: Object.values(seen) };
+    });
+    ok(sync.bad.length === 0, 'animation: caption changes with the gates, never before ' + sync.bad);
+    ok(['✓', '✓!', '✓✓', '✓✓✓', '✓✓✓✓', '✓✓✓✓✓'].every(m => sync.states.includes(m)), 'animation: picking passes On screen? and One way? one at a time ' + sync.states);
     const gaps = await p.evaluate(() => window.mlGatesSteps.slice(1).map((t, i) => t - window.mlGatesSteps[i]));
     ok(gaps.filter(g => g > 2).every(g => g >= 3.99), 'every caption stays at least 4 seconds ' + gaps);
     ok(await p.locator('.gate .gr-pass').count() === 4 && await p.locator('.gate .gr-stop').count() === 4, 'each of the first four gates says when it passes and when it stops');

@@ -42,7 +42,7 @@
 .gates-stamp.s-fix{color:var(--amber-ink);border-color:var(--amber)}
 .gates-stamp.s-go{color:var(--green);border-color:var(--green)}
 .gates-stamp:empty{display:none}
-.gates-txt{font-size:15px;line-height:1.45;color:var(--ink);flex:1 1 200px}
+.gates-txt{font-size:15px;line-height:1.45;color:var(--ink);flex:1 1 200px;min-height:2.9em}
 .gates-replay{appearance:none;position:absolute;top:10px;right:10px;font:400 11px/1 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:var(--paper);border:1px solid var(--ink-faint);border-radius:3px;padding:7px 9px;cursor:pointer}
 .gates-fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.04em;color:var(--ink-soft);margin-top:10px;line-height:1.5}
 
@@ -68,9 +68,13 @@
 .gate-rows b{font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-right:8px}
 .gr-pass b{color:var(--green)} .gr-stop b{color:var(--red-flag)}
 .cost{display:grid;grid-template-columns:minmax(0,1fr);gap:0;border:1.5px solid var(--ink);border-radius:var(--radius);margin:6px 0 26px;overflow:hidden}
-.cost div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:11px 14px;border-top:1px solid var(--line);font-size:15.5px;line-height:1.4;background:var(--paper-card)}
+.cost div{display:grid;grid-template-columns:minmax(110px,.6fr) minmax(0,1.4fr);gap:12px;padding:11px 14px;border-top:1px solid var(--line);font-size:15.5px;line-height:1.4;background:var(--paper-card)}
 .cost div:first-child{border-top:0}
-.cost span:last-child{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink-soft);text-align:right}
+.cost span:first-child{font-weight:600}
+.cost span:last-child{font-size:14.5px;line-height:1.45;color:var(--ink-soft)}
+.cost div.cost-h{background:var(--paper-dim)}
+.cost .cost-h span{font:500 10.5px/1.4 'IBM Plex Mono',monospace!important;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+@media (max-width:420px){.cost div{grid-template-columns:minmax(0,1fr);gap:4px}.cost div.cost-h{display:none}}
 .article-body .prose .article-footer p{font-size:15.5px;color:var(--ink-soft)}
 @media (prefers-reduced-motion:reduce){.gates-card *{animation:none!important;transition:none!important}}
 </style>
@@ -130,7 +134,7 @@
 
     <p>A tool copies the way a task is done today, with the data it is given. If the task is too small, the data is wrong, the information lives on paper or nobody does it the same way twice, the tool copies that too. It just does it faster.</p>
 
-    <p>So before anyone prices a tool, a task goes through five gates. The order matters. Each gate is cheaper to check than the next, and each one stops money going into the wrong fix.</p>
+    <p>So before anyone prices a tool, a task goes through five gates, in order. Each one only makes sense once the one before it has passed.</p>
 
     <h2>The five gates</h2>
 
@@ -190,17 +194,18 @@
 
     <h2>Why this order</h2>
 
-    <p>Each gate is cheaper to fix than the one after it. Checking is free. Fixing data or a habit costs time, not money. A tool costs money. Doing them in the wrong order means paying for the expensive fix and still having the cheap problem.</p>
+    <p>Each gate only makes sense once the one before it has passed. Check them out of order and you fix something that was never going to pay, or build on a problem that is still there.</p>
 
-    <div class="cost" aria-label="What each gate costs to fix">
-      <div><span>1 · Worth it?</span><span>a few minutes of honest sums</span></div>
-      <div><span>2 · Data right?</span><span>days, on the floor</span></div>
-      <div><span>3 · On screen?</span><span>a form, or a small tool</span></div>
-      <div><span>4 · One way?</span><span>weeks of practice</span></div>
-      <div><span>5 · Automate</span><span>a fixed-price tool</span></div>
+    <div class="cost" aria-label="Why each gate comes where it does">
+      <div class="cost-h"><span>Gate</span><span>Why it comes here</span></div>
+      <div><span>1 · Worth it?</span><span>Free to check, and it saves all the work after it on tasks too small to matter.</span></div>
+      <div><span>2 · Data right?</span><span>Wrong data spoils every step after it, on screen or not, done one way or not.</span></div>
+      <div><span>3 · On screen?</span><span>A tool can only read what is digital. Paper has to go before anything can be automated.</span></div>
+      <div><span>4 · One way?</span><span>A tool copies one way of working. That way has to exist before it is copied.</span></div>
+      <div><span>5 · Automate</span><span>Last, because now the tool has the right data, on screen, done one way.</span></div>
     </div>
 
-    <p>When a task passes, it goes straight to a tool. When it stops, the fix is cheaper than a tool, and the tool that comes after has something solid to stand on.</p>
+    <p>When a task passes, it goes straight to a tool. When it stops, the fix comes first, and the tool that follows has something solid to stand on.</p>
 
     <section class="keep" id="worth-automating">
       <div class="keep-head"><span class="keep-k">Keep it · free tool</span><span class="keep-stamp">Yours to keep</span></div>
@@ -272,7 +277,9 @@
     { task: 'PICKING ORDERS', at: 0, g: 'p----', d: 4.2, cap: 'Picking feels slow, and it takes hours. Worth it? Passes.' },
     { at: 1, g: 'ps---', d: 6.0, st: 's-leave', stamp: 'DATA WRONG', cap: 'Stock is not where the system says. A faster route to the wrong shelf saves nothing.' },
     { at: 1, g: 'pf---', d: 5.5, st: 's-fix', stamp: 'FIX THE DATA FIRST', cap: 'Fixed at the source: how stock is booked in, moved and booked out.' },
-    { at: 3, g: 'pppp-', d: 4.5, mv: 1.8, cap: 'Now the data is right. On screen and one way: both pass.' },
+    { at: 1, g: 'pp---', d: 4.0, cap: 'Data right? Now the stock is where the system says. Passes.' },
+    { at: 2, g: 'ppp--', d: 4.0, cap: 'On screen? Picking lists come from the ERP. Passes.' },
+    { at: 3, g: 'pppp-', d: 4.0, cap: 'One way? Same picking rules for everyone. Passes.' },
     { at: 4, g: 'ppppG', d: 5.5, st: 's-go', stamp: 'AUTOMATE', cap: 'Every gate passed. Now a tool is worth building.' }
   ];
   var t0 = 0, task = '';
@@ -304,11 +311,13 @@
   function render(t){
     t = Math.max(0, Math.min(t, END - 0.001));
     var i = 0; while (i < STEPS.length - 1 && t >= STEPS[i + 1].t0) i++;
-    var S = STEPS[i], P = STEPS[i - 1], local = t - S.t0, mv = S.mv || 1.0;
+    var S = STEPS[i], P = STEPS[i - 1], local = t - S.t0;
     var newTask = !P || P.task !== S.task || P.at > 4;
-    var from = newTask ? OFF : posOf(P.at), to = posOf(S.at), x, op = 1, arrived = local >= mv;
+    var from = newTask ? OFF : posOf(P.at), to = posOf(S.at), x, op = 1;
+    var mv = S.at > 4 ? 0 : newTask ? 1.0 : Math.max(0, Math.abs(to - from) / 72) * 0.9;   // 0.9 s per gate, 0 when it stays
+    var arrived = local >= mv;
     if (S.at > 4) { x = posOf(P.at); op = Math.max(0, 1 - local / 0.8); }
-    else { x = from + (to - from) * ease(local / mv); if (newTask) op = Math.min(1, local / 0.4); }
+    else { x = mv > 0 ? from + (to - from) * ease(local / mv) : to; if (newTask) op = Math.min(1, local / 0.4); }
     var g = arrived || S.at > 4 ? S.g : (P && !newTask ? P.g : '-----');
     for (var k = 0; k < 5; k++) gate(k, g.charAt(k));
     var reach = -1; for (k = 0; k < 5; k++) if (g.charAt(k) !== '-') reach = k;
@@ -321,12 +330,13 @@
     var w = 92; try { w = Math.max(60, tokTxt.getComputedTextLength() + 18); } catch(e){}
     var shift = Math.min(Math.max(x - w / 2, 2), 358 - w) - (x - w / 2);
     box.setAttribute('width', w.toFixed(1)); box.setAttribute('x', (-w / 2 + shift).toFixed(1)); tokTxt.setAttribute('x', shift.toFixed(1));
-    var showCap = arrived || !S.stamp;
-    var st = showCap && S.stamp ? S.stamp : '', cls = showCap && S.st ? S.st : '';
+    // Caption and stamp change only when the task reaches its gate, so the words always match the picture
+    var C2 = arrived ? S : (newTask ? null : P);
+    var st = C2 && C2.stamp ? C2.stamp : '', cls = C2 && C2.st ? C2.st : '';
+    if (S.at > 4) { st = ''; cls = ''; }
     if (stamp.textContent !== st) { stamp.textContent = st; stamp.className = 'gates-stamp' + (cls ? ' ' + cls : ''); }
-    var cap = S.cap || (P ? P.cap : '');
-    if (S.at > 4) cap = '';
-    if (txt.textContent !== cap && cap) txt.textContent = cap;
+    var cap = S.at > 4 ? '' : C2 ? C2.cap : '';
+    if (txt.textContent !== cap) txt.textContent = cap;
   }
 
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
