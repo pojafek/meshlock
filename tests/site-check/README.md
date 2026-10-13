@@ -30,6 +30,8 @@ It prints one `FAIL` line per problem and ends with `N passed, N failed`. It exi
 
 12. **File anonymiser**: with a CSV and an Excel file added together, the suggestions are right, no request leaves the page, the same customer gets the same stand-in in both files, codes, postcodes and phones keep their pattern, dates move by whole weeks, prices by one factor, a real name left in a kept column is found and swapped, removed columns and title rows are gone, the Excel author and cell notes are cleared, the note for the recipient holds no real values, and adding the key to a later run gives the same stand-ins again.
 
+13. **Anonymising note**: the Swap or keep? game starts unsafe, both meters fill only with the right calls, what the supplier sees follows every tap, the check gives a why line per column and marks a kept customer, try again resets it, the anonymiser runs inside the note, offer links carry `fn-anon`, and with a `pc` tag the note has no first person.
+
 ## Extending it
 
 Add a page to `PAGES` (and to `TK` if it is a toolkit page with its own tag). Add a numbered block for any new behaviour. Keep each check one `ok(condition, message)` line, so a failure says exactly what broke.

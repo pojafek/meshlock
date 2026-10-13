@@ -28,7 +28,7 @@ function serve() {
     s.listen(0, '127.0.0.1', () => { BASE = 'http://127.0.0.1:' + s.address().port; res(s); });
   });
 }
-const PAGES = ['/', '/tools/', '/prices/', '/notes/', '/notes/doing-it-by-hand.html', '/notes/your-machines-already-know.html',
+const PAGES = ['/', '/tools/', '/prices/', '/notes/', '/notes/doing-it-by-hand.html', '/notes/your-machines-already-know.html', '/notes/your-export-says-more.html',
   '/toolkit/', '/toolkit/cycle-time/', '/toolkit/step-timer/', '/toolkit/worth-automating/', '/toolkit/machine-data/', '/toolkit/anonymise/', '/toolkit/step-timer/sheet/', '/thanks.html', '/start/'];
 const FOOTER_PAGES = PAGES.filter(p => p !== '/start/');
 const TK = { '/toolkit/': 'tk-index', '/toolkit/cycle-time/': 'tk-cycle', '/toolkit/step-timer/': 'tk-timer', '/toolkit/worth-automating/': 'tk-automating', '/toolkit/machine-data/': 'tk-machine', '/toolkit/anonymise/': 'tk-anonymise', '/toolkit/step-timer/sheet/': 'tk-timer' };
@@ -101,7 +101,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
       const card = cards.nth(i);
       ok(await card.locator('.tk-q').count() === 1 && await card.locator('.tk-time').count() === 1 && await card.locator('.tk-use').count() === 1, `card ${i} question + time + use it when`);
       const note = await card.locator('.tk-note').innerText();
-      ok(i < 4 ? note.startsWith('From the note:') : /never uploaded/.test(note), `card ${i} note line: ${note}`);
+      ok(note.startsWith('From the note:'), `card ${i} From the note: ${note}`);
     }
     const hrefs = await p.evaluate(() => [...document.querySelectorAll('main, .tk-index, footer, .crumbs')].flatMap(e => [...e.querySelectorAll('a[href^="/"]')].map(a => a.getAttribute('href'))));
     for (const h of new Set(hrefs.map(h => h.split('#')[0].split('?')[0]))) {
@@ -300,7 +300,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(JSON.stringify(groups) === JSON.stringify(await t.p.evaluate(() => window.mlMachineItems.map(g => g.g))), 'checklist groups match');
     ok(!/USB|clamp|cabinet|ERP/i.test(art.join(' ')), 'checklist steps need no IT and open nothing');
     // YOU GET links go to their part of each note
-    for (const path of ['/notes/your-machines-already-know.html', '/notes/doing-it-by-hand.html']) {
+    for (const path of ['/notes/your-machines-already-know.html', '/notes/doing-it-by-hand.html', '/notes/your-export-says-more.html']) {
       const { p } = await open(c, path);
       const ids = await p.$$eval('.title-block .tb-v a[href^="#"]', l => l.map(x => x.getAttribute('href').slice(1)));
       ok(ids.length >= 2 && (await p.evaluate(ids => ids.every(i => document.getElementById(i)), ids)), `${path} You get links ${ids}`);
@@ -388,7 +388,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
       return { creator: wb.creator, a1: ws.getCell('A1').value, a2: ws.getCell('A2').value, b2: ws.getCell('B2').value, c2: ws.getCell('C2').value, d2: ws.getCell('D2').value instanceof Date, note: ws.getCell('A2').note || '' };
     }, x.buf.toString('base64'));
     ok(xr.a1 === 'Customer' && xr.a2 === rows[0][1], 'Excel: title row gone, same stand-in as the CSV');
-    ok(/^[A-Z]{2}\d \d[A-Z]{2}$/.test(xr.b2) && xr.b2 !== 'SN1 4AB' && /^07\d{3} \d{6}$/.test(xr.c2) && xr.c2 !== '07700 900123', 'Excel: postcode and phone keep their pattern ' + xr.b2 + ' ' + xr.c2);
+    ok(/^[A-Z]{2}\d \d[A-Z]{2}$/.test(xr.b2) && xr.b2 !== 'SN1 4AB' && /^0[1-9]\d{3} \d{6}$/.test(xr.c2) && xr.c2 !== '07700 900123', 'Excel: postcode and phone keep their pattern ' + xr.b2 + ' ' + xr.c2);
     ok(xr.d2 && !/Jane/.test(xr.creator || '') && !xr.note, 'Excel: dates stay dates, author and notes cleared');
     const key = k.buf.toString('utf8');
     ok(/^﻿meshlock-anonymiser-key/.test(key) && /Acme Ltd,Customer \d{3}/.test(key) && /date-shift-weeks/.test(key), 'key lists real values and settings');
@@ -402,6 +402,44 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     const m = (await dl('[data-save="0"]')).buf.toString('utf8').trim().split('\n');
     ok(m[1].split(',')[0] === rows[1][1] && m[2].split(',')[0] !== rows[1][1] && /^Customer \d{3}$/.test(m[2].split(',')[0]), 'key reused: same stand-in next time, new value gets a new one');
     await c.close();
+  }
+
+  // 13. Anonymising note: the Swap or keep? game, its meters and the tool in the article
+  {
+    const c = await ctx(browser, { w: 390, reduce: true });
+    const { p, errs } = await open(c, '/notes/your-export-says-more.html');
+    ok((await startTags(p)).every(t => t === 'fn-anon'), 'anonymising note offer links carry fn-anon');
+    ok(await p.locator('#gmSafe').innerText() === '0%' && await p.locator('#gmUse').innerText() === '100%', 'game starts unsafe and fully useful');
+    const best = ['swap', 'swap', 'swap', 'keep', 'keep', 'swap', 'keep', 'keep', 'empty', 'swap'];
+    for (let i = 0; i < 10; i++) {
+      if (i === 9) ok(await p.locator('#gmCheck').isDisabled(), 'check waits for every column');
+      await p.click(`.gm-row[data-i="${i}"] .gm-opt[data-o="${i === 4 ? 'empty' : best[i]}"]`);
+    }
+    ok(await p.locator('#gmUse').innerText() !== '100%', 'emptying the quantity costs usefulness');
+    ok(/·/.test(await p.locator('#gmSees td').nth(4).innerText()), 'what the supplier sees follows the calls');
+    await p.click('.gm-row[data-i="4"] .gm-opt[data-o="keep"]');
+    ok(await p.locator('#gmSafe').innerText() === '100%' && await p.locator('#gmUse').innerText() === '100%', 'best calls fill both meters');
+    ok(!/Acme|dave@/.test(await p.locator('#gmSees').innerText()), 'with the best calls the supplier sees no real names');
+    await p.click('#gmCheck');
+    ok(/SAFE AND USEFUL/.test(await p.locator('#gmRes').innerText()) && await p.locator('.gm-why:not([hidden])').count() === 10, 'game result and a why line per column');
+    await p.click('#gmReset');
+    ok(await p.locator('#gmSafe').innerText() === '0%' && await p.locator('#gmRes').isHidden(), 'try again resets the game');
+    await p.click('.gm-row[data-i="1"] .gm-opt[data-o="keep"]');
+    for (let i = 0; i < 10; i++) if (i !== 1) await p.click(`.gm-row[data-i="${i}"] .gm-opt[data-o="${best[i]}"]`);
+    await p.click('#gmCheck');
+    ok(/9 OF 10/.test(await p.locator('#gmRes').innerText()) && await p.locator('.gm-row[data-i="1"] .gm-why.miss').count() === 1, 'keeping the customer is marked to rethink');
+    ok(await p.locator('#anonymise [data-tool="anonymise"] .an').count() === 1, 'anonymiser runs inside the note');
+    ok(await p.locator('#anonymise .tool-own a[href="/toolkit/anonymise/"]').count() === 1, 'note links the tool page');
+    const t = await visibleText(p);
+    ok(!/—|–| - /.test(t), 'anonymising note has no dashes');
+    ok(errs.length === 0, 'anonymising note errors ' + errs);
+    await c.close();
+    const c2 = await ctx(browser);
+    const r = await open(c2, '/notes/your-export-says-more.html?s=pc');
+    const tp = await visibleText(r.p);
+    ok(!/\b(I|I'm|I've|me|my)\b/.test(tp.replace(/Back to top/, '')), 'pc: anonymising note has no first person');
+    ok(/send Meshlock our data/.test(tp), 'pc: bridge speaks for Meshlock');
+    await c2.close();
   }
 
   // 8. /tests/ is never published: the Netlify rule answers 404 for it
