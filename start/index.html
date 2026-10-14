@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script>/* Patryk's visitors (pc tag): hide Kamil's lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||(/^\/toolkit\//.test(location.pathname)&&(function(k){return k&&k.t&&Date.now()-k.at<15552e6?k.t:''})(JSON.parse(localStorage.getItem('ml-keep')||'null')))||'';if(!/^pc/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
+<script>/* Contact person: Patryk, unless the tag is Kamil's (kp..., li-...). Hide Kamil's contact lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||(/^\/toolkit\//.test(location.pathname)&&(function(k){return k&&k.t&&Date.now()-k.at<15552e6?k.t:''})(JSON.parse(localStorage.getItem('ml-keep')||'null')))||'';if(/^(kp|li-)/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <meta name="robots" content="noindex">
@@ -415,7 +415,7 @@
       </div>
       <p class="form-error" role="alert" id="err" hidden data-pc="That didn't send. Please try again, or email patryk@meshlock.co.uk.">That didn't send. Please try again, or email hello@meshlock.co.uk.</p>
     </form>
-    <!-- Netlify only registers forms it finds in the HTML at deploy. Offers from Patryk's tags (pc...) post to "offer-pc", so Netlify can email them to him. Same fields as "offer". Never shown. -->
+    <!-- Netlify only registers forms it finds in the HTML at deploy. Offers where Patryk is the contact (every tag except Kamil's kp... and li-...) post to "offer-pc", so Netlify can email them to him. Same fields as "offer". Never shown. -->
     <form name="offer-pc" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true">
       <input type="hidden" name="form-name" value="offer-pc"><input name="bot-field"><input name="method"><input name="slot"><input name="erp"><input name="rate"><input name="summary"><input name="link"><input name="source"><input name="own"><input name="shown"><input name="subject"><input name="phone"><input name="name"><input name="email">
     </form>
@@ -515,8 +515,8 @@
   var SRC = (new URLSearchParams(location.search).get('s') || '').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20);
   try { if (SRC) sessionStorage.setItem('ml-src', SRC); else SRC = sessionStorage.getItem('ml-src') || ''; } catch(e){}
   SRC = SRC || 'site';
-  // Patryk's materials carry tags starting with "pc" (pc, pcs, pcf). His clients see his name and number, never Kamil's.
-  var PC = /^pc/.test(SRC);
+  // Patryk is the contact unless the tag is Kamil's (kp, kps, kpf, kp-..., li-...). One person, never two.
+  var PC = !/^(kp|li-)/.test(SRC);
   function V(kamil, patryk){ return PC ? patryk : kamil; }
   // Anonymous step counts per source tag (assets/stats.js). Never sends answers, only the step name.
   var sent1 = {};

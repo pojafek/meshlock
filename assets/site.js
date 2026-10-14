@@ -2,8 +2,8 @@
    Kept apart from assets/stats.js (visit counts), so an ad blocker that stops the counting
    never stops this. Loaded with defer on every page, after the snippet at the top of <head>.
    The tag is kept for the browser tab on every host, every link to /start/ carries it, toolkit
-   pages keep it in their address (for bookmarks), and a tag starting "pc" makes Patryk the contact
-   person on every page (see CLAUDE.md). The site itself is the same for every visitor. */
+   pages keep it in their address (for bookmarks), and Patryk is the contact person on every page
+   unless the tag is Kamil's: kp..., li-... (see CLAUDE.md). The site itself is the same for every visitor. */
 (function(){
   var KEEP_MS = 180 * 864e5;
   // Source tag from the link this page was opened with, kept for the tab in 'ml-src'
@@ -38,7 +38,7 @@
   }
   function retagAll(){ document.querySelectorAll('a[href]').forEach(retag); }
 
-  // Tags starting with "pc" are Patryk's: he is the contact person on every page (see CLAUDE.md).
+  // Patryk is the contact person on every page unless the tag is Kamil's (see CLAUDE.md).
   // Only contact points swap: name, phone, email, reply lines and the form Netlify sends to him.
   // data-pc: text · data-pc-href · data-pc-copy · data-pc-value · data-pc-hide · data-pc-show (starts hidden)
   // {tag} in a data-pc text becomes the visitor's tag. With JavaScript off, pages show Kamil as the contact.
@@ -53,7 +53,8 @@
   }
   // The snippet at the top of each page's <head> hides data-pc lines (class pc-wait) until they are swapped
   function reveal(){ document.documentElement.classList.remove('pc-wait'); }
-  if (/^pc/.test(kept)) {
+  // No tag, Field Notes, toolkit and Patryk's own tags: Patryk is the contact. Kamil's tags (kp..., li-...): Kamil.
+  if (!/^(kp|li-)/.test(kept)) {
     document.documentElement.classList.add('pc');
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ pcMode(); reveal(); }); else { pcMode(); reveal(); }
   } else reveal();

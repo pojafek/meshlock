@@ -160,10 +160,13 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     }
     await c.close(); await c0.close();
     // Contact person on the homepage: one person, never two to choose from
-    for (const [q, who, not] of [['', 'Kamil Pojawa', 'Patryk'], ['?s=kp', 'Kamil Pojawa', 'Patryk'], ['?s=pc', 'Patryk Chojnacki', 'Kamil'], ['?s=pcf', 'Patryk Chojnacki', 'Kamil']]) {
+    // Patryk by default; Kamil only for his own tags (kp..., li-...)
+    for (const [q, who, not] of [['', 'Patryk Chojnacki', 'Kamil'], ['?s=fn-gates', 'Patryk Chojnacki', 'Kamil'], ['?s=tk-timer', 'Patryk Chojnacki', 'Kamil'], ['?s=pc', 'Patryk Chojnacki', 'Kamil'], ['?s=pcf', 'Patryk Chojnacki', 'Kamil'],
+      ['?s=kp', 'Kamil Pojawa', 'Patryk'], ['?s=kps', 'Kamil Pojawa', 'Patryk'], ['?s=kpf', 'Kamil Pojawa', 'Patryk'], ['?s=kp-mail-data', 'Kamil Pojawa', 'Patryk'], ['?s=li-bl', 'Kamil Pojawa', 'Patryk']]) {
       const cx = await ctx(browser, { w: 390 }); const { p } = await open(cx, '/' + q);
       const ct = await p.locator('#contact').innerText();
       ok(ct.includes(who) && !ct.includes(not), `contact ${q || 'no tag'} shows ${who} only`);
+      ok((await p.locator('footer').innerText()).includes(who === 'Kamil Pojawa' ? 'hello@meshlock.co.uk' : 'patryk@meshlock.co.uk'), `footer email ${q || 'no tag'}`);
       ok(/Lean, software and ERP\. Under one roof\./.test(await p.locator('.lock-line').innerText()) && await p.locator('#about').isVisible(), `${q || 'no tag'}: same hero line and About for everyone`);
       await cx.close();
     }
@@ -175,7 +178,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     await c2.close();
   }
 
-  // 4. Slow site.js: Kamil's lines never show to a pc visitor; no-tag pages show at once
+  // 4. Slow site.js: Kamil's contact lines never show when Patryk is the contact; Kamil's own tags show at once
   for (const path of ['/toolkit/', '/notes/', '/toolkit/step-timer/']) {
     const c = await ctx(browser, { slow: 2500 });
     const p = await c.newPage();
@@ -191,11 +194,18 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(/patryk@/.test(await p.locator('footer').innerText()) && await p.evaluate(() => !document.documentElement.classList.contains('pc-wait')), `slow pc ${path} swapped after load`);
     ok(await p.evaluate(() => getComputedStyle(document.querySelector('footer [data-pc]')).visibility) === 'visible', `slow pc ${path} revealed`);
     await c.close();
-    const c2 = await ctx(browser, { slow: 2500 });
+    let c2 = await ctx(browser, { slow: 2500 });
     const q = await c2.newPage();
-    await q.goto(BASE + path, { waitUntil: 'commit' });
+    await q.goto(BASE + path + '?s=kp', { waitUntil: 'commit' });
     await q.waitForSelector('footer', { state: 'attached' }); await q.waitForTimeout(800);
-    ok(await q.evaluate(() => getComputedStyle(document.querySelector('footer [data-pc]')).visibility === 'visible'), `slow no tag ${path} visible at once`);
+    ok(await q.evaluate(() => getComputedStyle(document.querySelector('footer [data-pc]')).visibility === 'visible'), `slow kp ${path} visible at once`);
+    await c2.close();
+    const c3 = await ctx(browser, { slow: 2500 });
+    const n = await c3.newPage();
+    await n.goto(BASE + path, { waitUntil: 'commit' });
+    await n.waitForSelector('footer', { state: 'attached' }); await n.waitForTimeout(800);
+    ok(await n.evaluate(() => getComputedStyle(document.querySelector('footer [data-pc]')).visibility === 'hidden'), `slow no tag ${path} hides Kamil's email until the swap`);
+    c2 = c3;
     await c2.close();
   }
 
@@ -336,9 +346,15 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     const fresh = await open(c, '/toolkit/step-timer/');   // a new tab: like a home screen icon
     ok(await fresh.p.evaluate(() => document.documentElement.classList.contains('pc')) && /patryk@/.test(await fresh.p.locator('footer').innerText()), 'reopened tool keeps Patryk version');
     ok((await startTags(fresh.p)).every(x => x === 'pc-mail-data'), 'reopened tool offer links keep the tag');
-    const home = await open(c, '/');                      // the rest of the site keeps the tab-only rule
-    ok(!(await home.p.evaluate(() => document.documentElement.classList.contains('pc'))), 'new tab outside the toolkit is not Patryk mode');
     await c.close();
+    const ck = await ctx(browser);
+    let k = await open(ck, '/?s=kp-mail-data');
+    k = await open(ck, '/toolkit/step-timer/', k.p);
+    const kept = await open(ck, '/toolkit/cycle-time/');   // a new tab: like a home screen icon
+    ok(!(await kept.p.evaluate(() => document.documentElement.classList.contains('pc'))) && /hello@/.test(await kept.p.locator('footer').innerText()), 'reopened tool keeps Kamil as the contact for his tag');
+    const home = await open(ck, '/');                      // the rest of the site keeps the tab-only rule
+    ok(/patryk@/.test(await home.p.locator('footer').innerText()), 'new tab outside the toolkit falls back to the default contact');
+    await ck.close();
     const c2 = await ctx(browser);
     r = await open(c2, '/toolkit/cycle-time/');
     ok(!/[?&]s=/.test(await r.p.evaluate(() => location.search)), 'no tag: toolkit address unchanged');
@@ -576,8 +592,14 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(await r.p.locator('#s2').isVisible() && await r.p.locator('#fromcheck2').isVisible(), 'without hours the check shows on step 2 too');
     r = await open(c, '/start/?s=pc#f=pick.b&c=data.pick');
     ok(/Patryk Chojnacki/.test(await r.p.locator('.sheet-foot .who').innerText()) && (await r.p.locator('#start .fix-name').innerText()) === 'One-day process review', 'pc: same offer, Patryk as the contact');
+    r = await open(c, '/start/?s=kpf#f=pick.b');
+    ok(/Kamil Pojawa/.test(await r.p.locator('.sheet-foot .who').innerText()) && /Send to Kamil/.test(await r.p.locator('#next').textContent()), "kpf: Kamil's flyer keeps Kamil as the contact");
     ok(r.errs.length === 0, 'offer errors ' + r.errs);
     await c.close();
+    const c2 = await ctx(browser, { w: 390 });
+    r = await open(c2, '/start/#f=pick.b');
+    ok(/Patryk Chojnacki/.test(await r.p.locator('.sheet-foot .who').innerText()) && /Send to Patryk/.test(await r.p.locator('#next').textContent()), 'no tag: Patryk is the contact on the offer');
+    await c2.close();
   }
 
   // 8. /tests/ is never published: the Netlify rule answers 404 for it
