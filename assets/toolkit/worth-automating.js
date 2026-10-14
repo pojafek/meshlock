@@ -180,10 +180,13 @@
       if (nameIn.value.trim()) h += '&t=' + encodeURIComponent(nameIn.value.trim());
       return h;
     }
-    function offerHref(kind, hrs){
+    // The offer gets the problem and hours, plus the check's result and the task name (c, t), so it can say
+    // "From your check" and, for Fix the data first or Write the steps down first, start with the review
+    function offerHref(kind, hrs, v){
       var tag = curTag(fallbackTag), k = OFFER_KIND[kind] || 'unsure';
       var h = k === 'unsure' || k === 'machines' ? k : k + (hrs ? '.' + (hrs === 'a0' ? 'a' : hrs) : '');   // machines are counted in machines, not hours
-      return '/start/' + (tag ? '?s=' + encodeURIComponent(tag) : '') + '#f=' + h;
+      var t = nameIn.value.trim().slice(0, 80);
+      return '/start/' + (tag ? '?s=' + encodeURIComponent(tag) : '') + '#f=' + h + (v && k !== 'unsure' ? '&c=' + v + '.' + k : '') + (t ? '&t=' + encodeURIComponent(t) : '');
     }
     function list(el, items){ el.innerHTML = items.map(function(t){ return '<div class="wa-w">' + esc(t) + '</div>'; }).join(''); }
     function render(){
@@ -212,8 +215,10 @@
       $('.wa-hours').textContent = 'Time on it now: ' + YEAR[ans.hrs] + '.';
       var next = '';
       if (r.v === 'automate' || r.v === 'paper')
-        next += '<a class="wa-go" href="' + offerHref(ans.kind, ans.hrs) + '">' + (r.v === 'paper' ? 'Price the first step: get it on screen →' : 'Get your one-page offer →') + '</a>';
-      if (r.v === 'data' || r.v === 'paper' || r.v === 'steps')
+        next += '<a class="wa-go" href="' + offerHref(ans.kind, ans.hrs, r.v) + '">' + (r.v === 'paper' ? 'Price the first step: get it on screen →' : 'Get your one-page offer →') + '</a>';
+      if (r.v === 'data' || r.v === 'steps')
+        next += '<div class="wa-next-t">Fix this first, then the tool. Your one-page offer starts with a one-day process review: £600, credited in full against any build. This result and the task name go with it.</div><a class="wa-go" href="' + offerHref(ans.kind, ans.hrs, r.v) + '">Get your one-page offer →</a> <a class="wa-sec" href="/#contact">Or book a free call →</a>';
+      if (r.v === 'paper')
         next += '<div class="wa-next-t">Not sure where to start? A free 30-minute call helps sort it out. A one-day process review is £600, credited in full against any build.</div><a class="wa-sec" href="/#contact">Book a free call →</a>';
       if (r.v === 'steps') next += ' <a class="wa-sec" href="/toolkit/step-timer/">Time how differently it is done →</a>';
       if (r.v === 'leave') next += '<div class="wa-next-t">No tool needed here, and no sale either. Got a bigger task in mind? Check that one.</div>';

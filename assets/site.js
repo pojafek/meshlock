@@ -2,8 +2,8 @@
    Kept apart from assets/stats.js (visit counts), so an ad blocker that stops the counting
    never stops this. Loaded with defer on every page, after the snippet at the top of <head>.
    The tag is kept for the browser tab on every host, every link to /start/ carries it, toolkit
-   pages keep it in their address (for bookmarks), and a tag starting "pc" switches every page to
-   Patryk's version (see CLAUDE.md). */
+   pages keep it in their address (for bookmarks), and Patryk is the contact person on every page
+   unless the tag is Kamil's: kp..., li-... (see CLAUDE.md). The site itself is the same for every visitor. */
 (function(){
   var KEEP_MS = 180 * 864e5;
   // Source tag from the link this page was opened with, kept for the tab in 'ml-src'
@@ -38,9 +38,10 @@
   }
   function retagAll(){ document.querySelectorAll('a[href]').forEach(retag); }
 
-  // Tags starting with "pc" are Patryk's: the whole site speaks for him (see CLAUDE.md).
+  // Patryk is the contact person on every page unless the tag is Kamil's (see CLAUDE.md).
+  // Only contact points swap: name, phone, email, reply lines and the form Netlify sends to him.
   // data-pc: text · data-pc-href · data-pc-copy · data-pc-value · data-pc-hide · data-pc-show (starts hidden)
-  // {tag} in a data-pc text becomes the visitor's tag. With JavaScript off, pages show Kamil's version.
+  // {tag} in a data-pc text becomes the visitor's tag. With JavaScript off, pages show Kamil as the contact.
   function pcMode(){
     var each = function(sel, fn){ document.querySelectorAll(sel).forEach(fn); };
     each('[data-pc]', function(e){ e.textContent = e.getAttribute('data-pc').replace(/\{tag\}/g, kept); });
@@ -49,14 +50,11 @@
     each('[data-pc-value]', function(e){ e.value = e.getAttribute('data-pc-value'); });
     each('[data-pc-hide]', function(e){ e.hidden = true; e.style.setProperty('display', 'none', 'important'); });
     each('[data-pc-show]', function(e){ e.hidden = false; });
-    // Opened on a hidden section (/#about): go to the section named in data-pc-goto
-    var t = location.hash && document.getElementById(location.hash.slice(1));
-    var g = t && t.hasAttribute('data-pc-hide') && document.getElementById(t.getAttribute('data-pc-goto'));
-    if (g) g.scrollIntoView();
   }
   // The snippet at the top of each page's <head> hides data-pc lines (class pc-wait) until they are swapped
   function reveal(){ document.documentElement.classList.remove('pc-wait'); }
-  if (/^pc/.test(kept)) {
+  // No tag, Field Notes, toolkit and Patryk's own tags: Patryk is the contact. Kamil's tags (kp..., li-...): Kamil.
+  if (!/^(kp|li-)/.test(kept)) {
     document.documentElement.classList.add('pc');
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ pcMode(); reveal(); }); else { pcMode(); reveal(); }
   } else reveal();
