@@ -152,7 +152,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
       ok(tags.every(x => x === 'pc'), `pc ${path} offer tags ${tags}`);
       if (FOOTER_PAGES.includes(path)) {
         ok(/patryk@meshlock\.co\.uk/.test(await p.locator('footer').innerText()), `pc ${path} footer email`);
-        ok(!(await p.locator('footer a[href*="linkedin"]').isVisible()), `pc ${path} LinkedIn hidden`);
+        ok(/patryk-chojnacki/.test(await p.locator('footer a[href*="linkedin"]').getAttribute('href')), `pc ${path} footer LinkedIn is Patryk's`);
       }
       ok(errs.length === 0, `pc ${path} errors ${errs}`);
       if (path === '/notes/') ok(t.includes('taught us'), 'pc notes speak in the Meshlock voice');
@@ -167,6 +167,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
       const ct = await p.locator('#contact').innerText();
       ok(ct.includes(who) && !ct.includes(not), `contact ${q || 'no tag'} shows ${who} only`);
       ok((await p.locator('footer').innerText()).includes(who === 'Kamil Pojawa' ? 'hello@meshlock.co.uk' : 'patryk@meshlock.co.uk'), `footer email ${q || 'no tag'}`);
+      ok((await p.locator('footer a[href*="linkedin"]').getAttribute('href')).includes(who === 'Kamil Pojawa' ? 'kamil-pojawa' : 'patryk-chojnacki'), `footer LinkedIn ${q || 'no tag'}`);
       ok(/Lean, software and ERP\. Under one roof\./.test(await p.locator('.lock-line').innerText()) && await p.locator('#about').isVisible(), `${q || 'no tag'}: same hero line and About for everyone`);
       await cx.close();
     }
@@ -499,7 +500,8 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(!/partner|co-founder/i.test((await p.locator('#about .team, #about .people').allTextContents()).join(' ')), 'Patryk is never called partner or co-founder');
     ok(!(await p.locator('#about-more').evaluate(d => d.open)) && !(await p.locator('#about .gears-wrap').isVisible()), 'About details start closed');
     await p.click('#about-more > summary');
-    ok(await p.locator('#about .gears-wrap').isVisible() && await p.locator('#about .creds').isVisible(), 'More about us opens the rig and both bios');
+    ok(await p.locator('#about .gears-wrap').isVisible() && await p.locator('#about .creds').first().isVisible() && await p.locator('#about .creds').count() === 2, 'More about us opens the rig and both bios');
+    ok(await p.locator('#about .people .person').nth(1).locator('a[href*="patryk-chojnacki"]').count() === 1 && /IOSH Managing Safely/.test(await p.locator('#about .people .person').nth(1).innerText()), "Patryk's bio has his credentials and LinkedIn");
     ok(await p.locator('#about .people .person').count() === 2 && /UNDER ONE ROOF/.test(await p.locator('#about .gears-cap').innerText()), 'two bios and the rig caption Under one roof');
     await p.click('#about-more > summary');
     const H = await p.evaluate(() => document.documentElement.scrollHeight);
