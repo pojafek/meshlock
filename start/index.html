@@ -175,6 +175,10 @@
   .pdf-hint{flex-basis:100%;font-size:13px;color:var(--ink-soft);}
   .saved{margin:0 0 16px;padding:12px 14px;background:var(--paper-card);border:1px dashed var(--ink-faint);border-radius:var(--radius);font-size:14.5px;color:var(--ink-soft);}
   .saved b{color:var(--ink);font-weight:600;}
+  .from-check{margin:0 0 16px;padding:10px 14px;border:1.5px solid var(--green);border-radius:var(--radius);background:var(--green-bg);font-size:14.5px;line-height:1.5;}
+  .from-check .fc-k{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:2px;}
+  .from-check b{font-weight:600;}
+  .sheet .from-check{margin:16px 0 0;}
   .made{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--ink-soft);}
   .reopen{display:none;}
   .detail .share{margin-top:12px;}
@@ -264,7 +268,7 @@
   </section>
 
   <div class="noscript">
-    <p>This page needs JavaScript. Example prices are on the <a href="/prices/">prices page</a>, or send a line to <a href="mailto:hello@meshlock.co.uk">hello@meshlock.co.uk</a> and I'll reply within one working day.</p>
+    <p>This page needs JavaScript. Example prices are on the <a href="/prices/">prices page</a>, or send a line to <a href="mailto:hello@meshlock.co.uk">hello@meshlock.co.uk</a> and we'll reply within one working day.</p>
   </div>
 
   <nav class="progress" aria-label="Progress" id="progress">
@@ -297,6 +301,7 @@
   <section class="step" id="s2" aria-labelledby="s2h">
     <h2 id="s2h">Put a rough number on it.</h2>
     <p class="sub" id="s2sub">A rough answer for each, all people together. A guess is fine.</p>
+    <p class="from-check" id="fromcheck2" hidden></p>
     <div id="qrows"></div>
     <div class="field" id="ownwrap"><label for="own">In your own words <span class="o">(optional, one line)</span></label><input id="own" type="text" maxlength="160" autocomplete="off" placeholder="e.g. Our orders come from two systems"></div>
     <div id="ratewrap">
@@ -307,7 +312,7 @@
         <button type="button" class="chip" aria-pressed="false" data-v="30">£30</button>
         <button type="button" class="chip" aria-pressed="false" data-v="40">£40</button>
       </div>
-      <p class="hint" data-pc="Your number. The page only does the sum. £20 if you skip it.">Your number. I only do the sum. £20 if you skip it.</p>
+      <p class="hint">Your number. The page only does the sum. £20 if you skip it.</p>
     </div>
     <p class="group-label">Which system holds your orders? <span class="o">(optional)</span></p>
     <div class="chips" id="erp" role="group" aria-label="ERP">
@@ -330,18 +335,19 @@
         <p class="l">Your floor · <b id="ref">draft</b><br>Built from <b>your answers</b><br><span class="made" id="made"></span></p>
         <span class="stamp" id="stamp">FIX FOUND</span>
       </div>
+      <p class="from-check" id="fromcheck" hidden></p>
 
       <div class="cost" id="cost">
         <p class="lab now">What these problems cost you now</p>
         <p class="cost-total" id="ctotal"></p>
-        <p class="cost-who" data-pc="Your team's time, from your answers. This is not our price.">Your team's time, from your answers. This is not my price.</p>
+        <p class="cost-who">Your team's time, from your answers. This is not our price.</p>
         <p class="cost-tool" id="ctool" hidden></p>
         <p class="cost-hours" id="chours"></p>
         <ul class="cost-rows" id="crows"></ul>
         <p class="cost-note" id="cnote"></p>
       </div>
 
-      <h3 data-pc="Where to start">Where I'd start</h3>
+      <h3>Where to start</h3>
       <p class="sheet-sub" id="startsub"></p>
       <div class="start" id="start"></div>
       <div class="vs" id="vs" hidden>
@@ -364,13 +370,13 @@
       </div>
       <div class="sheet-foot">
         <p>Tool prices are examples from similar builds. Yours is fixed in writing after the call.</p>
-        <p class="who" data-pc="Patryk Chojnacki · Business Development Lead · 07501 839466 · patryk@meshlock.co.uk">Kamil Pojawa · meshlock.co.uk · hello@meshlock.co.uk</p>
+        <p class="who" data-pc="Patryk Chojnacki · Business Development Lead · 07501 839466 · patryk@meshlock.co.uk">Kamil Pojawa · Founder &amp; Lead Engineer · meshlock.co.uk · hello@meshlock.co.uk</p>
         <div class="reopen" id="reopen"><span id="reqr"></span><p class="rt"><b>Open this offer again</b>Scan the code or click the link. It opens with the same answers and prices as on this sheet, any time.<br><a id="relink" href="/start/">meshlock.co.uk/start/</a></p></div>
       </div>
     </article>
 
 
-    <div class="dim"><span class="tick"></span><span class="rule"></span><span data-pc="How should Patryk get back to you?">How should I get back to you?</span><span class="rule"></span><span class="tick"></span></div>
+    <div class="dim"><span class="tick"></span><span class="rule"></span><span data-pc="How should Patryk get back to you?">How should Kamil get back to you?</span><span class="rule"></span><span class="tick"></span></div>
 
     <form id="offer-form" name="offer" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field" novalidate>
       <input type="hidden" name="form-name" value="offer">
@@ -387,7 +393,7 @@
       <input type="hidden" name="subject" id="f-subject" value="Meshlock offer">
 
       <div class="opts" id="opts" role="group" aria-label="Next step">
-      <button type="button" class="opt" aria-pressed="false" data-o="call"><span class="t"><span class="radio"></span>Call me back</span><span class="d" data-pc="Patryk rings you when it suits. Free, 30 minutes, no preparation needed.">I ring you when it suits. Free, 30 minutes, no preparation needed.</span></button>
+      <button type="button" class="opt" aria-pressed="false" data-o="call"><span class="t"><span class="radio"></span>Call me back</span><span class="d" data-pc="Patryk rings you when it suits. Free, 30 minutes, no preparation needed.">Kamil rings you when it suits. Free, 30 minutes, no preparation needed.</span></button>
       <div class="detail" id="d-call">
         <p class="group-label" style="margin-top:0">When suits you?</p>
         <div class="chips" id="slot" role="group" aria-label="Call time">
@@ -398,12 +404,12 @@
         <div class="field"><label for="phone">Your number</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
         <div class="field"><label for="name1">First name <span class="o">(optional)</span></label><input id="name1" name="name" type="text" autocomplete="given-name"></div>
       </div>
-      <button type="button" class="opt" aria-pressed="false" data-o="mail"><span class="t"><span class="radio"></span>Email me back</span><span class="d" data-pc="Patryk replies by email within one working day.">I reply by email within one working day.</span></button>
+      <button type="button" class="opt" aria-pressed="false" data-o="mail"><span class="t"><span class="radio"></span>Email me back</span><span class="d" data-pc="Patryk replies by email within one working day.">Kamil replies by email within one working day.</span></button>
       <div class="detail" id="d-mail">
         <div class="field" style="margin-top:0"><label for="email">Your email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email"></div>
         <div class="field"><label for="name2">First name <span class="o">(optional)</span></label><input id="name2" name="name" type="text" autocomplete="given-name"></div>
       </div>
-      <button type="button" class="opt" aria-pressed="false" data-o="later"><span class="t"><span class="radio"></span>Not yet · pass it on</span><span class="d" data-pc="Not your call? Save it or send the link on. Both open this offer again. Nothing is sent.">Not your call? Save it or send the link on. Both open this offer again. Nothing is sent to me.</span></button>
+      <button type="button" class="opt" aria-pressed="false" data-o="later"><span class="t"><span class="radio"></span>Not yet · pass it on</span><span class="d">Not your call? Save it or send the link on. Both open this offer again. Nothing is sent.</span></button>
       <div class="detail" id="d-later"><p style="font-size:14.5px;color:var(--ink-soft)">Send it to whoever makes the call. The link and the PDF both open this offer again, any time, with the same answers and the same prices you see now.</p>
         <div class="share"><button type="button" class="btn-outline pdf2">Save as PDF</button><button type="button" class="btn-outline" id="copy">Copy link</button><span id="copied" role="status"></span><span class="pdf-hint">Save as PDF opens print. Pick "Save as PDF" as the printer. The PDF has a link and a QR code back to this offer.</span></div></div>
       </div>
@@ -413,7 +419,7 @@
     <form name="offer-pc" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true">
       <input type="hidden" name="form-name" value="offer-pc"><input name="bot-field"><input name="method"><input name="slot"><input name="erp"><input name="rate"><input name="summary"><input name="link"><input name="source"><input name="own"><input name="shown"><input name="subject"><input name="phone"><input name="name"><input name="email">
     </form>
-    <p class="hint" id="privacy" data-pc="Not a pitch, just an honest question. Your details are only used to reply to this.">Not a pitch, just an honest question. I only use your details to reply to this.</p>
+    <p class="hint" id="privacy">Not a pitch, just an honest question. Your details are only used to reply to this.</p>
   </section>
 
   <section class="done" id="done" aria-live="polite">
@@ -469,7 +475,15 @@
 
   // d: the day the offer was first shown (YYYYMMDD). px: tool prices frozen on that day, so a saved link or PDF
   // always shows the same numbers, even after /prices/ changes. Any change to the answers makes a new offer.
-  var st = {f:[], h:{}, rate:20, erp:'', o:'', slot:'', own:'', d:'', px:null};
+  var st = {f:[], h:{}, rate:20, erp:'', o:'', slot:'', own:'', d:'', px:null, cv:'', ck:'', t:'', rv:null};
+  // From the Worth automating? check (#c=<result>.<problem>&t=<task name>). Fix the data first and Write the
+  // steps down first make the one-day process review the place to start, with the tool after it.
+  var REVIEW = 600;
+  var CHECK = {automate:'Passed the first four gates. Automate', paper:'Stopped at On screen? Get it off paper first', data:'Stopped at Data right? Fix the data first', steps:'Stopped at One way? Write the steps down first'};
+  var REVIEW_WHY = {data:'A day on your floor tracing where the data goes wrong, and fixing the process that feeds it. Then the tool has something solid to stand on.', steps:'A day on your floor agreeing one way of doing the task and writing it down. Then the tool copies the right way.'};
+  function chk(){ return st.cv && st.f.indexOf(st.ck)>-1; }
+  function reviewFirst(){ return chk() && (st.cv==='data' || st.cv==='steps'); }
+  function RV(){ return st.rv!=null ? st.rv : REVIEW; }
   var restored = false;
   var step = 1, $ = function(id){return document.getElementById(id);};
   var real = function(){return st.f.filter(function(k){return k!=='unsure';});};
@@ -483,15 +497,16 @@
   var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   function today(){var d=new Date();return ''+d.getFullYear()+('0'+(d.getMonth()+1)).slice(-2)+('0'+d.getDate()).slice(-2);}
   function dayText(d){return +d.slice(6,8)+' '+MONTHS[+d.slice(4,6)-1]+' '+d.slice(0,4);}
-  function freeze(){ if (st.d) return; st.d = today(); st.px = {}; st.f.forEach(function(k){st.px[k]=FIX[k].p;}); }
-  function newOffer(){ st.d = ''; st.px = null; restored = false; }
+  function freeze(){ if (st.d) return; st.d = today(); st.px = {}; st.f.forEach(function(k){st.px[k]=FIX[k].p;}); st.rv = REVIEW; }
+  function newOffer(){ st.d = ''; st.px = null; st.rv = null; restored = false; }
 
   // ---- state in the URL, so a link reopens the same offer
   function hash(){
     var f = st.f.map(function(k){return st.h[k]?k+'.'+st.h[k]:k;}).join(',');
     return '#f='+f+'&rate='+st.rate+(st.erp?'&erp='+encodeURIComponent(st.erp):'')
       +(st.own?'&own='+encodeURIComponent(st.own):'')
-      +(st.d?'&d='+st.d+'&p='+st.f.map(P).join('.'):'');
+      +(chk()?'&c='+st.cv+'.'+st.ck+(st.t?'&t='+encodeURIComponent(st.t):''):'')
+      +(st.d?'&d='+st.d+'&p='+st.f.map(P).join('.')+(reviewFirst()?'&rv='+RV():''):'');
   }
   // The link always carries the source tag, so a forwarded offer stays attributed
   function link(){return location.origin+location.pathname+(SRC!=='site'?'?s='+SRC:'')+hash();}
@@ -521,17 +536,30 @@
     if (['15','20','30','40'].indexOf(p.rate)>-1) st.rate = +p.rate;
     if (p.erp) st.erp = p.erp;
     if (p.own) st.own = p.own.slice(0,160);
+    var c = /^(automate|paper|data|steps)\.([a-z]+)$/.exec(p.c||'');
+    if (c && FIX[c[2]] && c[2]!=='unsure'){ st.cv = c[1]; st.ck = c[2]; st.t = (p.t||'').replace(/\s+/g,' ').trim().slice(0,80); }
     if (!st.f.length) return;
     step = real().every(function(k){return st.h[k];}) ? 3 : 2;
-    if (px && step===3){ st.d = p.d; st.px = frozen; restored = true; track('offer/reopen/'+SRC+(/[?&]pdf=1/.test(location.search)?'/pdf':'')); }
+    if (px && step===3){ st.d = p.d; st.px = frozen; if (/^\d{1,5}$/.test(p.rv||'')) st.rv = +p.rv; restored = true; track('offer/reopen/'+SRC+(/[?&]pdf=1/.test(location.search)?'/pdf':'')); }
   })();
+
+  // "From your check": the task name and where it stopped, in step 2, on the sheet and in the email
+  function checkText(){ return (st.t ? '\u201c'+st.t+'\u201d \u00b7 ' : '')+CHECK[st.cv]+'.'; }
+  function showCheck(){
+    ['fromcheck','fromcheck2'].forEach(function(id){
+      var e = $(id); e.hidden = !chk(); if (!chk()) return;
+      e.innerHTML = '<span class="fc-k">From your check</span>';
+      if (st.t){ var b = document.createElement('b'); b.textContent = st.t; e.appendChild(b); e.appendChild(document.createTextNode(' \u00b7 ')); }
+      e.appendChild(document.createTextNode(CHECK[st.cv]+'.'));
+    });
+  }
 
   // ---- step 1
   var syms = $('syms');
   function syncSyms(){
     var full = real().length>=MAXTICKS;
     syms.querySelectorAll('.sym').forEach(function(b){b.setAttribute('aria-pressed', st.f.indexOf(b.dataset.k)>-1?'true':'false');});
-    $('capnote').textContent = full ? V("Four is plenty. I'll find the rest on the call.","Four is plenty. We'll find the rest on the call.") : '';
+    $('capnote').textContent = full ? "Four is plenty. We'll find the rest on the call." : '';
   }
   syms.addEventListener('click', function(e){
     var b = e.target.closest('.sym'); if(!b) return;
@@ -540,7 +568,7 @@
     if (i>-1){ st.f.splice(i,1); delete st.h[k]; }
     else if (k==='unsure'){ st.f=['unsure']; st.h={}; }
     else {
-      if (real().length>=MAXTICKS){ $('capnote').textContent = V("Four is plenty. I'll find the rest on the call.","Four is plenty. We'll find the rest on the call."); return; }
+      if (real().length>=MAXTICKS){ $('capnote').textContent = "Four is plenty. We'll find the rest on the call."; return; }
       st.f = st.f.filter(function(x){return x!=='unsure';}); st.f.push(k);
     }
     syncSyms(); render();
@@ -607,6 +635,8 @@
     });
     var first = order.filter(function(k){return k!=='unsure';})[0] || 'unsure';
     var rest = order.filter(function(k){return k!==first;});
+    var rvf = reviewFirst();
+    if (rvf){ first = st.ck; rest = [st.ck].concat(order.filter(function(k){return k!==st.ck;})); }
 
     // cost block
     $('cost').style.display = C.rows.length ? '' : 'none';
@@ -641,13 +671,17 @@
 
     // start box
     var f = FIX[first], fc = C.rows.filter(function(r){return r.k===first;})[0];
-    $('startsub').textContent = first==='unsure'
+    $('start').classList.toggle('review', rvf);
+    $('startsub').textContent = rvf
+      ? 'Your check stopped at '+(st.cv==='data'?'Data right?':'One way?')+' A tool built now would only copy the problem, so this comes first. Then the tool, with the £'+RV()+' taken off its price.'
+      : first==='unsure'
       ? 'A free call is the smallest step. We work out together where the time goes.'
       : (fc ? 'The one that costs you the most time. It is also the first job, so you pay when it works.' : 'The first job. You pay when it works as agreed.');
     var s = $('start'); s.innerHTML = '<span class="tag">Start here</span><div class="fix-row"><div><p class="fix-name"></p><p class="fix-res"></p></div><span class="fix-price"></span></div>';
-    var fp = P(first);
-    s.querySelector('.fix-name').textContent = f.n; s.querySelector('.fix-res').textContent = f.r; s.querySelector('.fix-price').textContent = price(fp,first);
-    if (!fp) s.querySelector('.fix-price').classList.add('tbc');
+    var fp = rvf ? 0 : P(first);
+    s.querySelector('.fix-name').textContent = rvf ? 'One-day process review' : f.n; s.querySelector('.fix-res').textContent = rvf ? REVIEW_WHY[st.cv] : f.r;
+    s.querySelector('.fix-price').textContent = rvf ? '£'+RV() : price(fp,first);
+    if (!fp && !rvf) s.querySelector('.fix-price').classList.add('tbc');
     // cost now vs one-off tool price, side by side
     var vs = $('vs');
     if (fc && fp){
@@ -667,11 +701,13 @@
     rest.forEach(function(k){
       var li = document.createElement('li');
       li.innerHTML='<div class="fix-row"><div><p class="fix-name"></p><p class="fix-res"></p></div><span class="fix-price"></span></div>';
-      li.querySelector('.fix-name').textContent = FIX[k].n; li.querySelector('.fix-res').textContent = FIX[k].r; li.querySelector('.fix-price').textContent = price(P(k),k); if(!P(k)) li.querySelector('.fix-price').classList.add('tbc');
+      li.querySelector('.fix-name').textContent = (rvf && k===st.ck ? 'After the review: ' : '')+FIX[k].n; li.querySelector('.fix-res').textContent = FIX[k].r; li.querySelector('.fix-price').textContent = price(P(k),k); if(!P(k)) li.querySelector('.fix-price').classList.add('tbc');
       more.appendChild(li);
     });
     $('morehead').style.display = rest.length?'':'none';
-    var line = '', we = V('I work','We work');
+    $('morehead').textContent = rvf ? 'Then' : 'Also on your list';
+    showCheck();
+    var line = '', we = 'We work';
     if (st.erp==='Sage'||st.erp==='Epicor') line = we+' from the exports your '+st.erp+' already produces. Nothing inside it changes.';
     else if (st.erp==='another ERP') line = we+' from the exports your ERP already produces. Nothing inside it changes.';
     else if (st.erp==='spreadsheets') line = 'No ERP needed. '+we+' from the spreadsheets you already keep.';
@@ -715,10 +751,11 @@
     }
     var out = [];
     if (st.d) out.push('Offer made '+dayText(st.d)+'.');
+    if (chk()) out.push('From your check: '+checkText());
     if (C.rows.length) out.push('Cost now: '+(C.floor?'at least ':'about ')+money(C.total)+' a year, about '+(Math.round(C.hours/10)*10).toLocaleString('en-GB')+' h a year at £'+st.rate+'/h.');
-    var first = order.filter(function(k){return k!=='unsure';})[0] || 'unsure', fr = row(first);
-    var t = 'Start here: '+line(first)+'.';
-    if (fr && P(first)) t += ' Covers the tool in about '+Math.max(1,Math.ceil(P(first)/fr.wk))+' weeks.';
+    var first = order.filter(function(k){return k!=='unsure';})[0] || 'unsure', fr = row(first), t;
+    if (reviewFirst()){ first = st.ck; t = 'Start here: One-day process review · £'+RV()+', credited in full against any build. Then: '+line(first)+'.'; }
+    else { t = 'Start here: '+line(first)+'.'; if (fr && P(first)) t += ' Covers the tool in about '+Math.max(1,Math.ceil(P(first)/fr.wk))+' weeks.'; }
     out.push(t);
     var rest = order.filter(function(k){return k!==first;});
     if (rest.length) out.push('Also shown: '+rest.map(line).join('; ')+'.');
@@ -730,6 +767,7 @@
     var t = 'Ticked: '+parts.join('; ')+'.';
     if (C.rows.length) t += ' Cost now: '+(C.floor?'at least ':'about ')+money(C.total)+' a year at £'+st.rate+'/h.';
     if (st.erp) t += ' System: '+st.erp+'.';
+    if (chk()) t += ' From their check: '+checkText();
     var own = st.own.trim(); if (own) t += ' In their words: '+own;
     return t;
   }
@@ -778,7 +816,7 @@
     nx.disabled = !valid();
     if (step<3){ nx.hidden = false; }
     if (step===1){ nx.textContent='Next →'; $('note').innerHTML = st.f.length ? '<b>'+st.f.length+'</b> ticked' : 'Tick at least one'; }
-    if (step===2){ nx.textContent='Show my offer →'; $('note').textContent = valid()?'':'Answer each one'; }
+    if (step===2){ nx.textContent='Show my offer →'; $('note').textContent = valid()?'':'Answer each one'; showCheck(); }
     if (step===3){
       freeze();
       if (!restored && !sent1.result){ sent1.result = 1; track('offer/result/'+SRC); st.f.forEach(function(k){ track('offer/problem/'+k); }); }
@@ -786,7 +824,7 @@
       buildOffer();
       // Not yet: nothing to send, the actions are Save as PDF and Copy link in its panel
       nx.textContent = V('Send to Kamil','Send to Patryk'); nx.hidden = st.o==='later';
-      $('note').textContent = !st.o ? V('How should I get back to you?','How should Patryk get back to you?') : (st.o==='later' ? 'Nothing is sent. Save it or copy the link above.' : '');
+      $('note').textContent = !st.o ? V('How should Kamil get back to you?','How should Patryk get back to you?') : (st.o==='later' ? 'Nothing is sent. Save it or copy the link above.' : '');
       $('privacy').hidden = !(st.o==='call'||st.o==='mail');
     }
     try{ history.replaceState(null,'', st.f.length && step>1 ? location.pathname+location.search+hash() : location.pathname+location.search); }catch(e){}
@@ -797,9 +835,9 @@
     $('s3').classList.remove('show'); $('progress').style.display='none'; $('bar').classList.remove('show');
     document.querySelector('.intro').style.display='none';
     var t, n1; $('doneh').textContent = "Thanks. That's it from you.";
-    if (st.o==='call'){ t=V('I have your answers and your number. You picked '+st.slot+'. I ring you then.','Patryk has your answers and your number. You picked '+st.slot+'. He rings you then.'); n1=V("I read what you ticked before I ring, so you don't have to explain it.","He reads what you ticked before he rings, so you don't have to explain it."); }
-    else if (st.o==='mail'){ t=V('I have your answers and your email. I reply within one working day.','Patryk has your answers and your email. He replies within one working day.'); n1=V('I reply by email within one working day.','Patryk replies by email within one working day.'); }
-    else { $('doneh').textContent = 'Kept, not sent.'; t=V('Nothing was sent to me.','Nothing was sent.')+' The link is copied. It opens this offer with the same answers and prices, any time. If you saved the PDF, the same link and a QR code are on it.'; n1='Come back whenever you like.'; try{navigator.clipboard.writeText(link());}catch(e){} }
+    if (st.o==='call'){ t=V('Kamil has your answers and your number. You picked '+st.slot+'. He rings you then.','Patryk has your answers and your number. You picked '+st.slot+'. He rings you then.'); n1=V("He reads what you ticked before he rings, so you don't have to explain it.","He reads what you ticked before he rings, so you don't have to explain it."); }
+    else if (st.o==='mail'){ t=V('Kamil has your answers and your email. He replies within one working day.','Patryk has your answers and your email. He replies within one working day.'); n1=V('Kamil replies by email within one working day.','Patryk replies by email within one working day.'); }
+    else { $('doneh').textContent = 'Kept, not sent.'; t='Nothing was sent.'+' The link is copied. It opens this offer with the same answers and prices, any time. If you saved the PDF, the same link and a QR code are on it.'; n1='Come back whenever you like.'; try{navigator.clipboard.writeText(link());}catch(e){} }
     $('donetext').textContent=t; $('n1').textContent=n1;
     if (st.o==='later') document.querySelectorAll('#donelist li:nth-child(n+2)').forEach(function(x){x.style.display='none';});
     $('donepdf').style.display = (st.o==='later'||FRAMED) ? 'none' : '';

@@ -132,15 +132,21 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     await c.close();
   }
 
-  // 3. pc tag: stored tag carries across pages, whole site speaks for Patryk
+  // 3. pc tag: stored tag carries across pages. The site is the same for everyone; only the contact person changes
   {
-    const c = await ctx(browser);
+    const c = await ctx(browser), c0 = await ctx(browser);
     const tab = (await open(c, '/?s=pc')).p;
+    // Page text without the contact points (data-pc lines, swapped blocks and the footer)
+    const core = q => q.evaluate(() => { const b = document.body.cloneNode(true); b.querySelectorAll('[data-pc],[data-pc-hide],[data-pc-show],footer,.mlp-foot,script,style,noscript,form[hidden]').forEach(e => e.remove()); return b.textContent.replace(/\?s=[a-z0-9-]+/g, '?s=TAG').replace(/\s+/g, ' ').trim(); });   // printouts name the visitor's tag
     for (const path of PAGES) {
       const { p, errs } = await open(c, path, tab);
       const t = await visibleText(p);
-      ok(!/Kamil/.test(t), `pc ${path} shows Kamil`);
       ok(!/hello@meshlock/.test(t), `pc ${path} shows hello@`);
+      const contact = await p.evaluate(() => [...document.querySelectorAll('footer, #contact, .sheet-foot, #opts, .dim, main h1')].map(e => e.innerText).join(' '));
+      ok(!/Kamil/.test(contact), `pc ${path} contact points show Kamil`);
+      const q = await open(c0, path);
+      ok(await core(p) === await core(q.p), `pc ${path} is the same page every visitor sees`);
+      await q.p.close();
       ok(await p.evaluate(() => document.documentElement.classList.contains('pc') && !document.documentElement.classList.contains('pc-wait')), `pc ${path} class`);
       const tags = await startTags(p);
       ok(tags.every(x => x === 'pc'), `pc ${path} offer tags ${tags}`);
@@ -149,10 +155,18 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
         ok(!(await p.locator('footer a[href*="linkedin"]').isVisible()), `pc ${path} LinkedIn hidden`);
       }
       ok(errs.length === 0, `pc ${path} errors ${errs}`);
-      if (path === '/notes/') ok(t.includes('taught us'), 'pc notes h1 swapped');
+      if (path === '/notes/') ok(t.includes('taught us'), 'pc notes speak in the Meshlock voice');
       tab.removeAllListeners('pageerror'); tab.removeAllListeners('console');
     }
-    await c.close();
+    await c.close(); await c0.close();
+    // Contact person on the homepage: one person, never two to choose from
+    for (const [q, who, not] of [['', 'Kamil Pojawa', 'Patryk'], ['?s=kp', 'Kamil Pojawa', 'Patryk'], ['?s=pc', 'Patryk Chojnacki', 'Kamil'], ['?s=pcf', 'Patryk Chojnacki', 'Kamil']]) {
+      const cx = await ctx(browser, { w: 390 }); const { p } = await open(cx, '/' + q);
+      const ct = await p.locator('#contact').innerText();
+      ok(ct.includes(who) && !ct.includes(not), `contact ${q || 'no tag'} shows ${who} only`);
+      ok(/Lean, software and ERP\. Under one roof\./.test(await p.locator('.lock-line').innerText()) && await p.locator('#about').isVisible(), `${q || 'no tag'}: same hero line and About for everyone`);
+      await cx.close();
+    }
     // pc tag straight on /toolkit/
     const c2 = await ctx(browser, { w: 390 });
     const { p } = await open(c2, '/toolkit/?s=pc');
@@ -350,7 +364,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(/FIX THE DATA FIRST/.test(await r.p.locator('.wa-stamp').innerText()), 'data result shows its stamp');
     ok(await r.p.locator('.wa-g.pass').count() === 1 && await r.p.locator('.wa-g.stop[data-g="data"]').count() === 1 && await r.p.locator('.wa-g.off').count() === 3, 'gates: passed, stopped at data, rest not reached');
     ok(/Stock in the system/.test(await r.p.locator('.wa-cases').innerText()) && await r.p.locator('.wa-first .wa-w').count() === 3, 'data result has cases and first steps');
-    ok(await r.p.locator('.wa-next a[href="/#contact"]').count() === 1 && await r.p.locator('.wa-go').count() === 0, 'data result leads to a call, not straight to a price');
+    ok(await r.p.locator('.wa-next a[href="/#contact"]').count() === 1 && /\/start\/\?s=tk-automating#f=pick\.b&c=data\.pick&t=Sorting%20job%20sheets$/.test(await r.p.locator('.wa-go').getAttribute('href')), 'data result: the offer starts with the review, carries the result and task, and a call as the other way');
     ok(/Only one person/.test(await r.p.locator('.wa-also').innerText()), 'also worth knowing lists the one-person risk');
     ok(/Already in place: worth the time/.test(await r.p.locator('.wa-also').innerText()), 'a fix-first result also says what is already in place');
     ok(/Task: Sorting job sheets/.test(await r.p.locator('.wa-task').innerText()), 'task name on the result');
@@ -359,10 +373,10 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     const again = await open(c, '/toolkit/worth-automating/' + h);
     ok(/FIX THE DATA FIRST/.test(await again.p.locator('.wa-stamp').innerText()) && await again.p.inputValue('.wa-in') === 'Sorting job sheets', 'saved link reopens the same result');
     await pick('trust', 'yes');
-    ok(/^AUTOMATE$/.test(await r.p.locator('.wa-stamp').innerText()) && /\/start\/\?s=tk-automating#f=pick\.b$/.test(await r.p.locator('.wa-go').getAttribute('href')), 'automate leads to the offer with the right problem and hours');
+    ok(/^AUTOMATE$/.test(await r.p.locator('.wa-stamp').innerText()) && /\/start\/\?s=tk-automating#f=pick\.b&c=automate\.pick&t=Sorting%20job%20sheets$/.test(await r.p.locator('.wa-go').getAttribute('href')), 'automate leads to the offer with the right problem, hours, result and task');
     ok(await r.p.locator('.wa-g.go').count() === 1 && await r.p.locator('.wa-g.pass').count() === 4, 'automate passes all four gates');
     await pick('digital', 'paper');
-    ok(/\/start\/.*#f=pick\.b$/.test(await r.p.locator('.wa-go').getAttribute('href')) && await r.p.locator('.wa-next a[href="/#contact"]').count() === 1, 'paper result offers to price the first step and a call');
+    ok(/\/start\/.*#f=pick\.b&c=paper\.pick&t=/.test(await r.p.locator('.wa-go').getAttribute('href')) && await r.p.locator('.wa-next a[href="/#contact"]').count() === 1, 'paper result offers to price the first step and a call');
     await pick('hrs', 'a0'); await pick('errors', 'rarely');
     ok(/LEAVE IT/.test(await r.p.locator('.wa-stamp').innerText()) && /under 25 hours a year/.test(await r.p.locator('.wa-hours').innerText()) && await r.p.locator('.wa-go').count() === 0, 'leave it shows the hours a year and no offer');
     await r.p.click('.wa-reset');
@@ -463,10 +477,14 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ok(!(await p.locator('#fix-list').isVisible()), 'phone: the empty fix list stays out of the way');
     ok(!/on the left/.test(await p.locator('.fix-empty').textContent()), 'fix list hint has no left or right');
     // Who's behind this: face, name and one line on top, the rest closed
-    ok(await p.locator('#about .who .person-photo').isVisible() && /Kamil Pojawa/.test(await p.locator('#about .who-name').innerText()), 'About shows the face and the name');
+    ok(await p.locator('#about .who .person-photo').count() === 2 && await p.locator('#about .who .person-photo').nth(1).isVisible(), 'About shows both faces');
+    ok((await p.locator('#about .who-name').allInnerTexts()).join(',') === 'Kamil Pojawa,Patryk Chojnacki', 'About shows both names');
+    ok((await p.locator('#about .who-role').allInnerTexts()).map(x => x.toUpperCase()).join(',') === 'FOUNDER · LEAD ENGINEER,BUSINESS DEVELOPMENT LEAD', 'About shows both roles');
+    ok(!/partner|co-founder/i.test((await p.locator('#about .team, #about .people').allTextContents()).join(' ')), 'Patryk is never called partner or co-founder');
     ok(!(await p.locator('#about-more').evaluate(d => d.open)) && !(await p.locator('#about .gears-wrap').isVisible()), 'About details start closed');
     await p.click('#about-more > summary');
-    ok(await p.locator('#about .gears-wrap').isVisible() && await p.locator('#about .creds').isVisible(), 'More about Kamil opens the rig and the bio');
+    ok(await p.locator('#about .gears-wrap').isVisible() && await p.locator('#about .creds').isVisible(), 'More about us opens the rig and both bios');
+    ok(await p.locator('#about .people .person').count() === 2 && /UNDER ONE ROOF/.test(await p.locator('#about .gears-cap').innerText()), 'two bios and the rig caption Under one roof');
     await p.click('#about-more > summary');
     const H = await p.evaluate(() => document.documentElement.scrollHeight);
     ok(H <= 6400, 'phone: homepage is about seven screens (' + H + 'px)');
@@ -480,8 +498,10 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     await c.close();
     const c2 = await ctx(browser, { w: 390 });
     const r = await open(c2, '/?s=pc');
-    ok(!(await r.p.locator('#about').isVisible()) && /our job/.test(await r.p.locator('.fam-calm').innerText()), 'pc: About hidden, calm line in the Meshlock voice');
-    ok(!(await r.p.locator('.hero .eyebrow').isVisible()) && /Automation &/.test(await r.p.locator('.lock-line').innerText()), 'pc: the hero says Automation & continuous improvement once, not twice');
+    ok(await r.p.locator('#about').isVisible() && /our job/.test(await r.p.locator('.fam-calm').innerText()), 'pc: About shown, calm line in the Meshlock voice');
+    ok(/We build what it can't do/.test(await r.p.locator('.hero h1').innerText()), 'hero H1 in the Meshlock voice');
+    const out = await r.p.evaluate(() => { const b = document.body.cloneNode(true); b.querySelectorAll('#about, script, style').forEach(e => e.remove()); return b.innerText || b.textContent; });
+    ok(!/\b(I|I'm|I've|I'll|my|me)\b/.test(out), 'homepage: no first person outside the two bios');
     await c2.close();
   }
 
@@ -506,6 +526,57 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     await cases.nth(0).locator('.tc-more > summary').click();
     ok(await cases.nth(0).locator('.tc-more p').first().isVisible(), 'the full story opens');
     ok(errs.length === 0, '/tools/ errors ' + errs);
+    await c.close();
+  }
+
+  // 19. Under one roof: the main line in every footer, no "one person" left, link preview v3
+  {
+    const c = await ctx(browser);
+    for (const path of PAGES) {
+      const { p } = await open(c, path);
+      if (FOOTER_PAGES.includes(path)) ok((await p.locator('footer .foot-tag').innerText()).trim() === 'Lean, software and ERP. Under one roof.', `${path} footer main line`);
+      ok(!/One person|ONE PERSON/.test(await visibleText(p)), `${path} still says One person`);
+      const og = await p.locator('meta[property="og:image"]').getAttribute('content').catch(() => null);
+      if (og) ok(/og-image\.png\?v=3$/.test(og), `${path} og:image v3`);
+      await p.close();
+    }
+    for (const a of ['job-travellers', 'picking-route', 'dxf-check', 'machine-data', 'batch-export']) {
+      const { p } = await open(c, `/assets/anim/${a}.html`);
+      ok(/Under one roof/.test(await p.locator('#line').textContent()), `${a} end card line`);
+      await p.close();
+    }
+    await c.close();
+  }
+
+  // 20. From the check to the offer: result and task name carried in, the review first when the data or the steps come first
+  {
+    const c = await ctx(browser, { w: 390 });
+    let r = await open(c, '/start/?s=fn-gates#f=sort.b,pick.c&c=data.pick&t=Picking%20lists');
+    ok(await r.p.locator('#s3').isVisible(), 'check link opens on the offer');
+    let fc = await r.p.locator('#fromcheck').innerText();
+    ok(/From your check/i.test(fc) && /Picking lists/.test(fc) && /Data right\?/.test(fc), 'offer shows From your check with the task name ' + fc);
+    ok((await r.p.locator('#start .fix-name').innerText()) === 'One-day process review' && (await r.p.locator('#start .fix-price').innerText()).trim() === '£600', 'fix the data first: the review is where to start');
+    ok(/^After the review: Picking orders put in route order/.test(await r.p.locator('#more li').first().innerText()) && await r.p.locator('#more li').count() === 2, 'the tool comes after the review, the other tick stays on the list');
+    ok(await r.p.locator('#vs').isHidden(), 'no tool payback box while the review comes first');
+    let h = await r.p.evaluate(() => location.hash);
+    ok(/c=data\.pick/.test(h) && /t=Picking%20lists/.test(h) && /&rv=600/.test(h) && /&d=\d{8}/.test(h), 'saved offer link keeps the check and the review price ' + h);
+    await r.p.click('.opt[data-o="mail"]'); await r.p.fill('#email', 'test@example.com'); await r.p.click('#next');
+    const shown = await r.p.inputValue('#f-shown'), sum = await r.p.inputValue('#f-summary');
+    ok(/From your check: “Picking lists” · Stopped at Data right\? Fix the data first\./.test(shown) && /Start here: One-day process review · £600, credited in full against any build\. Then: Picking orders/.test(shown), 'offer email shows the check and the review first ' + shown);
+    ok(/From their check: “Picking lists”/.test(sum), 'offer summary carries the check');
+    const again = await open(c, '/start/' + h);
+    ok(/Your saved offer/.test(await again.p.locator('#saved').innerText()) && (await again.p.locator('#start .fix-name').innerText()) === 'One-day process review', 'saved link reopens with the review first');
+    r = await open(c, '/start/#f=pick.b&c=steps.pick');
+    ok(/One way\?/.test(await r.p.locator('#fromcheck').innerText()) && (await r.p.locator('#start .fix-name').innerText()) === 'One-day process review', 'write the steps down first: the review first, no task name needed');
+    r = await open(c, '/start/#f=pick.b&c=automate.pick&t=Picking');
+    ok(/first four gates\. Automate/.test(await r.p.locator('#fromcheck').innerText()) && (await r.p.locator('#start .fix-name').innerText()) === 'Picking orders put in route order' && await r.p.locator('#vs').isVisible(), 'automate: the tool is where to start');
+    r = await open(c, '/start/#f=pick.b');
+    ok(await r.p.locator('#fromcheck').isHidden() && (await r.p.locator('#start .fix-name').innerText()) === 'Picking orders put in route order', 'old links without a check work as before');
+    r = await open(c, '/start/#f=pick&c=data.pick&t=Picking');
+    ok(await r.p.locator('#s2').isVisible() && await r.p.locator('#fromcheck2').isVisible(), 'without hours the check shows on step 2 too');
+    r = await open(c, '/start/?s=pc#f=pick.b&c=data.pick');
+    ok(/Patryk Chojnacki/.test(await r.p.locator('.sheet-foot .who').innerText()) && (await r.p.locator('#start .fix-name').innerText()) === 'One-day process review', 'pc: same offer, Patryk as the contact');
+    ok(r.errs.length === 0, 'offer errors ' + r.errs);
     await c.close();
   }
 
