@@ -29,7 +29,7 @@ function serve() {
   });
 }
 const PAGES = ['/', '/tools/', '/prices/', '/notes/', '/notes/doing-it-by-hand.html', '/notes/your-machines-already-know.html', '/notes/five-gates.html',
-  '/toolkit/', '/toolkit/cycle-time/', '/toolkit/step-timer/', '/toolkit/worth-automating/', '/toolkit/machine-data/', '/toolkit/step-timer/sheet/', '/thanks.html', '/start/'];
+  '/toolkit/', '/toolkit/cycle-time/', '/toolkit/step-timer/', '/toolkit/worth-automating/', '/toolkit/machine-data/', '/toolkit/step-timer/sheet/', '/thanks.html', '/start/', '/pl/'];
 const FOOTER_PAGES = PAGES.filter(p => p !== '/start/');
 const TK = { '/toolkit/': 'tk-index', '/toolkit/cycle-time/': 'tk-cycle', '/toolkit/step-timer/': 'tk-timer', '/toolkit/worth-automating/': 'tk-automating', '/toolkit/machine-data/': 'tk-machine', '/toolkit/step-timer/sheet/': 'tk-timer' };
 let fails = 0, passes = 0;
@@ -464,7 +464,7 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
       const t = await visibleText(p);
       const m = t.match(NEVER);
       ok(!m, `${path} uses an old name: ${m && m[0]}`);
-      if (await p.locator('nav .nav-cta').count()) ok((await p.locator('nav .nav-cta').innerText()).trim().toUpperCase() === 'BOOK A FREE CALL', `${path} nav says Book a free call`);
+      if (await p.locator('nav .nav-cta').count()) ok((await p.locator('nav .nav-cta').innerText()).trim().toUpperCase() === (path === '/pl/' ? 'BEZPŁATNA ROZMOWA' : 'BOOK A FREE CALL'), `${path} nav says Book a free call`);
       await p.close();
     }
     const { p } = await open(c, '/');
@@ -564,6 +564,31 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
       await p.close();
     }
     await c.close();
+  }
+
+  // 21. Polish page: noindex and out of the sitemap, Polish, Kamil with his kp-pl link, Patryk otherwise, the promise in the same order
+  {
+    const c = await ctx(browser, { w: 390 });
+    let { p } = await open(c, '/pl/?s=kp-pl');
+    ok(await p.evaluate(() => document.documentElement.lang) === 'pl', '/pl/ lang pl');
+    ok(await p.locator('meta[name="robots"][content="noindex"]').count() === 1, '/pl/ noindex');
+    const sm = await (await p.request.get(BASE + '/sitemap.xml')).text();
+    ok(!sm.includes('/pl/'), '/pl/ not in the sitemap');
+    let ct = await p.locator('#contact').innerText();
+    ok(ct.includes('Kamil Pojawa') && ct.includes('hello@meshlock.co.uk') && !ct.includes('Patryk'), '/pl/?s=kp-pl contact is Kamil only');
+    const txt = await visibleText(p);
+    ok(!/—|–| - /.test(txt), '/pl/ no dashes');
+    ok(!/szyte na miar|laser|despatch/i.test(txt), '/pl/ avoided words');
+    ok((await p.locator('.promise h3').allInnerTexts()).join('|') === 'Wasz ERP zostaje|Pod wasz proces|Stała cena|Narzędzie jest wasze', '/pl/ promise order');
+    ok(await p.locator('.promise .val-box svg').count() === 4, '/pl/ promise icons');
+    for (const a of await p.locator('.pl-tile a').all()) { const r = await p.request.get(BASE + await a.getAttribute('href')); ok(r.status() === 200, '/pl/ animation link ' + await a.getAttribute('href')); }
+    for (const img of await p.locator('.pl-tile img').all()) { const r = await p.request.get(BASE + await img.getAttribute('src')); ok(r.status() === 200, '/pl/ thumb ' + await img.getAttribute('src')); }
+    await c.close();
+    const c2 = await ctx(browser, { w: 390 });
+    ({ p } = await open(c2, '/pl/'));
+    ct = await p.locator('#contact').innerText();
+    ok(ct.includes('Patryk Chojnacki') && ct.includes('patryk@meshlock.co.uk') && /7501 839466/.test(ct) && !ct.includes('Kamil'), '/pl/ no tag: contact is Patryk only');
+    await c2.close();
   }
 
   // 20. From the check to the offer: result and task name carried in, the review first when the data or the steps come first
