@@ -55,6 +55,11 @@
   .pl-tile .label{margin:0;}
   .pl-tile h3{font-size:20px; margin:0;}
   .pl-tile .t-res{margin:0; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:var(--green);}
+  .t-fields{display:flex; flex-direction:column; gap:10px; margin-top:4px;}
+  .t-f{border-top:1px dashed var(--line); padding-top:9px;}
+  .t-f b{display:block; font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:3px;}
+  .t-f p{margin:0; font-size:15px; line-height:1.5;}
+  .t-f:last-child p{font-weight:500;}
   .pl-tile p.t-line{margin:0; font-size:15.5px; line-height:1.55; color:var(--ink-soft);}
   .pl-tile .t-watch{margin-top:auto; padding-top:6px;}
   .pl-note{margin:22px 0 0; font-size:14.5px; color:var(--ink-soft); max-width:60ch;}
@@ -144,7 +149,7 @@
     <div class="sec-head">
       <p class="label">Przykłady z hali</p>
       <h2>Cztery narzędzia, które już działają.</h2>
-      <p>Najpierw jak było, potem to samo z narzędziem. Każde zrobione pod konkretny proces.</p>
+      <p>Każde zrobione pod konkretny proces. Przy każdym: jak było, co robi narzędzie i co z tego wyszło.</p>
     </div>
     <ul class="pl-tiles">
       <li class="pl-tile">
@@ -153,7 +158,7 @@
           <p class="label">Wokół ERP</p>
           <h3>Zlecenia produkcyjne</h3>
           <p class="t-res">1 h → 1 min</p>
-          <p class="t-line">Około 80 kartek dziennie, sortowanych ręcznie przez godzinę. Narzędzie sortuje je i grupuje. Teraz zajmuje to około minuty.</p>
+          <div class="t-fields"><div class="t-f"><b>Przed</b><p>Około 80 kartek zleceń z ERP dziennie, w jednym stosie. Godzina ręcznego sortowania i grupowania.</p></div><div class="t-f"><b>Narzędzie</b><p>Sortuje kartki, grupuje zlecenia wielostronicowe z kartką rozdzielającą, dopisuje kuriera i drukuje podgląd części.</p></div><div class="t-f"><b>Wynik</b><p>Godzina pracy dziennie zamieniła się w około minutę.</p></div></div>
           <a class="text-link t-watch" href="/assets/anim/job-travellers.html" target="_blank" rel="noopener">Zobacz animację (EN) →</a>
         </div>
       </li>
@@ -162,8 +167,8 @@
         <div class="t-body">
           <p class="label">Wokół ERP</p>
           <h3>Trasy kompletacji</h3>
-          <p class="t-res">+40%</p>
-          <p class="t-line">Kompletacja szybsza o około 40%. Koniec z ręcznym filtrowaniem i przedrukowywaniem list.</p>
+          <p class="t-res">+40% szybciej</p>
+          <div class="t-fields"><div class="t-f"><b>Przed</b><p>ERP drukował listy kompletacji jednym stosem, a magazynierzy chodzili tam i z powrotem. W szczycie ktoś przedrukowywał je ręcznie, alejka po alejce.</p></div><div class="t-f"><b>Narzędzie</b><p>Sortuje stos według priorytetu, wartości albo rozmiaru i układa zlecenia w kolejności trasy po magazynie.</p></div><div class="t-f"><b>Wynik</b><p>Kompletacja szybsza o około 40%. Bez ręcznego przedrukowywania.</p></div></div>
           <a class="text-link t-watch" href="/assets/anim/picking-route.html" target="_blank" rel="noopener">Zobacz animację (EN) →</a>
         </div>
       </li>
@@ -173,7 +178,7 @@
           <p class="label">Jakość</p>
           <h3>Cyfrowy test nowego produktu</h3>
           <p class="t-res">do 10% mocy maszyny</p>
-          <p class="t-line">Nowy produkt przechodzi cały test na ekranie, zanim trafi na maszynę. Bez cięcia próbnego i ręcznego liczenia części. Około godziny mniej na każdy nowy projekt i do 10% mocy maszyny odzyskane.</p>
+          <div class="t-fields"><div class="t-f"><b>Przed</b><p>Nowy projekt szedł na maszynę na próbę. Cięcie, ręczne liczenie części, poprawka i od nowa.</p></div><div class="t-f"><b>Narzędzie</b><p>Testuje projekt w całości na ekranie: położenie, orientację, przerwy w ścieżkach, ustawienia obróbki i liczbę części względem dokumentacji. Każdy błąd zaznacza na rysunku.</p></div><div class="t-f"><b>Wynik</b><p>Około godziny mniej na każdy nowy produkt i do 10% mocy maszyny odzyskane.</p></div></div>
           <a class="text-link t-watch" href="/assets/anim/dxf-check.html" target="_blank" rel="noopener">Zobacz animację (EN) →</a>
         </div>
       </li>
@@ -183,7 +188,7 @@
           <p class="label">Dane i raporty</p>
           <h3>Dane z maszyn</h3>
           <p class="t-res">80% → 91%</p>
-          <p class="t-line">Przestoje widoczne na ekranie. Średnia wydajność maszyn wzrosła z 80% do 91%. Te same maszyny, ci sami ludzie.</p>
+          <div class="t-fields"><div class="t-f"><b>Przed</b><p>Maszyny pracowały cały dzień, ale nikt nie wiedział, jak dobrze. Wydajność oceniano na oko.</p></div><div class="t-f"><b>Narzędzie</b><p>Sam zbiera logi z maszyn i pokazuje każdy start i każdy postój co do sekundy, osobno dla każdej maszyny.</p></div><div class="t-f"><b>Wynik</b><p>Przyczyny przestojów znalezione, proces poprawiony, operatorzy przeszkoleni na prawdziwych danych. Średnia wydajność z 80% do 91%.</p></div></div>
           <a class="text-link t-watch" href="/assets/anim/machine-data.html" target="_blank" rel="noopener">Zobacz animację (EN) →</a>
         </div>
       </li>
