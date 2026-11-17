@@ -20,6 +20,7 @@ apple-touch-icon.png          180px icon
 sitemap.xml                   Sitemap for /, /tools/, /prices/, /notes/, each article, /toolkit/ and each tool page under it
 robots.txt                    Allows all, points to sitemap.xml
 thanks.html                   Contact form landing page (noindex, not in the sitemap)
+for/<slug>/index.html         Personal notes: a one-off note from Kamil to one firm, sent by email with a kp- tag (noindex, not in the sitemap, not linked from other pages). See Personal notes
 start/index.html              One-page offer: tick problems, add rough hours, get an offer with the current cost next to example tool prices (noindex, not in the sitemap)
 assets/
   meshlock-wordmark.svg       Wordmark used in nav and footer
@@ -206,6 +207,15 @@ Every Field Note carries one small practical tool tied to its topic, living in /
 Every new tool gets one card on the /toolkit/ index (`toolkit/index.html`): copy one `<li class="tk-card">` line and change the tag, name, question, time, use it when, link, paper version if any (`tk-paper`) and note. The tag names the kind of tool in the case-file tag style (CALCULATOR, CHECKLIST, TIMER, CHECK; a new kind gets a new word), never a number, because the tools are not a sequence. The index also has its own page in the sitemap and is the only toolkit page linked from every footer and from the top of /notes/; it is not in the main nav.
 
 On /notes/ each row shows, above its title, a type chip (`.note-type`: GUIDE or CASE STORY, dashed green tag) and a short mono line (`.note-len`, e.g. `8 min + puzzle · checklist · calculator` or `4 min`). Newest first.
+
+## Personal notes (/for/<slug>/)
+
+- A personal note is a one-off page written by Kamil for one firm, sent in his own email with a `kp-` tag (for example `kp-ft`). It explains one problem he expects at that firm from public sources, how he would approach it, and where he is coming from.
+- The slug is neutral (letters and digits, never the firm's name). The page is `noindex`, out of the sitemap and not linked from any other page.
+- Voice: first person (I, my) is allowed here and only here, because the note is a personal letter. Everything else on the site keeps the Meshlock voice.
+- The same page checklist applies: head snippet, site.js, stats.js, nav and footer. The reply button is a contact point with Patryk's version in `data-pc`, like every other contact point.
+- Copy rules stay: no dashes, British English, never the specific machine type of Kamil's own plant, no employer details. Facts about the firm come only from public sources and the note lists them at the bottom.
+- Add each note to `PAGES` in the site check and to block 22.
 
 ## Names (one name per thing, everywhere)
 

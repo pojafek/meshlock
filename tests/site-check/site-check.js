@@ -29,7 +29,7 @@ function serve() {
   });
 }
 const PAGES = ['/', '/tools/', '/prices/', '/notes/', '/notes/doing-it-by-hand.html', '/notes/your-machines-already-know.html', '/notes/five-gates.html',
-  '/toolkit/', '/toolkit/cycle-time/', '/toolkit/step-timer/', '/toolkit/worth-automating/', '/toolkit/machine-data/', '/toolkit/step-timer/sheet/', '/thanks.html', '/start/', '/pl/'];
+  '/toolkit/', '/toolkit/cycle-time/', '/toolkit/step-timer/', '/toolkit/worth-automating/', '/toolkit/machine-data/', '/toolkit/step-timer/sheet/', '/thanks.html', '/start/', '/pl/', '/for/ft-1611/'];
 const FOOTER_PAGES = PAGES.filter(p => p !== '/start/');
 const TK = { '/toolkit/': 'tk-index', '/toolkit/cycle-time/': 'tk-cycle', '/toolkit/step-timer/': 'tk-timer', '/toolkit/worth-automating/': 'tk-automating', '/toolkit/machine-data/': 'tk-machine', '/toolkit/step-timer/sheet/': 'tk-timer' };
 let fails = 0, passes = 0;
@@ -588,6 +588,29 @@ const startTags = p => p.evaluate(() => [...document.querySelectorAll('a[href]')
     ({ p } = await open(c2, '/pl/'));
     ct = await p.locator('#contact').innerText();
     ok(ct.includes('Patryk Chojnacki') && ct.includes('patryk@meshlock.co.uk') && /7501 839466/.test(ct) && !ct.includes('Kamil'), '/pl/ no tag: contact is Patryk only');
+    await c2.close();
+  }
+
+  // 22. Personal notes (/for/<slug>/): noindex, out of the sitemap, Kamil's kp- link shows Kamil only, no dashes, no machine type words, links open
+  {
+    const c = await ctx(browser, { w: 390 });
+    let { p } = await open(c, '/for/ft-1611/?s=kp-ft');
+    ok(/noindex/.test(await p.locator('meta[name="robots"]').getAttribute('content')), '/for/ft-1611/ noindex');
+    const sm = await (await p.request.get(BASE + '/sitemap.xml')).text();
+    ok(!sm.includes('/for/'), '/for/ not in the sitemap');
+    let t = await visibleText(p);
+    ok(t.includes('hello@meshlock.co.uk') && !t.includes('patryk@'), '/for/ft-1611/?s=kp-ft contact is Kamil only');
+    ok(!/—|–| - /.test(t), '/for/ft-1611/ no dashes');
+    ok(!/laser|trotec|despatch|job traveller/i.test(t), '/for/ft-1611/ avoided words');
+    for (const h of await p.evaluate(() => [...document.querySelectorAll('main a[href^="/"]')].map(a => a.getAttribute('href').split('#')[0]))) {
+      const r = await p.request.get(BASE + h); ok(r.status() === 200, '/for/ft-1611/ link ' + h);
+    }
+    ok((await p.locator('main a[href^="/tools/"]').getAttribute('href')).includes('s=kp-ft'), '/for/ft-1611/ tools link carries kp-ft');
+    await c.close();
+    const c2 = await ctx(browser, { w: 390 });
+    ({ p } = await open(c2, '/for/ft-1611/'));
+    t = await visibleText(p);
+    ok(t.includes('patryk@meshlock.co.uk') && !t.includes('hello@meshlock'), '/for/ft-1611/ no tag: contact is Patryk only');
     await c2.close();
   }
 

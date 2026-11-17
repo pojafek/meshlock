@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>/* Contact person: Patryk, unless the tag is Kamil's (kp..., li-...). Hide Kamil's contact lines until assets/site.js swaps them. Keep at the top of <head> on every page. */(function(){try{var t=(new URLSearchParams(location.search).get('s')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,20)||sessionStorage.getItem('ml-src')||(/^\/toolkit\//.test(location.pathname)&&(function(k){return k&&k.t&&Date.now()-k.at<15552e6?k.t:''})(JSON.parse(localStorage.getItem('ml-keep')||'null')))||'';if(/^(kp|li-)/.test(t))return;var h=document.documentElement,c=document.createElement('style');h.classList.add('pc','pc-wait');c.textContent='html.pc [data-pc-hide]{display:none!important}html.pc-wait [data-pc]{visibility:hidden!important}';document.head.appendChild(c);addEventListener('load',function(){h.classList.remove('pc-wait');});}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex, nofollow">
+<title>A note for Farrar &amp; Tanner | Meshlock</title>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/notes.css">
+<script src="/assets/site.js" defer></script>
+<script src="/assets/stats.js" defer></script>
+<style>
+/* Personal note to one firm (see CLAUDE.md, Personal notes). Tokens come from notes.css. */
+.ln-k{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 10px;}
+.ln-src{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-soft); margin:12px 0 0;}
+.ln-hero{padding:56px 0 64px;}
+.ln-hero .crumbs{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; color:var(--ink-soft); margin:0 0 28px;}
+.ln-hero h1{font-size:clamp(34px,4.6vw,54px); line-height:1.06; font-weight:700; max-width:18ch;}
+.ln-lede{font-size:18px; line-height:1.6; color:var(--ink-soft); max-width:62ch; margin:24px 0 0;}
+.ln-why{max-width:62ch; margin:20px 0 0; padding:14px 18px; background:var(--paper-card); border:1px solid var(--line); border-radius:var(--radius); font-size:14.5px; line-height:1.55; color:var(--ink-soft);}
+.ln-band{background:var(--paper-dim); border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:64px 0;}
+.ln-sec{padding:72px 0;}
+.ln-h2{font-size:30px; line-height:1.2; margin:0 0 28px;}
+.ln-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px;}
+.ln-card{background:var(--paper-card); border:1px solid var(--line); border-radius:var(--radius); padding:22px; position:relative;}
+.ln-card p{margin:0; font-size:14.5px; line-height:1.55;}
+.ln-card.ln-strong{border:1.5px solid var(--ink);}
+.ln-intro{max-width:64ch; margin:0 0 32px;}
+.ln-flow{line-height:1.9 !important;}
+.ln-flow .ar{color:var(--green);}
+.ln-flow .bad{color:var(--red-flag); font-weight:600;}
+.ln-lab{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; margin:0 0 14px !important;}
+.ln-lab.red{color:var(--red-flag);} .ln-lab.green{color:var(--green);}
+.ln-stamp{position:absolute; top:-12px; right:18px; transform:rotate(5deg); background:var(--green-bg); border:1.5px solid var(--green); border-radius:2px; padding:3px 8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--green);}
+.ln-dark{background:var(--ink); color:var(--paper); padding:72px 0;}
+.ln-dark .ln-k{color:var(--amber);}
+.ln-dark .ln-h2{color:var(--paper);}
+.ln-steps{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:28px;}
+.ln-step{border-top:1px solid #3a3f43; padding-top:18px;}
+.ln-step b{display:block; font-family:'Space Grotesk',sans-serif; font-size:40px; line-height:1; color:var(--amber);}
+.ln-step p{margin:12px 0 0; font-size:14.5px; line-height:1.55; color:var(--line);}
+.ln-two{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:40px;}
+.ln-two p{margin:0; max-width:52ch;}
+.ln-cta{margin-top:40px; background:var(--paper-card); border:1.5px solid var(--ink); border-radius:var(--radius); padding:26px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:18px;}
+.ln-cta > div{flex:1 1 380px;}
+.ln-cta h3{font-size:22px; line-height:1.25;}
+.ln-cta p{margin:10px 0 0; font-size:14.5px; line-height:1.55; color:var(--ink-soft);}
+.ln-cta p a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:4px;}
+.ln-cta .price{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--amber-ink);}
+.ln-btn{display:inline-flex; align-items:center; min-height:44px; box-sizing:border-box; background:var(--ink); color:var(--paper); text-decoration:none; font-family:'IBM Plex Mono',monospace; font-size:13px; letter-spacing:.08em; text-transform:uppercase; padding:12px 20px; border-radius:var(--radius); overflow-wrap:anywhere;}
+.ln-btn:hover{box-shadow:3px 4px 0 var(--amber); transform:translateY(-1px);}
+.ln-sources{border-top:1px solid var(--line); padding:32px 0 8px;}
+.ln-sources p{margin:0; font-size:14.5px; line-height:1.55; color:var(--ink-soft); max-width:80ch;}
+a:focus-visible{outline:2.5px solid var(--steel); outline-offset:3px;}
+@media (prefers-reduced-motion: reduce){.ln-btn:hover{transform:none;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">
+    <a class="wordmark" href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="178" height="28"></a>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="/tools/"><span class="nl-long">Tools in action</span><span class="nl-short">Tools</span></a>
+    <a class="nav-link" href="/prices/">Prices</a>
+    <a class="nav-link" href="/#about">About</a>
+    <a class="nav-link" href="/notes/"><span class="nl-long">Field notes</span><span class="nl-short">Notes</span></a>
+  </div>
+  <a class="nav-cta" href="/#contact">Book a free call</a>
+</nav>
+
+<main>
+<section class="ln-hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="/">Meshlock</a> / A note for Farrar &amp; Tanner</p>
+    <p class="ln-k">One thing I noticed</p>
+    <h1>Your customers type their message once. Then it gets typed again.</h1>
+    <p class="ln-lede">I'm Kamil. I manage production at a UK manufacturer, and on the side I build small tools for firms I'd like to work with. I looked at Farrar &amp; Tanner from the outside: your sites, your film and your Companies House filings. One thing stood out, and I think it is worth a few minutes of your time.</p>
+    <p class="ln-why">Why this note is so detailed: it isn't a mass mailing. I only write to a firm after doing the homework, when I think I can genuinely help. I'd rather show you what I see than send you a brochure.</p>
+  </div>
+</section>
+
+<section class="ln-band">
+  <div class="wrap">
+    <p class="ln-k">What I saw</p>
+    <h2 class="ln-h2">Personal, fast and busy</h2>
+    <div class="ln-grid">
+      <div class="ln-card"><p>Nearly everything across your six brands can be personalised, and you promise same-day engraving and dispatch.</p><p class="ln-src">Source: your careers page</p></div>
+      <div class="ln-card"><p>Your Personalise Your Gift film shows the message typed into the engraving software at the machine, then the item placed and the job started.</p><p class="ln-src">Source: your own film</p></div>
+      <div class="ln-card"><p>At checkout the customer picks the position, types the text, chooses one of six fonts and confirms against a preview. A pocket watch can carry three lines on the front and three on the back.</p><p class="ln-src">Source: your product pages</p></div>
+      <div class="ln-card"><p>About 4,000 lines, 39 people, engraving, embossing and embroidery, and the busiest weeks of the year starting now.</p><p class="ln-src">Source: accounts to May 2025 · press</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="ln-sec">
+  <div class="wrap">
+    <p class="ln-k">The problem I'd expect</p>
+    <h2 class="ln-h2">Typed twice means two chances to go wrong</h2>
+    <p class="ln-intro">The customer has already told you everything: the text, the font and the position, and has seen a preview. If those three are entered again by hand at the machine, each one is a chance to drift from what they approved. On a personal gift the customer cares about every character. A missing space, two hyphens instead of one, the wrong one of six fonts, a line on the front that belonged on the back. In December the same message is read and typed again hundreds of times a day, under pressure. Each slip is a remade branded item, a late parcel and an unhappy recipient.</p>
+    <div class="ln-grid">
+      <div class="ln-card">
+        <p class="ln-lab red">Today, as I read it</p>
+        <p class="ln-flow">Customer types the message <span class="ar">→</span> order <span class="ar">→</span> operator reads it, <span class="bad">types the text again, picks the font and the position</span> <span class="ar">→</span> place the item <span class="ar">→</span> engrave</p>
+      </div>
+      <div class="ln-card ln-strong">
+        <span class="ln-stamp">Nothing retyped</span>
+        <p class="ln-lab green">Typed once</p>
+        <p class="ln-flow">Customer types the message <span class="ar">→</span> order <span class="ar">→</span> text, font and position go into the product's template untouched <span class="ar">→</span> operator places the item, checks the preview, presses start</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ln-dark">
+  <div class="wrap">
+    <p class="ln-k">How I'd approach it</p>
+    <h2 class="ln-h2">Around your setup, not inside it</h2>
+    <div class="ln-steps">
+      <div class="ln-step"><b>1</b><p>Take the customer's text, font and position straight from the order, exactly as approved, from all six brands.</p></div>
+      <div class="ln-step"><b>2</b><p>Sort the day's orders: same-day first, then by process and product, so each machine gets its own jobs in a sensible order.</p></div>
+      <div class="ln-step"><b>3</b><p>Build each engraving job as a ready-to-run design file, one per side: the template for that product and position, every line where the customer put it, in the font they chose, turned into outlines so no font can be swapped on the way. Named so the operator knows what to put on the bed. What the customer saw in the preview is what gets engraved.</p></div>
+      <div class="ln-step"><b>4</b><p>Drop the files, in order, into a folder your engraving software watches. Your operator still checks and releases every job. Nothing changes in your shop systems.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="ln-sec">
+  <div class="wrap">
+    <div class="ln-two">
+      <div>
+        <p class="ln-k">Where I'm coming from</p>
+        <p>This is a side interest, not an agency. I work full time in production, so I take on one or two firms at a time and build every tool myself. In my own plant, order data goes straight onto the paperwork and into the files, and a daily hour of sorting order paperwork now takes about a minute. I'm looking for a firm where I can make a real difference and stay for the long run. From the outside, yours looks like one. The first tool is paid for only when it works as agreed.</p>
+      </div>
+      <div>
+        <p class="ln-k">What I'm not saying</p>
+        <p>I haven't seen inside your building. Your setup may already pass the text through, or your team may be careful enough that it never bites. If so, ignore this note and good luck with December.</p>
+      </div>
+    </div>
+    <div class="ln-cta">
+      <div>
+        <h3>Does this ring true? Tell me how the text gets to the engraver today.</h3>
+        <p>Short before-and-after films of tools I've built in my own plant: <a href="/tools/?s=kp-ft">meshlock.co.uk/tools</a></p>
+        <p>If you'd rather look at the whole flow, I offer a one-day process review on site with your team: <span class="price">£600</span>, credited in full against any build.</p>
+      </div>
+      <a class="ln-btn" href="mailto:hello@meshlock.co.uk?subject=Typed%20twice" data-pc-href="mailto:patryk@meshlock.co.uk?subject=Typed%20twice" data-pc="patryk@meshlock.co.uk">hello@meshlock.co.uk</a>
+    </div>
+    <div class="ln-sources">
+      <p class="ln-src" style="margin:0 0 10px">Sources, all public</p>
+      <p>Companies House: Outdoor365 Limited, 06601597, accounts to 31 May 2025. Careers page on swiss-store.co.uk, read 16 Nov 2026. The Personalise Your Gift film and product pages on your site. Great British Brands 2024 entry on countryandtownhouse.com. Help pages of your engraving software maker on variable text and watched folders.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="foot-brand">
+    <a class="wordmark" href="/"><img src="/assets/meshlock-wordmark.svg" alt="Meshlock" width="127" height="20"></a>
+    <p class="foot-tag">Lean, software and ERP. Under one roof.</p>
+  </div>
+  <ul class="foot-links">
+    <li><a href="/tools/">Tools in action</a></li>
+    <li><a href="/prices/">Prices</a></li>
+    <li><a href="/start/">One-page offer</a></li>
+    <li><a href="/notes/">Field notes</a></li>
+    <li><a href="/toolkit/">Toolkit</a></li>
+    <li><a href="https://www.linkedin.com/in/kamil-pojawa-106265305/" data-pc-href="https://www.linkedin.com/in/patryk-chojnacki-a306b5199/" target="_blank" rel="noopener">LinkedIn</a></li>
+    <li><a href="mailto:hello@meshlock.co.uk" data-pc-href="mailto:patryk@meshlock.co.uk" data-pc="patryk@meshlock.co.uk">hello@meshlock.co.uk</a></li>
+    <li><a href="#top">Back to top ↑</a></li>
+    <li class="copy">© 2026 Meshlock</li>
+  </ul>
+</footer>
+
+</body>
+</html>
