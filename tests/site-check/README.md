@@ -38,6 +38,8 @@ It prints one `FAIL` line per problem and ends with `N passed, N failed`. It exi
 
 20. **Check to offer**: an offer opened from the check shows "From your check" with the task name; Fix the data first and Write the steps down first start with the one-day process review and put the tool after it; the email fields carry the check; a saved link keeps it (with the frozen review price); Automate starts with the tool; old links without a check work as before; with `pc` the offer is the same with Patryk as the contact.
 
+22. **Personal notes**: each /for/ page is noindex and out of the sitemap, shows Kamil only with its kp- tag and Patryk only without a tag, has no dashes or machine type words, and its links open.
+
 ## Extending it
 
 Add a page to `PAGES` (and to `TK` if it is a toolkit page with its own tag). Add a numbered block for any new behaviour. Keep each check one `ok(condition, message)` line, so a failure says exactly what broke.
